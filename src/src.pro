@@ -4,7 +4,9 @@ SOURCES += main.cpp \
  toolbox.cpp \
  postproperties.cpp \
  bilboengine.cpp \
- systray.cpp
+ systray.cpp \
+ settings.cpp \
+ addeditblog.cpp
 TEMPLATE = app
 CONFIG += warn_on \
 	  thread \
@@ -15,13 +17,16 @@ DESTDIR = ../bin
 CONFIG -= release
 
 FORMS += toolbox.ui \
-post.ui
+post.ui \
+addeditblog.ui
 HEADERS += mainwindow.h \
 postentriy.h \
 toolbox.h \
 postproperties.h \
 bilboengine.h \
 plugininterface.h \
-systray.h
+systray.h \
+settings.h \
+addeditblog.h
 QT += webkit
 
