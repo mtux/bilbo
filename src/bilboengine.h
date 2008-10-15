@@ -4,7 +4,7 @@
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
+ *   the Free Software Foundation; either version 3 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
@@ -17,16 +17,26 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef BILBOENGINE_H
+#define BILBOENGINE_H
 
-#include "systray.h"
-#include <QApplication>
+#include <QObject>
 
-int main(int argc, char *argv[])
+/**
+Engine of application, communicate with plugins and UI.
+this is heart and brain of app. ;)
+
+	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+	@author Golnaz Nilieh <g382nilieh@gmail.com>
+*/
+class BilboEngine : public QObject
 {
-      QApplication app(argc, argv);
-      qDebug("this will be Bilbo Blogger app...");
-	  SysTray *s= new SysTray(0);
-	  s->show();
-      return app.exec();
-}
+	Q_OBJECT
+public:
+    BilboEngine(QObject* parent);
 
+    ~BilboEngine();
+
+};
+
+#endif

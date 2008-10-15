@@ -4,7 +4,7 @@
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
+ *   the Free Software Foundation; either version 3 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
@@ -17,16 +17,21 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef TOOLBOX_H
+#define TOOLBOX_H
 
-#include "systray.h"
-#include <QApplication>
+#include <QDockWidget>
 
-int main(int argc, char *argv[])
-{
-      QApplication app(argc, argv);
-      qDebug("this will be Bilbo Blogger app...");
-	  SysTray *s= new SysTray(0);
-	  s->show();
-      return app.exec();
-}
+#include "ui_toolbox.h"
 
+/**
+	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ */
+class Toolbox: public QDockWidget, public Ui::ToolboxWidget {
+Q_OBJECT
+public:
+    Toolbox(QWidget *parent = 0);
+};
+
+#endif
