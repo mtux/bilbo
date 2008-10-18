@@ -68,7 +68,7 @@ public:
 	virtual bool publishPost(QString blogid, QString username, QString password, Post &newPost);
 	virtual Post *getPost(QString blogid, QString postid, QString username, QString password, QString appkey="");
 	virtual bool editPost(QString blogid, QString username, QString password, Post &editedPost);
-	virtual bool deletePost(QString blogid, QString username, QString password, postid, QString appkey="");
+	virtual bool deletePost(QString blogid, QString username, QString password, QString postid, QString appkey="");
 	virtual QList<Post> getRecentPosts(QString blogid, QString username, QString password, QString appkey="", int numberOfPosts=10);
 	virtual QList<Category> getCategoryList(QString blogid, QString username, QString password, QString appkey="");
 	virtual QString uploadMediaFile(QString blogid, QString username, QString password, MediaFile &file, QString appkey="");

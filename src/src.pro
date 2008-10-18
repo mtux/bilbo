@@ -6,7 +6,8 @@ SOURCES += main.cpp \
  systray.cpp \
  settings.cpp \
  addeditblog.cpp \
- postentry.cpp
+ postentry.cpp \
+ bilboeditor.cpp
 TEMPLATE = app
 CONFIG += warn_on \
 	  thread \
@@ -27,6 +28,9 @@ plugininterface.h \
 systray.h \
 settings.h \
 addeditblog.h \
-postentry.h
+postentry.h \
+ bilboeditor.h
 QT += webkit
+
+RESOURCES += editor.qrc
 
