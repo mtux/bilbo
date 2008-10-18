@@ -21,12 +21,16 @@
 #include "systray.h"
 #include <QApplication>
 
+#include "bilboeditor.h"
+
 int main(int argc, char *argv[])
 {
       QApplication app(argc, argv);
       qDebug("this will be Bilbo Blogger app...");
-	  SysTray *s= new SysTray(0);
-	  s->show();
+// 	  SysTray *s= new SysTray(0);
+// 	  s->show();
+	  BilboEditor *f= new BilboEditor();
+	  f->show();
       return app.exec();
 }
 

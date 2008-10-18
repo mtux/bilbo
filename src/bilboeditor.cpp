@@ -47,8 +47,8 @@ void BilboEditor::createUi()
 	barVisual->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	QVBoxLayout *vLayout = new QVBoxLayout();
 	barVisual->show();
-	vLayout->addWidget(barVisual/*, 0, Qt::AlignTop*/);
-	vLayout->addWidget(editor/*, 0, Qt::AlignBottom*/);
+	vLayout->addWidget(barVisual);
+	vLayout->addWidget(editor);
 	
 	tabVisual->setLayout(vLayout);
 	
