@@ -22,6 +22,8 @@
 
 #include <QObject>
 
+#include "plugininterface.h"
+
 /**
 Engine of application, communicate with plugins and UI.
 this is heart and brain of app. ;)

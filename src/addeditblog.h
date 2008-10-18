@@ -20,8 +20,14 @@
 #ifndef ADDEDITBLOG_H
 #define ADDEDITBLOG_H
 
+#include <QDialog>
+
 #include "ui_addeditblog.h"
 
+/**
+	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ */
 class AddEditBlog: public QDialog, public Ui::AddEditBlogDialog {
 Q_OBJECT
 public:

@@ -20,17 +20,60 @@
 #ifndef PLUGININTERFACE_H
 #define PLUGININTERFACE_H
 
+#include <QStringList>
+#include <QDateTime>
+
+struct Post {
+	QString appkey;
+	QString postid;
+	QString blogid;
+	QString userid;
+	QString title;
+	QString link;
+	QString permaLink;
+	QString content;
+	QString author;
+	QStringList categories;
+	QDateTime pubDate;
+	bool isPrivate;
+	bool allowComments;
+	bool allowPings;
+	QString keywords;
+	QString textMore;
+};
+
+struct Category {
+	QString id;
+	QString name;
+};
+
+struct MediaFile {
+	QString name;
+	QByteArray file;//.toBase64()
+	QString type;
+};
+
 /**
 Abstract base class, can be implemented by plugins to support a blog API.
 
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
-class PluginInterface{
+class BlogInterface{
 public:
 
-    virtual ~PluginInterface();
-
+    virtual ~BlogInterface();
+	
+	virtual QString getPluginName();
+	virtual bool publishPost(QString blogid, QString username, QString password, Post &newPost);
+	virtual Post *getPost(QString blogid, QString postid, QString username, QString password, QString appkey="");
+	virtual bool editPost(QString blogid, QString username, QString password, Post &editedPost);
+	virtual bool deletePost(QString blogid, QString username, QString password, postid, QString appkey="");
+	virtual QList<Post> getRecentPosts(QString blogid, QString username, QString password, QString appkey="", int numberOfPosts=10);
+	virtual QList<Category> getCategoryList(QString blogid, QString username, QString password, QString appkey="");
+	virtual QString uploadMediaFile(QString blogid, QString username, QString password, MediaFile &file, QString appkey="");
 };
+
+Q_DECLARE_INTERFACE(BlogInterface, "org.bilbo.BilboEngine.BlogInterface/0.1")
 
 #endif

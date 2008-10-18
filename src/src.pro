@@ -1,12 +1,12 @@
 SOURCES += main.cpp \
  mainwindow.cpp \
- postentriy.cpp \
  toolbox.cpp \
  postproperties.cpp \
  bilboengine.cpp \
  systray.cpp \
  settings.cpp \
- addeditblog.cpp
+ addeditblog.cpp \
+ postentry.cpp
 TEMPLATE = app
 CONFIG += warn_on \
 	  thread \
@@ -20,13 +20,13 @@ FORMS += toolbox.ui \
 post.ui \
 addeditblog.ui
 HEADERS += mainwindow.h \
-postentriy.h \
 toolbox.h \
 postproperties.h \
 bilboengine.h \
 plugininterface.h \
 systray.h \
 settings.h \
-addeditblog.h
+addeditblog.h \
+postentry.h
 QT += webkit
 
