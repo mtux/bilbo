@@ -22,6 +22,9 @@
 
 #include <QTabWidget>
 #include <QtGui>
+#include <QWebView>
+#include <QTabWidget>
+
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
@@ -51,15 +54,20 @@ public:
 		void selectColor();
 		void removeFormatting();
 		
+		void syncEditors(int index);
+		
 	private:
 		void createActions();
 		void createUi();
+		QString htmlToRichtext(const QString& html);
 		
 		QWidget *tabVisual;
 		QWidget *tabHtml;
 		QWidget *tabPreview;
 		
 		QTextEdit *editor;
+		QPlainTextEdit *htmlEditor;
+		QWebView *preview;
 		
 		QToolBar *barVisual;
 		QToolBar *barHtml;
@@ -80,6 +88,8 @@ public:
 		QAction *actRemoveLink;
 		QAction *actRemoveFormatting;
 		QAction *actColorSelect;
+		
+		int prev_index;
 };
 
 #endif

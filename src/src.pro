@@ -7,7 +7,8 @@ SOURCES += main.cpp \
  settings.cpp \
  addeditblog.cpp \
  postentry.cpp \
- bilboeditor.cpp
+ bilboeditor.cpp \
+ htmlexporter.cpp
 TEMPLATE = app
 CONFIG += warn_on \
 	  thread \
@@ -29,7 +30,8 @@ systray.h \
 settings.h \
 addeditblog.h \
 postentry.h \
- bilboeditor.h
+ bilboeditor.h \
+ htmlexporter.h
 QT += webkit
 
 RESOURCES += editor.qrc

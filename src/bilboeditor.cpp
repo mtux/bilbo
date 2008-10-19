@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "bilboeditor.h"
+#include "htmlexporter.h"
 
 BilboEditor::BilboEditor()
 {
@@ -32,6 +33,7 @@ BilboEditor::~BilboEditor()
 
 void BilboEditor::createUi()
 {
+	///this:
 	this->resize(600,400);
 	tabVisual = new QWidget(this);
 	tabHtml = new QWidget(this);
@@ -39,18 +41,32 @@ void BilboEditor::createUi()
 	this->addTab(tabVisual, "&Visual Editor");
 	this->addTab(tabHtml, "&Html Editor");
 	this->addTab(tabPreview, "Post &Preview");
+	connect(this, SIGNAL(currentChanged(int)), this, SLOT(syncEditors(int)));
 	
+	///editor:
 	editor = new QTextEdit(0);
-	
 	barVisual = new QToolBar(0);
 	barVisual->setIconSize(QSize(22, 22));
 	barVisual->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	QVBoxLayout *vLayout = new QVBoxLayout();
-	barVisual->show();
+// 	barVisual->show();
 	vLayout->addWidget(barVisual);
 	vLayout->addWidget(editor);
-	
 	tabVisual->setLayout(vLayout);
+	
+	///htmlEditor:
+	htmlEditor = new QPlainTextEdit(0);
+	QGridLayout *hLayout = new QGridLayout();
+	hLayout->addWidget(htmlEditor);
+	tabHtml->setLayout(hLayout);
+// 	htmlEditor->set
+	
+	///preview:
+	preview = new QWebView(0);
+// 	barPreview = new QToolBar(0);
+	QVBoxLayout *pLayout = new QVBoxLayout();
+	pLayout->addWidget(preview);
+	tabPreview->setLayout(pLayout);
 	
 	createActions();
 	
@@ -109,34 +125,71 @@ void BilboEditor::createActions()
 	actJustify = new QAction(QIcon(":/media/format-justify-fill.png"), "Justify", this);
 	connect(actJustify, SIGNAL(triggered(bool)), this, SLOT(alignJustify()));
 	barVisual->addAction(actJustify);
+	
+	barVisual->addSeparator();
+	
+	actColorSelect = new QAction(QIcon(":/media/format-text-color.png"), "Select Color", this);
+	connect(actColorSelect, SIGNAL(triggered(bool)), this, SLOT(selectColor()));
+	barVisual->addAction(actColorSelect);
 }
 
 void BilboEditor::toggleItalic()
 {
+	editor->setFontItalic(!editor->fontItalic());
 }
 
 void BilboEditor::toggleBold()
 {
+	if ( editor->fontWeight() >= QFont::Bold )
+		editor->setFontWeight( QFont::Normal );
+	else
+		editor->setFontWeight( QFont::Bold );
 }
 
 void BilboEditor::toggleUnderline()
 {
+	editor->setFontUnderline ( !editor->fontUnderline() );
 }
 
 void BilboEditor::toggleStrikeout()
 {
+	QFont f( editor->currentFont() );
+	f.setStrikeOut(!f.strikeOut());
+	editor->setCurrentFont(f);
 }
 
 void BilboEditor::toggleCode()
 {
+	//TODO
+	static QString preFontFamily;
+	if ( editor->fontFamily() != "Courier New,courier" ) {
+		preFontFamily = editor->fontFamily();
+		editor->setFontFamily("Courier New,courier");
+	} else {
+		editor->setFontFamily(preFontFamily);
+	}
 }
 
 void BilboEditor::fontSizeIncrease()
 {
+	QTextCharFormat format = editor->currentCharFormat ();
+
+	int idx = format.intProperty(QTextFormat::FontSizeAdjustment);
+	if ( idx < 3 ) {
+		format.setProperty ( QTextFormat::FontSizeAdjustment, QVariant( ++idx ));
+		editor->setCurrentCharFormat (format);
+	}
 }
 
 void BilboEditor::fontSizeDecrease()
 {
+	QTextCharFormat format = editor->currentCharFormat ();
+
+	int idx = format.intProperty(QTextFormat::FontSizeAdjustment);
+	if ( idx > -1 ) {
+		format.setProperty ( QTextFormat::FontSizeAdjustment, QVariant( --idx ));
+		editor->setCurrentCharFormat (format);
+	}
 }
 
 void BilboEditor::addEditLink()
@@ -149,6 +202,11 @@ void BilboEditor::removeLink()
 
 void BilboEditor::selectColor()
 {
+	QColor c = QColorDialog::getColor(QColor("black"), this);
+	const QBrush br(c, Qt::SolidPattern);
+	QTextCharFormat ch = editor->currentCharFormat();
+	ch.setForeground(br);
+	editor->setCurrentCharFormat(ch);
 }
 
 void BilboEditor::removeFormatting()
@@ -169,5 +227,54 @@ void BilboEditor::alignCenter()
 
 void BilboEditor::alignJustify()
 {
+}
+
+QString BilboEditor::htmlToRichtext(const QString& html)
+{
+	QString richText = html;
+
+	richText.remove(QChar('\n'));
+
+	richText.replace(QRegExp("<del>(.*)</del>"), "<s>\\1</s>");
+
+    //Note: Qt Error:
+    //      QDocument converts <h1> in [ font-size: xx-large + bold ]
+    //      and font-size: xx-large in <h1>
+	richText.replace("<h1>", "<span style=\"font-size: xx-large\" >");
+	richText.replace("<h2>", "<span style=\"font-size: x-large\" >");
+	richText.replace("<h3>", "<span style=\"font-size: large\" >");
+    //richText.replace("<h4>", "<span style=\"font-size: medium\" >");
+	richText.replace(QRegExp("<h4>(.*)</h4>"), "\\1");
+	richText.replace("<h5>", "<span style=\"font-size: small\" >");
+	richText.replace(QRegExp("</h[1-5]>"), "</span>");
+
+    //kDebug() << "out" << richText;
+    //return richText;
+	QString h;
+// 	QString basePath = KBloggerMedia::cachePath(); <base href=\"" + basePath + "\" />
+	h = "<html><head></head><body><p>" + richText + "</p></body></html>";
+	return h;
+}
+
+void BilboEditor::syncEditors(int index)
+{
+// 	editor->document();
+	htmlExporter* htmlExp = new htmlExporter();
+	
+	if(index == 0)
+		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
+	else if(index == 1)
+		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+	else if(prev_index == 1){
+		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
+		preview->setHtml(htmlEditor->toPlainText(), QUrl("#"));
+	}
+	else if(prev_index == 0){
+		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+		preview->setHtml(htmlEditor->toPlainText(), QUrl("#"));
+	}
+	
+	prev_index = index;
+	delete htmlExp;
 }
 
