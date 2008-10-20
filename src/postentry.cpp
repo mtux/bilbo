@@ -19,8 +19,23 @@
  ***************************************************************************/
 #include "postentry.h"
 
-PostEntriy::PostEntriy(QWidget *parent)
+PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
 	setupUi(this);
+	editPostWidget=new BilboEditor();
+	this->layout()->addWidget(editPostWidget);
+}
+
+void PostEntry::publishPost()
+{
+	qDebug("publish slot is working now!");
+}
+
+void PostEntry::savePostLocally()
+{
+}
+
+void PostEntry::saveAsDraft()
+{
 }

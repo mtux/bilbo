@@ -18,19 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "systray.h"
+//#include "systray.h"
 #include <QApplication>
-
-#include "bilboeditor.h"
+#include "mainwindow.h"
+//#include "bilboeditor.h"
 
 int main(int argc, char *argv[])
 {
-      QApplication app(argc, argv);
-      qDebug("this will be Bilbo Blogger app...");
+	QApplication app(argc, argv);
+	qDebug("this will be Bilbo Blogger app...");
+	MainWindow *window=new MainWindow(0);
+	window->show();
 // 	  SysTray *s= new SysTray(0);
 // 	  s->show();
-	  BilboEditor *f= new BilboEditor();
-	  f->show();
-      return app.exec();
+//	  BilboEditor *f= new BilboEditor();
+//	  f->show();
+	return app.exec();
 }
 

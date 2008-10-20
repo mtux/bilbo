@@ -21,6 +21,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtGui/QToolBar>
+//#include "ui_mainwindow.h"
+#include "toolbox.h"
+#include "postentry.h"
+#include "addeditblog.h"
 
 /**
 Main window of bilbo blogger implementation...
@@ -35,6 +40,38 @@ public:
     MainWindow(QWidget* parent);
 
     ~MainWindow();
+	
+private slots:
+	void addNewBlog();
+	void createNewPost();
+	void uploadAllChanges();
+	
+private:
+	Toolbox *toolbox;
+	PostEntry *activePost;
+	AddEditBlog *addBlogPage;
+	
+	QWidget *centralwidget;
+	QTabWidget *tabPosts;
+	QToolBar *postToolbar;
+	QToolBar *bloggerToolbar;
+	QMenuBar *menubar;
+	QMenu *menuBilbo;
+	QMenu *menuEdit;
+	QStatusBar *statusbar;
+	
+	QAction *actionQuit;
+	QAction *actionTest;
+	QAction *addBlog;
+	QAction *uploadAll;
+	QAction *newPost;
+	QAction *publish;
+	QActionGroup *saveActions;
+	QAction *saveLocally;
+	QAction *saveDraft;
+	
+	void setupUi(QMainWindow *window);
+	void createActions();
 
 };
 

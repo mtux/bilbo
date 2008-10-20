@@ -23,15 +23,24 @@
 #include <QFrame>
 
 #include "ui_post.h"
+#include "bilboeditor.h"
 
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-class PostEntriy: public QFrame, public Ui::PostWidget {
+class PostEntry: public QFrame, public Ui::PostWidget {
 Q_OBJECT
 public:
-    PostEntriy(QWidget *parent = 0);
+    PostEntry(QWidget *parent = 0);
+		
+protected slots:
+	void publishPost();
+	void savePostLocally();
+	void saveAsDraft();
+	
+private:
+	BilboEditor *editPostWidget;
 };
 
 #endif
