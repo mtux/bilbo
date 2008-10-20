@@ -33,6 +33,7 @@
 #include <QTextTable>
 #include <QTextFormat>
 #include <QVarLengthArray>
+#include <QDebug>
 
 htmlExporter::htmlExporter()
 {
@@ -50,10 +51,13 @@ QString htmlExporter::toHtml(const QTextDocument* document )
     if (!document) return html;
     doc = document;
 
+	qDebug()<<doc->blockCount()<<endl;
+	
     const QFont defaultFont = doc->defaultFont();
     defaultCharFormat.setFont(defaultFont);
 
     emitFrame(doc->rootFrame()->begin());
+// 	emitBlock(doc->rootFrame()->begin().currentBlock());
     //sanitizeHtml();
     html.replace(QRegExp("<br[\\s]*/>"), "<br />\n");
 

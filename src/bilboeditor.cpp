@@ -17,6 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include <QDebug>
+
 #include "bilboeditor.h"
 #include "htmlexporter.h"
 
@@ -24,6 +27,7 @@ BilboEditor::BilboEditor()
 {
 	
 	createUi();
+	editor->setFocus();
 }
 
 
@@ -126,6 +130,14 @@ void BilboEditor::createActions()
 	connect(actJustify, SIGNAL(triggered(bool)), this, SLOT(alignJustify()));
 	barVisual->addAction(actJustify);
 	
+	actAddLink = new QAction(QIcon(":/media/add-link.png"), "Add/Edit Link", this);
+	connect(actAddLink, SIGNAL(triggered(bool)), this, SLOT(addEditLink()));
+	barVisual->addAction(actAddLink);
+	
+	actRemoveLink = new QAction(QIcon(":/media/remove-link.png"), "Remove Link", this);
+	connect(actRemoveLink, SIGNAL(triggered(bool)), this, SLOT(removeLink()));
+	barVisual->addAction(actRemoveLink);
+	
 	barVisual->addSeparator();
 	
 	actColorSelect = new QAction(QIcon(":/media/format-text-color.png"), "Select Color", this);
@@ -194,10 +206,24 @@ void BilboEditor::fontSizeDecrease()
 
 void BilboEditor::addEditLink()
 {
+	linkDialog = new AddEditLink(this);
+	connect(linkDialog, SIGNAL(addLink(const QString&, const QString, const QString&)), this, SLOT(setLink(QString, QString, QString)));
+	QTextCharFormat f = editor->currentCharFormat();
+	if(!f.isAnchor()){
+		linkDialog->show();
+	}
+	else{
+		linkDialog->show(f.anchorHref(), f.anchorName());
+	}
 }
 
 void BilboEditor::removeLink()
 {
+	QTextCharFormat f = editor->textCursor().charFormat();
+	f.setAnchor(false);
+	f.setUnderlineStyle(QTextCharFormat::NoUnderline);
+	f.clearForeground();
+	editor->textCursor().setCharFormat(f);
 }
 
 void BilboEditor::selectColor()
@@ -211,22 +237,30 @@ void BilboEditor::selectColor()
 
 void BilboEditor::removeFormatting()
 {
+	//TODO
 }
 
 void BilboEditor::alignRight()
 {
+	editor->setAlignment(Qt::AlignRight);
 }
 
 void BilboEditor::alignLeft()
 {
+	editor->setAlignment(Qt::AlignLeft);
 }
 
 void BilboEditor::alignCenter()
 {
+	editor->setAlignment(Qt::AlignHCenter);
 }
 
 void BilboEditor::alignJustify()
 {
+	if(editor->alignment()!=Qt::AlignJustify)
+		editor->setAlignment(Qt::AlignJustify);
+// 	else
+// 		editor->setAlignment();
 }
 
 QString BilboEditor::htmlToRichtext(const QString& html)
@@ -263,8 +297,10 @@ void BilboEditor::syncEditors(int index)
 	
 	if(index == 0)
 		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
-	else if(index == 1)
+	else if(index == 1){
+		qDebug()<<editor->toHtml()<<endl;
 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+	}
 	else if(prev_index == 1){
 		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
 		preview->setHtml(htmlEditor->toPlainText(), QUrl("#"));
@@ -276,5 +312,14 @@ void BilboEditor::syncEditors(int index)
 	
 	prev_index = index;
 	delete htmlExp;
+}
+
+void BilboEditor::setLink(QString address, QString target, QString title)
+{
+	QTextCharFormat f = editor->currentCharFormat();
+	f.setAnchor(true);
+	f.setAnchorHref(address);
+	f.setAnchorName(title);
+	editor->setCurrentCharFormat(f);
 }
 

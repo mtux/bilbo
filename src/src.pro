@@ -8,7 +8,8 @@ SOURCES += main.cpp \
  addeditblog.cpp \
  postentry.cpp \
  bilboeditor.cpp \
- htmlexporter.cpp
+ htmlexporter.cpp \
+ addeditlink.cpp
 TEMPLATE = app
 CONFIG += warn_on \
 	  thread \
@@ -20,7 +21,8 @@ CONFIG -= release
 
 FORMS += toolbox.ui \
 post.ui \
-addeditblog.ui
+addeditblog.ui \
+ addeditlink.ui
 HEADERS += mainwindow.h \
 toolbox.h \
 postproperties.h \
@@ -31,7 +33,8 @@ settings.h \
 addeditblog.h \
 postentry.h \
  bilboeditor.h \
- htmlexporter.h
+ htmlexporter.h \
+ addeditlink.h
 QT += webkit
 
 RESOURCES += editor.qrc

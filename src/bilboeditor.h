@@ -25,6 +25,7 @@
 #include <QWebView>
 #include <QTabWidget>
 
+#include "addeditlink.h"
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
@@ -50,6 +51,7 @@ public:
 		void alignCenter();
 		void alignJustify();
 		void addEditLink();
+		void setLink(QString address, QString target, QString title);
 		void removeLink();
 		void selectColor();
 		void removeFormatting();
@@ -88,6 +90,8 @@ public:
 		QAction *actRemoveLink;
 		QAction *actRemoveFormatting;
 		QAction *actColorSelect;
+		
+		AddEditLink *linkDialog;
 		
 		int prev_index;
 };
