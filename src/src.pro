@@ -20,7 +20,6 @@ DESTDIR = ../bin
 CONFIG -= release
 
 FORMS += toolbox.ui \
-post.ui \
 addeditblog.ui \
  addeditlink.ui
 HEADERS += mainwindow.h \

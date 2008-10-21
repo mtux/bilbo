@@ -22,9 +22,33 @@
 PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
-	setupUi(this);
+	setupUi(parent);
 	editPostWidget=new BilboEditor();
 	this->layout()->addWidget(editPostWidget);
+}
+void PostEntry::setupUi(QWidget *parentWidget)
+{
+	this->resize(626, 307);
+	gridLayout = new QGridLayout(this);
+	
+	horizontalLayout = new QHBoxLayout();
+	horizontalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
+	
+	titleLabel = new QLabel(this);
+	titleLabel->setText("&Title :");
+	horizontalLayout->addWidget(titleLabel);
+
+	txtTitle = new QLineEdit(this);
+	horizontalLayout->addWidget(txtTitle);
+	titleLabel->setBuddy(txtTitle);
+	connect(txtTitle,SIGNAL(textChanged(const QString&)),parentWidget,SLOT(postTitleChanged(const QString&)));
+	
+	gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
+	
+	wPost = new QWidget(this);
+	gridLayout->addWidget(wPost, 1, 0, 1, 1);
+	
+	//PostWidget->setWindowTitle(QApplication::translate("PostWidget", "Form", 0, QApplication::UnicodeUTF8));
 }
 
 void PostEntry::publishPost()

@@ -21,7 +21,7 @@
 
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {
-	setupUi(this);
+	setupUi();
 	
 	activePost=new PostEntry(this);
 	tabPosts->addTab(activePost,"Untitled");
@@ -31,19 +31,6 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 	this->addDockWidget(Qt::RightDockWidgetArea,toolbox);
 	
 	createActions();
-	
-	postToolbar->addAction(newPost);
-	postToolbar->addAction(saveLocally);
-	postToolbar->addAction(publish);
-	
-	bloggerToolbar->addAction(addBlog);
-	bloggerToolbar->addAction(uploadAll);
-	
-	menubar->addAction(menuBilbo->menuAction());
-	menubar->addAction(menuEdit->menuAction());
-	menuBilbo->addAction(actionTest);
-	menuBilbo->addSeparator();
-	menuBilbo->addAction(actionQuit);
 }
 
 
@@ -51,42 +38,34 @@ MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::setupUi(QMainWindow *window)
+void MainWindow::setupUi()
 {
-	window->resize(887, 559);
-	centralwidget = new QWidget(window);
-	centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-	window->setCentralWidget(centralwidget);
+	this->resize(887, 559);
+	this->setWindowTitle("MainWindow");
 	
-	tabPosts = new QTabWidget(centralwidget);
-	tabPosts->setObjectName(QString::fromUtf8("tabPosts"));
+	tabPosts = new QTabWidget(this);
 	tabPosts->setGeometry(QRect(3, 56, 577, 455));
+	this->setCentralWidget(tabPosts);
 	
-	menubar = new QMenuBar(window);
-	menubar->setObjectName(QString::fromUtf8("menubar"));
+	menubar = new QMenuBar(this);
 	menubar->setGeometry(QRect(0, 0, 887, 22));
-	menuBilbo = new QMenu(menubar);
-	menuBilbo->setObjectName(QString::fromUtf8("menuBilbo"));
-	menuEdit = new QMenu(menubar);
-	menuEdit->setObjectName(QString::fromUtf8("menuEdit"));
-	window->setMenuBar(menubar);
+	menuBilbo = new QMenu("Bilbo",menubar);
+	menuEdit = new QMenu("Edit",menubar);
+	this->setMenuBar(menubar);
 	
-	postToolbar=new QToolBar(window);
+	postToolbar=new QToolBar(this);
 	postToolbar->setGeometry(QRect(0,20,311,45));
-	postToolbar->setAllowedAreas(Qt::TopToolBarArea);
+	//postToolbar->setAllowedAreas(Qt::TopToolBarArea);
 	postToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	this->addToolBar(Qt::TopToolBarArea,postToolbar);
 	
-	bloggerToolbar=new QToolBar(window);
+	bloggerToolbar=new QToolBar(this);
 	bloggerToolbar->setGeometry(QRect(315,20,261,45));
-	bloggerToolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	bloggerToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	this->addToolBar(Qt::TopToolBarArea,bloggerToolbar);
 	
-	statusbar = new QStatusBar(window);
-	statusbar->setObjectName(QString::fromUtf8("statusbar"));
-	window->setStatusBar(statusbar);
-	
-	window->setWindowTitle(QApplication::translate("window", "MainWindow", 0, QApplication::UnicodeUTF8));
-	menuBilbo->setTitle(QApplication::translate("BilboMain", "Bilbo", 0, QApplication::UnicodeUTF8));
-	menuEdit->setTitle(QApplication::translate("BilboMain", "Edit", 0, QApplication::UnicodeUTF8));
+	statusbar = new QStatusBar(this);
+	this->setStatusBar(statusbar);
 }
 
 void MainWindow::createActions()
@@ -109,12 +88,28 @@ void MainWindow::createActions()
 	saveDraft=new QAction(QIcon(":/media/format-text-bold.png"),"Save as Draft",this);
 	connect(saveDraft,SIGNAL(triggered( bool )),activePost,SLOT(saveAsDraft()));
 	
+	addCreatedActions();
+	
+}
+
+void MainWindow::addCreatedActions()
+{
 	saveActions=new QActionGroup(this);
 	saveActions->addAction(saveLocally);
 	saveActions->addAction(saveDraft);
 	
-	actionQuit=new QAction(this);
-	actionTest=new QAction(this);
+	postToolbar->addAction(newPost);
+	postToolbar->addAction(saveLocally);
+	postToolbar->addAction(publish);
+	
+	bloggerToolbar->addAction(addBlog);
+	bloggerToolbar->addAction(uploadAll);
+	
+	/*menubar->addAction(menuBilbo->menuAction());
+	menubar->addAction(menuEdit->menuAction());
+	menuBilbo->addAction(actionTest);
+	menuBilbo->addSeparator();
+	menuBilbo->addAction(actionQuit);*/
 }
 
 void MainWindow::addNewBlog()
@@ -123,12 +118,17 @@ void MainWindow::addNewBlog()
 
 void MainWindow::createNewPost()
 {
-	PostEntry *temp=new PostEntry();
+	PostEntry *temp=new PostEntry(this);
 	tabPosts->addTab(temp,"Untitled");
 	activePost=temp;
 }
 
 void MainWindow::uploadAllChanges()
 {
+}
+
+void MainWindow::postTitleChanged(const QString& title)
+{
+	tabPosts->setTabText(tabPosts->currentIndex(),title);
 }
 
