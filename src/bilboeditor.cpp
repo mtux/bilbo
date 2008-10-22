@@ -46,6 +46,7 @@ void BilboEditor::createUi()
 	this->addTab(tabHtml, "&Html Editor");
 	this->addTab(tabPreview, "Post &Preview");
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(syncEditors(int)));
+	prev_index=0;
 	
 	///editor:
 	editor = new QTextEdit(0);
@@ -320,6 +321,9 @@ void BilboEditor::setLink(QString address, QString target, QString title)
 	f.setAnchor(true);
 	f.setAnchorHref(address);
 	f.setAnchorName(title);
+	f.setUnderlineStyle(QTextCharFormat::SingleUnderline);
+	const QBrush br(Qt::blue);
+	f.setForeground(br);
 	editor->setCurrentCharFormat(f);
 }
 

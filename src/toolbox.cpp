@@ -24,3 +24,15 @@ Toolbox::Toolbox(QWidget *parent)
 {
 	setupUi(this);
 }
+
+void Toolbox::on_btnBlogAdd_clicked()
+{
+	addEditBlogWindow = new AddEditBlog(this);
+	addEditBlogWindow->show();
+}
+
+void Toolbox::on_btnBlogEdit_clicked()
+{
+	addEditBlogWindow = new AddEditBlog(this);
+	addEditBlogWindow->show();
+}
