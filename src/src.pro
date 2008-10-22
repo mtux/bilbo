@@ -27,14 +27,14 @@ HEADERS += mainwindow.h \
 toolbox.h \
 postproperties.h \
 bilboengine.h \
-plugininterface.h \
 systray.h \
 settings.h \
 addeditblog.h \
 postentry.h \
  bilboeditor.h \
  htmlexporter.h \
- addeditlink.h
+ addeditlink.h \
+ bloginterface.h
 QT += webkit
 
 RESOURCES += editor.qrc

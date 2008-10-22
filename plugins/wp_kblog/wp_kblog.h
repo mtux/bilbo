@@ -17,27 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef BILBOENGINE_H
-#define BILBOENGINE_H
+#ifndef WP_KBLOG_H
+#define WP_KBLOG_H
 
 #include <QObject>
+#include <QtGui>
 
 #include "bloginterface.h"
 
 /**
-Engine of application, communicate with plugins and UI.
-this is heart and brain of app. ;)
+Using KBlog(part of KDEPIMLibs) library to implement a Bibo plugin, works with Wordpress and similare APIs
 
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
-class BilboEngine : public QObject
+class WP_KBlog : public QObject, public BlogInterface
 {
 	Q_OBJECT
+	Q_INTERFACES(BlogInterface)
 public:
-    BilboEngine(QObject* parent);
-
-    ~BilboEngine();
+    virtual bool deletePost(QString blogid, QString username, QString password, QString postid, QString appkey);
+    virtual bool editPost(QString blogid, QString username, QString password, Post& editedPost);
+    virtual bool publishPost(QString blogid, QString username, QString password, Post& newPost);
+    virtual Post* getPost(QString blogid, QString postid, QString username, QString password, QString appkey);
+    virtual QList< Category > getCategoryList(QString blogid, QString username, QString password, QString appkey);
+    virtual QList< Post > getRecentPosts(QString blogid, QString username, QString password, QString appkey, int numberOfPosts);
+    virtual QString getPluginName();
+    virtual QString uploadMediaFile(QString blogid, QString username, QString password, MediaFile& file, QString appkey);
 
 };
 
