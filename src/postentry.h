@@ -22,17 +22,18 @@
 
 #include <QFrame>
 
-#include "ui_post.h"
+//#include "ui_post.h"
 #include "bilboeditor.h"
 
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-class PostEntry: public QFrame, public Ui::PostWidget {
+//class PostEntry: public QFrame, public Ui::PostWidget {
+class PostEntry: public QFrame {
 Q_OBJECT
 public:
-    PostEntry(QWidget *parent = 0);
+    PostEntry(QWidget *parent);
 		
 protected slots:
 	void publishPost();
@@ -41,6 +42,13 @@ protected slots:
 	
 private:
 	BilboEditor *editPostWidget;
+	QGridLayout *gridLayout;
+	QHBoxLayout *horizontalLayout;
+	QLabel *titleLabel;
+	QLineEdit *txtTitle;
+	QWidget *wPost;
+	
+	void setupUi(QWidget *parentWidget);
 };
 
 #endif

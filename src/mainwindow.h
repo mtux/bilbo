@@ -45,13 +45,13 @@ private slots:
 	void addNewBlog();
 	void createNewPost();
 	void uploadAllChanges();
+	void postTitleChanged(const QString& title);
 	
 private:
 	Toolbox *toolbox;
 	PostEntry *activePost;
 	AddEditBlog *addBlogPage;
 	
-	QWidget *centralwidget;
 	QTabWidget *tabPosts;
 	QToolBar *postToolbar;
 	QToolBar *bloggerToolbar;
@@ -60,8 +60,6 @@ private:
 	QMenu *menuEdit;
 	QStatusBar *statusbar;
 	
-	QAction *actionQuit;
-	QAction *actionTest;
 	QAction *addBlog;
 	QAction *uploadAll;
 	QAction *newPost;
@@ -70,9 +68,9 @@ private:
 	QAction *saveLocally;
 	QAction *saveDraft;
 	
-	void setupUi(QMainWindow *window);
+	void setupUi();
 	void createActions();
-
+	void addCreatedActions();
 };
 
 #endif
