@@ -20,6 +20,7 @@
 #ifndef PLUGININTERFACE_H
 #define PLUGININTERFACE_H
 
+#include <QtPlugin>
 #include <QStringList>
 #include <QDateTime>
 
@@ -62,16 +63,16 @@ Abstract base class, can be implemented by plugins to support a blog API.
 class BlogInterface{
 public:
 
-    virtual ~BlogInterface();
+    virtual ~BlogInterface() {}
 	
-	virtual QString getPluginName();
-	virtual bool publishPost(QString blogid, QString username, QString password, Post &newPost);
-	virtual Post *getPost(QString blogid, QString postid, QString username, QString password, QString appkey="");
-	virtual bool editPost(QString blogid, QString username, QString password, Post &editedPost);
-	virtual bool deletePost(QString blogid, QString username, QString password, QString postid, QString appkey="");
-	virtual QList<Post> getRecentPosts(QString blogid, QString username, QString password, QString appkey="", int numberOfPosts=10);
-	virtual QList<Category> getCategoryList(QString blogid, QString username, QString password, QString appkey="");
-	virtual QString uploadMediaFile(QString blogid, QString username, QString password, MediaFile &file, QString appkey="");
+	virtual QString getPluginName() = 0;
+	virtual bool publishPost(QString blogid, QString username, QString password, Post &newPost) = 0;
+	virtual Post *getPost(QString blogid, QString postid, QString username, QString password, QString appkey="") = 0;
+	virtual bool editPost(QString blogid, QString username, QString password, Post &editedPost) = 0;
+	virtual bool deletePost(QString blogid, QString username, QString password, QString postid, QString appkey="") = 0;
+	virtual QList<Post> getRecentPosts(QString blogid, QString username, QString password, QString appkey="", int numberOfPosts=10) = 0;
+	virtual QList<Category> getCategoryList(QString blogid, QString username, QString password, QString appkey="") = 0;
+	virtual QString uploadMediaFile(QString blogid, QString username, QString password, MediaFile &file, QString appkey="") = 0;
 };
 
 Q_DECLARE_INTERFACE(BlogInterface, "org.bilbo.BilboEngine.BlogInterface/0.1")
