@@ -23,6 +23,7 @@
 #include <QDockWidget>
 
 #include "ui_toolbox.h"
+#include "addeditblog.h"
 
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
@@ -32,6 +33,12 @@ class Toolbox: public QDockWidget, public Ui::ToolboxWidget {
 Q_OBJECT
 public:
     Toolbox(QWidget *parent = 0);
+public slots:
+	void on_btnBlogAdd_clicked();
+	void on_btnBlogEdit_clicked();
+	
+private:
+	AddEditBlog *addEditBlogWindow;
 };
 
 #endif

@@ -84,6 +84,7 @@ void htmlExporter::emitFrame(QTextFrame::Iterator frameIt)
             if (QTextTable * table = qobject_cast<QTextTable *>(f)) {
                 emitTable(table);
             } else {
+				qDebug() << "isn't table" << endl;
                 html += QLatin1String("\n<table");
                 QTextFrameFormat format = f->frameFormat();
 
@@ -113,6 +114,7 @@ void htmlExporter::emitFrame(QTextFrame::Iterator frameIt)
                 html += QLatin1String("</td></tr></table>");
             }
         } else if (it.currentBlock().isValid()) {
+			qDebug()<< "is valid" << endl;
             emitBlock(it.currentBlock());
         }
     }
@@ -121,7 +123,7 @@ void htmlExporter::emitFrame(QTextFrame::Iterator frameIt)
 
 void htmlExporter::emitTable(const QTextTable *table)
 {
-//     kDebug() << "html" << html;
+	qDebug() << "emitTable" << html;
     QTextTableFormat format = table->format();
 
     html += QLatin1String("\n<table");
@@ -423,7 +425,7 @@ void htmlExporter::emitTextLength(const char *attribute, const QTextLength &leng
 
 void htmlExporter::emitAlignment(Qt::Alignment align)
 {
-//     kDebug() << "html" << html;
+	qDebug() << "emitAlignment" << html;
     if (align & Qt::AlignLeft)
         return;
     else if (align & Qt::AlignRight)
@@ -432,6 +434,7 @@ void htmlExporter::emitAlignment(Qt::Alignment align)
         html += QLatin1String(" align=\"center\"");
     else if (align & Qt::AlignJustify)
         html += QLatin1String(" align=\"justify\"");
+	qDebug() << "emitAlignment" << html;
 }
 
 void htmlExporter::emitFloatStyle(QTextFrameFormat::Position pos, StyleMode mode)
@@ -669,7 +672,9 @@ void htmlExporter::emitBlock(const QTextBlock &block)
 
     QTextList *list = block.textList();
     if (list) {
+		qDebug() << "list exists" << endl;
         if (list->itemNumber(block) == 0) { // first item? emit <ul> or appropriate
+			qDebug() << "first item" << endl;
             const QTextListFormat format = list->format();
             const int style = format.style();
             switch (style) {
@@ -680,6 +685,7 @@ void htmlExporter::emitBlock(const QTextBlock &block)
             case QTextListFormat::ListLowerAlpha: html += QLatin1String("<ol type=\"a\""); break;
             case QTextListFormat::ListUpperAlpha: html += QLatin1String("<ol type=\"A\""); break;
             default: html += QLatin1String("<ul"); // ### should not happen
+			qDebug() << html;
             }
             /*
             if (format.hasProperty(QTextFormat::ListIndent)) {
@@ -726,11 +732,19 @@ void htmlExporter::emitBlock(const QTextBlock &block)
 
         emitBlockAttributes(block);
         html += QLatin1Char('>');
-    }// else if (!list) {
-    //    html += QLatin1String("<p");
-    //}
-
-
+    }
+	else if (!list) {
+        html += QLatin1String("<p");
+		emitBlockAttributes(block);
+		html += QLatin1String(">");
+    }
+	/*if (blockFormat.hasProperty(QTextFormat::BlockAlignment))
+	{
+		qDebug() << "has property" << endl;
+		qDebug() << html << endl;
+		emitAlignment(blockFormat.alignment());
+	}
+	html += QLatin1Char('>');*/
     /*
         const QTextCharFormat blockCharFmt = block.charFormat();
         const QTextCharFormat diff = formatDifference(defaultCharFormat, blockCharFmt).toCharFormat();
@@ -741,13 +755,14 @@ void htmlExporter::emitBlock(const QTextBlock &block)
 
     for (; !it.atEnd(); ++it)
         emitFragment(it.fragment());
-
+	
+	qDebug() << html << endl;
     if (pre)
         html += QLatin1String("</pre>");
     else if (list)
         html += QLatin1String("</li>");
     else if ( ! (html.right(7).contains(QRegExp("<br[\\s]*/>[\\n]*"))) )
-        html += QLatin1String("<br />");//"</p>");
+        html += QLatin1String("<br />""</p>");
 
     // HACK html.replace( QRegExp("<br[\\s]*/>[\\n]*<br[\\s]*/>[\\n]*"),"<br />&nbsp;<br />" );
 
@@ -761,6 +776,7 @@ void htmlExporter::emitBlock(const QTextBlock &block)
     }
 
     defaultCharFormat = oldDefaultCharFormat;
+	qDebug() << html << endl;
 }
 
 QTextFormat htmlExporter::formatDifference(const QTextFormat &from, const QTextFormat &to)
