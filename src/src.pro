@@ -33,7 +33,8 @@ postentry.h \
  bilboeditor.h \
  htmlexporter.h \
  addeditlink.h \
- bloginterface.h
+ bloginterface.h \
+ version.h
 QT += webkit
 
 RESOURCES += editor.qrc

@@ -17,49 +17,76 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include <kurl.h>
+#include <kdatetime.h>
+
 #include "wp_kblog.h"
-#include <KBlog>
+#include "version.h"
 
-bool WP_KBlog::deletePost(QString blogid, QString username, QString password, QString postid, QString appkey)
+bool WP_KBlog::deletePost(const QString& blogUrl, const QString& blogid, const QString& username, const QString& password, const QString& postid, const QString& appkey)
 {
-//     return BlogInterface::deletePost(blogid, username, password, postid, appkey);
+	return true;
 }
 
-bool WP_KBlog::editPost(QString blogid, QString username, QString password, Post& editedPost)
+bool WP_KBlog::editPost(const QString& blogUrl, const QString& blogid, const QString& username, const QString& password, const Post& editedPost)
 {
-//     return BlogInterface::editPost(blogid, username, password, editedPost);
+	return true;
 }
 
-bool WP_KBlog::publishPost(QString blogid, QString username, QString password, Post& newPost)
+bool WP_KBlog::publishPost(const QString& blogUrl, const QString& blogid, const QString& username, const QString& password, const Post& newpost)
 {
-//     return BlogInterface::publishPost(blogid, username, password, newPost);
+	KBlog::Blog* b = new KBlog::WordpressBuggy(KUrl(blogUrl));
+	b->setUsername( username );
+	b->setPassword( password );
+	b->setBlogId(blogid);
+	KBlog::BlogPost *post= new KBlog::BlogPost;
+	
+	post->setTitle(newpost.title);
+	post->setContent(newpost.content);
+	post->setCategories(newpost.categories);
+	post->setCommentAllowed(newpost.allowComments);
+	post->setCreationDateTime(KDateTime(newpost.pubDate));
+	post->setPermaLink(KUrl(newpost.permaLink));
+	post->setPrivate(newpost.isPrivate);
+	post->setTags(newpost.tags);
+	post->setTrackBackAllowed(newpost.allowPings);
+// 	post.setLink(KUrl(newpost.link));
+	connect( b, SIGNAL(createdPost( KBlog::BlogPost* )), this, SLOT(postCreated( KBlog::BlogPost* )));
+	b->createPost( post );
+	
+	return true;
 }
 
-Post* WP_KBlog::getPost(QString blogid, QString postid, QString username, QString password, QString appkey)
+Post* WP_KBlog::getPost(const QString& blogUrl, const QString& blogid, const QString& postid, const QString& username, const QString& password, const QString& appkey)
 {
-//     return BlogInterface::getPost(blogid, postid, username, password, appkey);
 }
 
-QList< Category > WP_KBlog::getCategoryList(QString blogid, QString username, QString password, QString appkey)
+QList< Category > WP_KBlog::getCategoryList(const QString& blogUrl, const QString& blogid, const QString& username, const QString& password, const QString& appkey)
 {
-//     return BlogInterface::getCategoryList(blogid, username, password, appkey);
 }
 
-QList< Post > WP_KBlog::getRecentPosts(QString blogid, QString username, QString password, QString appkey, int numberOfPosts)
+QList< Post > WP_KBlog::getRecentPosts(const QString& blogUrl, const QString& blogid, const QString& username, const QString& password, const QString& appkey, const int numberOfPosts)
 {
-//     return BlogInterface::getRecentPosts(blogid, username, password, appkey, numberOfPosts);
 }
 
 QString WP_KBlog::getPluginName()
 {
-//     return BlogInterface::getPluginName();
+	return "Wordpress Plugin, using KBlog library.";
 }
 
-QString WP_KBlog::uploadMediaFile(QString blogid, QString username, QString password, MediaFile& file, QString appkey)
+QString WP_KBlog::uploadMediaFile(const QString& blogUrl, const QString& blogid, const QString& username, const QString& password, const MediaFile& file, const QString& appkey)
 {
-//     return BlogInterface::uploadMediaFile(blogid, username, password, file, appkey);
 }
 
 
+QList< BlogInfo > WP_KBlog::listblogs(const QString & blogUrl, const QString & username, const QString & password)
+{
+	KBlog::WordpressBuggy *b= new KBlog::WordpressBuggy(KUrl(blogUrl));
+	b->setUsername(username);
+	b->setPassword(password);
+	b->listBlogs();
+	
+}
 
 Q_EXPORT_PLUGIN2(bilbo_wpkblog, WP_KBlog)

@@ -23,7 +23,10 @@
 #include <QObject>
 #include <QtGui>
 
-#include "bloginterface.h"
+#include <kblog/wordpressbuggy.h>
+#include <kblog/blogpost.h>
+
+#include <bloginterface.h>
 
 /**
 Using KBlog(part of KDEPIMLibs) library to implement a Bibo plugin, works with Wordpress and similare APIs
@@ -36,15 +39,23 @@ class WP_KBlog : public QObject, public BlogInterface
 	Q_OBJECT
 	Q_INTERFACES(BlogInterface)
 public:
-    virtual bool deletePost(QString blogid, QString username, QString password, QString postid, QString appkey);
-    virtual bool editPost(QString blogid, QString username, QString password, Post& editedPost);
-    virtual bool publishPost(QString blogid, QString username, QString password, Post& newPost);
-    virtual Post* getPost(QString blogid, QString postid, QString username, QString password, QString appkey);
-    virtual QList< Category > getCategoryList(QString blogid, QString username, QString password, QString appkey);
-    virtual QList< Post > getRecentPosts(QString blogid, QString username, QString password, QString appkey, int numberOfPosts);
-    virtual QString getPluginName();
-    virtual QString uploadMediaFile(QString blogid, QString username, QString password, MediaFile& file, QString appkey);
+//     WP_KBlog();
+// 
+//     ~WP_KBlog();
 
+	virtual bool deletePost(const QString& blogUrl, const QString& blogid, const QString& username, const QString& password, const QString& postid, const QString& appkey);
+	virtual bool editPost(const QString& blogUrl, const QString& blogid, const QString& username, const QString& password, const Post& editedPost);
+	virtual bool publishPost(const QString& blogUrl, const QString& blogid, const QString& username, const QString& password, const Post& newPost);
+	virtual Post* getPost(const QString& blogUrl, const QString& blogid, const QString& postid, const QString& username, const QString& password, const QString& appkey);
+	virtual QList< Category > getCategoryList(const QString& blogUrl, const QString& blogid, const QString& username, const QString& password, const QString& appkey);
+	virtual QList< Post > getRecentPosts(const QString& blogUrl, const QString& blogid, const QString& username, const QString& password, const QString& appkey, const int numberOfPosts);
+    virtual QString getPluginName();
+	virtual QString uploadMediaFile(const QString& blogUrl, const QString& blogid, const QString& username, const QString& password, const MediaFile& file, const QString& appkey);
+	virtual QList<BlogInfo> listblogs(const QString &blogUrl, const QString &username, const QString &password);
+;
+signals:
+	void postCreated( KBlog::BlogPost* );
+	
 };
 
 #endif

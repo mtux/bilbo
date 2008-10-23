@@ -23,6 +23,7 @@
 #include <QtPlugin>
 #include <QStringList>
 #include <QDateTime>
+// #include <QUrl>
 
 struct Post {
 	QString appkey;
@@ -41,6 +42,7 @@ struct Post {
 	bool allowPings;
 	QString keywords;
 	QString textMore;
+	QStringList tags;
 };
 
 struct Category {
@@ -52,6 +54,12 @@ struct MediaFile {
 	QString name;
 	QByteArray file;//.toBase64()
 	QString type;
+};
+
+struct BlogInfo {
+	QString blogId;
+	QString blogName;
+	QString blogUrl;
 };
 
 /**
@@ -66,15 +74,24 @@ public:
     virtual ~BlogInterface() {}
 	
 	virtual QString getPluginName() = 0;
-	virtual bool publishPost(QString blogid, QString username, QString password, Post &newPost) = 0;
-	virtual Post *getPost(QString blogid, QString postid, QString username, QString password, QString appkey="") = 0;
-	virtual bool editPost(QString blogid, QString username, QString password, Post &editedPost) = 0;
-	virtual bool deletePost(QString blogid, QString username, QString password, QString postid, QString appkey="") = 0;
-	virtual QList<Post> getRecentPosts(QString blogid, QString username, QString password, QString appkey="", int numberOfPosts=10) = 0;
-	virtual QList<Category> getCategoryList(QString blogid, QString username, QString password, QString appkey="") = 0;
-	virtual QString uploadMediaFile(QString blogid, QString username, QString password, MediaFile &file, QString appkey="") = 0;
+	
+	virtual bool publishPost(const QString &blogUrl, const QString &blogid, const QString &username, const QString &password, const Post &newPost) = 0;
+	
+	virtual Post *getPost(const QString &blogUrl, const QString &blogid, const QString &postid, const QString &username, const QString &password, const QString &appkey=QString("")) = 0;
+	
+	virtual bool editPost(const QString &blogUrl, const QString &blogid, const QString &username, const QString &password, const Post &editedPost) = 0;
+	
+	virtual bool deletePost(const QString &blogUrl, const QString &blogid, const QString &username, const QString &password, const QString &postid, const QString &appkey="") = 0;
+	
+	virtual QList<Post> getRecentPosts(const QString &blogUrl, const QString &blogid, const QString &username, const QString &password, const QString &appkey="", const int numberOfPosts=10) = 0;
+	
+	virtual QList<Category> getCategoryList(const QString &blogUrl, const QString &blogid, const QString &username, const QString &password, const QString &appkey="") = 0;
+	
+	virtual QString uploadMediaFile(const QString &blogUrl, const QString &blogid, const QString &username, const QString &password, const MediaFile &file, const QString &appkey="") = 0;
+	
+	virtual QList<BlogInfo> listblogs(const QString &blogUrl, const QString &username, const QString &password) = 0;
 };
 
-Q_DECLARE_INTERFACE(BlogInterface, "org.bilbo.BilboEngine.BlogInterface/0.1")
+Q_DECLARE_INTERFACE(BlogInterface, "org.bilbo.BilboEngine.BlogInterface/0.3")
 
 #endif
