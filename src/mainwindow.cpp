@@ -64,6 +64,11 @@ void MainWindow::setupUi()
 	bloggerToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 	this->addToolBar(Qt::TopToolBarArea,bloggerToolbar);
 	
+	actionToolbar = new QToolBar(this);
+// 	bloggerToolbar->setGeometry(QRect(315,20,261,45));
+	actionToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	this->addToolBar(Qt::TopToolBarArea,actionToolbar);
+	
 	statusbar = new QStatusBar(this);
 	this->setStatusBar(statusbar);
 }
@@ -88,6 +93,12 @@ void MainWindow::createActions()
 	saveDraft=new QAction(QIcon(":/media/format-text-bold.png"),"Save as Draft",this);
 	connect(saveDraft,SIGNAL(triggered( bool )),activePost,SLOT(saveAsDraft()));
 	
+	aboutUs = new QAction(QIcon(":/media/format-text-bold.png"),"About Us",this);
+	connect(aboutUs, SIGNAL(triggered( bool )), this, SLOT(sltAboutUs()));
+	
+	actQuit = new QAction(QIcon(":/media/format-text-bold.png"), "Quit", this);
+	connect(actQuit, SIGNAL(triggered( bool )), this, SLOT(sltQuit()));
+	
 	addCreatedActions();
 	
 }
@@ -105,6 +116,9 @@ void MainWindow::addCreatedActions()
 	bloggerToolbar->addAction(addBlog);
 	bloggerToolbar->addAction(uploadAll);
 	
+	actionToolbar->addAction(aboutUs);
+	actionToolbar->addAction(actQuit);
+	
 	/*menubar->addAction(menuBilbo->menuAction());
 	menubar->addAction(menuEdit->menuAction());
 	menuBilbo->addAction(actionTest);
@@ -121,6 +135,7 @@ void MainWindow::createNewPost()
 	PostEntry *temp=new PostEntry(this);
 	tabPosts->addTab(temp,"Untitled");
 	activePost=temp;
+	tabPosts->setCurrentWidget(temp);
 }
 
 void MainWindow::uploadAllChanges()
@@ -130,5 +145,15 @@ void MainWindow::uploadAllChanges()
 void MainWindow::postTitleChanged(const QString& title)
 {
 	tabPosts->setTabText(tabPosts->currentIndex(),title);
+}
+
+void MainWindow::sltAboutUs()
+{
+	QMessageBox::information(this, "About Us", "Bilbo Blogger.\n\nAuthors:\n\tMehrdad Momeny\n\tGolnaz Nilieh");
+}
+
+void MainWindow::sltQuit()
+{
+	qApp->quit();
 }
 

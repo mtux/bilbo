@@ -4,7 +4,7 @@
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
+ *   the Free Software Foundation; either version 3 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
@@ -18,26 +18,24 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "systray.h"
-#include <QApplication>
-// #include "mainwindow.h"
-#include "global.h"
+#ifndef GLOBAL_H
+#define GLOBAL_H
 
-int main(int argc, char *argv[])
-{
-	QApplication app(argc, argv);
-	qDebug("this will be Bilbo Blogger app...");
-	
-	global_init();
-	
-// 	MainWindow *window=new MainWindow(0);
-// 	window->show();
-	  SysTray *s= new SysTray(0);
-	  s->show();
-//	  BilboEditor *f= new BilboEditor();
-//	  f->show();
-	
-	global_end();
-	return app.exec();
-}
+#include <QSettings>
+#include "settings.h"
 
+/**
+Global variables like settings stored here.
+	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ */
+
+class QSettings;
+class Settings;
+
+extern Settings *conf;
+
+void global_init();
+void global_end();
+
+#endif

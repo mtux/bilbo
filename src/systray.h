@@ -21,6 +21,10 @@
 #define SYSTRAY_H
 
 #include <QSystemTrayIcon>
+#include <QAction>
+
+#include "mainwindow.h"
+#include "settings.h"
 
 /**
 System tray icon of app
@@ -35,6 +39,25 @@ public:
     SysTray(QObject* parent);
 
     ~SysTray();
+	
+protected slots:
+	void sltHideShow();
+	void sltActivated(QSystemTrayIcon::ActivationReason);
+
+private:
+	void createActions();
+	
+	QMenu *trayMenu;
+	
+	QAction *actQuit;
+	QAction *actNewPost;
+	QAction *actHideShow;
+// 	QAction *actConfigure;
+	QAction *actAbout;
+// 	QAction *actPublishAllPosts;
+// 	QAction *
+	
+	MainWindow *bilbo;
 
 };
 

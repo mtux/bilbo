@@ -31,7 +31,14 @@ public:
     Settings();
 
     ~Settings();
+	
+	void save();
+	void load();
 
+	bool showMainOnStart;
+	
+private:
+// 	QString ini_path;
 };
 
 #endif

@@ -37,15 +37,17 @@ class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 public:
-    MainWindow(QWidget* parent);
+    MainWindow(QWidget* parent=0);
 
     ~MainWindow();
 	
-private slots:
+public slots:
 	void addNewBlog();
 	void createNewPost();
 	void uploadAllChanges();
 	void postTitleChanged(const QString& title);
+	void sltAboutUs();
+	void sltQuit();
 	
 private:
 	Toolbox *toolbox;
@@ -55,11 +57,12 @@ private:
 	QTabWidget *tabPosts;
 	QToolBar *postToolbar;
 	QToolBar *bloggerToolbar;
+	QToolBar *actionToolbar;
 	QMenuBar *menubar;
 	QMenu *menuBilbo;
 	QMenu *menuEdit;
 	QStatusBar *statusbar;
-	
+public:
 	QAction *addBlog;
 	QAction *uploadAll;
 	QAction *newPost;
@@ -67,7 +70,9 @@ private:
 	QActionGroup *saveActions;
 	QAction *saveLocally;
 	QAction *saveDraft;
-	
+	QAction *aboutUs;
+	QAction *actQuit;
+private:
 	void setupUi();
 	void createActions();
 	void addCreatedActions();

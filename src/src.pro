@@ -9,7 +9,9 @@ SOURCES += main.cpp \
  postentry.cpp \
  bilboeditor.cpp \
  htmlexporter.cpp \
- addeditlink.cpp
+ addeditlink.cpp \
+ dbman.cpp \
+ global.cpp
 TEMPLATE = app
 CONFIG += warn_on \
 	  thread \
@@ -33,9 +35,11 @@ postentry.h \
  bilboeditor.h \
  htmlexporter.h \
  addeditlink.h \
- bloginterface.h \
- version.h
-QT += webkit
+ version.h \
+ dbman.h \
+ global.h
+QT += webkit \
+ sql
 
 RESOURCES += editor.qrc
 

@@ -22,7 +22,7 @@
 
 #include <QObject>
 
-#include "bloginterface.h"
+// #include "bloginterface.h"
 
 /**
 Engine of application, communicate with plugins and UI.

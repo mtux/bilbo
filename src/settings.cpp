@@ -18,14 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "settings.h"
-
+#include <QDebug>
+#include <QSettings>
 Settings::Settings()
 {
+	load();
 }
 
 
 Settings::~Settings()
 {
+	save();
+}
+
+void Settings::save()
+{
+	qDebug("Settings::save");
+	QSettings *set = new QSettings;
+	
+	set->setValue("show_main_on_start", showMainOnStart);
+}
+
+void Settings::load()
+{
+	qDebug("Settings::load");
+	
+	QSettings *set = new QSettings;
+	
+	showMainOnStart = set->value("show_main_on_start", true).toBool();
 }
 
 

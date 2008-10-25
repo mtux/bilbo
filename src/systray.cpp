@@ -18,10 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "systray.h"
+#include "global.h"
 
 SysTray::SysTray(QObject* parent): QSystemTrayIcon(parent)
 {
+	bilbo = new MainWindow(0);
 	this->setIcon(QIcon("/usr/lib/kde4/share/icons/oxygen/128x128/apps/kde.png"));
+	trayMenu = new QMenu;
+	createActions();
+	
+	if(conf->showMainOnStart)
+		bilbo->show();
+	
+	connect(this,  SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(sltActivated(QSystemTrayIcon::ActivationReason)) );
 }
 
 
@@ -29,4 +38,38 @@ SysTray::~SysTray()
 {
 }
 
+void SysTray::createActions()
+{
+	actNewPost = bilbo->newPost;
+	
+	actAbout = bilbo->aboutUs;
+	
+	actQuit = bilbo->actQuit;
+	
+	trayMenu->addAction(actNewPost);
+	trayMenu->addSeparator();
+	trayMenu->addAction(actAbout);
+	trayMenu->addSeparator();
+	trayMenu->addAction(actQuit);
+	
+	this->setContextMenu(trayMenu);
+}
 
+void SysTray::sltHideShow()
+{
+}
+
+void SysTray::sltActivated(QSystemTrayIcon::ActivationReason reason)
+{
+	if(reason==2 || reason==3){
+		if(bilbo){
+			if(bilbo->isVisible())
+				bilbo->hide();
+			else
+				bilbo->show();
+		} else {
+			bilbo = new MainWindow;
+			bilbo->show();
+		}
+	}
+}
