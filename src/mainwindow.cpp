@@ -48,24 +48,24 @@ void MainWindow::setupUi()
 	this->setCentralWidget(tabPosts);
 	
 	menubar = new QMenuBar(this);
-	menubar->setGeometry(QRect(0, 0, 887, 22));
+	//menubar->setGeometry(QRect(0, 0, 887, 22));
 	menuBilbo = new QMenu("Bilbo",menubar);
-	menuEdit = new QMenu("Edit",menubar);
+	menuPost = new QMenu("Post",menubar);
+	menuAbout = new QMenu("About",menubar);
 	this->setMenuBar(menubar);
 	
 	postToolbar=new QToolBar(this);
-	postToolbar->setGeometry(QRect(0,20,311,45));
+	//postToolbar->setGeometry(QRect(0,20,311,45));
 	//postToolbar->setAllowedAreas(Qt::TopToolBarArea);
 	postToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 	this->addToolBar(Qt::TopToolBarArea,postToolbar);
 	
 	bloggerToolbar=new QToolBar(this);
-	bloggerToolbar->setGeometry(QRect(315,20,261,45));
+	//bloggerToolbar->setGeometry(QRect(315,20,261,45));
 	bloggerToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 	this->addToolBar(Qt::TopToolBarArea,bloggerToolbar);
 	
 	actionToolbar = new QToolBar(this);
-// 	bloggerToolbar->setGeometry(QRect(315,20,261,45));
 	actionToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 	this->addToolBar(Qt::TopToolBarArea,actionToolbar);
 	
@@ -93,6 +93,12 @@ void MainWindow::createActions()
 	saveDraft=new QAction(QIcon(":/media/format-text-bold.png"),"Save as Draft",this);
 	connect(saveDraft,SIGNAL(triggered( bool )),activePost,SLOT(saveAsDraft()));
 	
+	deletePost=new QAction(QIcon(":/media/format-text-bold.png"),"Delete from Server",this);
+	connect(deletePost,SIGNAL(triggered( bool )),activePost,SLOT(sltDelPost()));
+	
+	deleteLocally=new QAction(QIcon(":/media/format-text-bold.png"),"Delete Locally",this);
+	connect(deleteLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltDelLocally()));
+	
 	aboutUs = new QAction(QIcon(":/media/format-text-bold.png"),"About Us",this);
 	connect(aboutUs, SIGNAL(triggered( bool )), this, SLOT(sltAboutUs()));
 	
@@ -117,13 +123,25 @@ void MainWindow::addCreatedActions()
 	bloggerToolbar->addAction(uploadAll);
 	
 	actionToolbar->addAction(aboutUs);
-	actionToolbar->addAction(actQuit);
+	//actionToolbar->addAction(actQuit);
 	
-	/*menubar->addAction(menuBilbo->menuAction());
-	menubar->addAction(menuEdit->menuAction());
-	menuBilbo->addAction(actionTest);
-	menuBilbo->addSeparator();
-	menuBilbo->addAction(actionQuit);*/
+	menubar->addAction(menuBilbo->menuAction());
+	menubar->addAction(menuPost->menuAction());
+	menubar->addAction(menuAbout->menuAction());
+	
+	menuBilbo->addAction(actQuit);
+	
+	menuPost->addAction(newPost);
+	menuPost->addSeparator();
+	menuPost->addAction(publish);
+	menuPost->addSeparator();
+	menuPost->addAction(saveDraft);
+	menuPost->addAction(saveLocally);
+	menuPost->addSeparator();
+	menuPost->addAction(deletePost);
+	menuPost->addAction(deleteLocally);
+	
+	menuAbout->addAction(aboutUs);
 }
 
 void MainWindow::addNewBlog()

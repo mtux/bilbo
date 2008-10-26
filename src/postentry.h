@@ -39,6 +39,8 @@ protected slots:
 	void publishPost();
 	void savePostLocally();
 	void saveAsDraft();
+	void sltDelPost();
+	void sltDelLocally();
 	
 private:
 	BilboEditor *editPostWidget;

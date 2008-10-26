@@ -48,7 +48,7 @@ htmlExporter::~htmlExporter()
 QString htmlExporter::toHtml(const QTextDocument* document )
 {
     //kDebug();
-    if (!document) return html;
+    if (document->isEmpty()) return html;
     doc = document;
 
 	qDebug()<<doc->blockCount()<<endl;
@@ -69,6 +69,7 @@ void htmlExporter::emitFrame(QTextFrame::Iterator frameIt)
 {
 //     kDebug() << "html" << html;
     if (!frameIt.atEnd()) {
+		qDebug() << "frameIt is not at end" << endl;
         QTextFrame::Iterator next = frameIt;
         ++next;
         if (next.atEnd()
@@ -77,10 +78,13 @@ void htmlExporter::emitFrame(QTextFrame::Iterator frameIt)
                 && frameIt.currentBlock().begin().atEnd())
             return;
     }
+	
 
     for (QTextFrame::Iterator it = frameIt;
             !it.atEnd(); ++it) {
+		qDebug() << "entered for loop" << endl;
         if (QTextFrame *f = it.currentFrame()) {
+			qDebug() << "Its a frame, not a block" << endl;
             if (QTextTable * table = qobject_cast<QTextTable *>(f)) {
                 emitTable(table);
             } else {
@@ -123,7 +127,7 @@ void htmlExporter::emitFrame(QTextFrame::Iterator frameIt)
 
 void htmlExporter::emitTable(const QTextTable *table)
 {
-	qDebug() << "emitTable" << html;
+	//qDebug() << "emitTable" << html;
     QTextTableFormat format = table->format();
 
     html += QLatin1String("\n<table");
@@ -425,7 +429,7 @@ void htmlExporter::emitTextLength(const char *attribute, const QTextLength &leng
 
 void htmlExporter::emitAlignment(Qt::Alignment align)
 {
-	qDebug() << "emitAlignment" << html;
+	//qDebug() << "emitAlignment" << html;
     if (align & Qt::AlignLeft)
         return;
     else if (align & Qt::AlignRight)
@@ -434,7 +438,7 @@ void htmlExporter::emitAlignment(Qt::Alignment align)
         html += QLatin1String(" align=\"center\"");
     else if (align & Qt::AlignJustify)
         html += QLatin1String(" align=\"justify\"");
-	qDebug() << "emitAlignment" << html;
+	//qDebug() << "emitAlignment" << html;
 }
 
 void htmlExporter::emitFloatStyle(QTextFrameFormat::Position pos, StyleMode mode)
@@ -503,7 +507,7 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
     }
 
     QList<tag> tags = emitCharFormatStyle(format);
-
+	qDebug() << "tags count" << tags.count() << endl;
     for ( int i = 0; i < tags.count(); ++i ) {
         switch ( tags.at(i) ) {
         case span: break; //Jump
@@ -567,14 +571,14 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
 
         const QStringList lines = txt.split(QRegExp(forcedLineBreakRegExp));
         for (int i = 0; i < lines.count(); ++i) {
-            if (i > 0)
-                html += QLatin1String("<br />"); // space on purpose for compatibility with Netscape, Lynx & Co.
+            //if (i > 0)
+                //html += QLatin1String("<br />"); // space on purpose for compatibility with Netscape, Lynx & Co.
             html += lines.at(i);
         }
     }
 
     //Close Tags
-    if (!closeAnchor)
+    //if (!closeAnchor)
         for ( int i = tags.count(); i > 0; --i ) {
             switch ( tags.at(i - 1) ) {
             case span: html += QLatin1String("</span>"); break; //Jump
@@ -638,9 +642,9 @@ void htmlExporter::emitBlockAttributes(const QTextBlock &block)
     html += QString::number(format.indent());
     html += QLatin1String("px;");
 
-    QTextCharFormat diff = formatDifference(defaultCharFormat, block.charFormat()).toCharFormat();
-    if (!diff.properties().isEmpty())
-        emitCharFormatStyle(diff);
+    //QTextCharFormat diff = formatDifference(defaultCharFormat, block.charFormat()).toCharFormat();
+    //if (!diff.properties().isEmpty())
+        //emitCharFormatStyle(diff);
 
     html += QLatin1Char('"');
 
@@ -685,7 +689,7 @@ void htmlExporter::emitBlock(const QTextBlock &block)
             case QTextListFormat::ListLowerAlpha: html += QLatin1String("<ol type=\"a\""); break;
             case QTextListFormat::ListUpperAlpha: html += QLatin1String("<ol type=\"A\""); break;
             default: html += QLatin1String("<ul"); // ### should not happen
-			qDebug() << html;
+			//qDebug() << html;
             }
             /*
             if (format.hasProperty(QTextFormat::ListIndent)) {
@@ -726,6 +730,7 @@ void htmlExporter::emitBlock(const QTextBlock &block)
 
     const bool pre = blockFormat.nonBreakableLines();
     if (pre) {
+		qDebug() << "NonBreakable lines" << endl;
         if (list)
             html += QLatin1Char('>');
         html += QLatin1String("<pre");
@@ -733,18 +738,13 @@ void htmlExporter::emitBlock(const QTextBlock &block)
         emitBlockAttributes(block);
         html += QLatin1Char('>');
     }
-	else if (!list) {
-        html += QLatin1String("<p");
+	else {
+		if (list)
+			html += QLatin1Char('>');
+        html += QLatin1String("<div");
 		emitBlockAttributes(block);
-		html += QLatin1String(">");
+		html += QLatin1Char('>');
     }
-	/*if (blockFormat.hasProperty(QTextFormat::BlockAlignment))
-	{
-		qDebug() << "has property" << endl;
-		qDebug() << html << endl;
-		emitAlignment(blockFormat.alignment());
-	}
-	html += QLatin1Char('>');*/
     /*
         const QTextCharFormat blockCharFmt = block.charFormat();
         const QTextCharFormat diff = formatDifference(defaultCharFormat, blockCharFmt).toCharFormat();
@@ -754,16 +754,22 @@ void htmlExporter::emitBlock(const QTextBlock &block)
     QTextBlock::Iterator it = block.begin();
 
     for (; !it.atEnd(); ++it)
+	{
+		qDebug() << "next for" << endl;
         emitFragment(it.fragment());
+	}
 	
-	qDebug() << html << endl;
+	//qDebug() << html << endl;
     if (pre)
         html += QLatin1String("</pre>");
-    else if (list)
-        html += QLatin1String("</li>");
-    else if ( ! (html.right(7).contains(QRegExp("<br[\\s]*/>[\\n]*"))) )
-        html += QLatin1String("<br />""</p>");
-
+    else 
+	{	
+		if (list)
+        	html += QLatin1String("</li>");
+    	else if ( ! (html.right(7).contains(QRegExp("<br[\\s]*/>[\\n]*"))) )
+        	html += QLatin1String("<br />");//"</p>");
+		html += QLatin1String("</div>");
+	}
     // HACK html.replace( QRegExp("<br[\\s]*/>[\\n]*<br[\\s]*/>[\\n]*"),"<br />&nbsp;<br />" );
 
     if (list) {
@@ -776,7 +782,7 @@ void htmlExporter::emitBlock(const QTextBlock &block)
     }
 
     defaultCharFormat = oldDefaultCharFormat;
-	qDebug() << html << endl;
+	//qDebug() << html << endl;
 }
 
 QTextFormat htmlExporter::formatDifference(const QTextFormat &from, const QTextFormat &to)
