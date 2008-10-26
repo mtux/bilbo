@@ -63,3 +63,11 @@ void PostEntry::savePostLocally()
 void PostEntry::saveAsDraft()
 {
 }
+
+void PostEntry::sltDelPost()
+{
+}
+
+void PostEntry::sltDelLocally()
+{
+}

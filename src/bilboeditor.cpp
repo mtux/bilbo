@@ -299,7 +299,7 @@ void BilboEditor::syncEditors(int index)
 	if(index == 0)
 		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
 	else if(index == 1){
-		qDebug()<<editor->toHtml()<<endl;
+		//qDebug()<<editor->toHtml()<<endl;
 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 	}
 	else if(prev_index == 1){

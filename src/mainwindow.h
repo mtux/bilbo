@@ -60,7 +60,8 @@ private:
 	QToolBar *actionToolbar;
 	QMenuBar *menubar;
 	QMenu *menuBilbo;
-	QMenu *menuEdit;
+	QMenu *menuPost;
+	QMenu *menuAbout;
 	QStatusBar *statusbar;
 public:
 	QAction *addBlog;
@@ -70,6 +71,8 @@ public:
 	QActionGroup *saveActions;
 	QAction *saveLocally;
 	QAction *saveDraft;
+	QAction *deletePost;
+	QAction *deleteLocally;
 	QAction *aboutUs;
 	QAction *actQuit;
 private:
