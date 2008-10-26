@@ -136,6 +136,9 @@ void MainWindow::createNewPost()
 	tabPosts->addTab(temp,"Untitled");
 	activePost=temp;
 	tabPosts->setCurrentWidget(temp);
+	
+	if(this->isVisible()==false)
+		this->show();
 }
 
 void MainWindow::uploadAllChanges()

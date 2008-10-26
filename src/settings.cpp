@@ -20,6 +20,7 @@
 #include "settings.h"
 #include <QDebug>
 #include <QSettings>
+
 Settings::Settings()
 {
 	load();
@@ -34,7 +35,8 @@ Settings::~Settings()
 void Settings::save()
 {
 	qDebug("Settings::save");
-	QSettings *set = new QSettings;
+	QSettings *set = new QSettings(CONF_PATH, QSettings::NativeFormat);
+// 	qDebug(QString(CONF_PATH).toLatin1().data());
 	
 	set->setValue("show_main_on_start", showMainOnStart);
 }

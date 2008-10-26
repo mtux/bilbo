@@ -20,6 +20,8 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include "constants.h"
+
 /**
 settings low level implementation is placed here.
 

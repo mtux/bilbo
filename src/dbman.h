@@ -19,7 +19,9 @@
  ***************************************************************************/
 #ifndef DBMAN_H
 #define DBMAN_H
+#include <QtSql>
 
+#include "constants.h"
 /**
 DB manipulation class. this class implement Low level Database operations. and any object of App. have to use this API to store or retrive information and settings from Database.
 
@@ -32,7 +34,28 @@ public:
     DBMan();
 
     ~DBMan();
+	
+	bool addBlog(int blogid, QString blog_url, QString username, QString password, QString style_url, int api);
+	bool editBlog(int blogid, QString username, QString password, QString style_url, int api);
+	bool removeBlog(int blogid);
+	
+	int addPost(int postid, int blogid, QString author, QString title, QString &content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/);
+	bool editPost(int id, int blogid, int postid, QString author, QString title, QString &content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags);
+	bool removePost(int id);
+	bool clearPosts(int blogid);
+	
+	bool addCategory(int catid, QString name, int blogid);
+	bool clearCategories(int blogid);
+	
+	int addFile(QString name, int blogid, bool isUploaded, QString localUrl, QString remoteUrl);
+	bool removeFile(int fileid);
+	bool clearFiles(int blogid);
 
+	
+private:
+	bool createDB();
+	QSqlDatabase db;
+	bool connectDB();
 };
 
 #endif

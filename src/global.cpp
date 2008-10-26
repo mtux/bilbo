@@ -21,15 +21,18 @@
 #include "global.h"
 
 Settings *conf;
+DBMan *db;
 
 void global_init()
 {
 	qDebug("global_init");
 	conf = new Settings;
+	db = new DBMan;
 }
 
 void global_end()
 {
 	qDebug("global_end");
 	delete conf;
+	delete db;
 }

@@ -20,7 +20,6 @@
 
 #include "systray.h"
 #include <QApplication>
-// #include "mainwindow.h"
 #include "global.h"
 
 int main(int argc, char *argv[])
@@ -36,8 +35,10 @@ int main(int argc, char *argv[])
 	  s->show();
 //	  BilboEditor *f= new BilboEditor();
 //	  f->show();
+	  
+	int r = app.exec();
 	
 	global_end();
-	return app.exec();
+	return r;
 }
 

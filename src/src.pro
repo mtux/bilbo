@@ -37,7 +37,8 @@ postentry.h \
  addeditlink.h \
  version.h \
  dbman.h \
- global.h
+ global.h \
+ constants.h
 QT += webkit \
  sql
 

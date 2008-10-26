@@ -18,34 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 
-#include <QSettings>
-#include "settings.h"
-#include "dbman.h"
+#include <QDir>
 
-/**
-Global variables like settings stored here.
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
- */
-
-class QSettings;
-class Settings;
-
-extern Settings *conf;
-
-extern DBMan *db;
-
-enum api_type { BLOGGER_API = 0,
-	METAWEBLOG_API,
- MOVABLETYPE_API,
- WORDPRESSBUGGY_API,
- GDATA_API
-};
-
-void global_init();
-void global_end();
+#define CONF_DIR QDir::homePath()+QString("/.bilbo")
+#define CONF_PATH QString(CONF_DIR)+QString("/bilbo.conf")
+#define CONF_DB QString(CONF_DIR)+QString("/bilbo.db")
 
 #endif
