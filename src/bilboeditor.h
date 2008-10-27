@@ -50,11 +50,13 @@ public:
 		void alignLeft();
 		void alignCenter();
 		void alignJustify();
+		void changeLayoutDirection();
 		void addEditLink();
 		void setLink(QString address, QString target, QString title);
 		void removeLink();
 		void selectColor();
 		void removeFormatting();
+		void sltAddImage();
 		
 		void syncEditors(int index);
 		
@@ -86,10 +88,12 @@ public:
 		QAction *actAlignLeft;
 		QAction *actAlignCenter;
 		QAction *actJustify;
+		QAction *actRightToLeft;
 		QAction *actAddLink;
 		QAction *actRemoveLink;
 		QAction *actRemoveFormatting;
 		QAction *actColorSelect;
+		QAction *actAddImage;
 		
 		AddEditLink *linkDialog;
 		

@@ -115,6 +115,8 @@ void BilboEditor::createActions()
 	connect(actFontDecrease, SIGNAL(triggered(bool)), this, SLOT(fontSizeDecrease()));
 	barVisual->addAction(actFontDecrease);
 	
+	barVisual->addSeparator();
+	
 	actAlignLeft = new QAction(QIcon(":/media/format-justify-left.png"), "Align left", this);
 	connect(actAlignLeft, SIGNAL(triggered(bool)), this, SLOT(alignLeft()));
 	barVisual->addAction(actAlignLeft);
@@ -131,6 +133,11 @@ void BilboEditor::createActions()
 	connect(actJustify, SIGNAL(triggered(bool)), this, SLOT(alignJustify()));
 	barVisual->addAction(actJustify);
 	
+	actRightToLeft = new QAction(QIcon(":/media/format-text-direction-rtl.png"), "Right to Left", this);
+	actRightToLeft->setCheckable(true);
+	connect(actRightToLeft, SIGNAL(triggered(bool)), this, SLOT(changeLayoutDirection()));
+	barVisual->addAction(actRightToLeft);
+	
 	actAddLink = new QAction(QIcon(":/media/add-link.png"), "Add/Edit Link", this);
 	connect(actAddLink, SIGNAL(triggered(bool)), this, SLOT(addEditLink()));
 	barVisual->addAction(actAddLink);
@@ -144,6 +151,10 @@ void BilboEditor::createActions()
 	actColorSelect = new QAction(QIcon(":/media/format-text-color.png"), "Select Color", this);
 	connect(actColorSelect, SIGNAL(triggered(bool)), this, SLOT(selectColor()));
 	barVisual->addAction(actColorSelect);
+	
+	actAddImage = new QAction(QIcon(":/media/insert-image.png"), "Add Image", this);
+	connect(actAddImage, SIGNAL(triggered(bool)), this, SLOT(sltAddImage()));
+	barVisual->addAction(actAddImage);
 }
 
 void BilboEditor::toggleItalic()
@@ -264,6 +275,46 @@ void BilboEditor::alignJustify()
 // 		editor->setAlignment();
 }
 
+void BilboEditor::changeLayoutDirection()
+{
+	qDebug("BilboEditor::changeLayoutDirection");
+	QTextCursor c = editor->textCursor();
+	QTextBlockFormat f = c.blockFormat();
+	if(f.layoutDirection() != Qt::RightToLeft)
+		f.setLayoutDirection(Qt::RightToLeft);
+	else
+		f.setLayoutDirection(Qt::LeftToRight);
+	c.setBlockFormat(f);
+	editor->setTextCursor(c);
+}
+
+void BilboEditor::sltAddImage()
+{
+}
+// void BilboEditor::insertMedia(KBloggerMedia* media)
+// {
+// 	kDebug();
+// 	if (!media) return;
+// 	QString name = media->name();
+// 	QString target;
+// 	kDebug() << "media->url(): " << media->url();
+// 	if ( media->url().isValid() ) {
+//         //it's an uploaded file
+// 		target = media->url().url();
+// 	} else {
+//         //it's a local file
+// 		target = media->cachedFilename();
+// 	}
+// 
+// 	if ( !media->mimetype().contains("image") ) {
+// 		addLink(target, name);
+// 	} else {
+// 		QTextCursor cursor = visualTextEditor->textCursor();
+// 		cursor.insertImage(target);
+// 	}
+// }
+
+
 QString BilboEditor::htmlToRichtext(const QString& html)
 {
 	QString richText = html;
@@ -272,16 +323,18 @@ QString BilboEditor::htmlToRichtext(const QString& html)
 
 	richText.replace(QRegExp("<del>(.*)</del>"), "<s>\\1</s>");
 
+///Comment this part to have both <span> and <h1-5> tags
+	 
     //Note: Qt Error:
     //      QDocument converts <h1> in [ font-size: xx-large + bold ]
     //      and font-size: xx-large in <h1>
-	richText.replace("<h1>", "<span style=\"font-size: xx-large\" >");
-	richText.replace("<h2>", "<span style=\"font-size: x-large\" >");
-	richText.replace("<h3>", "<span style=\"font-size: large\" >");
-    //richText.replace("<h4>", "<span style=\"font-size: medium\" >");
-	richText.replace(QRegExp("<h4>(.*)</h4>"), "\\1");
-	richText.replace("<h5>", "<span style=\"font-size: small\" >");
-	richText.replace(QRegExp("</h[1-5]>"), "</span>");
+// 	richText.replace("<h1>", "<span style=\"font-size: xx-large\" >");
+// 	richText.replace("<h2>", "<span style=\"font-size: x-large\" >");
+// 	richText.replace("<h3>", "<span style=\"font-size: large\" >");
+//     //richText.replace("<h4>", "<span style=\"font-size: medium\" >");
+// 	richText.replace(QRegExp("<h4>(.*)</h4>"), "\\1");
+// 	richText.replace("<h5>", "<span style=\"font-size: small\" >");
+// 	richText.replace(QRegExp("</h[1-5]>"), "</span>");
 
     //kDebug() << "out" << richText;
     //return richText;
@@ -297,7 +350,13 @@ void BilboEditor::syncEditors(int index)
 	htmlExporter* htmlExp = new htmlExporter();
 	
 	if(index == 0)
+	{
+		///Qt QTextEdit::setHtml() or QTextDocument::toHtml() convert <h1-5> tags to <span> tags
+		
 		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
+		//qDebug()<<htmlEditor->toPlainText()<<endl;
+		//qDebug()<<editor->document()->toHtml()<<endl;
+	}
 	else if(index == 1){
 		//qDebug()<<editor->toHtml()<<endl;
 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
