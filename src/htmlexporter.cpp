@@ -69,7 +69,7 @@ void htmlExporter::emitFrame(QTextFrame::Iterator frameIt)
 {
 //     kDebug() << "html" << html;
     if (!frameIt.atEnd()) {
-		qDebug() << "frameIt is not at end" << endl;
+// 		qDebug() << "frameIt is not at end" << endl;
         QTextFrame::Iterator next = frameIt;
         ++next;
         if (next.atEnd()
@@ -82,13 +82,13 @@ void htmlExporter::emitFrame(QTextFrame::Iterator frameIt)
 
     for (QTextFrame::Iterator it = frameIt;
             !it.atEnd(); ++it) {
-		qDebug() << "entered for loop" << endl;
+// 		qDebug() << "entered for loop" << endl;
         if (QTextFrame *f = it.currentFrame()) {
-			qDebug() << "Its a frame, not a block" << endl;
+// 			qDebug() << "Its a frame, not a block" << endl;
             if (QTextTable * table = qobject_cast<QTextTable *>(f)) {
                 emitTable(table);
             } else {
-				qDebug() << "isn't table" << endl;
+// 				qDebug() << "isn't table" << endl;
                 html += QLatin1String("\n<table");
                 QTextFrameFormat format = f->frameFormat();
 
@@ -118,7 +118,7 @@ void htmlExporter::emitFrame(QTextFrame::Iterator frameIt)
                 html += QLatin1String("</td></tr></table>");
             }
         } else if (it.currentBlock().isValid()) {
-			qDebug()<< "is valid" << endl;
+// 			qDebug()<< "is valid" << endl;
             emitBlock(it.currentBlock());
         }
     }
@@ -228,6 +228,7 @@ void htmlExporter::emitAttribute(const char *attribute, const QString &value)
 QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat &format)
 {
 //     kDebug() << "html" << html;
+	qDebug("htmlExporter::emitCharFormatStyle");
     QList<htmlExporter::tag> tags;
     bool attributesEmitted = false;
     QLatin1String styleTag("<span style=\"");
@@ -255,16 +256,21 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
         html += QLatin1String("pt;");
         attributesEmitted = true;
     } else if (format.hasProperty(QTextFormat::FontSizeAdjustment)) {
-        const int idx = format.intProperty(QTextFormat::FontSizeAdjustment) + 1;
 
-        switch (idx) {
-        case 0: tags << h5; break;
-            //case 1: tags << h4; break; //NOTE h4 will be the normal text!
-        case 2: tags << h3; break;
-        case 3: tags << h2; break;
-        case 4: tags << h1; break;
-        }
-        /*static const char * const sizeNames[] = {
+		///To use <h1-5> tags for font size
+//         const int idx = format.intProperty(QTextFormat::FontSizeAdjustment) + 1;
+// 
+//         switch (idx) {
+//         case 0: tags << h5; break;
+//             //case 1: tags << h4; break; //NOTE h4 will be the normal text!
+//         case 2: tags << h3; break;
+//         case 3: tags << h2; break;
+//         case 4: tags << h1; break;
+//         }
+		
+		///To use <span> tags for font size
+
+        static const char * const sizeNames[] = {
             "small", "medium", "large", "x-large", "xx-large"
         };
         const char *name = 0;
@@ -278,7 +284,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
             html += QLatin1String(name);
             html += QLatin1Char(';');
             attributesEmitted = true;
-        }*/
+        }
     }
 
 
@@ -611,7 +617,8 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
 void htmlExporter::emitBlockAttributes(const QTextBlock &block)
 {
 //     kDebug() << "html" << html;
-    QTextBlockFormat format = block.blockFormat();
+	qDebug("htmlExporter::emitBlockAttributes");
+	QTextBlockFormat format = block.blockFormat();
     emitAlignment(format.alignment());
 
     Qt::LayoutDirection dir = format.layoutDirection();
@@ -676,9 +683,9 @@ void htmlExporter::emitBlock(const QTextBlock &block)
 
     QTextList *list = block.textList();
     if (list) {
-		qDebug() << "list exists" << endl;
+// 		qDebug() << "list exists" << endl;
         if (list->itemNumber(block) == 0) { // first item? emit <ul> or appropriate
-			qDebug() << "first item" << endl;
+// 			qDebug() << "first item" << endl;
             const QTextListFormat format = list->format();
             const int style = format.style();
             switch (style) {
@@ -730,7 +737,7 @@ void htmlExporter::emitBlock(const QTextBlock &block)
 
     const bool pre = blockFormat.nonBreakableLines();
     if (pre) {
-		qDebug() << "NonBreakable lines" << endl;
+// 		qDebug() << "NonBreakable lines" << endl;
         if (list)
             html += QLatin1Char('>');
         html += QLatin1String("<pre");
@@ -755,7 +762,7 @@ void htmlExporter::emitBlock(const QTextBlock &block)
 
     for (; !it.atEnd(); ++it)
 	{
-		qDebug() << "next for" << endl;
+// 		qDebug() << "next for" << endl;
         emitFragment(it.fragment());
 	}
 	
