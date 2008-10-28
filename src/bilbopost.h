@@ -17,33 +17,44 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef POSTPROPERTIES_H
-#define POSTPROPERTIES_H
+#ifndef BILBOPOST_H
+#define BILBOPOST_H
 
-#include <QObject>
-#include <QStringList>
+#include <QDateTime>
+#include <QUrl>
+
+#include <kurl.h>
+#include <kdatetime.h>
+#include <kblog/blogpost.h>
+
+class KUrl;
+class KDateTime;
 
 /**
-Properties of a post stored here (can be replace with an struct)
-
+Definition of a blog post!
+it's implemented to decrease dependency to KBlog :)
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
-class PostProperties : public QObject
+class BilboPost : public KBlog::BlogPost
 {
-	Q_OBJECT
 public:
-    PostProperties(QObject* parent=0);
+    BilboPost();
 
-    ~PostProperties();
-	
-	int blogid;
-	QString title;
-	QString content;
-	QStringList categories;
-	QString tags;
-	
+    ~BilboPost();
 
+	QString author;
+	QUrl postLink();
+	void setPostLink(QUrl&);
+	
+	QUrl postPermaLink();
+	void setPostPermaLink(QUrl&);
+	
+	QDateTime cTime();
+	void setCTime(QDateTime&);
+	
+	QDateTime mTime();
+	void setMTime(QDateTime&);
 };
 
 #endif

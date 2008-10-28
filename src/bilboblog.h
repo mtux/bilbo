@@ -17,33 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef POSTPROPERTIES_H
-#define POSTPROPERTIES_H
+#ifndef BILBOBLOG_H
+#define BILBOBLOG_H
 
-#include <QObject>
-#include <QStringList>
+#include "constants.h"
+#include <kblog/blog.h>
+#include <QUrl>
+#include <kurl.h>
 
 /**
-Properties of a post stored here (can be replace with an struct)
+Blog definition class!
+it's implemented to decrease dependency to KBlog :)
 
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
-class PostProperties : public QObject
+class BilboBlog : public KBlog::Blog
 {
-	Q_OBJECT
 public:
-    PostProperties(QObject* parent=0);
+    BilboBlog(QUrl& server, QObject *parent=0, const QString &appName=QString("Bilbo Blogger"), const QString &appVer=QString(VERSION));
 
-    ~PostProperties();
+    ~BilboBlog();
 	
-	int blogid;
-	QString title;
-	QString content;
-	QStringList categories;
-	QString tags;
-	
+	void setBlogUrl(QUrl &url);//use this instead of setUrl()
+	QUrl blogUrl();//use this instead of url()
 
+	QString styleUrl;
+	QString api;
+	int id;//id in DB
 };
 
 #endif

@@ -24,6 +24,7 @@
 
 //#include "ui_post.h"
 #include "bilboeditor.h"
+#include "postproperties.h"
 
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
@@ -34,6 +35,7 @@ class PostEntry: public QFrame {
 Q_OBJECT
 public:
     PostEntry(QWidget *parent);
+	PostProperties *prop;
 		
 protected slots:
 	void publishPost();

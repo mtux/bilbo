@@ -11,7 +11,9 @@ SOURCES += main.cpp \
  htmlexporter.cpp \
  addeditlink.cpp \
  dbman.cpp \
- global.cpp
+ global.cpp \
+ bilbopost.cpp \
+ bilboblog.cpp
 TEMPLATE = app
 CONFIG += warn_on \
 	  thread \
@@ -38,9 +40,17 @@ postentry.h \
  version.h \
  dbman.h \
  global.h \
- constants.h
+ constants.h \
+ bilbopost.h \
+ bilboblog.h
 QT += webkit \
  sql
 
 RESOURCES += editor.qrc
+
+INCLUDEPATH += /usr/lib/kde4/include/
+
+LIBS += -L/usr/lib/kde4/lib \
+  -lkdecore \
+  -lkblog
 

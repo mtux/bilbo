@@ -23,6 +23,7 @@
 
 #include <QDir>
 
+#define VERSION "0.1"
 #define CONF_DIR QDir::homePath()+QString("/.bilbo")
 #define CONF_PATH QString(CONF_DIR)+QString("/bilbo.conf")
 #define CONF_DB QString(CONF_DIR)+QString("/bilbo.db")

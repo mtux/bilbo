@@ -20,6 +20,10 @@
 #ifndef DBMAN_H
 #define DBMAN_H
 #include <QtSql>
+#include "bilboblog.h"
+#include "bilbopost.h"
+
+#include "postproperties.h"
 
 #include "constants.h"
 /**
@@ -35,21 +39,35 @@ public:
 
     ~DBMan();
 	
-	bool addBlog(int blogid, QString blog_url, QString username, QString password, QString style_url, int api);
-	bool editBlog(int blogid, QString username, QString password, QString style_url, int api);
-	bool removeBlog(int blogid);
+	///Data retrieveing Functions:
 	
-	int addPost(int postid, int blogid, QString author, QString title, QString &content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/);
-	bool editPost(int id, int blogid, int postid, QString author, QString title, QString &content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags);
+	/**
+	 *    return List of blogs in Database.
+	 * @return 
+	 */
+// 	QList<BilboBlog> listBlogs();
+	
+	///End Data retrieveing Functions
+	
+	///Data Manipulation Functions:
+	
+	int addBlog(QString blogid, QString blog_url, QString username, QString password, QString style_url, QString api);
+	int addBlog(BilboBlog& blog);
+	bool editBlog(int id, QString username, QString password, QString style_url, QString api);
+	bool removeBlog(int blog_id);
+	
+	int addPost(QString postid, int blog_id, QString author, QString title, QString &content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/);
+	int addPost(BilboPost& post, int blog_id);
+	bool editPost(int id, int blog_id, QString postid, QString author, QString title, QString &content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags);
 	bool removePost(int id);
-	bool clearPosts(int blogid);
+	bool clearPosts(int blog_id);
 	
-	bool addCategory(int catid, QString name, int blogid);
-	bool clearCategories(int blogid);
+	int addCategory(QString name, int blog_id);
+	bool clearCategories(int blog_id);
 	
-	int addFile(QString name, int blogid, bool isUploaded, QString localUrl, QString remoteUrl);
+	int addFile(QString name, int blog_id, bool isUploaded, QString localUrl, QString remoteUrl);
 	bool removeFile(int fileid);
-	bool clearFiles(int blogid);
+	bool clearFiles(int blog_id);
 
 	
 private:

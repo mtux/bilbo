@@ -17,33 +17,56 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef POSTPROPERTIES_H
-#define POSTPROPERTIES_H
+#include "bilbopost.h"
 
-#include <QObject>
-#include <QStringList>
-
-/**
-Properties of a post stored here (can be replace with an struct)
-
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
-*/
-class PostProperties : public QObject
+BilboPost::BilboPost()
+ : KBlog::BlogPost()
 {
-	Q_OBJECT
-public:
-    PostProperties(QObject* parent=0);
+}
 
-    ~PostProperties();
-	
-	int blogid;
-	QString title;
-	QString content;
-	QStringList categories;
-	QString tags;
-	
 
-};
+BilboPost::~BilboPost()
+{
+}
 
-#endif
+QUrl BilboPost::postLink()
+{
+	return QUrl(this->link().url());
+}
+
+QUrl BilboPost::postPermaLink()
+{
+	return QUrl(this->permaLink().url());
+}
+
+void BilboPost::setPostLink(QUrl &link)
+{
+	this->setLink(KUrl(link));
+}
+
+void BilboPost::setPostPermaLink(QUrl &link)
+{
+	this->setPermaLink(KUrl(link));
+}
+
+QDateTime BilboPost::cTime()
+{
+	return QDateTime::fromString(this->creationDateTime().toString(KDateTime::ISODate), Qt::ISODate);
+}
+
+void BilboPost::setMTime(QDateTime &t)
+{
+	this->setModificationDateTime(KDateTime(t));
+}
+
+QDateTime BilboPost::mTime()
+{
+	return QDateTime::fromString(this->modificationDateTime().toString(KDateTime::ISODate), Qt::ISODate);
+}
+
+void BilboPost::setCTime(QDateTime &t)
+{
+	this->setCreationDateTime(KDateTime(t));
+}
+
+

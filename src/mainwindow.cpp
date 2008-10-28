@@ -82,6 +82,7 @@ void MainWindow::createActions()
 	connect(addBlog,SIGNAL(triggered( bool )),this,SLOT(uploadAllChanges()));
 	
 	newPost=new QAction(QIcon(":/media/format-text-bold.png"),"&New Post",this);
+	newPost->setShortcut(tr("Ctrl+N"));
 	connect(newPost,SIGNAL(triggered( bool )),this,SLOT(createNewPost()));
 	
 	publish=new QAction(QIcon(":/media/format-text-bold.png"),"&Publish",this);
@@ -103,6 +104,7 @@ void MainWindow::createActions()
 	connect(aboutUs, SIGNAL(triggered( bool )), this, SLOT(sltAboutUs()));
 	
 	actQuit = new QAction(QIcon(":/media/format-text-bold.png"), "Quit", this);
+	actQuit->setShortcut(tr("Ctrl+Q"));
 	connect(actQuit, SIGNAL(triggered( bool )), this, SLOT(sltQuit()));
 	
 	addCreatedActions();

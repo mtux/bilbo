@@ -21,6 +21,7 @@
 #include <QMessageBox>
 #include <QDebug>
 
+
 DBMan::DBMan()
 {
 	qDebug("DBMan::DBMan");
@@ -61,23 +62,23 @@ bool DBMan::createDB()
 	
 	QSqlQuery q;
 	///Blog table!
-	if(!q.exec("CREATE TABLE blog (blogid INTEGER PRIMARY KEY, blog_url TEXT, username TEXT, password TEXT, style_url TEXT, api_type TEXT)"))
+	if(!q.exec("CREATE TABLE blog (id INTEGER PRIMARY KEY, blogid TEXT, blog_url TEXT, username TEXT, password TEXT, style_url TEXT, api_type TEXT)"))
 		ret=false;
 	
 	///posts table!
-	if(!q.exec("CREATE TABLE post (id INTEGER PRIMARY KEY, postid NUMERIC, blogid NUMERIC, author TEXT, title TEXT, content TEXT, c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC, is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT);"))
+	if(!q.exec("CREATE TABLE post (id INTEGER PRIMARY KEY, postid TEXT, blog_id NUMERIC, author TEXT, title TEXT, content TEXT, c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC, is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT);"))
 		ret=false;
 	
 	///categories table!
-	if(!q.exec("CREATE TABLE category (catid INTEGER PRIMARY KEY, name TEXT, blogid NUMERIC);"))
+	if(!q.exec("CREATE TABLE category (catid INTEGER PRIMARY KEY, name TEXT, blog_id NUMERIC);"))
 		ret=false;
 	
 	///files table
-	if(!q.exec("CREATE TABLE file (fileid INTEGER PRIMARY KEY, name TEXT, blogid NUMERIC, is_uploaded NUMERIC, local_url TEXT, remote_url TEXT);"))
+	if(!q.exec("CREATE TABLE file (fileid INTEGER PRIMARY KEY, name TEXT, blog_id NUMERIC, is_uploaded NUMERIC, local_url TEXT, remote_url TEXT);"))
 		ret=false;
 	
 	///connection bethween posts and categories
-	if(!q.exec("CREATE TABLE post_cat (postid INTEGER, catid INTEGER, PRIMARY KEY(postid, catid));"))
+	if(!q.exec("CREATE TABLE post_cat (post_id NUMERIC, cat_id INTEGER, PRIMARY KEY(post_id, cat_id));"))
 		ret=false;
 	
 	
@@ -88,7 +89,7 @@ bool DBMan::createDB()
 	return ret;
 }
 
-bool DBMan::addBlog(int blogid, QString blog_url, QString username, QString password, QString style_url, int api)
+int DBMan::addBlog(QString blogid, QString blog_url, QString username, QString password, QString style_url, QString api)
 {
 	QSqlQuery q;
 	q.prepare("INSERT INTO blog (blogid, blog_url, username, password, style_url, api_type) VALUES(?, ?, ?, ?, ?, ?)");
@@ -99,7 +100,27 @@ bool DBMan::addBlog(int blogid, QString blog_url, QString username, QString pass
 	q.addBindValue(style_url);
 	q.addBindValue(api);
 	
-	return q.exec();
+	if(q.exec())
+		return q.lastInsertId().toInt();
+	else
+		return -1;
+}
+
+int DBMan::addBlog(BilboBlog & blog)
+{
+	QSqlQuery q;
+	q.prepare("INSERT INTO blog (blogid, blog_url, username, password, style_url, api_type) VALUES(?, ?, ?, ?, ?, ?)");
+	q.addBindValue(blog.blogId());
+	q.addBindValue(blog.blogUrl().toString());
+	q.addBindValue(blog.username());
+	q.addBindValue(blog.password());
+	q.addBindValue(blog.styleUrl);
+	q.addBindValue(blog.api);
+	
+	if(q.exec())
+		return q.lastInsertId().toInt();
+	else
+		return -1;
 }
 
 /**
@@ -111,33 +132,50 @@ bool DBMan::addBlog(int blogid, QString blog_url, QString username, QString pass
  * @param api 
  * @return 
  */
-bool DBMan::editBlog(int blogid, QString username, QString password, QString style_url, int api)
+bool DBMan::editBlog(int id, QString username, QString password, QString style_url, QString api)
 {
 	QSqlQuery q;
-	q.prepare("UPDATE blog SET username=? , password=? , style_url=? , api_type=? WHERE blogid=?");
+	q.prepare("UPDATE blog SET username=? , password=? , style_url=? , api_type=? WHERE id=?");
 	q.addBindValue(username);
 	q.addBindValue(password);
 	q.addBindValue(style_url);
 	q.addBindValue(api);
-	q.addBindValue(blogid);
+	q.addBindValue(id);
 	
 	return q.exec();
 }
 
-bool DBMan::removeBlog(int blogid)
+bool DBMan::removeBlog(int blog_id)
 {
 	QSqlQuery q;
-	q.prepare("DELETE FROM blog WHERE blogid=?");
-	q.addBindValue(blogid);
+	q.prepare("DELETE FROM blog WHERE id=?");
+	q.addBindValue(blog_id);
 	return q.exec();
 }
 
-int DBMan::addPost(int postid, int blogid, QString author, QString title, QString & content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags)
+/**
+ * 
+ * @param postid 
+ * @param blogid 
+ * @param author 
+ * @param title 
+ * @param content 
+ * @param c_time 
+ * @param is_private 
+ * @param is_comment_allowed 
+ * @param is_trackback_allowed 
+ * @param link 
+ * @param perma_link 
+ * @param summary 
+ * @param tags 
+ * @return return post id in database (deffer with postid)
+ */
+int DBMan::addPost(QString postid, int blog_id, QString author, QString title, QString & content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags)
 {
 	QSqlQuery q;
-	q.prepare("INSERT INTO post (postid, blogid, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+	q.prepare("INSERT INTO post (postid, blog_id, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 	q.addBindValue(postid);
-	q.addBindValue(blogid);
+	q.addBindValue(blog_id);
 	q.addBindValue(author);
 	q.addBindValue(title);
 	q.addBindValue(content);
@@ -157,11 +195,41 @@ int DBMan::addPost(int postid, int blogid, QString author, QString title, QStrin
 		return -1;
 }
 
-bool DBMan::editPost(int id, int blogid, int postid, QString author, QString title, QString & content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags)
+int DBMan::addPost(BilboPost & post, int blog_id)
 {
 	QSqlQuery q;
-	q.prepare("UPDATE post SET blogid=?, postid=?, author=?, title=?, content=?, c_time=?, m_time=?, is_private=?, is_comment_allowed=?, is_trackback_allowed=?, link=?, perma_link=?, summary=?, tags=? WHERE id=?");
-	q.addBindValue(blogid);
+	q.prepare("INSERT INTO post (postid, blog_id, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+	q.addBindValue(post.postId());
+	q.addBindValue(blog_id);
+	q.addBindValue(post.author);
+	q.addBindValue(post.author);
+	q.addBindValue(post.content());
+	q.addBindValue(post.cTime().toString(Qt::ISODate));
+	q.addBindValue(post.cTime().toString(Qt::ISODate));
+	q.addBindValue(post.isPrivate());
+	q.addBindValue(post.isCommentAllowed());
+	q.addBindValue(post.isTrackBackAllowed());
+	q.addBindValue(post.postLink().toString());
+	q.addBindValue(post.postPermaLink().toString());
+	q.addBindValue(post.summary());
+	QString tags="";
+	int i=0;
+	while(i<post.tags().count())
+		tags = post.tags()[i]+",";
+	tags.remove(tags.length()-1, 1);
+	q.addBindValue(tags);
+	
+	if(q.exec())
+		return q.lastInsertId().toInt();
+	else
+		return -1;
+}
+
+bool DBMan::editPost(int id, int blog_id, QString postid, QString author, QString title, QString & content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags)
+{
+	QSqlQuery q;
+	q.prepare("UPDATE post SET blog_id=?, postid=?, author=?, title=?, content=?, c_time=?, m_time=?, is_private=?, is_comment_allowed=?, is_trackback_allowed=?, link=?, perma_link=?, summary=?, tags=? WHERE id=?");
+	q.addBindValue(blog_id);
 	q.addBindValue(postid);
 	q.addBindValue(author);
 	q.addBindValue(title);
@@ -188,39 +256,41 @@ bool DBMan::removePost(int id)
 	return q.exec();
 }
 
-bool DBMan::clearPosts(int blogid)
+bool DBMan::clearPosts(int blog_id)
 {
 	QSqlQuery q;
-	q.prepare("DELETE FROM post WHERE blogid=?");
-	q.addBindValue(blogid);
+	q.prepare("DELETE FROM post WHERE blog_id=?");
+	q.addBindValue(blog_id);
 	return q.exec();
 }
 
-bool DBMan::addCategory(int catid, QString name, int blogid)
+int DBMan::addCategory(QString name, int blog_id)
 {
 	QSqlQuery q;
-	q.prepare("INSERT INTO category (catid, name, blogid) VALUES(?, ?, ?)");
-	q.addBindValue(catid);
+	q.prepare("INSERT INTO category (name, blog_id) VALUES(?, ?)");
 	q.addBindValue(name);
-	q.addBindValue(blogid);
+	q.addBindValue(blog_id);
 	
+	if(q.exec())
+		return q.lastInsertId().toInt();
+	else
+		return -1;
+}
+
+bool DBMan::clearCategories(int blog_id)
+{
+	QSqlQuery q;
+	q.prepare("DELETE FROM category WHERE blog_id=?");
+	q.addBindValue(blog_id);
 	return q.exec();
 }
 
-bool DBMan::clearCategories(int blogid)
+int DBMan::addFile(QString name, int blog_id, bool isUploaded, QString localUrl, QString remoteUrl)
 {
 	QSqlQuery q;
-	q.prepare("DELETE FROM category WHERE blogid=?");
-	q.addBindValue(blogid);
-	return q.exec();
-}
-
-int DBMan::addFile(QString name, int blogid, bool isUploaded, QString localUrl, QString remoteUrl)
-{
-	QSqlQuery q;
-	q.prepare("INSERT INTO file(name, blogid, is_uploaded, local_url, remote_url) VALUES(?, ?, ?, ?, ?)");
+	q.prepare("INSERT INTO file(name, blog_id, is_uploaded, local_url, remote_url) VALUES(?, ?, ?, ?, ?)");
 	q.addBindValue(name);
-	q.addBindValue(blogid);
+	q.addBindValue(blog_id);
 	q.addBindValue(isUploaded);
 	q.addBindValue(localUrl);
 	q.addBindValue(remoteUrl);
@@ -239,11 +309,25 @@ bool DBMan::removeFile(int fileid)
 	return q.exec();
 }
 
-bool DBMan::clearFiles(int blogid)
+bool DBMan::clearFiles(int blog_id)
 {
 	QSqlQuery q;
-	q.prepare("DELETE FROM file WHERE blogid=?");
-	q.addBindValue(blogid);
+	q.prepare("DELETE FROM file WHERE blog_id=?");
+	q.addBindValue(blog_id);
 	return q.exec();
 }
+
+// QList< BilboBlog > DBMan::listBlogs()
+// {
+// 	QList<BilboBlog> list;
+// // 	BilboBlog tmp(QUrl(""));
+// 	QSqlQuery q;
+// 	q.exec("SELECT id, blogid, blog_url, username, password, style_url, api_type FROM blog");
+// 	while( q.next() ){
+// // 		tmp= new BilboBlog(QUrl(q.value(2).toString()));
+// 	}
+// 	
+// // 	return list;
+// }
+
 
