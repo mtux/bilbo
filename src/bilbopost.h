@@ -44,6 +44,8 @@ public:
     ~BilboPost();
 
 	QString author;
+	int id;///id in DB
+	
 	QUrl postLink();
 	void setPostLink(QUrl&);
 	

@@ -19,26 +19,18 @@
  ***************************************************************************/
 #include "bilboblog.h"
 
-BilboBlog::BilboBlog(QUrl &server, QObject *parent, const QString &appName, const QString &appVer)
- : KBlog::Blog(KUrl(server), parent, appName, appVer)
+BilboBlog::BilboBlog(QUrl &server)
 {
 }
 
+BilboBlog::BilboBlog()
+{
+}
 
 BilboBlog::~BilboBlog()
 {
 }
 
-void BilboBlog::setBlogUrl(QUrl & url)
-{
-	this->setUrl(KUrl(url));
-}
 
-QUrl BilboBlog::blogUrl()
-{
-	QString u = this->url().url();
-	QUrl url(u);
-	return u;
-}
 
 

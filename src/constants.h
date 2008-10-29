@@ -23,6 +23,12 @@
 
 #include <QDir>
 
+/**
+Constants.
+	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ */
+
 #define VERSION "0.1"
 #define CONF_DIR QDir::homePath()+QString("/.bilbo")
 #define CONF_PATH QString(CONF_DIR)+QString("/bilbo.conf")

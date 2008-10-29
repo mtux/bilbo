@@ -21,28 +21,30 @@
 #define BILBOBLOG_H
 
 #include "constants.h"
-#include <kblog/blog.h>
+// #include <kblog/blog.h>
 #include <QUrl>
-#include <kurl.h>
+// #include <kurl.h>
 
 /**
 Blog definition class!
-it's implemented to decrease dependency to KBlog :)
+
 
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
-class BilboBlog : public KBlog::Blog
+class BilboBlog
 {
 public:
-    BilboBlog(QUrl& server, QObject *parent=0, const QString &appName=QString("Bilbo Blogger"), const QString &appVer=QString(VERSION));
-
+    BilboBlog(QUrl& server);
+	BilboBlog();
     ~BilboBlog();
 	
-	void setBlogUrl(QUrl &url);//use this instead of setUrl()
-	QUrl blogUrl();//use this instead of url()
-
-	QString styleUrl;
+	QUrl blogUrl;
+	QString blogid;
+	QString username;
+	QString password;
+	QString title;
+	QUrl styleUrl;
 	QString api;
 	int id;//id in DB
 };

@@ -23,7 +23,6 @@
 #include "bilboblog.h"
 #include "bilbopost.h"
 
-#include "postproperties.h"
 
 #include "constants.h"
 /**
@@ -39,36 +38,64 @@ public:
 
     ~DBMan();
 	
-	///Data retrieveing Functions:
+	///(BEGIN) Data retrieveing Functions:
 	
 	/**
 	 *    return List of blogs in Database.
 	 * @return 
 	 */
-// 	QList<BilboBlog> listBlogs();
+	QList<BilboBlog*> listBlogs();
+	QMap<QString, int> listBlogsTitle();///QString as Title, and int as blog_id
+	BilboBlog *getBlogInfo(QString title);
+	BilboBlog *getBlogInfo(int blog_id);
 	
-	///End Data retrieveing Functions
+	QList<BilboPost*> listPosts(int blog_id);
+	QMap<QString, int> listPostsTitle(int blog_id);///QString as Title, and int as post_id
+	BilboPost *getPostInfo(int post_id);
 	
-	///Data Manipulation Functions:
+	QMap<QString, int> listCategories(int blog_id);
 	
+	
+	
+	///END
+	
+	///(BEGIN) Data Manipulation Functions:
+	
+	///Blog:
 	int addBlog(QString blogid, QString blog_url, QString username, QString password, QString style_url, QString api);
+	
 	int addBlog(BilboBlog& blog);
+	
 	bool editBlog(int id, QString username, QString password, QString style_url, QString api);
+	
+	bool editBlog(BilboBlog& blog);
+	
 	bool removeBlog(int blog_id);
 	
-	int addPost(QString postid, int blog_id, QString author, QString title, QString &content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/);
+	///Post:
+	int addPost(QString postid, int blog_id, QString author, QString title, QString &content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/, QStringList categories);
+	
 	int addPost(BilboPost& post, int blog_id);
-	bool editPost(int id, int blog_id, QString postid, QString author, QString title, QString &content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags);
+	
+	bool editPost(int id, int blog_id, QString postid, QString author, QString title, QString &content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags, QStringList categories);
+	
+	bool editPost(BilboPost& post, int blog_id);
+	
 	bool removePost(int id);
+	
 	bool clearPosts(int blog_id);
 	
+	///Category:
 	int addCategory(QString name, int blog_id);
 	bool clearCategories(int blog_id);
 	
+	///File:
 	int addFile(QString name, int blog_id, bool isUploaded, QString localUrl, QString remoteUrl);
+	int addFile();
 	bool removeFile(int fileid);
 	bool clearFiles(int blog_id);
 
+	///END
 	
 private:
 	bool createDB();

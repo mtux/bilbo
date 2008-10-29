@@ -62,7 +62,7 @@ bool DBMan::createDB()
 	
 	QSqlQuery q;
 	///Blog table!
-	if(!q.exec("CREATE TABLE blog (id INTEGER PRIMARY KEY, blogid TEXT, blog_url TEXT, username TEXT, password TEXT, style_url TEXT, api_type TEXT)"))
+	if(!q.exec("CREATE TABLE blog (id INTEGER PRIMARY KEY, blogid TEXT, blog_url TEXT, username TEXT, password TEXT, style_url TEXT, api_type TEXT, title TEXT)"))
 		ret=false;
 	
 	///posts table!
@@ -78,7 +78,7 @@ bool DBMan::createDB()
 		ret=false;
 	
 	///connection bethween posts and categories
-	if(!q.exec("CREATE TABLE post_cat (post_id NUMERIC, cat_id INTEGER, PRIMARY KEY(post_id, cat_id));"))
+	if(!q.exec("CREATE TABLE post_cat (post_id INTEGER, cat_id INTEGER, PRIMARY KEY(post_id, cat_id));"))
 		ret=false;
 	
 	
@@ -110,10 +110,10 @@ int DBMan::addBlog(BilboBlog & blog)
 {
 	QSqlQuery q;
 	q.prepare("INSERT INTO blog (blogid, blog_url, username, password, style_url, api_type) VALUES(?, ?, ?, ?, ?, ?)");
-	q.addBindValue(blog.blogId());
-	q.addBindValue(blog.blogUrl().toString());
-	q.addBindValue(blog.username());
-	q.addBindValue(blog.password());
+	q.addBindValue(blog.blogid);
+	q.addBindValue(blog.blogUrl.toString());
+	q.addBindValue(blog.username);
+	q.addBindValue(blog.password);
 	q.addBindValue(blog.styleUrl);
 	q.addBindValue(blog.api);
 	
@@ -145,6 +145,19 @@ bool DBMan::editBlog(int id, QString username, QString password, QString style_u
 	return q.exec();
 }
 
+bool DBMan::editBlog(BilboBlog & blog)
+{
+	QSqlQuery q;
+	q.prepare("UPDATE blog SET username=? , password=? , style_url=? , api_type=? WHERE id=?");
+	q.addBindValue(blog.username);
+	q.addBindValue(blog.password);
+	q.addBindValue(blog.styleUrl);
+	q.addBindValue(blog.api);
+	q.addBindValue(blog.id);
+	
+	return q.exec();
+}
+
 bool DBMan::removeBlog(int blog_id)
 {
 	QSqlQuery q;
@@ -170,7 +183,7 @@ bool DBMan::removeBlog(int blog_id)
  * @param tags 
  * @return return post id in database (deffer with postid)
  */
-int DBMan::addPost(QString postid, int blog_id, QString author, QString title, QString & content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags)
+int DBMan::addPost(QString postid, int blog_id, QString author, QString title, QString & content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags, QStringList categories)
 {
 	QSqlQuery q;
 	q.prepare("INSERT INTO post (postid, blog_id, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -188,11 +201,32 @@ int DBMan::addPost(QString postid, int blog_id, QString author, QString title, Q
 	q.addBindValue(perma_link);
 	q.addBindValue(summary);
 	q.addBindValue(tags);
-	
-	if(q.exec())
-		return q.lastInsertId().toInt();
+	int ret;
+	if(q.exec()){
+		ret = q.lastInsertId().toInt();
+		int cat_count = categories.count();
+		int i=0;
+		QSqlQuery q, q2;
+		q.prepare("SELECT catid FROM category WHERE name = ? AND blog_id= ?");
+		q2.prepare("INSERT INTO post_cat (post_id, cat_id) VALUES(?, ?)");
+		while(i<cat_count){
+			q.addBindValue(categories[i]);
+			q.addBindValue(blog_id);
+			if(!q.exec())
+				qDebug("DBMan::addPost: Cannot get category id for category %s", categories[i].toLatin1().data());
+			else
+				if(q.next()){
+					q2.addBindValue(ret);
+					q2.addBindValue(q.value(0).toInt());
+					if(q2.exec())
+						qDebug("DBMan::addPost: Category %s added to post.", categories[i].toLatin1().data());
+				}
+		}
+	}
 	else
-		return -1;
+		ret = -1;
+	
+	return ret;
 }
 
 int DBMan::addPost(BilboPost & post, int blog_id)
@@ -202,7 +236,7 @@ int DBMan::addPost(BilboPost & post, int blog_id)
 	q.addBindValue(post.postId());
 	q.addBindValue(blog_id);
 	q.addBindValue(post.author);
-	q.addBindValue(post.author);
+	q.addBindValue(post.title());
 	q.addBindValue(post.content());
 	q.addBindValue(post.cTime().toString(Qt::ISODate));
 	q.addBindValue(post.cTime().toString(Qt::ISODate));
@@ -213,19 +247,42 @@ int DBMan::addPost(BilboPost & post, int blog_id)
 	q.addBindValue(post.postPermaLink().toString());
 	q.addBindValue(post.summary());
 	QString tags="";
+	
 	int i=0;
 	while(i<post.tags().count())
 		tags = post.tags()[i]+",";
 	tags.remove(tags.length()-1, 1);
 	q.addBindValue(tags);
 	
-	if(q.exec())
-		return q.lastInsertId().toInt();
+	int ret;
+	if(q.exec()){
+		ret = q.lastInsertId().toInt();
+		int cat_count = post.categories().count();
+		int i=0;
+		QSqlQuery q, q2;
+		q.prepare("SELECT catid FROM category WHERE name = ? AND blog_id= ?");
+		q2.prepare("INSERT INTO post_cat (post_id, cat_id) VALUES(?, ?)");
+		while(i<cat_count){
+			q.addBindValue(post.categories()[i]);
+			q.addBindValue(blog_id);
+			if(!q.exec())
+				qDebug("DBMan::addPost: Cannot get category id for category %s", post.categories()[i].toLatin1().data());
+			else
+				if(q.next()){
+				q2.addBindValue(ret);
+				q2.addBindValue(q.value(0).toInt());
+				if(q2.exec())
+					qDebug("DBMan::addPost: Category %s added to post.", post.categories()[i].toLatin1().data());
+				}
+		}
+	}
 	else
-		return -1;
+		ret = -1;
+	
+	return ret;
 }
 
-bool DBMan::editPost(int id, int blog_id, QString postid, QString author, QString title, QString & content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags)
+bool DBMan::editPost(int id, int blog_id, QString postid, QString author, QString title, QString & content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags, QStringList categories)
 {
 	QSqlQuery q;
 	q.prepare("UPDATE post SET blog_id=?, postid=?, author=?, title=?, content=?, c_time=?, m_time=?, is_private=?, is_comment_allowed=?, is_trackback_allowed=?, link=?, perma_link=?, summary=?, tags=? WHERE id=?");
@@ -245,7 +302,101 @@ bool DBMan::editPost(int id, int blog_id, QString postid, QString author, QStrin
 	q.addBindValue(tags);
 	q.addBindValue(id);
 	
-	return q.exec();
+	if(!q.exec())
+		return false;
+	
+	///Delete previouse Categories:
+	QSqlQuery qd;
+	qd.prepare("DELETE FROM post_cat WHERE post_id=?");
+	qd.addBindValue(id);
+	if(!qd.exec())
+		qDebug("DBMan::editPost: Cannot delete previouse categories.");
+	
+	///Add new Categories:
+	int cat_count = categories.count();
+	int i=0;
+	QSqlQuery q1, q2;
+	q1.prepare("SELECT catid FROM category WHERE name = ? AND blog_id= ?");
+	q2.prepare("INSERT INTO post_cat (post_id, cat_id) VALUES(?, ?)");
+	while(i<cat_count){
+		q1.addBindValue(categories[i]);
+		q1.addBindValue(blog_id);
+		if(!q1.exec())
+			qDebug("DBMan::editPost: Cannot get category id for category %s", categories[i].toLatin1().data());
+		else
+			if(q1.next()){
+			q2.addBindValue(id);
+			q2.addBindValue(q.value(0).toInt());
+			if(q2.exec())
+				qDebug("DBMan::editPost: Category %s added to post.", categories[i].toLatin1().data());
+			}
+	}
+	
+	return true;
+}
+
+bool DBMan::editPost(BilboPost & post, int blog_id)
+{
+	QSqlQuery q;
+	q.prepare("UPDATE post SET blog_id=?, postid=?, author=?, title=?, content=?, c_time=?, m_time=?, is_private=?, is_comment_allowed=?, is_trackback_allowed=?, link=?, perma_link=?, summary=?, tags=? WHERE id=?");
+	q.addBindValue(blog_id);
+	q.addBindValue(post.postId());
+	q.addBindValue(post.author);
+	q.addBindValue(post.title());
+	q.addBindValue(post.content());
+	q.addBindValue(post.cTime().toString(Qt::ISODate));
+	q.addBindValue(post.mTime().toString(Qt::ISODate));
+	q.addBindValue(post.isPrivate());
+	q.addBindValue(post.isCommentAllowed());
+	q.addBindValue(post.isTrackBackAllowed());
+	q.addBindValue(post.postLink().toString());
+	q.addBindValue(post.postPermaLink().toString());
+	q.addBindValue(post.summary());
+	
+	QString tags="";
+	int i=0;
+	while(i<post.tags().count())
+		tags = post.tags()[i]+",";
+	tags.remove(tags.length()-1, 1);
+	q.addBindValue(tags);
+	
+	q.addBindValue(post.id);
+	
+	if(!q.exec())
+		return false;
+	
+	///Delete previouse Categories:
+	QSqlQuery qd;
+	qd.prepare("DELETE FROM post_cat WHERE post_id=?");
+	qd.addBindValue(post.id);
+	if(!qd.exec())
+		qDebug("DBMan::editPost: Cannot delete previouse categories.");
+	
+	///Add new Categories:
+	if(q.exec()){
+		int cat_count = post.categories().count();
+		int i=0;
+		QSqlQuery q, q2;
+		q.prepare("SELECT catid FROM category WHERE name = ? AND blog_id= ?");
+		q2.prepare("INSERT INTO post_cat (post_id, cat_id) VALUES(?, ?)");
+		while(i<cat_count){
+			q.addBindValue(post.categories()[i]);
+			q.addBindValue(blog_id);
+			if(!q.exec())
+				qDebug("DBMan::editPost: Cannot get category id for category %s", post.categories()[i].toLatin1().data());
+			else
+				if(q.next()){
+				q2.addBindValue(post.id);
+				q2.addBindValue(q.value(0).toInt());
+				if(q2.exec())
+					qDebug("DBMan::editPost: Category %s added to post.", post.categories()[i].toLatin1().data());
+				}
+		}
+	}
+	else
+		qDebug("DBMan::editPost: Cannot edit categories.");
+	
+	return true;
 }
 
 bool DBMan::removePost(int id)
@@ -317,17 +468,193 @@ bool DBMan::clearFiles(int blog_id)
 	return q.exec();
 }
 
-// QList< BilboBlog > DBMan::listBlogs()
-// {
-// 	QList<BilboBlog> list;
-// // 	BilboBlog tmp(QUrl(""));
-// 	QSqlQuery q;
-// 	q.exec("SELECT id, blogid, blog_url, username, password, style_url, api_type FROM blog");
-// 	while( q.next() ){
-// // 		tmp= new BilboBlog(QUrl(q.value(2).toString()));
-// 	}
-// 	
-// // 	return list;
-// }
+
+
+QList< BilboBlog *> DBMan::listBlogs()
+{
+	QList<BilboBlog *> list;
+	QSqlQuery q;
+	q.exec("SELECT id, blogid, blog_url, username, password, style_url, api_type, title FROM blog");
+	while( q.next() ){
+		BilboBlog *tmp;
+		tmp->id = q.value(0).toInt();
+		tmp->blogid = q.value(1).toString();
+		tmp->blogUrl = QUrl(q.value(2).toString());
+		tmp->username = q.value(3).toString();
+		tmp->password = q.value(4).toString();
+		tmp->styleUrl = QUrl(q.value(5).toString());
+		tmp->title = q.value(6).toString();
+		list.append(tmp);
+	}
+	
+	return list;
+}
+
+QMap< QString, int > DBMan::listBlogsTitle()
+{
+	QMap< QString, int > list;
+	QSqlQuery q;
+	q.exec("SELECT title, id FROM blog");
+	while( q.next() ){
+		list[q.value(0).toString()] = q.value(1).toInt();
+	}
+	return list;
+}
+
+BilboBlog * DBMan::getBlogInfo(QString title)
+{
+	BilboBlog *b;
+	QSqlQuery q;
+	q.exec("SELECT id, blogid, blog_url, username, password, style_url, api_type, title FROM blog WHERE title = ?");
+	q.addBindValue(title);
+	if( q.next() ){
+		b->id = q.value(0).toInt();
+		b->blogid = q.value(1).toString();
+		b->blogUrl = QUrl(q.value(2).toString());
+		b->username = q.value(3).toString();
+		b->password = q.value(4).toString();
+		b->styleUrl = QUrl(q.value(5).toString());
+		b->title = q.value(6).toString();
+	}
+	return b;
+}
+
+BilboBlog * DBMan::getBlogInfo(int blog_id)
+{
+	BilboBlog *b;
+	QSqlQuery q;
+	q.exec("SELECT id, blogid, blog_url, username, password, style_url, api_type, title FROM blog WHERE id = ?");
+	q.addBindValue(blog_id);
+	if( q.next() ){
+		b->id = q.value(0).toInt();
+		b->blogid = q.value(1).toString();
+		b->blogUrl = QUrl(q.value(2).toString());
+		b->username = q.value(3).toString();
+		b->password = q.value(4).toString();
+		b->styleUrl = QUrl(q.value(5).toString());
+		b->title = q.value(6).toString();
+	}
+	return b;
+}
+
+QList< BilboPost* > DBMan::listPosts(int blog_id)
+{
+	QList<BilboPost *> list;
+	QSqlQuery q;
+	q.prepare("SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags FROM post WHERE blog_id = ?");
+	q.addBindValue(blog_id);
+	if(q.exec()){
+		while( q.next() ){
+			BilboPost *tmp;
+			tmp->id = q.value(0).toInt();
+			tmp->author = q.value(2).toString();
+			tmp->setPostId(q.value(1).toString());
+			tmp->setTitle(q.value(3).toString());
+			tmp->setContent(q.value(4).toString());
+			QDateTime ct = QDateTime::fromString(q.value(5).toString(), Qt::ISODate);
+			tmp->setCTime(ct);
+			QDateTime mt = QDateTime::fromString(q.value(6).toString(), Qt::ISODate);
+			tmp->setMTime(mt);
+			tmp->setPrivate(q.value(7).toBool());
+			tmp->setCommentAllowed(q.value(8).toBool());
+			tmp->setTrackBackAllowed(q.value(9).toBool());
+			QUrl u(q.value(10).toString());
+			tmp->setPostLink(u);
+			QUrl pu(q.value(11).toString());
+			tmp->setPostPermaLink(pu);
+			tmp->setSummary(q.value(12).toString());
+			tmp->setTags(q.value(13).toString().split(',', QString::SkipEmptyParts ));
+			
+			///get Category list:
+			QStringList catList;
+			QSqlQuery q2;
+			q2.prepare("SELECT category.name FROM category JOIN post_cat ON category.catid=post_cat.cat_id WHERE post_cat.post_id = ?");
+			q2.addBindValue(tmp->id);
+			if(q2.exec())
+				while(q2.next())
+					catList.append(q2.value(0).toString());
+			tmp->setCategories(catList);
+			list.append(tmp);
+		}
+	} else
+		qDebug("DBMan::listPosts: Cannot get list of posts for blog with id %d", blog_id);
+	
+	return list;
+}
+
+BilboPost * DBMan::getPostInfo(int post_id)
+{
+	QSqlQuery q;
+	BilboPost *tmp;
+	q.prepare("SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags FROM post WHERE id = ?");
+	q.addBindValue(post_id);
+	if(q.exec()){
+		if( q.next() ){
+			tmp->id = q.value(0).toInt();
+			tmp->author = q.value(2).toString();
+			tmp->setPostId(q.value(1).toString());
+			tmp->setTitle(q.value(3).toString());
+			tmp->setContent(q.value(4).toString());
+			QDateTime ct = QDateTime::fromString(q.value(5).toString(), Qt::ISODate);
+			tmp->setCTime(ct);
+			QDateTime mt = QDateTime::fromString(q.value(6).toString(), Qt::ISODate);
+			tmp->setMTime(mt);
+			tmp->setPrivate(q.value(7).toBool());
+			tmp->setCommentAllowed(q.value(8).toBool());
+			tmp->setTrackBackAllowed(q.value(9).toBool());
+			QUrl u(q.value(10).toString());
+			tmp->setPostLink(u);
+			QUrl pu(q.value(11).toString());
+			tmp->setPostPermaLink(pu);
+			tmp->setSummary(q.value(12).toString());
+			tmp->setTags(q.value(13).toString().split(',', QString::SkipEmptyParts ));
+			
+			///get Category list:
+			QStringList catList;
+			QSqlQuery q2;
+			q2.prepare("SELECT category.name FROM category JOIN post_cat ON category.catid=post_cat.cat_id WHERE post_cat.post_id = ?");
+			q2.addBindValue(tmp->id);
+			if(q2.exec())
+				while(q2.next())
+					catList.append(q2.value(0).toString());
+			tmp->setCategories(catList);
+		}
+	} else
+		qDebug("DBMan::getPostInfo: Cannot get post with id %d", post_id);
+	
+	return tmp;
+}
+
+QMap< QString, int > DBMan::listPostsTitle(int blog_id)
+{
+	QMap< QString, int > list;
+	QSqlQuery q;
+	q.prepare("SELECT title, id FROM post WHERE blog_id = ?");
+	q.addBindValue(blog_id);
+	if(q.exec()){
+		while( q.next() ){
+			list[q.value(0).toString()] = q.value(1).toInt();
+		}
+	} else
+		qDebug("DBMan::listPostsTitle: Cannot get list of posts for blog with id %d", blog_id);
+	
+	return list;
+}
+
+QMap< QString, int > DBMan::listCategories(int blog_id)
+{
+	QMap< QString, int > list;
+	QSqlQuery q;
+	q.prepare("SELECT name, catid FROM category WHERE blog_id = ?");
+	q.addBindValue(blog_id);
+	if(q.exec()){
+		while( q.next() ){
+			list[q.value(0).toString()] = q.value(1).toInt();
+		}
+	} else
+		qDebug("DBMan::listCategories: Cannot get list of categories for blog with id %d", blog_id);
+	
+	return list;
+}
 
 
