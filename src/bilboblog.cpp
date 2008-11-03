@@ -21,6 +21,7 @@
 
 BilboBlog::BilboBlog(QUrl &server)
 {
+	this->blogUrl = server;
 }
 
 BilboBlog::BilboBlog()

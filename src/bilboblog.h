@@ -28,13 +28,23 @@
 /**
 Blog definition class!
 
-
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 class BilboBlog
 {
 public:
+	enum ApiType {
+		BLOGGER1_API=0, METAWEBLOG_API, MOVABLETYPE_API, WORDPRESSBUGGY_API, GDATA_API
+	};
+	enum TextDirection{
+		LeftToRight=0, RightToLeft
+	};
+// 	struct API_Type {
+// 		QString title;
+// 		QString code;
+// 		ApiType type;
+// 	};
     BilboBlog(QUrl& server);
 	BilboBlog();
     ~BilboBlog();
@@ -45,8 +55,10 @@ public:
 	QString password;
 	QString title;
 	QUrl styleUrl;
-	QString api;
+	ApiType api;
 	int id;//id in DB
+	TextDirection dir;
+
 };
 
 #endif
