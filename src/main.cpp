@@ -21,9 +21,17 @@
 #include "systray.h"
 #include <QApplication>
 #include "global.h"
+#include "constants.h"
+
+#include <kaboutdata.h>
+#include <kcomponentdata.h>
+
 
 int main(int argc, char *argv[])
 {
+	KAboutData aboutData("bilbo", 0, ki18n("Bilbo Blogger"), VERSION);
+	KComponentData componentData(&aboutData);
+
 	QApplication app(argc, argv);
 	qDebug("this will be Bilbo Blogger app...");
 	

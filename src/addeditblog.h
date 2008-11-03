@@ -22,7 +22,17 @@
 
 #include <QDialog>
 
+#include <kblog/blog.h>
+#include <kblog/gdata.h>
+#include <kblog/blogger1.h>
+#include <kblog/metaweblog.h>
+#include <kblog/movabletype.h>
+#include <kblog/wordpressbuggy.h>
+#include <kurl.h>
+
 #include "ui_addeditblog.h"
+
+#include "bilboblog.h"
 
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
@@ -31,7 +41,33 @@
 class AddEditBlog: public QDialog, public Ui::AddEditBlogDialog {
 Q_OBJECT
 public:
-    AddEditBlog(QWidget *parent = 0);
+    /**
+     * 
+     * @param blog_id id of blog we will edit it, for adding a blog this should be "-1"
+     * @param parent Parent
+     */
+    AddEditBlog(int blog_id, QWidget *parent = 0);
+	
+protected slots:
+	void enableAutoConfBtn();
+	void autoConfigure();
+	void fetchBlogId();
+	
+	void fetchedBlogId(const QList<QMap<QString, QString> >& list);
+	void fetchedProfileId( const QString& );
+	
+	void handleFetchIDTimeout();
+	void handleFetchAPITimeout();
+	void handleFetchError( KBlog::Blog::ErrorType type, const QString& errorMsg);
+	
+	void sltAccepted();
+	
+private:
+	bool isNewBlog;
+	BilboBlog *bBlog;
+	KBlog::Blog *mBlog;
+	QTimer* mFetchProfileIdTimer;
+	QTimer* mFetchAPITimer;
 };
 
 #endif

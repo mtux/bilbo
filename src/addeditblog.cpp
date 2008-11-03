@@ -18,9 +18,197 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "addeditblog.h"
+#include "global.h"
+#include "bilboblog.h"
 
-AddEditBlog::AddEditBlog(QWidget *parent)
+#include <QMessageBox>
+
+#define TIMEOUT 50000
+
+AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
     :QDialog(parent)
 {
 	setupUi(this);
+	this->setWindowTitle("Add a new blog");
+	isNewBlog=true;
+	if(blog_id>-1){
+		this->setWindowTitle("Edit Blog Settings");
+		isNewBlog=false;
+		BilboBlog b = *db->getBlogInfo(blog_id);
+		txtUrl->setText(b.blogUrl.toString());
+		txtUser->setText(b.username);
+		txtPass->setText(b.password);
+		txtID->setText(b.blogid);
+		lblTitle->setText(b.title);
+		comboAPI->setCurrentIndex(b.api);
+		comboDir->setCurrentIndex(b.dir);
+	}
+	connect(txtUrl, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
+	connect(txtUser, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
+	connect(txtPass, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
+	connect(btnAutoConf, SIGNAL(clicked()), this, SLOT(autoConfigure()));
+	connect(btnFetch, SIGNAL(clicked()), this, SLOT(fetchBlogId()));
+	connect(this, SIGNAL(accepted()), this, SLOT(sltAccepted()));
+	
+	txtUrl->setFocus();
+}
+
+void AddEditBlog::enableAutoConfBtn()
+{
+	if(txtUrl->text().isEmpty() || txtUser->text().isEmpty() || txtPass->text().isEmpty()){
+		btnAutoConf->setEnabled(false);
+		btnFetch->setEnabled(false);
+	} else{
+		btnAutoConf->setEnabled(true);
+		btnFetch->setEnabled(true);
+	}
+}
+
+void AddEditBlog::autoConfigure()
+{
+	qDebug("AddEditBlog::autoConfigure");
+	if(txtUrl->text().isEmpty() || txtUser->text().isEmpty() || txtPass->text().isEmpty()){
+		qDebug("AddEditBlog::autoConfigure: Username, Password or Url isn't set!");
+		QMessageBox::warning(this, "Incomplete fields", "You need to set the username, password and url of your blog or website.");
+		return;
+	}
+	btnAutoConf->setEnabled(false);
+	btnFetch->setEnabled(false);
+	
+	///Guess API with Url:
+	if(txtUrl->text().contains("xmlrpc.php", Qt::CaseInsensitive)){
+		comboAPI->setCurrentIndex(3);
+		fetchBlogId();
+		return;
+	}
+	if(txtUrl->text().contains("blogspot", Qt::CaseInsensitive)){
+		comboAPI->setCurrentIndex(4);
+		fetchBlogId();
+		return;
+	}
+	if(txtUrl->text().contains("wordpress", Qt::CaseInsensitive)){
+		comboAPI->setCurrentIndex(3);
+		txtUrl->setText(txtUrl->text() + "/xmlrpc.php");
+		fetchBlogId();
+		return;
+	}
+	if(txtUrl->text().contains("livejournal", Qt::CaseInsensitive)){
+		comboAPI->setCurrentIndex(0);
+		txtUrl->setText("http://www.livejournal.com/interface/blogger/");
+		txtID->setText(txtUser->text());
+		btnAutoConf->setEnabled(true);
+		btnFetch->setEnabled(true);
+		return;
+	}
+	//TODO Otherwise try to get the api from the html
+}
+
+void AddEditBlog::fetchBlogId()
+{
+	mFetchProfileIdTimer = new QTimer(this);
+	mFetchProfileIdTimer->setSingleShot(true);
+	connect( mFetchProfileIdTimer, SIGNAL( timeout() ), this, SLOT( handleFetchIDTimeout() ) );
+	mFetchProfileIdTimer->start(TIMEOUT);
+	
+
+	switch( comboAPI->currentIndex() ){
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+			mBlog = new KBlog::Blogger1(KUrl(txtUrl->text()));
+			dynamic_cast<KBlog::Blogger1*>(mBlog)->setUsername(txtUser->text());
+			dynamic_cast<KBlog::Blogger1*>(mBlog)->setPassword(txtPass->text());
+			connect( dynamic_cast<KBlog::Blogger1*>(mBlog) , SIGNAL(listedBlogs( const QList<QMap<QString, QString> >&)), this, SLOT(fetchedBlogId( const QList<QMap<QString, QString> >&)));
+			connect( dynamic_cast<KBlog::Blogger1*>(mBlog), SIGNAL(fetchedProfileId( const QString& ) ), this, SLOT( fetchedProfileId( const QString& ) ) );
+			connect( dynamic_cast<KBlog::Blogger1*>(mBlog), SIGNAL(error( KBlog::Blog::ErrorType, const QString& ) ), this, SLOT( handleFetchError( KBlog::Blog::ErrorType, const QString& ) ) );
+			
+			dynamic_cast<KBlog::Blogger1*>(mBlog)->listBlogs();
+			break;
+			
+		case 4:
+			mBlog = new KBlog::GData( txtUrl->text() );
+			dynamic_cast<KBlog::GData*>(mBlog)->setUsername( txtUser->text() );
+			dynamic_cast<KBlog::GData*>(mBlog)->setPassword( txtPass->text() );
+			connect( dynamic_cast<KBlog::GData*>(mBlog), SIGNAL(fetchedProfileId( const QString& ) ),
+					 this, SLOT(  ) );
+			dynamic_cast<KBlog::GData*>(mBlog)->fetchProfileId();
+			break;
+	};
+	txtID->setText("Please wait...");
+	txtID->setEnabled(false);
+	btnFetch->setEnabled(false);
+	
+}
+
+void AddEditBlog::handleFetchIDTimeout()
+{
+	QMessageBox::critical(this, "Error!", "Fetching the blog's id timed out. Check your internet connection, Or your homepage Url!\nnote that url have to included \"http://\" or ...\nfor example: http://bilbo.sf.net/xmlrpc.php is a good url");
+	txtID->setText(QString());
+	txtID->setEnabled(true);
+	btnFetch->setEnabled(true);
+	btnAutoConf->setEnabled(true);
+}
+
+void AddEditBlog::handleFetchAPITimeout()
+{
+	QMessageBox::warning(this, "AutoConfiguration Failed", "App cannot get API type automatically, please check your internet connection, otherwise you have to set API type handy.");
+	txtID->setEnabled(true);
+	btnFetch->setEnabled(true);
+	btnAutoConf->setEnabled(true);
+}
+
+void AddEditBlog::handleFetchError(KBlog::Blog::ErrorType type, const QString & errorMsg)
+{
+	QMessageBox::critical(this, "Fetching BlogID Faild!", errorMsg);
+	txtID->setEnabled(true);
+	btnFetch->setEnabled(true);
+	btnAutoConf->setEnabled(true);
+}
+
+void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list)
+{
+	delete mFetchProfileIdTimer;
+	txtID->setText(list.first().values().first());
+	lblTitle->setText(list.first().values().last());
+	txtID->setEnabled(true);
+	btnFetch->setEnabled(true);
+	btnAutoConf->setEnabled(true);
+	
+	bBlog = new BilboBlog();
+	bBlog->blogUrl = QUrl(txtUrl->text());
+	bBlog->username = txtUser->text();
+	bBlog->password = txtPass->text();
+	bBlog->blogid = txtID->text();
+	bBlog->title = list.first().values().last();
+}
+
+void AddEditBlog::fetchedProfileId(const QString &id)
+{
+	delete mFetchProfileIdTimer;
+	connect( dynamic_cast<KBlog::GData*>(mBlog), SIGNAL(listedBlogs( const QList<QMap<QString, QString> >&)),
+			 this, SLOT(fetchedBlogId( const QList<QMap<QString, QString> >&)));
+	connect( dynamic_cast<KBlog::GData*>(mBlog), SIGNAL(error( KBlog::Blog::ErrorType, const QString& ) ),
+			 this, SLOT( handleFetchError( KBlog::Blog::ErrorType, const QString& ) ) );
+	dynamic_cast<KBlog::GData*>(mBlog)->listBlogs();
+}
+
+void AddEditBlog::sltAccepted()
+{
+	bBlog->api = (BilboBlog::ApiType)comboAPI->currentIndex();
+	bBlog->dir = (BilboBlog::TextDirection)comboDir->currentIndex();
+	
+	if(bBlog->password.isEmpty())
+		bBlog->password = txtPass->text();
+	if(bBlog->username.isEmpty())
+		bBlog->username = txtUser->text();
+	if(bBlog->blogid.isEmpty())
+		bBlog->blogid = txtID->text();
+	if(bBlog->blogUrl.isEmpty())
+		bBlog->blogUrl = QUrl(txtUrl->text());
+	
+	if(isNewBlog)
+		db->addBlog(*bBlog);
+	else
+		db->editBlog(*bBlog);
 }

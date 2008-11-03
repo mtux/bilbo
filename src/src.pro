@@ -37,7 +37,6 @@ postentry.h \
  bilboeditor.h \
  htmlexporter.h \
  addeditlink.h \
- version.h \
  dbman.h \
  global.h \
  constants.h \
