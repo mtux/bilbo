@@ -28,25 +28,56 @@
 /**
 Blog definition class!
 
-
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 class BilboBlog
 {
 public:
+	enum ApiType {
+		BLOGGER1_API=0, METAWEBLOG_API, MOVABLETYPE_API, WORDPRESSBUGGY_API, GDATA_API
+	};
+	enum TextDirection{
+		LeftToRight=0, RightToLeft
+	};
+// 	struct API_Type {
+// 		QString title;
+// 		QString code;
+// 		ApiType type;
+// 	};
     BilboBlog(QUrl& server);
 	BilboBlog();
     ~BilboBlog();
 	
-	QUrl blogUrl;
-	QString blogid;
-	QString username;
-	QString password;
-	QString title;
-	QUrl styleUrl;
-	QString api;
-	int id;//id in DB
+	QUrl blogUrl();
+	void setBlogUrl(const QUrl&);
+	QString blogid();
+	void setBlogId(const QString&);
+	QString username();
+	void setUsername(const QString&);
+	QString password();
+	void setPassword(const QString&);
+	QString title();
+	void setTitle(const QString&);
+	QString stylePath();
+	void setStylePath(const QString&);
+	ApiType api();
+	void setApi(ApiType);
+	int id();//id in DB
+	void setId(int);
+	TextDirection direction();
+	void setDirection(TextDirection);
+	
+private:
+	QUrl mBlogUrl;
+	QString mBlogid;
+	QString mUsername;
+	QString mPassword;
+	QString mTitle;
+	QString mStylePath;
+	ApiType mApi;
+	int mId;//id in DB
+	TextDirection mDir;
 };
 
 #endif

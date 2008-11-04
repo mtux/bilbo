@@ -43,20 +43,27 @@ public:
 
     ~BilboPost();
 
-	QString author;
-	int id;///id in DB
-	
 	QUrl postLink();
-	void setPostLink(QUrl&);
+	void setPostLink(const QUrl&);
 	
 	QUrl postPermaLink();
-	void setPostPermaLink(QUrl&);
+	void setPostPermaLink(const QUrl&);
 	
 	QDateTime cTime();
-	void setCTime(QDateTime&);
+	void setCTime(const QDateTime&);
 	
 	QDateTime mTime();
-	void setMTime(QDateTime&);
+	void setMTime(const QDateTime&);
+	
+	QString author();
+	void setAuthor(const QString&);
+	
+	int id();
+	void setId(int);
+	
+private:
+	QString mAuthor;
+	int mId;///id in DB
 };
 
 #endif

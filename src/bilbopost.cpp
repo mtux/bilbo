@@ -39,12 +39,12 @@ QUrl BilboPost::postPermaLink()
 	return QUrl(this->permaLink().url());
 }
 
-void BilboPost::setPostLink(QUrl &link)
+void BilboPost::setPostLink(const QUrl &link)
 {
 	this->setLink(KUrl(link));
 }
 
-void BilboPost::setPostPermaLink(QUrl &link)
+void BilboPost::setPostPermaLink(const QUrl &link)
 {
 	this->setPermaLink(KUrl(link));
 }
@@ -54,7 +54,7 @@ QDateTime BilboPost::cTime()
 	return QDateTime::fromString(this->creationDateTime().toString(KDateTime::ISODate), Qt::ISODate);
 }
 
-void BilboPost::setMTime(QDateTime &t)
+void BilboPost::setMTime(const QDateTime &t)
 {
 	this->setModificationDateTime(KDateTime(t));
 }
@@ -64,9 +64,29 @@ QDateTime BilboPost::mTime()
 	return QDateTime::fromString(this->modificationDateTime().toString(KDateTime::ISODate), Qt::ISODate);
 }
 
-void BilboPost::setCTime(QDateTime &t)
+void BilboPost::setCTime(const QDateTime &t)
 {
 	this->setCreationDateTime(KDateTime(t));
+}
+
+QString BilboPost::author()
+{
+	return mAuthor;
+}
+
+void BilboPost::setId(int id)
+{
+	mId = id;
+}
+
+int BilboPost::id()
+{
+	return mId;
+}
+
+void BilboPost::setAuthor(const QString &author)
+{
+	mAuthor = author;
 }
 
 

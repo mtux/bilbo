@@ -1,7 +1,6 @@
 SOURCES += main.cpp \
  mainwindow.cpp \
  toolbox.cpp \
- postproperties.cpp \
  bilboengine.cpp \
  systray.cpp \
  settings.cpp \
@@ -28,7 +27,6 @@ addeditblog.ui \
  addeditlink.ui
 HEADERS += mainwindow.h \
 toolbox.h \
-postproperties.h \
 bilboengine.h \
 systray.h \
 settings.h \
@@ -37,7 +35,6 @@ postentry.h \
  bilboeditor.h \
  htmlexporter.h \
  addeditlink.h \
- version.h \
  dbman.h \
  global.h \
  constants.h \

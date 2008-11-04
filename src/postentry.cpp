@@ -22,7 +22,7 @@
 PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
-	prop = new PostProperties;
+// 	prop = new PostProperties;
 	setupUi(parent);
 	editPostWidget=new BilboEditor();
 	this->layout()->addWidget(editPostWidget);

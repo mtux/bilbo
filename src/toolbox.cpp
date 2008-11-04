@@ -27,12 +27,12 @@ Toolbox::Toolbox(QWidget *parent)
 
 void Toolbox::on_btnBlogAdd_clicked()
 {
-	addEditBlogWindow = new AddEditBlog(this);
+	addEditBlogWindow = new AddEditBlog(-1, this);
 	addEditBlogWindow->show();
 }
 
 void Toolbox::on_btnBlogEdit_clicked()
 {
-	addEditBlogWindow = new AddEditBlog(this);
+	addEditBlogWindow = new AddEditBlog(-1, this);///TODO blog_id must set correctly!
 	addEditBlogWindow->show();
 }
