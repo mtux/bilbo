@@ -40,17 +40,17 @@ SysTray::~SysTray()
 
 void SysTray::createActions()
 {
-	actNewPost = bilbo->newPost;
+	this->actNewPost = bilbo->actNewPost;
 	
-	actAbout = bilbo->aboutUs;
+	this->actAbout = bilbo->actAbout;
 	
-	actQuit = bilbo->actQuit;
+	this->actQuit = bilbo->actQuit;
 	
-	trayMenu->addAction(actNewPost);
+	trayMenu->addAction(this->actNewPost);
 	trayMenu->addSeparator();
-	trayMenu->addAction(actAbout);
+	trayMenu->addAction(this->actAbout);
 	trayMenu->addSeparator();
-	trayMenu->addAction(actQuit);
+	trayMenu->addAction(this->actQuit);
 	
 	this->setContextMenu(trayMenu);
 }

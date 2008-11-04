@@ -42,7 +42,7 @@ void PostEntry::setupUi(QWidget *parentWidget)
 	txtTitle = new QLineEdit(this);
 	horizontalLayout->addWidget(txtTitle);
 	titleLabel->setBuddy(txtTitle);
-	connect(txtTitle,SIGNAL(textChanged(const QString&)),parentWidget,SLOT(postTitleChanged(const QString&)));
+	connect(txtTitle,SIGNAL(textChanged(const QString&)),parentWidget,SLOT(sltPostTitleChanged(const QString&)));
 	
 	gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
 	
@@ -52,16 +52,16 @@ void PostEntry::setupUi(QWidget *parentWidget)
 	//PostWidget->setWindowTitle(QApplication::translate("PostWidget", "Form", 0, QApplication::UnicodeUTF8));
 }
 
-void PostEntry::publishPost()
+void PostEntry::sltPublishPost()
 {
 	qDebug("publish slot is working now!");
 }
 
-void PostEntry::savePostLocally()
+void PostEntry::sltSavePostLocally()
 {
 }
 
-void PostEntry::saveAsDraft()
+void PostEntry::sltSaveAsDraft()
 {
 }
 

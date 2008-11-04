@@ -73,6 +73,17 @@ void BilboEditor::createUi()
 	pLayout->addWidget(preview);
 	tabPreview->setLayout(pLayout);
 	
+	///defaultCharFormat
+	defaultCharFormat = editor->currentCharFormat();
+	defaultCharFormat.setFontFamily(editor->fontFamily());
+	defaultCharFormat.setFontWeight(editor->fontWeight());
+	defaultCharFormat.setFontUnderline(editor->fontUnderline());
+	defaultCharFormat.setFontItalic(editor->fontItalic());
+	defaultCharFormat.setFontStrikeOut(false);
+	const QBrush br(QPalette::WindowText);
+	defaultCharFormat.setForeground(br);
+	defaultCharFormat.setProperty(QTextFormat::FontSizeAdjustment,QVariant(0));
+	
 	createActions();
 	
 	
@@ -115,6 +126,10 @@ void BilboEditor::createActions()
 	connect(actFontDecrease, SIGNAL(triggered(bool)), this, SLOT(fontSizeDecrease()));
 	barVisual->addAction(actFontDecrease);
 	
+	actRemoveFormatting= new QAction(QIcon(":/media/draw-eraser.png"), "Remove formatting", this);
+	connect(actRemoveFormatting, SIGNAL(triggered(bool)), this, SLOT(removeFormatting()));
+	barVisual->addAction(actRemoveFormatting);
+	
 	barVisual->addSeparator();
 	
 	actAlignLeft = new QAction(QIcon(":/media/format-justify-left.png"), "Align left", this);
@@ -138,7 +153,7 @@ void BilboEditor::createActions()
 	connect(actRightToLeft, SIGNAL(triggered(bool)), this, SLOT(changeLayoutDirection()));
 	barVisual->addAction(actRightToLeft);
 	
-	actAddLink = new QAction(QIcon(":/media/add-link.png"), "Add/Edit Link", this);
+	actAddLink = new QAction(QIcon(":/media/insert-link.png"), "Add/Edit Link", this);
 	connect(actAddLink, SIGNAL(triggered(bool)), this, SLOT(addEditLink()));
 	barVisual->addAction(actAddLink);
 	
@@ -196,23 +211,25 @@ void BilboEditor::toggleCode()
 
 void BilboEditor::fontSizeIncrease()
 {
-	QTextCharFormat format = editor->currentCharFormat ();
-
+	QTextCharFormat format = editor->currentCharFormat();
+	
 	int idx = format.intProperty(QTextFormat::FontSizeAdjustment);
 	if ( idx < 3 ) {
-		format.setProperty ( QTextFormat::FontSizeAdjustment, QVariant( ++idx ));
-		editor->setCurrentCharFormat (format);
+		format.setProperty(QTextFormat::FontSizeAdjustment, QVariant( ++idx ));
+		//editor->setCurrentCharFormat(format);
+		editor->textCursor().mergeCharFormat(format);
 	}
 }
 
 void BilboEditor::fontSizeDecrease()
 {
-	QTextCharFormat format = editor->currentCharFormat ();
+	QTextCharFormat format = editor->currentCharFormat();
 
 	int idx = format.intProperty(QTextFormat::FontSizeAdjustment);
 	if ( idx > -1 ) {
-		format.setProperty ( QTextFormat::FontSizeAdjustment, QVariant( --idx ));
-		editor->setCurrentCharFormat (format);
+		format.setProperty(QTextFormat::FontSizeAdjustment, QVariant( --idx ));
+		//editor->setCurrentCharFormat(format);
+		editor->textCursor().mergeCharFormat(format);
 	}
 }
 
@@ -233,9 +250,10 @@ void BilboEditor::removeLink()
 {
 	QTextCharFormat f = editor->textCursor().charFormat();
 	f.setAnchor(false);
-	f.setUnderlineStyle(QTextCharFormat::NoUnderline);
-	f.clearForeground();
-	editor->textCursor().setCharFormat(f);
+	//f.setUnderlineStyle(QTextCharFormat::NoUnderline);
+	//f.clearForeground();
+	//editor->textCursor().setCharFormat(f);
+	editor->textCursor().mergeCharFormat(f);
 }
 
 void BilboEditor::selectColor()
@@ -244,12 +262,34 @@ void BilboEditor::selectColor()
 	const QBrush br(c, Qt::SolidPattern);
 	QTextCharFormat ch = editor->currentCharFormat();
 	ch.setForeground(br);
-	editor->setCurrentCharFormat(ch);
+	//editor->setCurrentCharFormat(ch);
+	editor->textCursor().mergeCharFormat(ch);
 }
 
 void BilboEditor::removeFormatting()
 {
-	//TODO
+// 	if(editor->textCursor().hasSelection())
+// 	{
+// 	QTextDocumentFragment fragment=editor->textCursor().selection();
+// 	QTextDocument d=
+// 	}
+// 	else
+// 	{
+// 	}
+ 	
+	editor->textCursor().mergeCharFormat(defaultCharFormat);
+	
+// 	QTextCharFormat f = editor->currentCharFormat();
+// 	
+// 	QMap<int, QVariant>::const_iterator i;
+// 		
+// 	for(i = f.properties().constBegin(); i != f.properties().constEnd(); ++i)
+// 	{
+// 		if((i.key() != f.intProperty(QTextCharFormat::AnchorHref)) && (i.key() != f.intProperty(QTextCharFormat::AnchorName)) && (i.key() != f.intProperty(QTextCharFormat::IsAnchor)))
+// 			f.setProperty(i.key(), defaultCharFormat.properties().value(i.key()));
+// 	}
+// 
+// 	editor->setCurrentCharFormat(f);
 }
 
 void BilboEditor::alignRight()
@@ -340,6 +380,7 @@ QString BilboEditor::htmlToRichtext(const QString& html)
     //return richText;
 	QString h;
 // 	QString basePath = KBloggerMedia::cachePath(); <base href=\"" + basePath + "\" />
+// 	h = "<html><head></head><body><p>" + richText + "</p></body></html>";
 	h = "<html><head></head><body><p>" + richText + "</p></body></html>";
 	return h;
 }
@@ -380,9 +421,10 @@ void BilboEditor::setLink(QString address, QString target, QString title)
 	f.setAnchor(true);
 	f.setAnchorHref(address);
 	f.setAnchorName(title);
-	f.setUnderlineStyle(QTextCharFormat::SingleUnderline);
-	const QBrush br(Qt::blue);
-	f.setForeground(br);
-	editor->setCurrentCharFormat(f);
+	//f.setUnderlineStyle(QTextCharFormat::SingleUnderline);
+	//const QBrush br(Qt::blue);
+	//f.setForeground(br);
+	//editor->setCurrentCharFormat(f);
+	editor->textCursor().mergeCharFormat(f);
 }
 

@@ -42,11 +42,11 @@ public:
     ~MainWindow();
 	
 public slots:
-	void addNewBlog();
-	void createNewPost();
-	void uploadAllChanges();
-	void postTitleChanged(const QString& title);
-	void sltAboutUs();
+	void sltAddNewBlog();
+	void sltCreateNewPost();
+	void sltUploadAllChanges();
+	void sltPostTitleChanged(const QString& title);
+	void sltBilboAbout();
 	void sltQuit();
 	
 private:
@@ -55,25 +55,25 @@ private:
 	AddEditBlog *addBlogPage;
 	
 	QTabWidget *tabPosts;
-	QToolBar *postToolbar;
-	QToolBar *bloggerToolbar;
-	QToolBar *actionToolbar;
+	QToolBar *toolbarPost;
+	QToolBar *toolbarBlogger;
+	QToolBar *toolbarAction;
 	QMenuBar *menubar;
 	QMenu *menuBilbo;
 	QMenu *menuPost;
 	QMenu *menuAbout;
 	QStatusBar *statusbar;
 public:
-	QAction *addBlog;
-	QAction *uploadAll;
-	QAction *newPost;
-	QAction *publish;
+	QAction *actAddBlog;
+	QAction *actUploadAll;
+	QAction *actNewPost;
+	QAction *actPublish;
 	QActionGroup *saveActions;
-	QAction *saveLocally;
-	QAction *saveDraft;
-	QAction *deletePost;
-	QAction *deleteLocally;
-	QAction *aboutUs;
+	QAction *actSaveLocally;
+	QAction *actSaveDraft;
+	QAction *actDeletePost;
+	QAction *actDeleteLocally;
+	QAction *actAbout;
 	QAction *actQuit;
 private:
 	void setupUi();

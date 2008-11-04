@@ -38,9 +38,9 @@ public:
 	PostProperties *prop;
 		
 protected slots:
-	void publishPost();
-	void savePostLocally();
-	void saveAsDraft();
+	void sltPublishPost();
+	void sltSavePostLocally();
+	void sltSaveAsDraft();
 	void sltDelPost();
 	void sltDelLocally();
 	

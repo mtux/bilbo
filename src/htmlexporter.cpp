@@ -632,9 +632,9 @@ void htmlExporter::emitBlockAttributes(const QTextBlock &block)
     QLatin1String style(" style=\"");
     html += style;
 
-    if (block.begin().atEnd()) {
-        html += QLatin1String("-qt-paragraph-type:empty;");
-    }
+//     if (block.begin().atEnd()) {
+//         html += QLatin1String("-qt-paragraph-type:empty;");
+//     }
 
     emitMargins(QString::number(format.topMargin()),
                 QString::number(format.bottomMargin()),

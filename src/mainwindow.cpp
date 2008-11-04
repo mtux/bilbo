@@ -54,20 +54,20 @@ void MainWindow::setupUi()
 	menuAbout = new QMenu("About",menubar);
 	this->setMenuBar(menubar);
 	
-	postToolbar=new QToolBar(this);
-	//postToolbar->setGeometry(QRect(0,20,311,45));
-	//postToolbar->setAllowedAreas(Qt::TopToolBarArea);
-	postToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-	this->addToolBar(Qt::TopToolBarArea,postToolbar);
+	toolbarPost=new QToolBar(this);
+	//toolbarPost->setGeometry(QRect(0,20,311,45));
+	//toolbarPost->setAllowedAreas(Qt::TopToolBarArea);
+	toolbarPost->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	this->addToolBar(Qt::TopToolBarArea,toolbarPost);
 	
-	bloggerToolbar=new QToolBar(this);
-	//bloggerToolbar->setGeometry(QRect(315,20,261,45));
-	bloggerToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-	this->addToolBar(Qt::TopToolBarArea,bloggerToolbar);
+	toolbarBlogger=new QToolBar(this);
+	//toolbarBlogger->setGeometry(QRect(315,20,261,45));
+	toolbarBlogger->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	this->addToolBar(Qt::TopToolBarArea,toolbarBlogger);
 	
-	actionToolbar = new QToolBar(this);
-	actionToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-	this->addToolBar(Qt::TopToolBarArea,actionToolbar);
+	toolbarAction = new QToolBar(this);
+	toolbarAction->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	this->addToolBar(Qt::TopToolBarArea,toolbarAction);
 	
 	statusbar = new QStatusBar(this);
 	this->setStatusBar(statusbar);
@@ -75,33 +75,33 @@ void MainWindow::setupUi()
 
 void MainWindow::createActions()
 {
-	addBlog=new QAction(QIcon(":/media/format-text-bold.png"),"Add &Blog",this);
-	connect(addBlog,SIGNAL(triggered( bool )),this,SLOT(addNewBlog()));
+	actAddBlog=new QAction(QIcon(":/media/format-text-bold.png"),"Add &Blog",this);
+	connect(actAddBlog,SIGNAL(triggered( bool )),this,SLOT(sltAddNewBlog()));
 	
-	uploadAll=new QAction(QIcon(":/media/format-text-bold.png"),"&Upload All Changes",this);
-	connect(addBlog,SIGNAL(triggered( bool )),this,SLOT(uploadAllChanges()));
+	actUploadAll=new QAction(QIcon(":/media/format-text-bold.png"),"&Upload All Changes",this);
+	connect(actUploadAll,SIGNAL(triggered( bool )),this,SLOT(sltUploadAllChanges()));
 	
-	newPost=new QAction(QIcon(":/media/format-text-bold.png"),"&New Post",this);
-	newPost->setShortcut(tr("Ctrl+N"));
-	connect(newPost,SIGNAL(triggered( bool )),this,SLOT(createNewPost()));
+	actNewPost=new QAction(QIcon(":/media/format-text-bold.png"),"&New Post",this);
+	actNewPost->setShortcut(tr("Ctrl+N"));
+	connect(actNewPost,SIGNAL(triggered( bool )),this,SLOT(sltCreateNewPost()));
 	
-	publish=new QAction(QIcon(":/media/format-text-bold.png"),"&Publish",this);
-	connect(publish,SIGNAL(triggered( bool )),activePost,SLOT(publishPost()));
+	actPublish=new QAction(QIcon(":/media/format-text-bold.png"),"&Publish",this);
+	connect(actPublish,SIGNAL(triggered( bool )),activePost,SLOT(sltPublishPost()));
 	
-	saveLocally=new QAction(QIcon(":/media/format-text-bold.png"),"Save Locally",this);
-	connect(saveLocally,SIGNAL(triggered( bool )),activePost,SLOT(savePostLocally()));
+	actSaveLocally=new QAction(QIcon(":/media/format-text-bold.png"),"Save Locally",this);
+	connect(actSaveLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltSavePostLocally()));
 	
-	saveDraft=new QAction(QIcon(":/media/format-text-bold.png"),"Save as Draft",this);
-	connect(saveDraft,SIGNAL(triggered( bool )),activePost,SLOT(saveAsDraft()));
+	actSaveDraft=new QAction(QIcon(":/media/format-text-bold.png"),"Save as Draft",this);
+	connect(actSaveDraft,SIGNAL(triggered( bool )),activePost,SLOT(sltSaveAsDraft()));
 	
-	deletePost=new QAction(QIcon(":/media/format-text-bold.png"),"Delete from Server",this);
-	connect(deletePost,SIGNAL(triggered( bool )),activePost,SLOT(sltDelPost()));
+	actDeletePost=new QAction(QIcon(":/media/format-text-bold.png"),"Delete from Server",this);
+	connect(actDeletePost,SIGNAL(triggered( bool )),activePost,SLOT(sltDelPost()));
 	
-	deleteLocally=new QAction(QIcon(":/media/format-text-bold.png"),"Delete Locally",this);
-	connect(deleteLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltDelLocally()));
+	actDeleteLocally=new QAction(QIcon(":/media/format-text-bold.png"),"Delete Locally",this);
+	connect(actDeleteLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltDelLocally()));
 	
-	aboutUs = new QAction(QIcon(":/media/format-text-bold.png"),"About Us",this);
-	connect(aboutUs, SIGNAL(triggered( bool )), this, SLOT(sltAboutUs()));
+	actAbout = new QAction(QIcon(":/media/format-text-bold.png"),"About Us",this);
+	connect(actAbout, SIGNAL(triggered( bool )), this, SLOT(sltBilboAbout()));
 	
 	actQuit = new QAction(QIcon(":/media/format-text-bold.png"), "Quit", this);
 	actQuit->setShortcut(tr("Ctrl+Q"));
@@ -114,18 +114,18 @@ void MainWindow::createActions()
 void MainWindow::addCreatedActions()
 {
 	saveActions=new QActionGroup(this);
-	saveActions->addAction(saveLocally);
-	saveActions->addAction(saveDraft);
+	saveActions->addAction(actSaveLocally);
+	saveActions->addAction(actSaveDraft);
 	
-	postToolbar->addAction(newPost);
-	postToolbar->addAction(saveLocally);
-	postToolbar->addAction(publish);
+	toolbarPost->addAction(actNewPost);
+	toolbarPost->addAction(actSaveLocally);
+	toolbarPost->addAction(actPublish);
 	
-	bloggerToolbar->addAction(addBlog);
-	bloggerToolbar->addAction(uploadAll);
+	toolbarBlogger->addAction(actAddBlog);
+	toolbarBlogger->addAction(actUploadAll);
 	
-	actionToolbar->addAction(aboutUs);
-	//actionToolbar->addAction(actQuit);
+	toolbarAction->addAction(actAbout);
+	//toolbarAction->addAction(actQuit);
 	
 	menubar->addAction(menuBilbo->menuAction());
 	menubar->addAction(menuPost->menuAction());
@@ -133,24 +133,24 @@ void MainWindow::addCreatedActions()
 	
 	menuBilbo->addAction(actQuit);
 	
-	menuPost->addAction(newPost);
+	menuPost->addAction(actNewPost);
 	menuPost->addSeparator();
-	menuPost->addAction(publish);
+	menuPost->addAction(actPublish);
 	menuPost->addSeparator();
-	menuPost->addAction(saveDraft);
-	menuPost->addAction(saveLocally);
+	menuPost->addAction(actSaveDraft);
+	menuPost->addAction(actSaveLocally);
 	menuPost->addSeparator();
-	menuPost->addAction(deletePost);
-	menuPost->addAction(deleteLocally);
+	menuPost->addAction(actDeletePost);
+	menuPost->addAction(actDeleteLocally);
 	
-	menuAbout->addAction(aboutUs);
+	menuAbout->addAction(actAbout);
 }
 
-void MainWindow::addNewBlog()
+void MainWindow::sltAddNewBlog()
 {
 }
 
-void MainWindow::createNewPost()
+void MainWindow::sltCreateNewPost()
 {
 	PostEntry *temp=new PostEntry(this);
 	tabPosts->addTab(temp,"Untitled");
@@ -161,16 +161,16 @@ void MainWindow::createNewPost()
 		this->show();
 }
 
-void MainWindow::uploadAllChanges()
+void MainWindow::sltUploadAllChanges()
 {
 }
 
-void MainWindow::postTitleChanged(const QString& title)
+void MainWindow::sltPostTitleChanged(const QString& title)
 {
 	tabPosts->setTabText(tabPosts->currentIndex(),title);
 }
 
-void MainWindow::sltAboutUs()
+void MainWindow::sltBilboAbout()
 {
 	QMessageBox::information(this, "About Us", "Bilbo Blogger.\n\nAuthors:\n\tMehrdad Momeny\n\tGolnaz Nilieh");
 }

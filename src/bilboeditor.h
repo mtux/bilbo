@@ -95,6 +95,8 @@ public:
 		QAction *actColorSelect;
 		QAction *actAddImage;
 		
+		QTextCharFormat defaultCharFormat;
+		
 		AddEditLink *linkDialog;
 		
 		int prev_index;
