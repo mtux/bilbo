@@ -21,7 +21,7 @@
 
 BilboBlog::BilboBlog(QUrl &server)
 {
-	this->blogUrl = server;
+	this->setBlogUrl( server);
 }
 
 BilboBlog::BilboBlog()
@@ -30,6 +30,96 @@ BilboBlog::BilboBlog()
 
 BilboBlog::~BilboBlog()
 {
+}
+
+QUrl BilboBlog::blogUrl()
+{
+	return mBlogUrl;
+}
+
+void BilboBlog::setBlogUrl(const QUrl &url)
+{
+	mBlogUrl = url;
+}
+
+QString BilboBlog::blogid()
+{
+	return mBlogid;
+}
+
+void BilboBlog::setBlogId(const QString &url)
+{
+	mBlogid = url;
+}
+
+QString BilboBlog::username()
+{
+	return mUsername;
+}
+
+void BilboBlog::setUsername(const QString &username)
+{
+	mUsername = username;
+}
+
+QString BilboBlog::password()
+{
+	return mPassword;
+}
+
+void BilboBlog::setPassword(const QString &password)
+{
+	mPassword = password;
+}
+
+QString BilboBlog::title()
+{
+	return mTitle;
+}
+
+void BilboBlog::setTitle(const QString &title)
+{
+	mTitle = title;
+}
+
+QString BilboBlog::stylePath()
+{
+	return mStylePath;
+}
+
+void BilboBlog::setStylePath(const QString &path)
+{
+	mStylePath = path;
+}
+
+BilboBlog::ApiType BilboBlog::api()
+{
+	return mApi;
+}
+
+void BilboBlog::setApi(ApiType api)
+{
+	mApi = api;
+}
+
+int BilboBlog::id()
+{
+	return mId;
+}
+
+void BilboBlog::setId(int id)
+{
+	mId = id;
+}
+
+BilboBlog::TextDirection BilboBlog::direction()
+{
+	return mDir;
+}
+
+void BilboBlog::setDirection(TextDirection dir)
+{
+	mDir = dir;
 }
 
 

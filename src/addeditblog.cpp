@@ -35,13 +35,13 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 		this->setWindowTitle("Edit Blog Settings");
 		isNewBlog=false;
 		BilboBlog b = *db->getBlogInfo(blog_id);
-		txtUrl->setText(b.blogUrl.toString());
-		txtUser->setText(b.username);
-		txtPass->setText(b.password);
-		txtID->setText(b.blogid);
-		lblTitle->setText(b.title);
-		comboAPI->setCurrentIndex(b.api);
-		comboDir->setCurrentIndex(b.dir);
+		txtUrl->setText(b.blogUrl().toString());
+		txtUser->setText(b.username());
+		txtPass->setText(b.password());
+		txtID->setText(b.blogid());
+		lblTitle->setText(b.title());
+		comboAPI->setCurrentIndex(b.api());
+		comboDir->setCurrentIndex(b.direction());
 	}
 	connect(txtUrl, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
 	connect(txtUser, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
@@ -176,11 +176,11 @@ void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list
 	btnAutoConf->setEnabled(true);
 	
 	bBlog = new BilboBlog();
-	bBlog->blogUrl = QUrl(txtUrl->text());
-	bBlog->username = txtUser->text();
-	bBlog->password = txtPass->text();
-	bBlog->blogid = txtID->text();
-	bBlog->title = list.first().values().last();
+	bBlog->setBlogUrl(QUrl(txtUrl->text()));
+	bBlog->setUsername(txtUser->text());
+	bBlog->setPassword(txtPass->text());
+	bBlog->setBlogId(txtID->text());
+	bBlog->setTitle(list.first().values().last());
 }
 
 void AddEditBlog::fetchedProfileId(const QString &id)
@@ -195,17 +195,17 @@ void AddEditBlog::fetchedProfileId(const QString &id)
 
 void AddEditBlog::sltAccepted()
 {
-	bBlog->api = (BilboBlog::ApiType)comboAPI->currentIndex();
-	bBlog->dir = (BilboBlog::TextDirection)comboDir->currentIndex();
+	bBlog->setApi((BilboBlog::ApiType)comboAPI->currentIndex());
+	bBlog->setDirection((BilboBlog::TextDirection)comboDir->currentIndex());
 	
-	if(bBlog->password.isEmpty())
-		bBlog->password = txtPass->text();
-	if(bBlog->username.isEmpty())
-		bBlog->username = txtUser->text();
-	if(bBlog->blogid.isEmpty())
-		bBlog->blogid = txtID->text();
-	if(bBlog->blogUrl.isEmpty())
-		bBlog->blogUrl = QUrl(txtUrl->text());
+	if(bBlog->password().isEmpty())
+		bBlog->setPassword(txtPass->text());
+	if(bBlog->username().isEmpty())
+		bBlog->setUsername(txtUser->text());
+	if(bBlog->blogid().isEmpty())
+		bBlog->setBlogId(txtID->text());
+	if(bBlog->blogUrl().isEmpty())
+		bBlog->setBlogUrl(QUrl(txtUrl->text()));
 	
 	if(isNewBlog)
 		db->addBlog(*bBlog);
