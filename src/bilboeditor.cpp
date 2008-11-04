@@ -330,6 +330,9 @@ void BilboEditor::changeLayoutDirection()
 
 void BilboEditor::sltAddImage()
 {
+	//Not permanent!
+	//Just to test postContentHtml function! :D
+	qDebug() << postContentHtml() ;
 }
 // void BilboEditor::insertMedia(KBloggerMedia* media)
 // {
@@ -426,5 +429,18 @@ void BilboEditor::setLink(QString address, QString target, QString title)
 	//f.setForeground(br);
 	//editor->setCurrentCharFormat(f);
 	editor->textCursor().mergeCharFormat(f);
+}
+
+QString BilboEditor::postContentHtml()
+{
+	htmlExporter* htmlExp = new htmlExporter();
+	
+	if(this->currentIndex()==0)
+		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+	else if (this->currentIndex()==1)
+			editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
+	
+	delete htmlExp;
+	return htmlEditor->toPlainText();
 }
 

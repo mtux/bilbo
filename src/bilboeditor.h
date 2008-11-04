@@ -38,6 +38,9 @@ public:
     BilboEditor();
 
     ~BilboEditor();
+	
+	QString postContentHtml();
+	
 	protected slots:
 		void toggleItalic();
 		void toggleBold();
