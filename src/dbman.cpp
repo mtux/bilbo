@@ -243,7 +243,7 @@ int DBMan::addPost(BilboPost & post, int blog_id)
 	q.prepare("INSERT INTO post (postid, blog_id, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 	q.addBindValue(post.postId());
 	q.addBindValue(blog_id);
-	q.addBindValue(post.author);
+	q.addBindValue(post.author());
 	q.addBindValue(post.title());
 	q.addBindValue(post.content());
 	q.addBindValue(post.cTime().toString(Qt::ISODate));
@@ -349,7 +349,7 @@ bool DBMan::editPost(BilboPost & post, int blog_id)
 	q.prepare("UPDATE post SET blog_id=?, postid=?, author=?, title=?, content=?, c_time=?, m_time=?, is_private=?, is_comment_allowed=?, is_trackback_allowed=?, link=?, perma_link=?, summary=?, tags=? WHERE id=?");
 	q.addBindValue(blog_id);
 	q.addBindValue(post.postId());
-	q.addBindValue(post.author);
+	q.addBindValue(post.author());
 	q.addBindValue(post.title());
 	q.addBindValue(post.content());
 	q.addBindValue(post.cTime().toString(Qt::ISODate));
@@ -368,7 +368,7 @@ bool DBMan::editPost(BilboPost & post, int blog_id)
 	tags.remove(tags.length()-1, 1);
 	q.addBindValue(tags);
 	
-	q.addBindValue(post.id);
+	q.addBindValue(post.id());
 	
 	if(!q.exec())
 		return false;
@@ -376,7 +376,7 @@ bool DBMan::editPost(BilboPost & post, int blog_id)
 	///Delete previouse Categories:
 	QSqlQuery qd;
 	qd.prepare("DELETE FROM post_cat WHERE post_id=?");
-	qd.addBindValue(post.id);
+	qd.addBindValue(post.id());
 	if(!qd.exec())
 		qDebug("DBMan::editPost: Cannot delete previouse categories.");
 	
@@ -394,7 +394,7 @@ bool DBMan::editPost(BilboPost & post, int blog_id)
 				qDebug("DBMan::editPost: Cannot get category id for category %s", post.categories()[i].toLatin1().data());
 			else
 				if(q.next()){
-				q2.addBindValue(post.id);
+				q2.addBindValue(post.id());
 				q2.addBindValue(q.value(0).toInt());
 				if(q2.exec())
 					qDebug("DBMan::editPost: Category %s added to post.", post.categories()[i].toLatin1().data());
@@ -554,8 +554,8 @@ QList< BilboPost* > DBMan::listPosts(int blog_id)
 	if(q.exec()){
 		while( q.next() ){
 			BilboPost *tmp;
-			tmp->id = q.value(0).toInt();
-			tmp->author = q.value(2).toString();
+			tmp->setId( q.value(0).toInt());
+			tmp->setAuthor( q.value(2).toString());
 			tmp->setPostId(q.value(1).toString());
 			tmp->setTitle(q.value(3).toString());
 			tmp->setContent(q.value(4).toString());
@@ -577,7 +577,7 @@ QList< BilboPost* > DBMan::listPosts(int blog_id)
 			QStringList catList;
 			QSqlQuery q2;
 			q2.prepare("SELECT category.name FROM category JOIN post_cat ON category.catid=post_cat.cat_id WHERE post_cat.post_id = ?");
-			q2.addBindValue(tmp->id);
+			q2.addBindValue(tmp->id());
 			if(q2.exec())
 				while(q2.next())
 					catList.append(q2.value(0).toString());
@@ -598,8 +598,8 @@ BilboPost * DBMan::getPostInfo(int post_id)
 	q.addBindValue(post_id);
 	if(q.exec()){
 		if( q.next() ){
-			tmp->id = q.value(0).toInt();
-			tmp->author = q.value(2).toString();
+			tmp->setId( q.value(0).toInt() );
+			tmp->setAuthor( q.value(2).toString() );
 			tmp->setPostId(q.value(1).toString());
 			tmp->setTitle(q.value(3).toString());
 			tmp->setContent(q.value(4).toString());
@@ -621,7 +621,7 @@ BilboPost * DBMan::getPostInfo(int post_id)
 			QStringList catList;
 			QSqlQuery q2;
 			q2.prepare("SELECT category.name FROM category JOIN post_cat ON category.catid=post_cat.cat_id WHERE post_cat.post_id = ?");
-			q2.addBindValue(tmp->id);
+			q2.addBindValue(tmp->id());
 			if(q2.exec())
 				while(q2.next())
 					catList.append(q2.value(0).toString());
