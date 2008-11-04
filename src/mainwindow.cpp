@@ -21,7 +21,7 @@
 
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {
-	setupUi();
+	createUi();
 	
 	activePost=new PostEntry(this);
 	tabPosts->addTab(activePost,"Untitled");
@@ -38,7 +38,7 @@ MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::setupUi()
+void MainWindow::createUi()
 {
 	this->resize(887, 559);
 	this->setWindowTitle("MainWindow");
@@ -69,8 +69,8 @@ void MainWindow::setupUi()
 	toolbarAction->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 	this->addToolBar(Qt::TopToolBarArea,toolbarAction);
 	
-	statusbar = new QStatusBar(this);
-	this->setStatusBar(statusbar);
+	statusbarMain = new QStatusBar(this);
+	this->setStatusBar(statusbarMain);
 }
 
 void MainWindow::createActions()
@@ -113,9 +113,9 @@ void MainWindow::createActions()
 
 void MainWindow::addCreatedActions()
 {
-	saveActions=new QActionGroup(this);
-	saveActions->addAction(actSaveLocally);
-	saveActions->addAction(actSaveDraft);
+// 	saveActions=new QActionGroup(this);
+// 	saveActions->addAction(actSaveLocally);
+// 	saveActions->addAction(actSaveDraft);
 	
 	toolbarPost->addAction(actNewPost);
 	toolbarPost->addAction(actSaveLocally);

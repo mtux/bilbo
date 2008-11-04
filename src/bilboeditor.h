@@ -39,29 +39,29 @@ public:
 
     ~BilboEditor();
 	
-	QString postContentHtml();
+	QString* htmlContent();
 	
 	protected slots:
-		void toggleItalic();
-		void toggleBold();
-		void toggleUnderline();
-		void toggleStrikeout();
-		void toggleCode();
-		void fontSizeIncrease();
-		void fontSizeDecrease();
-		void alignRight();
-		void alignLeft();
-		void alignCenter();
-		void alignJustify();
-		void changeLayoutDirection();
-		void addEditLink();
-		void setLink(QString address, QString target, QString title);
-		void removeLink();
-		void selectColor();
-		void removeFormatting();
+		void sltToggleItalic();
+		void sltToggleBold();
+		void sltToggleUnderline();
+		void sltToggleStrikeout();
+		void sltToggleCode();
+		void sltFontSizeIncrease();
+		void sltFontSizeDecrease();
+		void sltAlignRight();
+		void sltAlignLeft();
+		void sltAlignCenter();
+		void sltAlignJustify();
+		void sltChangeLayoutDirection();
+		void sltAddEditLink();
+		void sltSetLink(QString address, QString target, QString title);
+		void sltRemoveLink();
+		void sltSelectColor();
+		void sltRemoveFormatting();
 		void sltAddImage();
 		
-		void syncEditors(int index);
+		void sltSyncEditors(int index);
 		
 	private:
 		void createActions();
@@ -98,10 +98,10 @@ public:
 		QAction *actColorSelect;
 		QAction *actAddImage;
 		
-		QTextCharFormat defaultCharFormat;
+		QString* mHtmlContent;
 		
 		AddEditLink *linkDialog;
-		
+		QTextCharFormat defaultCharFormat;
 		int prev_index;
 };
 

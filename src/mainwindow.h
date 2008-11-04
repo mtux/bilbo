@@ -62,13 +62,13 @@ private:
 	QMenu *menuBilbo;
 	QMenu *menuPost;
 	QMenu *menuAbout;
-	QStatusBar *statusbar;
+	QStatusBar *statusbarMain;
 public:
 	QAction *actAddBlog;
 	QAction *actUploadAll;
 	QAction *actNewPost;
 	QAction *actPublish;
-	QActionGroup *saveActions;
+	//QActionGroup *saveActions;
 	QAction *actSaveLocally;
 	QAction *actSaveDraft;
 	QAction *actDeletePost;
@@ -76,7 +76,7 @@ public:
 	QAction *actAbout;
 	QAction *actQuit;
 private:
-	void setupUi();
+	void createUi();
 	void createActions();
 	void addCreatedActions();
 };

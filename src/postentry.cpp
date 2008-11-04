@@ -23,11 +23,11 @@ PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
 // 	prop = new PostProperties;
-	setupUi(parent);
+	createUi(parent);
 	editPostWidget=new BilboEditor();
 	this->layout()->addWidget(editPostWidget);
 }
-void PostEntry::setupUi(QWidget *parentWidget)
+void PostEntry::createUi(QWidget *parentWidget)
 {
 	this->resize(626, 307);
 	gridLayout = new QGridLayout(this);
@@ -35,13 +35,13 @@ void PostEntry::setupUi(QWidget *parentWidget)
 	horizontalLayout = new QHBoxLayout();
 	horizontalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
 	
-	titleLabel = new QLabel(this);
-	titleLabel->setText("&Title :");
-	horizontalLayout->addWidget(titleLabel);
+	labelTitle = new QLabel(this);
+	labelTitle->setText("&Title :");
+	horizontalLayout->addWidget(labelTitle);
 
 	txtTitle = new QLineEdit(this);
 	horizontalLayout->addWidget(txtTitle);
-	titleLabel->setBuddy(txtTitle);
+	labelTitle->setBuddy(txtTitle);
 	connect(txtTitle,SIGNAL(textChanged(const QString&)),parentWidget,SLOT(sltPostTitleChanged(const QString&)));
 	
 	gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);

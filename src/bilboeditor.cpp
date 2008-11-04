@@ -28,6 +28,7 @@ BilboEditor::BilboEditor()
 	
 	createUi();
 	editor->setFocus();
+	
 }
 
 
@@ -45,7 +46,7 @@ void BilboEditor::createUi()
 	this->addTab(tabVisual, "&Visual Editor");
 	this->addTab(tabHtml, "&Html Editor");
 	this->addTab(tabPreview, "Post &Preview");
-	connect(this, SIGNAL(currentChanged(int)), this, SLOT(syncEditors(int)));
+	connect(this, SIGNAL(currentChanged(int)), this, SLOT(sltSyncEditors(int)));
 	prev_index=0;
 	
 	///editor:
@@ -95,76 +96,76 @@ void BilboEditor::createActions()
 {
 	actBold = new QAction(QIcon(":/media/format-text-bold.png"), "Bold", this);
 	actBold->setCheckable(true);
-	connect(actBold, SIGNAL(triggered(bool)), this, SLOT(toggleBold()));
+	connect(actBold, SIGNAL(triggered(bool)), this, SLOT(sltToggleBold()));
 	barVisual->addAction(actBold);
 	
 	actItalic = new QAction(QIcon(":/media/format-text-italic.png"), "Italic", this);
 	actItalic->setCheckable(true);
-	connect(actItalic, SIGNAL(triggered(bool)), this, SLOT(toggleItalic()));
+	connect(actItalic, SIGNAL(triggered(bool)), this, SLOT(sltToggleItalic()));
 	barVisual->addAction(actItalic);
 	
 	actUnderline = new QAction(QIcon(":/media/format-text-underline.png"), "Underline", this);
 	actUnderline->setCheckable(true);
-	connect(actUnderline, SIGNAL(triggered(bool)), this, SLOT(toggleUnderline()));
+	connect(actUnderline, SIGNAL(triggered(bool)), this, SLOT(sltToggleUnderline()));
 	barVisual->addAction(actUnderline);
 	
 	actStrikeout = new QAction(QIcon(":/media/format-text-strikethrough.png"), "Strikeout", this);
 	actStrikeout->setCheckable(true);
-	connect(actStrikeout, SIGNAL(triggered(bool)), this, SLOT(toggleStrikeout()));
+	connect(actStrikeout, SIGNAL(triggered(bool)), this, SLOT(sltToggleStrikeout()));
 	barVisual->addAction(actStrikeout);
 	
 	actCode = new QAction(QIcon(":/media/format-text-code.png"), "Code", this);
 	actCode->setCheckable(true);
-	connect(actCode, SIGNAL(triggered(bool)), this, SLOT(toggleCode()));
+	connect(actCode, SIGNAL(triggered(bool)), this, SLOT(sltToggleCode()));
 	barVisual->addAction(actCode);
 	
 	actFontIncrease = new QAction(QIcon(":/media/format-font-size-more.png"), "Increase font size", this);
-	connect(actFontIncrease, SIGNAL(triggered(bool)), this, SLOT(fontSizeIncrease()));
+	connect(actFontIncrease, SIGNAL(triggered(bool)), this, SLOT(sltFontSizeIncrease()));
 	barVisual->addAction(actFontIncrease);
 	
 	actFontDecrease = new QAction(QIcon(":/media/format-font-size-less.png"), "Decrease font size", this);
-	connect(actFontDecrease, SIGNAL(triggered(bool)), this, SLOT(fontSizeDecrease()));
+	connect(actFontDecrease, SIGNAL(triggered(bool)), this, SLOT(sltFontSizeDecrease()));
 	barVisual->addAction(actFontDecrease);
 	
 	actRemoveFormatting= new QAction(QIcon(":/media/draw-eraser.png"), "Remove formatting", this);
-	connect(actRemoveFormatting, SIGNAL(triggered(bool)), this, SLOT(removeFormatting()));
+	connect(actRemoveFormatting, SIGNAL(triggered(bool)), this, SLOT(sltRemoveFormatting()));
 	barVisual->addAction(actRemoveFormatting);
 	
 	barVisual->addSeparator();
 	
 	actAlignLeft = new QAction(QIcon(":/media/format-justify-left.png"), "Align left", this);
-	connect(actAlignLeft, SIGNAL(triggered(bool)), this, SLOT(alignLeft()));
+	connect(actAlignLeft, SIGNAL(triggered(bool)), this, SLOT(sltAlignLeft()));
 	barVisual->addAction(actAlignLeft);
 	
 	actAlignCenter = new QAction(QIcon(":/media/format-justify-center.png"), "Align center", this);
-	connect(actAlignCenter, SIGNAL(triggered(bool)), this, SLOT(alignCenter()));
+	connect(actAlignCenter, SIGNAL(triggered(bool)), this, SLOT(sltAlignCenter()));
 	barVisual->addAction(actAlignCenter);
 	
 	actAlignRight = new QAction(QIcon(":/media/format-justify-right.png"), "Align right", this);
-	connect(actAlignRight, SIGNAL(triggered(bool)), this, SLOT(alignRight()));
+	connect(actAlignRight, SIGNAL(triggered(bool)), this, SLOT(sltAlignRight()));
 	barVisual->addAction(actAlignRight);
 	
 	actJustify = new QAction(QIcon(":/media/format-justify-fill.png"), "Justify", this);
-	connect(actJustify, SIGNAL(triggered(bool)), this, SLOT(alignJustify()));
+	connect(actJustify, SIGNAL(triggered(bool)), this, SLOT(sltAlignJustify()));
 	barVisual->addAction(actJustify);
 	
 	actRightToLeft = new QAction(QIcon(":/media/format-text-direction-rtl.png"), "Right to Left", this);
 	actRightToLeft->setCheckable(true);
-	connect(actRightToLeft, SIGNAL(triggered(bool)), this, SLOT(changeLayoutDirection()));
+	connect(actRightToLeft, SIGNAL(triggered(bool)), this, SLOT(sltChangeLayoutDirection()));
 	barVisual->addAction(actRightToLeft);
 	
 	actAddLink = new QAction(QIcon(":/media/insert-link.png"), "Add/Edit Link", this);
-	connect(actAddLink, SIGNAL(triggered(bool)), this, SLOT(addEditLink()));
+	connect(actAddLink, SIGNAL(triggered(bool)), this, SLOT(sltAddEditLink()));
 	barVisual->addAction(actAddLink);
 	
 	actRemoveLink = new QAction(QIcon(":/media/remove-link.png"), "Remove Link", this);
-	connect(actRemoveLink, SIGNAL(triggered(bool)), this, SLOT(removeLink()));
+	connect(actRemoveLink, SIGNAL(triggered(bool)), this, SLOT(sltRemoveLink()));
 	barVisual->addAction(actRemoveLink);
 	
 	barVisual->addSeparator();
 	
 	actColorSelect = new QAction(QIcon(":/media/format-text-color.png"), "Select Color", this);
-	connect(actColorSelect, SIGNAL(triggered(bool)), this, SLOT(selectColor()));
+	connect(actColorSelect, SIGNAL(triggered(bool)), this, SLOT(sltSelectColor()));
 	barVisual->addAction(actColorSelect);
 	
 	actAddImage = new QAction(QIcon(":/media/insert-image.png"), "Add Image", this);
@@ -172,12 +173,12 @@ void BilboEditor::createActions()
 	barVisual->addAction(actAddImage);
 }
 
-void BilboEditor::toggleItalic()
+void BilboEditor::sltToggleItalic()
 {
 	editor->setFontItalic(!editor->fontItalic());
 }
 
-void BilboEditor::toggleBold()
+void BilboEditor::sltToggleBold()
 {
 	if ( editor->fontWeight() >= QFont::Bold )
 		editor->setFontWeight( QFont::Normal );
@@ -185,19 +186,19 @@ void BilboEditor::toggleBold()
 		editor->setFontWeight( QFont::Bold );
 }
 
-void BilboEditor::toggleUnderline()
+void BilboEditor::sltToggleUnderline()
 {
 	editor->setFontUnderline ( !editor->fontUnderline() );
 }
 
-void BilboEditor::toggleStrikeout()
+void BilboEditor::sltToggleStrikeout()
 {
 	QFont f( editor->currentFont() );
 	f.setStrikeOut(!f.strikeOut());
 	editor->setCurrentFont(f);
 }
 
-void BilboEditor::toggleCode()
+void BilboEditor::sltToggleCode()
 {
 	//TODO
 	static QString preFontFamily;
@@ -209,7 +210,7 @@ void BilboEditor::toggleCode()
 	}
 }
 
-void BilboEditor::fontSizeIncrease()
+void BilboEditor::sltFontSizeIncrease()
 {
 	QTextCharFormat format = editor->currentCharFormat();
 	
@@ -221,7 +222,7 @@ void BilboEditor::fontSizeIncrease()
 	}
 }
 
-void BilboEditor::fontSizeDecrease()
+void BilboEditor::sltFontSizeDecrease()
 {
 	QTextCharFormat format = editor->currentCharFormat();
 
@@ -233,10 +234,10 @@ void BilboEditor::fontSizeDecrease()
 	}
 }
 
-void BilboEditor::addEditLink()
+void BilboEditor::sltAddEditLink()
 {
 	linkDialog = new AddEditLink(this);
-	connect(linkDialog, SIGNAL(addLink(const QString&, const QString, const QString&)), this, SLOT(setLink(QString, QString, QString)));
+	connect(linkDialog, SIGNAL(addLink(const QString&, const QString, const QString&)), this, SLOT(sltSetLink(QString, QString, QString)));
 	QTextCharFormat f = editor->currentCharFormat();
 	if(!f.isAnchor()){
 		linkDialog->show();
@@ -246,7 +247,21 @@ void BilboEditor::addEditLink()
 	}
 }
 
-void BilboEditor::removeLink()
+
+void BilboEditor::sltSetLink(QString address, QString target, QString title)
+{
+	QTextCharFormat f = editor->currentCharFormat();
+	f.setAnchor(true);
+	f.setAnchorHref(address);
+	f.setAnchorName(title);
+	//f.setUnderlineStyle(QTextCharFormat::SingleUnderline);
+	//const QBrush br(Qt::blue);
+	//f.setForeground(br);
+	//editor->setCurrentCharFormat(f);
+	editor->textCursor().mergeCharFormat(f);
+}
+
+void BilboEditor::sltRemoveLink()
 {
 	QTextCharFormat f = editor->textCursor().charFormat();
 	f.setAnchor(false);
@@ -256,7 +271,7 @@ void BilboEditor::removeLink()
 	editor->textCursor().mergeCharFormat(f);
 }
 
-void BilboEditor::selectColor()
+void BilboEditor::sltSelectColor()
 {
 	QColor c = QColorDialog::getColor(QColor("black"), this);
 	const QBrush br(c, Qt::SolidPattern);
@@ -266,7 +281,7 @@ void BilboEditor::selectColor()
 	editor->textCursor().mergeCharFormat(ch);
 }
 
-void BilboEditor::removeFormatting()
+void BilboEditor::sltRemoveFormatting()
 {
 // 	if(editor->textCursor().hasSelection())
 // 	{
@@ -292,22 +307,22 @@ void BilboEditor::removeFormatting()
 // 	editor->setCurrentCharFormat(f);
 }
 
-void BilboEditor::alignRight()
+void BilboEditor::sltAlignRight()
 {
 	editor->setAlignment(Qt::AlignRight);
 }
 
-void BilboEditor::alignLeft()
+void BilboEditor::sltAlignLeft()
 {
 	editor->setAlignment(Qt::AlignLeft);
 }
 
-void BilboEditor::alignCenter()
+void BilboEditor::sltAlignCenter()
 {
 	editor->setAlignment(Qt::AlignHCenter);
 }
 
-void BilboEditor::alignJustify()
+void BilboEditor::sltAlignJustify()
 {
 	if(editor->alignment()!=Qt::AlignJustify)
 		editor->setAlignment(Qt::AlignJustify);
@@ -315,7 +330,7 @@ void BilboEditor::alignJustify()
 // 		editor->setAlignment();
 }
 
-void BilboEditor::changeLayoutDirection()
+void BilboEditor::sltChangeLayoutDirection()
 {
 	qDebug("BilboEditor::changeLayoutDirection");
 	QTextCursor c = editor->textCursor();
@@ -332,7 +347,7 @@ void BilboEditor::sltAddImage()
 {
 	//Not permanent!
 	//Just to test postContentHtml function! :D
-	qDebug() << postContentHtml() ;
+	qDebug() << htmlContent() ;
 }
 // void BilboEditor::insertMedia(KBloggerMedia* media)
 // {
@@ -356,6 +371,36 @@ void BilboEditor::sltAddImage()
 // 		cursor.insertImage(target);
 // 	}
 // }
+
+void BilboEditor::sltSyncEditors(int index)
+{
+// 	editor->document();
+	htmlExporter* htmlExp = new htmlExporter();
+	
+	if(index == 0)
+	{
+		///Qt QTextEdit::setHtml() or QTextDocument::toHtml() convert <h1-5> tags to <span> tags
+		
+		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
+		//qDebug()<<htmlEditor->toPlainText()<<endl;
+		//qDebug()<<editor->document()->toHtml()<<endl;
+	}
+	else if(index == 1){
+		//qDebug()<<editor->toHtml()<<endl;
+		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+	}
+	else if(prev_index == 1){
+		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
+		preview->setHtml(htmlEditor->toPlainText(), QUrl("#"));
+	}
+	else if(prev_index == 0){
+		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+		preview->setHtml(htmlEditor->toPlainText(), QUrl("#"));
+	}
+	
+	prev_index = index;
+	delete htmlExp;
+}
 
 
 QString BilboEditor::htmlToRichtext(const QString& html)
@@ -388,50 +433,8 @@ QString BilboEditor::htmlToRichtext(const QString& html)
 	return h;
 }
 
-void BilboEditor::syncEditors(int index)
-{
-// 	editor->document();
-	htmlExporter* htmlExp = new htmlExporter();
-	
-	if(index == 0)
-	{
-		///Qt QTextEdit::setHtml() or QTextDocument::toHtml() convert <h1-5> tags to <span> tags
-		
-		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
-		//qDebug()<<htmlEditor->toPlainText()<<endl;
-		//qDebug()<<editor->document()->toHtml()<<endl;
-	}
-	else if(index == 1){
-		//qDebug()<<editor->toHtml()<<endl;
-		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
-	}
-	else if(prev_index == 1){
-		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
-		preview->setHtml(htmlEditor->toPlainText(), QUrl("#"));
-	}
-	else if(prev_index == 0){
-		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
-		preview->setHtml(htmlEditor->toPlainText(), QUrl("#"));
-	}
-	
-	prev_index = index;
-	delete htmlExp;
-}
 
-void BilboEditor::setLink(QString address, QString target, QString title)
-{
-	QTextCharFormat f = editor->currentCharFormat();
-	f.setAnchor(true);
-	f.setAnchorHref(address);
-	f.setAnchorName(title);
-	//f.setUnderlineStyle(QTextCharFormat::SingleUnderline);
-	//const QBrush br(Qt::blue);
-	//f.setForeground(br);
-	//editor->setCurrentCharFormat(f);
-	editor->textCursor().mergeCharFormat(f);
-}
-
-QString BilboEditor::postContentHtml()
+QString* BilboEditor::htmlContent()
 {
 	htmlExporter* htmlExp = new htmlExporter();
 	
@@ -441,6 +444,8 @@ QString BilboEditor::postContentHtml()
 			editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
 	
 	delete htmlExp;
-	return htmlEditor->toPlainText();
+	
+	mHtmlContent = new QString(htmlEditor->toPlainText());
+	return mHtmlContent;
 }
 

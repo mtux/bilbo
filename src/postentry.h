@@ -48,11 +48,11 @@ private:
 	BilboEditor *editPostWidget;
 	QGridLayout *gridLayout;
 	QHBoxLayout *horizontalLayout;
-	QLabel *titleLabel;
+	QLabel *labelTitle;
 	QLineEdit *txtTitle;
 	QWidget *wPost;
 	
-	void setupUi(QWidget *parentWidget);
+	void createUi(QWidget *parentWidget);
 };
 
 #endif
