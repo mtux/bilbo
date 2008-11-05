@@ -21,9 +21,11 @@
 #define TOOLBOX_H
 
 #include <QDockWidget>
+#include <QtGui>
 
 #include "ui_toolbox.h"
 #include "addeditblog.h"
+#include "global.h"
 
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
@@ -33,12 +35,29 @@ class Toolbox: public QDockWidget, public Ui::ToolboxWidget {
 Q_OBJECT
 public:
     Toolbox(QWidget *parent = 0);
+	
+	void reloadBlogList();
+	
+	QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
+	QList<QRadioButton*> listBlogRadioButtons;
+	
+	QMap<QString, int> listCategories;///Contain Category name(QString) and Category id(int)
+	QList<QCheckBox*> listCategoryCheckBoxes;
+	
 public slots:
-	void on_btnBlogAdd_clicked();
-	void on_btnBlogEdit_clicked();
+	void sltAddBlog();
+	void sltBlogAdded(BilboBlog&);
+	void sltEditBlog();
+	void sltBlogEdited(BilboBlog&);
+	void sltRemoveBlog();
+	void sltLoadCategoryList();
+	void sltSetCurrentBlog( bool );
+	void sltReloadEntries();
 	
 private:
 	AddEditBlog *addEditBlogWindow;
+	QRadioButton *blogToEdit;
+	QRadioButton *currentBlog;
 };
 
 #endif

@@ -22,10 +22,11 @@
 
 #include <QMainWindow>
 #include <QtGui/QToolBar>
-//#include "ui_mainwindow.h"
+
 #include "toolbox.h"
 #include "postentry.h"
 #include "addeditblog.h"
+#include "global.h"
 
 /**
 Main window of bilbo blogger implementation...
@@ -41,15 +42,37 @@ public:
 
     ~MainWindow();
 	
-public slots:
+	QAction *actAddBlog;
+	QAction *actUploadAll;
+	QAction *actNewPost;
+	QAction *actPublish;
+	//QActionGroup *saveActions;
+	QAction *actSaveLocally;
+	QAction *actSaveDraft;
+	QAction *actDeletePost;
+	QAction *actDeleteLocally;
+	QAction *actAbout;
+	QAction *actQuit;
+	QAction *actToggleToolboxVisible;
+	
+protected slots:
 	void sltAddNewBlog();
 	void sltCreateNewPost();
 	void sltUploadAllChanges();
 	void sltPostTitleChanged(const QString& title);
 	void sltBilboAbout();
 	void sltQuit();
+	void sltToggleToolboxVisible(bool);
 	
 private:
+	void createUi();
+	void createActions();
+	void addCreatedActions();
+	void readConfig();
+	void writeConfig();
+
+	
+	
 	Toolbox *toolbox;
 	PostEntry *activePost;
 	AddEditBlog *addBlogPage;
@@ -63,22 +86,10 @@ private:
 	QMenu *menuPost;
 	QMenu *menuAbout;
 	QStatusBar *statusbarMain;
-public:
-	QAction *actAddBlog;
-	QAction *actUploadAll;
-	QAction *actNewPost;
-	QAction *actPublish;
-	//QActionGroup *saveActions;
-	QAction *actSaveLocally;
-	QAction *actSaveDraft;
-	QAction *actDeletePost;
-	QAction *actDeleteLocally;
-	QAction *actAbout;
-	QAction *actQuit;
-private:
-	void createUi();
-	void createActions();
-	void addCreatedActions();
+	
+
+	
+
 };
 
 #endif

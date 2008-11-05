@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>323</width>
+    <width>300</width>
     <height>582</height>
    </rect>
   </property>
@@ -26,8 +26,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>295</width>
-           <height>406</height>
+           <width>280</width>
+           <height>405</height>
           </rect>
          </property>
          <attribute name="label" >
@@ -36,38 +36,30 @@
          <layout class="QGridLayout" name="gridLayout_7" >
           <item row="0" column="0" >
            <widget class="QFrame" name="frameBlog" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="frameShape" >
              <enum>QFrame::StyledPanel</enum>
             </property>
             <property name="frameShadow" >
              <enum>QFrame::Raised</enum>
             </property>
-            <layout class="QGridLayout" name="gridLayout_6" >
-             <item row="0" column="0" >
-              <widget class="QRadioButton" name="rbtnBlog1" >
-               <property name="text" >
-                <string>Blog 1</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0" >
-              <spacer name="spaceBlog" >
-               <property name="orientation" >
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>222</width>
-                 <height>174</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
+            <layout class="QVBoxLayout" name="verticalLayout" >
+             <property name="sizeConstraint" >
+              <enum>QLayout::SetDefaultConstraint</enum>
+             </property>
             </layout>
            </widget>
           </item>
-          <item row="1" column="0" >
+          <item row="2" column="0" >
            <layout class="QHBoxLayout" name="horizontalLayout_5" >
+            <property name="sizeConstraint" >
+             <enum>QLayout::SetMinimumSize</enum>
+            </property>
             <item>
              <widget class="QPushButton" name="btnBlogAdd" >
               <property name="text" >
@@ -98,8 +90,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>295</width>
-           <height>406</height>
+           <width>280</width>
+           <height>405</height>
           </rect>
          </property>
          <attribute name="label" >
@@ -137,8 +129,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>295</width>
-           <height>406</height>
+           <width>280</width>
+           <height>405</height>
           </rect>
          </property>
          <attribute name="label" >
@@ -146,35 +138,20 @@
          </attribute>
          <layout class="QGridLayout" name="gridLayout_4" >
           <item row="0" column="0" >
-           <widget class="QFrame" name="frame_2" >
+           <widget class="QFrame" name="frameCat" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="frameShape" >
              <enum>QFrame::StyledPanel</enum>
             </property>
             <property name="frameShadow" >
              <enum>QFrame::Raised</enum>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_4" >
-             <item>
-              <widget class="QCheckBox" name="chkCatCat1" >
-               <property name="text" >
-                <string>Cat 1</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer_2" >
-               <property name="orientation" >
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
+            <layout class="QVBoxLayout" name="verticalLayout_4" />
            </widget>
           </item>
           <item row="1" column="0" >
@@ -242,8 +219,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>295</width>
-           <height>406</height>
+           <width>280</width>
+           <height>405</height>
           </rect>
          </property>
          <attribute name="label" >
@@ -255,8 +232,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>295</width>
-           <height>406</height>
+           <width>280</width>
+           <height>405</height>
           </rect>
          </property>
          <attribute name="label" >
@@ -313,14 +290,12 @@
   </widget>
  </widget>
  <tabstops>
-  <tabstop>rbtnBlog1</tabstop>
   <tabstop>btnBlogAdd</tabstop>
   <tabstop>btnBlogEdit</tabstop>
   <tabstop>btnBlogRemove</tabstop>
   <tabstop>listEntries</tabstop>
   <tabstop>btnEntriesReload</tabstop>
   <tabstop>btnEntriesCopy</tabstop>
-  <tabstop>chkCatCat1</tabstop>
   <tabstop>btnCatAdd</tabstop>
   <tabstop>txtCatTags</tabstop>
   <tabstop>chkOptionsTime</tabstop>

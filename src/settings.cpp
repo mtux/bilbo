@@ -45,7 +45,7 @@ void Settings::load()
 {
 	qDebug("Settings::load");
 	
-	QSettings *set = new QSettings;
+	QSettings *set = new QSettings(CONF_PATH, QSettings::NativeFormat);
 	
 	showMainOnStart = set->value("show_main_on_start", true).toBool();
 }

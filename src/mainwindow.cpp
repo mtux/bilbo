@@ -18,19 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "mainwindow.h"
-
+#include <QSettings>
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {
 	createUi();
-	
-	activePost=new PostEntry(this);
-	tabPosts->addTab(activePost,"Untitled");
-	tabPosts->setCurrentIndex(0);
-	
-	toolbox=new Toolbox(this);
-	this->addDockWidget(Qt::RightDockWidgetArea,toolbox);
-	
+	readConfig();
+	toolbox->setMinimumWidth(280);
 	createActions();
+	
+	if(toolbox->isVisible()){
+		actToggleToolboxVisible->setText(tr("Hide Toolbox"));
+	} else {
+		actToggleToolboxVisible->setText(tr("Show Toolbox"));
+	}
 }
 
 
@@ -38,9 +38,32 @@ MainWindow::~MainWindow()
 {
 }
 
+void MainWindow::readConfig()
+{
+	QSettings config(CONF_PATH, QSettings::NativeFormat);
+
+	QPoint pos = config.value("pos", QPoint(300, 200)).toPoint();
+	QSize size = config.value ( "size", QSize ( 800, 600 ) ).toSize();
+	int toolboxWidth = config.value ( "toolbox_width", 300 ).toInt();
+	toolbox->setVisible(config.value ( "toolbox_visible", true ).toBool());
+
+	resize(size);
+	toolbox->resize(toolboxWidth, toolbox->height());
+	move(pos);
+}
+
+void MainWindow::writeConfig()
+{
+	QSettings config(CONF_PATH, QSettings::NativeFormat);
+	config.setValue("pos" , pos());
+	config.setValue("size", size() );
+	config.setValue("toolbox_width", toolbox->width());
+	config.setValue("toolbox_visible", toolbox->isVisible());
+}
+
 void MainWindow::createUi()
 {
-	this->resize(887, 559);
+// 	this->resize(887, 559);
 	this->setWindowTitle("MainWindow");
 	
 	tabPosts = new QTabWidget(this);
@@ -71,6 +94,13 @@ void MainWindow::createUi()
 	
 	statusbarMain = new QStatusBar(this);
 	this->setStatusBar(statusbarMain);
+	
+	activePost=new PostEntry(this);
+	tabPosts->addTab(activePost,"Untitled");
+	tabPosts->setCurrentIndex(0);
+	
+	toolbox=new Toolbox(this);
+	this->addDockWidget(Qt::RightDockWidgetArea,toolbox);
 }
 
 void MainWindow::createActions()
@@ -107,6 +137,10 @@ void MainWindow::createActions()
 	actQuit->setShortcut(tr("Ctrl+Q"));
 	connect(actQuit, SIGNAL(triggered( bool )), this, SLOT(sltQuit()));
 	
+	actToggleToolboxVisible = new QAction(QIcon(":/media/format-text-bold.png"), "Hide Toolbox", this);
+	actToggleToolboxVisible->setShortcut(tr("Ctrl+T"));
+	connect(actToggleToolboxVisible, SIGNAL(triggered( bool )), this, SLOT(sltToggleToolboxVisible(bool)));
+	
 	addCreatedActions();
 	
 }
@@ -131,6 +165,7 @@ void MainWindow::addCreatedActions()
 	menubar->addAction(menuPost->menuAction());
 	menubar->addAction(menuAbout->menuAction());
 	
+	menuBilbo->addAction(actToggleToolboxVisible);
 	menuBilbo->addAction(actQuit);
 	
 	menuPost->addAction(actNewPost);
@@ -177,6 +212,19 @@ void MainWindow::sltBilboAbout()
 
 void MainWindow::sltQuit()
 {
+	writeConfig();
 	qApp->quit();
 }
+
+void MainWindow::sltToggleToolboxVisible(bool v)
+{
+	if(toolbox->isVisible()){
+		toolbox->hide();
+		actToggleToolboxVisible->setText(tr("Show Toolbox"));
+	} else {
+		toolbox->show();
+		actToggleToolboxVisible->setText(tr("Hide Toolbox"));
+	}
+}
+
 

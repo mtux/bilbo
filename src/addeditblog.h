@@ -62,6 +62,10 @@ protected slots:
 	
 	void sltAccepted();
 	
+signals:
+	void sigBlogAdded(BilboBlog&);
+	void sigBlogEdited(BilboBlog&);
+	
 private:
 	bool isNewBlog;
 	BilboBlog *bBlog;

@@ -476,8 +476,6 @@ bool DBMan::clearFiles(int blog_id)
 	return q.exec();
 }
 
-
-
 QList< BilboBlog *> DBMan::listBlogs()
 {
 	QList<BilboBlog *> list;
@@ -511,38 +509,47 @@ QMap< QString, int > DBMan::listBlogsTitle()
 
 BilboBlog * DBMan::getBlogInfo(QString title)
 {
-	BilboBlog *b;
+	BilboBlog *b = new BilboBlog();
 	QSqlQuery q;
-	q.exec("SELECT id, blogid, blog_url, username, password, style_url, api_type, title FROM blog WHERE title = ?");
+	q.prepare("SELECT id, blogid, blog_url, username, password, style_url, api_type, title, direction FROM blog WHERE title = ?");
 	q.addBindValue(title);
-	if( q.next() ){
-		b->setId(q.value(0).toInt());
-		b->setBlogId (q.value(1).toString());
-		b->setBlogUrl( QUrl(q.value(2).toString()));
-		b->setUsername (q.value(3).toString());
-		b->setPassword (q.value(4).toString());
-		b->setStylePath( q.value(5).toString());
-		b->setTitle(q.value(6).toString());
-	}
-	return b;
+	if(q.exec())
+		if( q.next() ){
+			b->setId(q.value(0).toInt());
+			b->setBlogId (q.value(1).toString());
+			b->setBlogUrl( QUrl(q.value(2).toString()));
+			b->setUsername (q.value(3).toString());
+			b->setPassword (q.value(4).toString());
+			b->setStylePath( q.value(5).toString());
+			b->setApi((BilboBlog::ApiType)q.value(6).toInt());
+			b->setTitle( q.value(7).toString());
+			b->setDirection((BilboBlog::TextDirection)q.value(8).toInt());
+			return b;
+		}
+	return 0;
 }
 
 BilboBlog * DBMan::getBlogInfo(int blog_id)
 {
-	BilboBlog *b;
+	BilboBlog *b = new BilboBlog();
 	QSqlQuery q;
-	q.exec("SELECT id, blogid, blog_url, username, password, style_url, api_type, title FROM blog WHERE id = ?");
+	q.prepare("SELECT id, blogid, blog_url, username, password, style_url, api_type, title, direction FROM blog WHERE id = ?");
 	q.addBindValue(blog_id);
-	if( q.next() ){
-		b->setId(q.value(0).toInt());
-		b->setBlogId( q.value(1).toString());
-		b->setBlogUrl(QUrl(q.value(2).toString()));
-		b->setUsername (q.value(3).toString());
-		b->setPassword (q.value(4).toString());
-		b->setStylePath(q.value(5).toString());
-		b->setTitle( q.value(6).toString());
+	if(q.exec()){
+		if( q.next() ){
+			b->setId(q.value(0).toInt());
+			b->setBlogId( q.value(1).toString());
+			b->setBlogUrl(QUrl(q.value(2).toString()));
+			b->setUsername (q.value(3).toString());
+			b->setPassword (q.value(4).toString());
+			b->setStylePath(q.value(5).toString());
+			b->setApi((BilboBlog::ApiType)q.value(6).toInt());
+			b->setTitle( q.value(7).toString());
+			b->setDirection( (BilboBlog::TextDirection)q.value(8).toInt());
+			return b;
+		}
 	}
-	return b;
+	return 0;
 }
 
 QList< BilboPost* > DBMan::listPosts(int blog_id)

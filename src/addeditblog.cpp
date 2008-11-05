@@ -34,14 +34,14 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 	if(blog_id>-1){
 		this->setWindowTitle("Edit Blog Settings");
 		isNewBlog=false;
-		BilboBlog b = *db->getBlogInfo(blog_id);
-		txtUrl->setText(b.blogUrl().toString());
-		txtUser->setText(b.username());
-		txtPass->setText(b.password());
-		txtID->setText(b.blogid());
-		lblTitle->setText(b.title());
-		comboAPI->setCurrentIndex(b.api());
-		comboDir->setCurrentIndex(b.direction());
+		bBlog = db->getBlogInfo(blog_id);
+		txtUrl->setText(bBlog->blogUrl().toString());
+		txtUser->setText(bBlog->username());
+		txtPass->setText(bBlog->password());
+		txtID->setText(bBlog->blogid());
+		lblTitle->setText(bBlog->title());
+		comboAPI->setCurrentIndex(bBlog->api());
+		comboDir->setCurrentIndex(bBlog->direction());
 	}
 	connect(txtUrl, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
 	connect(txtUser, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
@@ -207,8 +207,12 @@ void AddEditBlog::sltAccepted()
 	if(bBlog->blogUrl().isEmpty())
 		bBlog->setBlogUrl(QUrl(txtUrl->text()));
 	
-	if(isNewBlog)
-		db->addBlog(*bBlog);
-	else
-		db->editBlog(*bBlog);
+	if(isNewBlog){
+		if(db->addBlog(*bBlog))
+			emit sigBlogAdded(*bBlog);
+	}
+	else{
+		if(db->editBlog(*bBlog))
+			emit sigBlogEdited(*bBlog);
+	}
 }
