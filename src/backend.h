@@ -22,7 +22,17 @@
 
 #include <QObject>
 
-// #include "bloginterface.h"
+#include <kurl.h>
+#include <kblog/blog.h>
+#include <kblog/blogger1.h>
+#include <kblog/gdata.h>
+#include <kblog/metaweblog.h>
+#include <kblog/movabletype.h>
+#include <kblog/wordpressbuggy.h>
+
+#include "bilboblog.h"
+#include "bilbopost.h"
+#include "global.h"
 
 /**
 Engine of application, communicate with plugins and UI.
@@ -31,14 +41,41 @@ this is heart and brain of app. ;)
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
-class BilboEngine : public QObject
+class Backend : public QObject
 {
 	Q_OBJECT
 public:
-    BilboEngine(QObject* parent);
+	Backend( int blog_id, QObject* parent=0);
 
-    ~BilboEngine();
+    ~Backend();
+	
+	/**
+	 * Request to Fetch categories list from server.
+	 * and after it's fetched, categoriesListed() SLOT will insert them to database, and update list in database
+	 * and emit categoriesFetched() SIGNAL.
+	 * @param blog_id Id of blog in DB!
+	 */
+	void getCategoryListFromServer();
+	void getEntriesListFromServer(int count);
+    
+protected slots:
+	void categoriesListed(const QList< QMap< QString, QString > > &   categories   );
+	void entriesListed(const QList< KBlog::BlogPost > &posts);
+signals:
+    /**
+     * emit when a categoriesListed() Done and Categories added to DB
+     * @param blog_id id of Blog owner of categories.
+     */
+    void sigCategoryListFetched( int blog_id );
+	/**
+	 * emit when a entriesListed() Done and Entries added to DB
+	 * @param blog_id id of Blog owner of Entries.
+	 */
+	void sigEntriesListFetched( int blog_id );
 
+private:
+	KBlog::Blog *mBlog;
+	BilboBlog *bBlog;
 };
 
 #endif

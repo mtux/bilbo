@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "bilbopost.h"
-
+#include <QStringList>
 BilboPost::BilboPost()
  : KBlog::BlogPost()
 {
@@ -29,12 +29,12 @@ BilboPost::~BilboPost()
 {
 }
 
-QUrl BilboPost::postLink()
+QUrl BilboPost::postLink() const
 {
 	return QUrl(this->link().url());
 }
 
-QUrl BilboPost::postPermaLink()
+QUrl BilboPost::postPermaLink() const
 {
 	return QUrl(this->permaLink().url());
 }
@@ -49,7 +49,7 @@ void BilboPost::setPostPermaLink(const QUrl &link)
 	this->setPermaLink(KUrl(link));
 }
 
-QDateTime BilboPost::cTime()
+QDateTime BilboPost::cTime() const
 {
 	return QDateTime::fromString(this->creationDateTime().toString(KDateTime::ISODate), Qt::ISODate);
 }
@@ -59,7 +59,7 @@ void BilboPost::setMTime(const QDateTime &t)
 	this->setModificationDateTime(KDateTime(t));
 }
 
-QDateTime BilboPost::mTime()
+QDateTime BilboPost::mTime() const
 {
 	return QDateTime::fromString(this->modificationDateTime().toString(KDateTime::ISODate), Qt::ISODate);
 }
@@ -69,7 +69,7 @@ void BilboPost::setCTime(const QDateTime &t)
 	this->setCreationDateTime(KDateTime(t));
 }
 
-QString BilboPost::author()
+QString BilboPost::author() const
 {
 	return mAuthor;
 }
@@ -79,7 +79,7 @@ void BilboPost::setId(int id)
 	mId = id;
 }
 
-int BilboPost::id()
+int BilboPost::id() const
 {
 	return mId;
 }
@@ -87,6 +87,26 @@ int BilboPost::id()
 void BilboPost::setAuthor(const QString &author)
 {
 	mAuthor = author;
+}
+
+BilboPost::BilboPost(const KBlog::BlogPost &post)
+{
+	this->setCreationDateTime(post.creationDateTime());
+	this->setModificationDateTime(post.modificationDateTime());
+	this->setLink(post.link());
+	this->setPermaLink(post.permaLink());
+	this->setCategories(post.categories());
+	this->setCommentAllowed(post.isCommentAllowed());
+	this->setError(post.error());
+	this->setContent(post.content());
+	this->setTags(post.tags());
+	this->setMood(post.mood());
+	this->setMusic(post.music());
+	this->setPrivate(post.isPrivate());
+	this->setStatus(post.status());
+	this->setSummary(post.summary());
+	this->setTrackBackAllowed(post.isTrackBackAllowed());
+	this->setTitle(post.title());
 }
 
 

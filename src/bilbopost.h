@@ -40,25 +40,26 @@ class BilboPost : public KBlog::BlogPost
 {
 public:
     BilboPost();
+	BilboPost(const KBlog::BlogPost&);
 
     ~BilboPost();
 
-	QUrl postLink();
+	QUrl postLink() const;
 	void setPostLink(const QUrl&);
 	
-	QUrl postPermaLink();
+	QUrl postPermaLink() const;
 	void setPostPermaLink(const QUrl&);
 	
-	QDateTime cTime();
+	QDateTime cTime() const;
 	void setCTime(const QDateTime&);
 	
-	QDateTime mTime();
+	QDateTime mTime() const;
 	void setMTime(const QDateTime&);
 	
-	QString author();
+	QString author() const;
 	void setAuthor(const QString&);
 	
-	int id();
+	int id() const;
 	void setId(int);
 	
 private:

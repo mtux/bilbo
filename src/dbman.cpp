@@ -78,13 +78,13 @@ bool DBMan::createDB()
 		ret=false;
 	
 	///connection bethween posts and categories
-	if(!q.exec("CREATE TABLE post_cat (post_id INTEGER, cat_id INTEGER, PRIMARY KEY(post_id, cat_id));"))
+	if(!q.exec("CREATE TABLE post_cat (post_id INTEGER, cat_id INTEGER);"))
 		ret=false;
 	
 	
 	///this will implement using clearPosts() , clearCategories() and clearFiles() in application level!
-// 	q.exec("CREATE TRIGGER delete_post AFTER DELETE ON post BEGIN delete from post_cat WHERE postid=OLD.postid; END");
-// 	q.exec("CREATE TRIGGER delete_blog AFTER DELETE ON blog BEGIN DELETE from category WHERE blogid=OLD.blogid; DELETE from file WHERE blogid=OLD.blogid; END");
+	q.exec("CREATE TRIGGER delete_post AFTER DELETE ON post BEGIN DELETE from post_cat WHERE post_id=OLD.id; END");
+	q.exec("CREATE TRIGGER delete_blog AFTER DELETE ON blog BEGIN DELETE from category WHERE category.blog_id=OLD.id; DELETE from file WHERE file.blog_id=OLD.id; DELETE from post WHERE post.blog_id=OLD.id; END");
 	
 	return ret;
 }
@@ -237,7 +237,7 @@ int DBMan::addPost(QString postid, int blog_id, QString author, QString title, Q
 	return ret;
 }
 
-int DBMan::addPost(BilboPost & post, int blog_id)
+int DBMan::addPost(const BilboPost & post, int blog_id)
 {
 	QSqlQuery q;
 	q.prepare("INSERT INTO post (postid, blog_id, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -267,7 +267,7 @@ int DBMan::addPost(BilboPost & post, int blog_id)
 		ret = q.lastInsertId().toInt();
 		int cat_count = post.categories().count();
 		int i=0;
-		QSqlQuery q, q2;
+		QSqlQuery q, q2;int catid;
 		q.prepare("SELECT catid FROM category WHERE name = ? AND blog_id= ?");
 		q2.prepare("INSERT INTO post_cat (post_id, cat_id) VALUES(?, ?)");
 		while(i<cat_count){
@@ -277,11 +277,16 @@ int DBMan::addPost(BilboPost & post, int blog_id)
 				qDebug("DBMan::addPost: Cannot get category id for category %s", post.categories()[i].toLatin1().data());
 			else
 				if(q.next()){
-				q2.addBindValue(ret);
-				q2.addBindValue(q.value(0).toInt());
-				if(q2.exec())
-					qDebug("DBMan::addPost: Category %s added to post.", post.categories()[i].toLatin1().data());
+					catid = q.value(0).toInt();
+					q2.addBindValue(ret);
+					q2.addBindValue(catid);
+					if(q2.exec()){
+						qDebug("DBMan::addPost: Category %d added to post %d.", catid, ret);
+					} else{
+						qDebug("DBMan::addPost: Cannot add Category %d to Post, SQL Error: %s", catid, q2.lastError().text().toLatin1().data());
+					}
 				}
+			i++;
 		}
 	}
 	else

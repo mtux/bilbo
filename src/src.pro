@@ -1,7 +1,6 @@
 SOURCES += main.cpp \
  mainwindow.cpp \
  toolbox.cpp \
- bilboengine.cpp \
  systray.cpp \
  settings.cpp \
  addeditblog.cpp \
@@ -12,7 +11,9 @@ SOURCES += main.cpp \
  dbman.cpp \
  global.cpp \
  bilbopost.cpp \
- bilboblog.cpp
+ bilboblog.cpp \
+ backend.cpp \
+ entriescountdialog.cpp
 TEMPLATE = app
 CONFIG += warn_on \
 	  thread \
@@ -24,10 +25,10 @@ CONFIG -= release
 
 FORMS += toolbox.ui \
 addeditblog.ui \
- addeditlink.ui
+ addeditlink.ui \
+ entriescount.ui
 HEADERS += mainwindow.h \
 toolbox.h \
-bilboengine.h \
 systray.h \
 settings.h \
 addeditblog.h \
@@ -39,7 +40,9 @@ postentry.h \
  global.h \
  constants.h \
  bilbopost.h \
- bilboblog.h
+ bilboblog.h \
+ backend.h \
+ entriescountdialog.h
 QT += webkit \
  sql
 

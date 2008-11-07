@@ -17,16 +17,17 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "bilboengine.h"
+#include "entriescountdialog.h"
 
-BilboEngine::BilboEngine(QObject* parent): QObject(parent)
+EntriesCountDialog::EntriesCountDialog(QWidget *parent)
+    :QDialog(parent)
 {
-	
+	setupUi(this);
+	connect(this, SIGNAL(accepted()), this, SLOT(sltAccepted()));
 }
 
-
-BilboEngine::~BilboEngine()
+void EntriesCountDialog::sltAccepted()
 {
+	qDebug("EntriesCountDialog::sltAccepted");
+	emit sigAccepted(spnCount->value());
 }
-
-

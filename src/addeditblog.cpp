@@ -51,6 +51,9 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 	connect(this, SIGNAL(accepted()), this, SLOT(sltAccepted()));
 	
 	txtUrl->setFocus();
+	
+	bBlog = new BilboBlog();
+	bBlog->setBlogId(0);
 }
 
 void AddEditBlog::enableAutoConfBtn()
@@ -175,7 +178,6 @@ void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
 	
-	bBlog = new BilboBlog();
 	bBlog->setBlogUrl(QUrl(txtUrl->text()));
 	bBlog->setUsername(txtUser->text());
 	bBlog->setPassword(txtPass->text());
@@ -195,6 +197,10 @@ void AddEditBlog::fetchedProfileId(const QString &id)
 
 void AddEditBlog::sltAccepted()
 {
+	if(bBlog->blogid().isEmpty() && txtID->text().isEmpty()){
+		QMessageBox::critical(this, "Failed to get blog id", "You have to Fetch blog id by hitting \"Auto Configure\" Or \"Fetch ID\" button or Insert your Blog Id manually.");
+		return;
+	}
 	bBlog->setApi((BilboBlog::ApiType)comboAPI->currentIndex());
 	bBlog->setDirection((BilboBlog::TextDirection)comboDir->currentIndex());
 	

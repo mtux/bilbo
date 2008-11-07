@@ -75,7 +75,7 @@ public:
 	///Post:
 	int addPost(QString postid, int blog_id, QString author, QString title, QString &content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/, QStringList categories);
 	
-	int addPost(BilboPost& post, int blog_id);
+	int addPost(const BilboPost& post, int blog_id);
 	
 	bool editPost(int id, int blog_id, QString postid, QString author, QString title, QString &content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags, QStringList categories);
 	

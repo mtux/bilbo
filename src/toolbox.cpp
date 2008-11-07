@@ -18,22 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "toolbox.h"
+#include "entriescountdialog.h"
 
 Toolbox::Toolbox(QWidget *parent)
     :QDockWidget(parent)
 {
+	qDebug("Toolbox::Toolbox");
 	setupUi(this);
 	frameBlog->layout()->setAlignment(Qt::AlignTop);
 	frameCat->layout()->setAlignment(Qt::AlignTop);
 	reloadBlogList();
+	currentBlog=0;
 	
 	connect(btnBlogAdd, SIGNAL(clicked()), this, SLOT(sltAddBlog()));
 	connect(btnBlogEdit, SIGNAL(clicked()), this, SLOT(sltEditBlog()));
 	connect(btnBlogRemove, SIGNAL(clicked()), this, SLOT(sltRemoveBlog()));
+	
+	connect(btnCatReload, SIGNAL(clicked()), this, SLOT(sltReloadCategoryList()));
+	connect(btnEntriesReload, SIGNAL(clicked()), this, SLOT(sltReloadEntries()));
+	connect(box, SIGNAL(currentChanged ( int )), this, SLOT(sltCurrentPageChanged(int)));
 }
 
 void Toolbox::sltAddBlog()
 {
+	qDebug("Toolbox::sltAddBlog");
 	addEditBlogWindow = new AddEditBlog(-1, this);
 	addEditBlogWindow->show();
 	connect(addEditBlogWindow, SIGNAL(sigBlogAdded(BilboBlog&)), this, SLOT(sltBlogAdded(BilboBlog&)));
@@ -41,6 +49,7 @@ void Toolbox::sltAddBlog()
 
 void Toolbox::sltEditBlog()
 {
+	qDebug("Toolbox::sltEditBlog");
 	if(!currentBlog){
 		QMessageBox::warning(this, "First select a blog", "There isn't any selected blog, you have to select a blog first.");
 		return;
@@ -53,13 +62,16 @@ void Toolbox::sltEditBlog()
 
 void Toolbox::sltRemoveBlog()
 {
+	qDebug("Toolbox::sltRemoveBlog");
 	db->removeBlog(listBlogs.value(currentBlog->text()));
 	listBlogs.remove(currentBlog->text());
 	delete currentBlog;
+	currentBlog=0;
 }
 
 void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 {
+	qDebug("Toolbox::sltBlogAdded");
 	QRadioButton *a = new QRadioButton(addedBlog.title());
 	listBlogRadioButtons.append(a);
 	frameBlog->layout()->addWidget(a);
@@ -68,12 +80,14 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 
 void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 {
+	qDebug("Toolbox::sltBlogEdited");
 	blogToEdit->setText(editedBlog.title());
 	delete(blogToEdit);
 }
 
 void Toolbox::reloadBlogList()
 {
+	qDebug("Toolbox::reloadBlogList");
 	listBlogs.clear();
 	listBlogs = db->listBlogsTitle();
 	for(int j=0; j<listBlogRadioButtons.count(); ++j){
@@ -89,8 +103,9 @@ void Toolbox::reloadBlogList()
 	}
 }
 
-void Toolbox::sltLoadCategoryList()
+void Toolbox::sltReloadCategoryList()
 {
+	qDebug("Toolbox::sltReloadCategoryList");
 	if(!currentBlog){
 		QMessageBox::warning(this, "First select a blog", "There isn't any selected blog, you have to select a blog from Blogs page befor ask for Category list");
 		return;
@@ -98,9 +113,69 @@ void Toolbox::sltLoadCategoryList()
 	
 	int blog_id;
 	
-
 	blog_id = listBlogs.value(currentBlog->text());
+
+	Backend *b = new Backend(blog_id);
+	b->getCategoryListFromServer();
+	connect(b, SIGNAL(sigCategoryListFetched(int)), this, SLOT(sltLoadCategoryListFromDB(int)));
+}
+
+void Toolbox::sltReloadEntries()
+{
+	qDebug("Toolbox::sltReloadEntries");
+	if(!currentBlog){
+		QMessageBox::warning(this, "First select a blog", "There isn't any selected blog, you have to select a blog from Blogs page befor ask for Entries list");
+		qDebug("there isn't any selected blog.");
+		return;
+	}
+	EntriesCountDialog *dia = new EntriesCountDialog(this);
+	dia->show();
+	connect(dia, SIGNAL(sigAccepted(int)), this, SLOT(sltGetEntriesCount(int)));
+}
+
+void Toolbox::sltSetCurrentBlog(bool checked)
+{
+	if(checked){
+		currentBlog = dynamic_cast<QRadioButton*>(sender());
+	}
+}
+
+void Toolbox::sltCurrentPageChanged(int index)
+{
+	qDebug("Toolbox::sltCurrentPageChanged");
+	if(!currentBlog)
+		return;
+	switch( index ){
+	case 1:
+		sltLoadEntriesFromDB(listBlogs.value(currentBlog->text(), -1));
+		break;
+	case 2:
+		sltLoadCategoryListFromDB(listBlogs.value(currentBlog->text(), -1));
+		break;
+	}
+}
+
+void Toolbox::sltLoadEntriesFromDB(int blog_id)
+{
+	qDebug("Toolbox::sltLoadEntriesFromDB");
+	if(blog_id==-1){
+		qDebug("Toolbox::loadEntriesFromDB: Blog Id not sets correctly");
+		return;
+	}
+	lstEntriesList->clear();
+	listEntries.clear();
 	
+	listEntries = db->listPostsTitle(blog_id);
+	lstEntriesList->addItems(listEntries.keys());
+}
+
+void Toolbox::sltLoadCategoryListFromDB(int blog_id)
+{
+	qDebug("Toolbox::sltLoadCategoryListFromDB");
+	if(blog_id==-1){
+		qDebug("Toolbox::sltLoadCategoryListFromDB: Blog Id not sets correctly");
+		return;
+	}
 	listCategories.clear();
 	listCategories = db->listCategories(blog_id);
 	
@@ -117,13 +192,10 @@ void Toolbox::sltLoadCategoryList()
 	}
 }
 
-void Toolbox::sltReloadEntries()
+void Toolbox::sltGetEntriesCount(int count)
 {
-	
-}
-
-void Toolbox::sltSetCurrentBlog(bool checked)
-{
-	if(checked)
-		currentBlog = dynamic_cast<QRadioButton*>(sender());
+	qDebug("Toolbox::sltGetEntriesCount");
+	Backend *entryB = new Backend(listBlogs.value(currentBlog->text()));
+	entryB->getEntriesListFromServer(count);
+	connect(entryB, SIGNAL(sigEntriesListFetched(int)), this, SLOT(sltLoadEntriesFromDB(int)));
 }

@@ -17,56 +17,23 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef TOOLBOX_H
-#define TOOLBOX_H
+#ifndef ENTRIESCOUNTDIALOG_H
+#define ENTRIESCOUNTDIALOG_H
 
-#include <QDockWidget>
-#include <QtGui>
+#include <QDialog>
 
-#include "ui_toolbox.h"
-#include "addeditblog.h"
-#include "global.h"
-#include "backend.h"
+#include "ui_entriescount.h"
 
-/**
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
- */
-class Toolbox: public QDockWidget, public Ui::ToolboxWidget {
+class EntriesCountDialog: public QDialog, public Ui::EntriesCount {
 Q_OBJECT
 public:
-    Toolbox(QWidget *parent = 0);
+    EntriesCountDialog(QWidget *parent = 0);
 	
-	void reloadBlogList();
+signals:
+	void sigAccepted(int count);
 	
-	
-	QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
-	QList<QRadioButton*> listBlogRadioButtons;
-	
-	QMap<QString, int> listCategories;///Contain Category name(QString) and Category id(int)
-	QList<QCheckBox*> listCategoryCheckBoxes;
-	
-	QMap<QString, int> listEntries;///Contain Post title(QString) and Post id(int)
-	
-public slots:
-	void sltAddBlog();
-	void sltBlogAdded(BilboBlog&);
-	void sltEditBlog();
-	void sltBlogEdited(BilboBlog&);
-	void sltRemoveBlog();
-	void sltSetCurrentBlog( bool );
-	void sltReloadCategoryList();
-	void sltLoadCategoryListFromDB( int blog_id );
-	void sltReloadEntries();
-	void sltGetEntriesCount(int);
-	void sltLoadEntriesFromDB( int blog_id );
-	void sltCurrentPageChanged( int );
-	
-private:
-	
-	AddEditBlog *addEditBlogWindow;
-	QRadioButton *blogToEdit;
-	QRadioButton *currentBlog;
+protected slots:
+	void sltAccepted();
 };
 
 #endif
