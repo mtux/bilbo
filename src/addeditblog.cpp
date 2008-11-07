@@ -214,7 +214,9 @@ void AddEditBlog::sltAccepted()
 		bBlog->setBlogUrl(QUrl(txtUrl->text()));
 	
 	if(isNewBlog){
-		if(db->addBlog(*bBlog))
+		int blog_id = db->addBlog(*bBlog);
+		bBlog->setId(blog_id);
+		if(blog_id!=-1)
 			emit sigBlogAdded(*bBlog);
 	}
 	else{

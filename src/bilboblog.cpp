@@ -32,7 +32,7 @@ BilboBlog::~BilboBlog()
 {
 }
 
-QUrl BilboBlog::blogUrl()
+QUrl BilboBlog::blogUrl() const
 {
 	return mBlogUrl;
 }
@@ -42,7 +42,7 @@ void BilboBlog::setBlogUrl(const QUrl &url)
 	mBlogUrl = url;
 }
 
-QString BilboBlog::blogid()
+QString BilboBlog::blogid() const
 {
 	return mBlogid;
 }
@@ -52,7 +52,7 @@ void BilboBlog::setBlogId(const QString &url)
 	mBlogid = url;
 }
 
-QString BilboBlog::username()
+QString BilboBlog::username() const
 {
 	return mUsername;
 }
@@ -62,7 +62,7 @@ void BilboBlog::setUsername(const QString &username)
 	mUsername = username;
 }
 
-QString BilboBlog::password()
+QString BilboBlog::password() const
 {
 	return mPassword;
 }
@@ -72,7 +72,7 @@ void BilboBlog::setPassword(const QString &password)
 	mPassword = password;
 }
 
-QString BilboBlog::title()
+QString BilboBlog::title() const
 {
 	return mTitle;
 }
@@ -82,7 +82,7 @@ void BilboBlog::setTitle(const QString &title)
 	mTitle = title;
 }
 
-QString BilboBlog::stylePath()
+QString BilboBlog::stylePath() const
 {
 	return mStylePath;
 }
@@ -92,32 +92,32 @@ void BilboBlog::setStylePath(const QString &path)
 	mStylePath = path;
 }
 
-BilboBlog::ApiType BilboBlog::api()
+BilboBlog::ApiType BilboBlog::api() const
 {
 	return mApi;
 }
 
-void BilboBlog::setApi(ApiType api)
+void BilboBlog::setApi(const ApiType api)
 {
 	mApi = api;
 }
 
-int BilboBlog::id()
+int BilboBlog::id() const
 {
 	return mId;
 }
 
-void BilboBlog::setId(int id)
+void BilboBlog::setId(const int id)
 {
 	mId = id;
 }
 
-BilboBlog::TextDirection BilboBlog::direction()
+BilboBlog::TextDirection BilboBlog::direction() const
 {
 	return mDir;
 }
 
-void BilboBlog::setDirection(TextDirection dir)
+void BilboBlog::setDirection(const TextDirection dir)
 {
 	mDir = dir;
 }

@@ -33,7 +33,6 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 	}
 }
 
-
 MainWindow::~MainWindow()
 {
 }
@@ -191,7 +190,7 @@ void MainWindow::sltCreateNewPost()
 	tabPosts->addTab(temp,"Untitled");
 	activePost=temp;
 	tabPosts->setCurrentWidget(temp);
-	
+	toolbox->resetFields();
 	if(this->isVisible()==false)
 		this->show();
 }
