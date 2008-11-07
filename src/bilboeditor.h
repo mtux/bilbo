@@ -26,7 +26,9 @@
 #include <QTabWidget>
 
 #include "addeditlink.h"
-/**
+
+//!Class BilboEditor represents the editor part of BilboBlogger
+/*!
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
@@ -34,12 +36,18 @@
 class BilboEditor : public QTabWidget
 {
 	Q_OBJECT
-public:
-    BilboEditor();
+	public:
+		//!BilboEditor constructor
+    	BilboEditor();
 
-    ~BilboEditor();
+		//!BilboEditor destructor
+    	~BilboEditor();
 	
-	QString* htmlContent();
+		//!Returns the editor current text in html format
+		/*!
+		\return a pointer to an String which contains html text
+		*/
+		QString *htmlContent();
 	
 	protected slots:
 		void sltToggleItalic();
@@ -98,7 +106,7 @@ public:
 		QAction *actColorSelect;
 		QAction *actAddImage;
 		
-		QString* mHtmlContent;
+		QString *mHtmlContent;
 		
 		AddEditLink *linkDialog;
 		QTextCharFormat defaultCharFormat;

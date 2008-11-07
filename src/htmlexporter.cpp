@@ -48,7 +48,9 @@ htmlExporter::~htmlExporter()
 QString htmlExporter::toHtml(const QTextDocument* document )
 {
     //kDebug();
-    if (document->isEmpty()) return html;
+    if (document->isEmpty()) {
+		return html;
+	}
     doc = document;
 
 	qDebug()<<doc->blockCount()<<endl;
@@ -75,8 +77,9 @@ void htmlExporter::emitFrame(QTextFrame::Iterator frameIt)
         if (next.atEnd()
                 && frameIt.currentFrame() == 0
                 && frameIt.parentFrame() != doc->rootFrame()
-                && frameIt.currentBlock().begin().atEnd())
+                && frameIt.currentBlock().begin().atEnd()) {
             return;
+		}
     }
 	
 
@@ -92,8 +95,9 @@ void htmlExporter::emitFrame(QTextFrame::Iterator frameIt)
                 html += QLatin1String("\n<table");
                 QTextFrameFormat format = f->frameFormat();
 
-                if (format.hasProperty(QTextFormat::FrameBorder))
+                if (format.hasProperty(QTextFormat::FrameBorder)) {
                     emitAttribute("border", QString::number(format.border()));
+				}
 
                 html += QLatin1String(" style=\"-qt-table-type: frame;");
                 emitFloatStyle(format.position(), OmitStyleTag);
@@ -109,8 +113,9 @@ void htmlExporter::emitFrame(QTextFrame::Iterator frameIt)
                 emitTextLength("height", format.height());
 
                 QBrush bg = format.background();
-                if (bg != Qt::NoBrush)
+                if (bg != Qt::NoBrush) {
                     emitAttribute("bgcolor", bg.color().name());
+				}
 
                 html += QLatin1Char('>');
                 html += QLatin1String("\n<tr>\n<td style=\"border: none;\">");
@@ -132,21 +137,25 @@ void htmlExporter::emitTable(const QTextTable *table)
 
     html += QLatin1String("\n<table");
 
-    if (format.hasProperty(QTextFormat::FrameBorder))
+    if (format.hasProperty(QTextFormat::FrameBorder)) {
         emitAttribute("border", QString::number(format.border()));
+	}
 
     emitFloatStyle(format.position());
     emitAlignment(format.alignment());
     emitTextLength("width", format.width());
 
-    if (format.hasProperty(QTextFormat::TableCellSpacing))
+    if (format.hasProperty(QTextFormat::TableCellSpacing)) {
         emitAttribute("cellspacing", QString::number(format.cellSpacing()));
-    if (format.hasProperty(QTextFormat::TableCellPadding))
+	}
+    if (format.hasProperty(QTextFormat::TableCellPadding)) {
         emitAttribute("cellpadding", QString::number(format.cellPadding()));
+	}
 
     QBrush bg = format.background();
-    if (bg != Qt::NoBrush)
+    if (bg != Qt::NoBrush) {
         emitAttribute("bgcolor", bg.color().name());
+	}
 
     html += QLatin1Char('>');
 
@@ -161,12 +170,14 @@ void htmlExporter::emitTable(const QTextTable *table)
     Q_ASSERT(columnWidths.count() == columns);
 
     QVarLengthArray<bool> widthEmittedForColumn(columns);
-    for (int i = 0; i < columns; ++i)
+    for (int i = 0; i < columns; ++i) {
         widthEmittedForColumn[i] = false;
+	}
 
     const int headerRowCount = qMin(format.headerRowCount(), rows);
-    if (headerRowCount > 0)
+    if (headerRowCount > 0) {
         html += QLatin1String("<thead>");
+	}
 
     for (int row = 0; row < rows; ++row) {
         html += QLatin1String("\n<tr>");
@@ -175,11 +186,13 @@ void htmlExporter::emitTable(const QTextTable *table)
             const QTextTableCell cell = table->cellAt(row, col);
 
             // for col/rowspans
-            if (cell.row() != row)
+            if (cell.row() != row) {
                 continue;
+			}
 
-            if (cell.column() != col)
+            if (cell.column() != col) {
                 continue;
+			}
 
             html += QLatin1String("\n<td");
 
@@ -188,16 +201,19 @@ void htmlExporter::emitTable(const QTextTable *table)
                 widthEmittedForColumn[col] = true;
             }
 
-            if (cell.columnSpan() > 1)
+            if (cell.columnSpan() > 1) {
                 emitAttribute("colspan", QString::number(cell.columnSpan()));
+			}
 
-            if (cell.rowSpan() > 1)
+            if (cell.rowSpan() > 1) {
                 emitAttribute("rowspan", QString::number(cell.rowSpan()));
+			}
 
             const QTextCharFormat cellFormat = cell.format();
             QBrush bg = cellFormat.background();
-            if (bg != Qt::NoBrush)
+            if (bg != Qt::NoBrush) {
                 emitAttribute("bgcolor", bg.color().name());
+			}
 
             html += QLatin1Char('>');
 
@@ -207,8 +223,9 @@ void htmlExporter::emitTable(const QTextTable *table)
         }
 
         html += QLatin1String("</tr>");
-        if (headerRowCount > 0 && row == headerRowCount - 1)
+        if (headerRowCount > 0 && row == headerRowCount - 1) {
             html += QLatin1String("</thead>");
+		}
     }
 
     html += QLatin1String("</table>");
@@ -233,24 +250,27 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
     bool attributesEmitted = false;
     QLatin1String styleTag("<span style=\"");
 
-    {
-        const QString family = format.fontFamily();
-        if (!family.isEmpty() && family != defaultCharFormat.fontFamily()) {
-            if ( family.right(7) == "courier" ) {
-                tags << code;
-            } else {
-                if (! attributesEmitted ) html += styleTag;
-                html += QLatin1String(" font-family:'");
-                html += family;
-                html += QLatin1String("';");
-                attributesEmitted = true;
-            }
-        }
-    }
+	const QString family = format.fontFamily();
+	if (!family.isEmpty() && family != defaultCharFormat.fontFamily()) {
+		if ( family.right(7) == "courier" ) {
+			tags << code;
+		} else {
+			if (! attributesEmitted ) {
+				html += styleTag;
+			}
+			html += QLatin1String(" font-family:'");
+			html += family;
+			html += QLatin1String("';");
+			attributesEmitted = true;
+		}
+	}
+
 
     if (format.hasProperty(QTextFormat::FontPointSize)
             && format.fontPointSize() != defaultCharFormat.fontPointSize()) {
-        if (! attributesEmitted ) html += styleTag;
+        if (! attributesEmitted ) {
+			html += styleTag;
+		}
         html += QLatin1String(" font-size:");
         html += QString::number(format.fontPointSize());
         html += QLatin1String("pt;");
@@ -275,11 +295,15 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
         };
         const char *name = 0;
         const int idx = format.intProperty(QTextFormat::FontSizeAdjustment) + 1;
-        if (idx >= 0 && idx <= 4) {
+		if (idx ==1 ) {
+			// assume default to not bloat the html too much
+		} else if (idx >= 0 && idx <= 4) {
             name = sizeNames[idx];
         }
         if (name) {
-        if (! attributesEmitted ) html += styleTag;
+			if (! attributesEmitted ) {
+				html += styleTag;
+			}
             html += QLatin1String(" font-size:");
             html += QLatin1String(name);
             html += QLatin1Char(';');
@@ -318,7 +342,9 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
 
     if (format.fontOverline() != defaultCharFormat.fontOverline()) {
         if (format.fontOverline()) {
-            if (! attributesEmitted ) html += styleTag;
+            if (! attributesEmitted ) {
+				html += styleTag;
+			}
             html += QLatin1String(" text-decoration: overline;");
             attributesEmitted = true;
         }
@@ -375,17 +401,21 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
     if ( format.foreground() != defaultCharFormat.foreground() &&
             format.foreground().style() != Qt::NoBrush) {
 //         if ( format.foreground() != linkColor ) {
-            if (! attributesEmitted ) html += styleTag;
+            if (! attributesEmitted ) {
+				html += styleTag;
+			}
             html += QLatin1String(" color:");
             html += format.foreground().color().name();
             html += QLatin1Char(';');
             attributesEmitted = true;
 //         }
-    }
+	}
 
     if (format.background() != defaultCharFormat.background()
             && format.background().style() != Qt::NoBrush) {
-        if (! attributesEmitted ) html += styleTag;
+        if (! attributesEmitted ) {
+			html += styleTag;
+		}
         html += QLatin1String(" background-color:");
         html += format.background().color().name();
         html += QLatin1Char(';');
@@ -393,14 +423,17 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
     }
 
     if (format.verticalAlignment() != defaultCharFormat.verticalAlignment()) { //TODO
-        if (! attributesEmitted ) html += styleTag;
+        if (! attributesEmitted ) {
+			html += styleTag;
+		}
         html += QLatin1String(" vertical-align:");
 
         QTextCharFormat::VerticalAlignment valign = format.verticalAlignment();
-        if (valign == QTextCharFormat::AlignSubScript)
+        if (valign == QTextCharFormat::AlignSubScript) {
             html += QLatin1String("sub");
-        else if (valign == QTextCharFormat::AlignSuperScript)
+		} else if (valign == QTextCharFormat::AlignSuperScript) {
             html += QLatin1String("super");
+		}
 
         html += QLatin1Char(';');
         attributesEmitted = true;
@@ -419,54 +452,62 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
 void htmlExporter::emitTextLength(const char *attribute, const QTextLength &length)
 {
 //     kDebug() << "html" << html;
-    if (length.type() == QTextLength::VariableLength) // default
+    if (length.type() == QTextLength::VariableLength) { // default
         return;
+	}
 
     html += QLatin1Char(' ');
     html += QLatin1String(attribute);
     html += QLatin1String("=\"");
     html += QString::number(length.rawValue());
 
-    if (length.type() == QTextLength::PercentageLength)
+    if (length.type() == QTextLength::PercentageLength) {
         html += QLatin1String("%\"");
-    else
+	} else {
         html += QLatin1String("\"");
+	}
 }
 
 void htmlExporter::emitAlignment(Qt::Alignment align)
 {
 	//qDebug() << "emitAlignment" << html;
-    if (align & Qt::AlignLeft)
+    if (align & Qt::AlignLeft) {
         return;
-    else if (align & Qt::AlignRight)
+	}
+    if (align & Qt::AlignRight) {
         html += QLatin1String(" align=\"right\"");
-    else if (align & Qt::AlignHCenter)
+	} else if (align & Qt::AlignHCenter) {
         html += QLatin1String(" align=\"center\"");
-    else if (align & Qt::AlignJustify)
+	} else if (align & Qt::AlignJustify) {
         html += QLatin1String(" align=\"justify\"");
+	}
 	//qDebug() << "emitAlignment" << html;
 }
 
 void htmlExporter::emitFloatStyle(QTextFrameFormat::Position pos, StyleMode mode)
 {
 //     kDebug() << "html" << html;
-    if (pos == QTextFrameFormat::InFlow)
+    if (pos == QTextFrameFormat::InFlow) {
         return;
+	}
 
-    if (mode == EmitStyleTag)
+    if (mode == EmitStyleTag) {
         html += QLatin1String(" style=\"float:");
-    else
+	} else {
         html += QLatin1String(" float:");
+	}
 
-    if (pos == QTextFrameFormat::FloatLeft)
+    if (pos == QTextFrameFormat::FloatLeft) {
         html += QLatin1String(" left;");
-    else if (pos == QTextFrameFormat::FloatRight)
+	} else if (pos == QTextFrameFormat::FloatRight) {
         html += QLatin1String(" right;");
-    else
+	} else {
         Q_ASSERT_X(0, "htmlExporter::emitFloatStyle()", "pos should be a valid enum type");
+	}
 
-    if (mode == EmitStyleTag)
+    if (mode == EmitStyleTag) {
         html += QLatin1Char('\"');
+	}
 }
 
 void htmlExporter::emitMargins(const QString &top, const QString &bottom, const QString &left, const QString &right)
@@ -516,23 +557,45 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
 	qDebug() << "tags count" << tags.count() << endl;
     for ( int i = 0; i < tags.count(); ++i ) {
         switch ( tags.at(i) ) {
-        case span: break; //Jump
-        case h1: html += QLatin1String("<h1>"); break;
-        case h2: html += QLatin1String("<h2>"); break;
-        case h3: html += QLatin1String("<h3>"); break;
-        case h4: html += QLatin1String("<h4>"); break;
-        case h5: html += QLatin1String("<h5>"); break;
-        case strong: html += QLatin1String("<strong>"); break;
-        case em: html += QLatin1String("<em>"); break;
-        case s: html += QLatin1String("<s>"); break;
-        case u: {
+        case span:
+			break; //Jump
+        case h1:
+			html += QLatin1String("<h1>");
+			break;
+        case h2:
+			html += QLatin1String("<h2>");
+			break;
+        case h3:
+			html += QLatin1String("<h3>");
+			break;
+        case h4:
+			html += QLatin1String("<h4>");
+			break;
+        case h5:
+			html += QLatin1String("<h5>");
+			break;
+        case strong:
+			html += QLatin1String("<strong>");
+			break;
+        case em:
+			html += QLatin1String("<em>");
+			break;
+        case s:
+			html += QLatin1String("<s>");
+			break;
+        case u:
             if (!closeAnchor)
                 html += QLatin1String("<u>");
-        }
-        break;
-        case code: html += QLatin1String("<code>"); break;
-        case sub: html += QLatin1String("<sub>"); break;
-        case sup: html += QLatin1String("<sup>"); break;
+        	break;
+        case code:
+			html += QLatin1String("<code>");
+			break;
+        case sub:
+			html += QLatin1String("<sub>");
+			break;
+        case sup:
+			html += QLatin1String("<sup>");
+			break;
         }
     }
 
@@ -552,17 +615,21 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
 
             html += QLatin1String("<img");
 
-            if (imgFmt.hasProperty(QTextFormat::ImageName))
+            if (imgFmt.hasProperty(QTextFormat::ImageName)) {
                 emitAttribute("src", imgFmt.name());
+			}
 
-            if (imgFmt.hasProperty(QTextFormat::ImageWidth))
+            if (imgFmt.hasProperty(QTextFormat::ImageWidth)) {
                 emitAttribute("width", QString::number(imgFmt.width()));
+			}
 
-            if (imgFmt.hasProperty(QTextFormat::ImageHeight))
+            if (imgFmt.hasProperty(QTextFormat::ImageHeight)) {
                 emitAttribute("height", QString::number(imgFmt.height()));
+			}
 
-            if (QTextFrame *imageFrame = qobject_cast<QTextFrame *>(doc->objectForFormat(imgFmt)))
+            if (QTextFrame *imageFrame = qobject_cast<QTextFrame *>(doc->objectForFormat(imgFmt))) {
                 emitFloatStyle(imageFrame->frameFormat().position());
+			}
 
             html += QLatin1String(" />");
         }
@@ -587,30 +654,54 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
     //if (!closeAnchor)
         for ( int i = tags.count(); i > 0; --i ) {
             switch ( tags.at(i - 1) ) {
-            case span: html += QLatin1String("</span>"); break; //Jump
-            case h1: html += QLatin1String("</h1>"); break;
-            case h2: html += QLatin1String("</h2>"); break;
-            case h3: html += QLatin1String("</h3>"); break;
-            case h4: html += QLatin1String("</h4>"); break;
-            case h5: html += QLatin1String("</h5>"); break;
-            case strong: html += QLatin1String("</strong>"); break;
-            case em: html += QLatin1String("</em>"); break;
-            case s: html += QLatin1String("</s>"); break;
-            case u: {
+            case span:
+				html += QLatin1String("</span>");
+				break; //Jump
+            case h1:
+				html += QLatin1String("</h1>");
+				break;
+            case h2:
+				html += QLatin1String("</h2>");
+				break;
+            case h3:
+				html += QLatin1String("</h3>");
+				break;
+            case h4:
+				html += QLatin1String("</h4>");
+				break;
+            case h5:
+				html += QLatin1String("</h5>");
+				break;
+            case strong:
+				html += QLatin1String("</strong>");
+				break;
+            case em:
+				html += QLatin1String("</em>");
+				break;
+            case s:
+				html += QLatin1String("</s>");
+				break;
+            case u:
                 if (!closeAnchor)
                     html += QLatin1String("</u>");
-            }
-            break;
-            case code: html += QLatin1String("</code>"); break;
-            case sub: html += QLatin1String("</sub>"); break;
-            case sup: html += QLatin1String("</sup>"); break;
+            	break;
+            case code:
+				html += QLatin1String("</code>");
+				break;
+            case sub:
+				html += QLatin1String("</sub>");
+				break;
+            case sup:
+				html += QLatin1String("</sup>");
+				break;
             }
         }
     /*    if (attributesEmitted)
             html += QLatin1String("</span>");
     */
-    if (closeAnchor)
+    if (closeAnchor) {
         html += QLatin1String("</a>");
+	}
 //     kDebug() << "html=>" << html;
 }
 
@@ -629,35 +720,64 @@ void htmlExporter::emitBlockAttributes(const QTextBlock &block)
         html += QLatin1String(" dir='rtl'");
     }
 
+	bool attributesEmitted = false;
     QLatin1String style(" style=\"");
-    html += style;
+    //html += style;
 
 //     if (block.begin().atEnd()) {
 //         html += QLatin1String("-qt-paragraph-type:empty;");
 //     }
-
-    emitMargins(QString::number(format.topMargin()),
+	
+	if (format.hasProperty(QTextBlockFormat::FrameMargin)){
+		if (!attributesEmitted) {
+			html += style;
+			attributesEmitted = true;
+		}
+    	emitMargins(QString::number(format.topMargin()),
                 QString::number(format.bottomMargin()),
                 QString::number(format.leftMargin()),
                 QString::number(format.rightMargin()));
+	}
 
-    html += QLatin1String(" -qt-block-indent:");
-    html += QString::number(format.indent());
-    html += QLatin1Char(';');
-
-    html += QLatin1String(" text-indent:");
-    html += QString::number(format.indent());
-    html += QLatin1String("px;");
+    if (format.hasProperty(QTextBlockFormat::BlockIndent)) {
+		if (format.indent() == 0) {
+			// assume default not to bloat the html too much
+		} else {
+			if (!attributesEmitted) {
+				html += style;
+				attributesEmitted = true;
+			}
+			html += QLatin1String(" -qt-block-indent:");
+			html += QString::number(format.indent());
+			html += QLatin1Char(';');
+		}
+	}
+	
+	if (format.hasProperty(QTextBlockFormat::TextIndent)) {
+		if (format.textIndent() == 0) {
+			// assume default not to bloat the html too much
+		} else {
+			if (!attributesEmitted) {
+				html += style;
+				attributesEmitted = true;
+			}
+			html += QLatin1String(" text-indent:");
+			html += QString::number(format.textIndent());
+			html += QLatin1String("px;");
+		}
+	}
 
     //QTextCharFormat diff = formatDifference(defaultCharFormat, block.charFormat()).toCharFormat();
     //if (!diff.properties().isEmpty())
         //emitCharFormatStyle(diff);
 
-    html += QLatin1Char('"');
+	if (attributesEmitted) {
+    	html += QLatin1Char('"');
+	}
 
-    QBrush bg = format.background();
-    if (bg != Qt::NoBrush)
-        emitAttribute("bgcolor", bg.color().name());
+//     QBrush bg = format.background();
+//     if (bg != Qt::NoBrush)
+//         emitAttribute("bgcolor", bg.color().name());
 }
 
 void htmlExporter::emitBlock(const QTextBlock &block)
@@ -689,13 +809,26 @@ void htmlExporter::emitBlock(const QTextBlock &block)
             const QTextListFormat format = list->format();
             const int style = format.style();
             switch (style) {
-            case QTextListFormat::ListDecimal: html += QLatin1String("<ol"); break;
-            case QTextListFormat::ListDisc: html += QLatin1String("<ul"); break;
-            case QTextListFormat::ListCircle: html += QLatin1String("<ul type=\"circle\""); break;
-            case QTextListFormat::ListSquare: html += QLatin1String("<ul type=\"square\""); break;
-            case QTextListFormat::ListLowerAlpha: html += QLatin1String("<ol type=\"a\""); break;
-            case QTextListFormat::ListUpperAlpha: html += QLatin1String("<ol type=\"A\""); break;
-            default: html += QLatin1String("<ul"); // ### should not happen
+            case QTextListFormat::ListDecimal:
+				html += QLatin1String("<ol");
+				break;
+            case QTextListFormat::ListDisc:
+				html += QLatin1String("<ul");
+				break;
+            case QTextListFormat::ListCircle:
+				html += QLatin1String("<ul type=\"circle\"");
+				break;
+            case QTextListFormat::ListSquare:
+				html += QLatin1String("<ul type=\"square\"");
+				break;
+            case QTextListFormat::ListLowerAlpha:
+				html += QLatin1String("<ol type=\"a\"");
+				break;
+            case QTextListFormat::ListUpperAlpha:
+				html += QLatin1String("<ol type=\"A\"");
+				break;
+            default:
+				html += QLatin1String("<ul"); // ### should not happen
 			//qDebug() << html;
             }
             /*
@@ -726,10 +859,11 @@ void htmlExporter::emitBlock(const QTextBlock &block)
         html += QLatin1String("<hr");
 
         QTextLength width = blockFormat.lengthProperty(QTextFormat::BlockTrailingHorizontalRulerWidth);
-        if (width.type() != QTextLength::VariableLength)
+        if (width.type() != QTextLength::VariableLength) {
             emitTextLength("width", width);
-        else
+		} else {
             html += QLatin1Char(' ');
+		}
 
         html += QLatin1String("/>");
         return;
@@ -738,16 +872,17 @@ void htmlExporter::emitBlock(const QTextBlock &block)
     const bool pre = blockFormat.nonBreakableLines();
     if (pre) {
 // 		qDebug() << "NonBreakable lines" << endl;
-        if (list)
+        if (list) {
             html += QLatin1Char('>');
+		}
         html += QLatin1String("<pre");
-
         emitBlockAttributes(block);
         html += QLatin1Char('>');
-    }
-	else {
-		if (list)
+		
+    } else {
+		if (list) {
 			html += QLatin1Char('>');
+		}
         html += QLatin1String("<div");
 		emitBlockAttributes(block);
 		html += QLatin1Char('>');
@@ -760,31 +895,31 @@ void htmlExporter::emitBlock(const QTextBlock &block)
     */
     QTextBlock::Iterator it = block.begin();
 
-    for (; !it.atEnd(); ++it)
-	{
+    for ( ; !it.atEnd(); ++it ) {
 // 		qDebug() << "next for" << endl;
         emitFragment(it.fragment());
 	}
 	
 	//qDebug() << html << endl;
-    if (pre)
+    if (pre) {
         html += QLatin1String("</pre>");
-    else 
-	{	
-		if (list)
+	} else {	
+		if (list) {
         	html += QLatin1String("</li>");
-    	else if ( ! (html.right(7).contains(QRegExp("<br[\\s]*/>[\\n]*"))) )
+		} else if ( ! (html.right(7).contains(QRegExp("<br[\\s]*/>[\\n]*"))) ) {
         	html += QLatin1String("<br />");//"</p>");
+		}
 		html += QLatin1String("</div>");
 	}
     // HACK html.replace( QRegExp("<br[\\s]*/>[\\n]*<br[\\s]*/>[\\n]*"),"<br />&nbsp;<br />" );
 
     if (list) {
         if (list->itemNumber(block) == list->count() - 1) { // last item? close list
-            if (isOrderedList(list->format().style()))
+            if (isOrderedList(list->format().style())) {
                 html += QLatin1String("</ol>");
-            else
+			} else {
                 html += QLatin1String("</ul>");
+			}
         }
     }
 

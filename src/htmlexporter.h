@@ -40,33 +40,33 @@ class QTextLength;
 
 class htmlExporter
 {
-public:
-    htmlExporter();
-    ~htmlExporter();
-    QString toHtml( const QTextDocument* document );
-
-private:
-    enum StyleMode { EmitStyleTag, OmitStyleTag };
-    enum tag { span = 0, h1, h2, h3, h4, h5, strong, em, s, u, code, sub, sup };
-
-    void emitFrame(QTextFrame::Iterator frameIt);
-    void emitTable(const QTextTable *table);
-    void emitAttribute(const char *attribute, const QString &value);
-    QList<tag>  emitCharFormatStyle(const QTextCharFormat &format);
-    void emitTextLength(const char *attribute, const QTextLength &length);
-    void emitAlignment(Qt::Alignment align);
-    void emitFloatStyle(QTextFrameFormat::Position pos, StyleMode mode = EmitStyleTag);
-    void emitMargins(const QString &top, const QString &bottom, const QString &left, const QString &right);
-    void emitFragment(const QTextFragment &fragment);
-    bool isOrderedList(int style);
-    void emitBlockAttributes(const QTextBlock &block);
-    void emitBlock(const QTextBlock &block);
-    QTextFormat formatDifference(const QTextFormat &from, const QTextFormat &to);
-    void sanitizeHtml();
-
-    QString html;
-    const QTextDocument* doc;
-    QTextCharFormat defaultCharFormat;
+	public:
+		htmlExporter();
+		~htmlExporter();
+		QString toHtml( const QTextDocument* document );
+	
+	private:
+		enum StyleMode { EmitStyleTag, OmitStyleTag };
+		enum tag { span = 0, h1, h2, h3, h4, h5, strong, em, s, u, code, sub, sup };
+	
+		void emitFrame(QTextFrame::Iterator frameIt);
+		void emitTable(const QTextTable *table);
+		void emitAttribute(const char *attribute, const QString &value);
+		QList<tag>  emitCharFormatStyle(const QTextCharFormat &format);
+		void emitTextLength(const char *attribute, const QTextLength &length);
+		void emitAlignment(Qt::Alignment align);
+		void emitFloatStyle(QTextFrameFormat::Position pos, StyleMode mode = EmitStyleTag);
+		void emitMargins(const QString &top, const QString &bottom, const QString &left, const QString &right);
+		void emitFragment(const QTextFragment &fragment);
+		bool isOrderedList(int style);
+		void emitBlockAttributes(const QTextBlock &block);
+		void emitBlock(const QTextBlock &block);
+		QTextFormat formatDifference(const QTextFormat &from, const QTextFormat &to);
+		void sanitizeHtml();
+	
+		QString html;
+		const QTextDocument* doc;
+		QTextCharFormat defaultCharFormat;
 };
 
 #endif
