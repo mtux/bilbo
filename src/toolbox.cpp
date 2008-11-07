@@ -30,6 +30,8 @@ Toolbox::Toolbox(QWidget *parent)
 	reloadBlogList();
 	currentBlog=0;
 	
+	datetimeOptionstimestamp->setDateTime(QDateTime::currentDateTime());
+	
 	connect(btnBlogAdd, SIGNAL(clicked()), this, SLOT(sltAddBlog()));
 	connect(btnBlogEdit, SIGNAL(clicked()), this, SLOT(sltEditBlog()));
 	connect(btnBlogRemove, SIGNAL(clicked()), this, SLOT(sltRemoveBlog()));
@@ -37,6 +39,7 @@ Toolbox::Toolbox(QWidget *parent)
 	connect(btnCatReload, SIGNAL(clicked()), this, SLOT(sltReloadCategoryList()));
 	connect(btnEntriesReload, SIGNAL(clicked()), this, SLOT(sltReloadEntries()));
 	connect(box, SIGNAL(currentChanged ( int )), this, SLOT(sltCurrentPageChanged(int)));
+	connect(this, SIGNAL(sigCurrentBlogChanged(int)), this, SLOT(sltCurrentBlogChanged(int)));
 }
 
 void Toolbox::sltAddBlog()
@@ -72,6 +75,7 @@ void Toolbox::sltRemoveBlog()
 void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 {
 	qDebug("Toolbox::sltBlogAdded");
+	listBlogs.insertMulti(addedBlog.title(), addedBlog.id());
 	QRadioButton *a = new QRadioButton(addedBlog.title());
 	listBlogRadioButtons.append(a);
 	frameBlog->layout()->addWidget(a);
@@ -137,20 +141,21 @@ void Toolbox::sltSetCurrentBlog(bool checked)
 {
 	if(checked){
 		currentBlog = dynamic_cast<QRadioButton*>(sender());
+		emit sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
 	}
 }
 
 void Toolbox::sltCurrentPageChanged(int index)
 {
-	qDebug("Toolbox::sltCurrentPageChanged");
+// 	qDebug("Toolbox::sltCurrentPageChanged");
 	if(!currentBlog)
 		return;
 	switch( index ){
 	case 1:
-		sltLoadEntriesFromDB(listBlogs.value(currentBlog->text(), -1));
+// 		sltLoadEntriesFromDB(listBlogs.value(currentBlog->text(), -1));
 		break;
 	case 2:
-		sltLoadCategoryListFromDB(listBlogs.value(currentBlog->text(), -1));
+// 		sltLoadCategoryListFromDB(listBlogs.value(currentBlog->text(), -1));
 		break;
 	}
 }
@@ -162,8 +167,7 @@ void Toolbox::sltLoadEntriesFromDB(int blog_id)
 		qDebug("Toolbox::loadEntriesFromDB: Blog Id not sets correctly");
 		return;
 	}
-	lstEntriesList->clear();
-	listEntries.clear();
+	clearEntriesList();
 	
 	listEntries = db->listPostsTitle(blog_id);
 	lstEntriesList->addItems(listEntries.keys());
@@ -176,12 +180,9 @@ void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 		qDebug("Toolbox::sltLoadCategoryListFromDB: Blog Id not sets correctly");
 		return;
 	}
-	listCategories.clear();
-	listCategories = db->listCategories(blog_id);
 	
-	for(int j=0; j<listCategoryCheckBoxes.count(); ++j){
-		delete(listCategoryCheckBoxes[j]);
-	}
+	clearCatList();
+	listCategories = db->listCategories(blog_id);
 	
 	listCategoryCheckBoxes.clear();
 	QMap<QString, int>::iterator i;
@@ -198,4 +199,36 @@ void Toolbox::sltGetEntriesCount(int count)
 	Backend *entryB = new Backend(listBlogs.value(currentBlog->text()));
 	entryB->getEntriesListFromServer(count);
 	connect(entryB, SIGNAL(sigEntriesListFetched(int)), this, SLOT(sltLoadEntriesFromDB(int)));
+}
+
+void Toolbox::resetFields()
+{
+	for(int i=0; i<listCategoryCheckBoxes.count(); ++i){
+		listCategoryCheckBoxes[i]->setChecked(false);
+	}
+	txtCatTags->clear();
+	chkOptionsTime->setChecked(false);
+	datetimeOptionstimestamp->setDateTime(QDateTime::currentDateTime());
+	txtOptionsTrackback->clear();
+}
+
+void Toolbox::clearCatList()
+{
+	listCategories.clear();
+	for(int j=0; j<listCategoryCheckBoxes.count(); ++j){
+		delete(listCategoryCheckBoxes[j]);
+	}
+}
+
+void Toolbox::clearEntriesList()
+{
+	lstEntriesList->clear();
+	listEntries.clear();
+}
+
+void Toolbox::sltCurrentBlogChanged(int blog_id)
+{
+	///TODO: Save current state to a temporary variable!
+	sltLoadCategoryListFromDB(blog_id);
+	sltLoadEntriesFromDB(blog_id);
 }

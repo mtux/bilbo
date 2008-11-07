@@ -60,7 +60,7 @@ public:
 	void setAuthor(const QString&);
 	
 	int id() const;
-	void setId(int);
+	void setId( const int);
 	
 private:
 	QString mAuthor;

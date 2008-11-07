@@ -24,6 +24,10 @@
 
 #include "ui_entriescount.h"
 
+/**
+	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ */
 class EntriesCountDialog: public QDialog, public Ui::EntriesCount {
 Q_OBJECT
 public:

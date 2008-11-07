@@ -49,24 +49,24 @@ public:
 	BilboBlog();
     ~BilboBlog();
 	
-	QUrl blogUrl();
+	QUrl blogUrl() const;
 	void setBlogUrl(const QUrl&);
-	QString blogid();
+	QString blogid() const;
 	void setBlogId(const QString&);
-	QString username();
+	QString username() const;
 	void setUsername(const QString&);
-	QString password();
+	QString password() const;
 	void setPassword(const QString&);
-	QString title();
+	QString title() const;
 	void setTitle(const QString&);
-	QString stylePath();
+	QString stylePath() const;
 	void setStylePath(const QString&);
-	ApiType api();
-	void setApi(ApiType);
-	int id();//id in DB
-	void setId(int);
-	TextDirection direction();
-	void setDirection(TextDirection);
+	ApiType api() const;
+	void setApi( const ApiType );
+	int id() const;//id in DB
+	void setId(const int);
+	TextDirection direction() const;
+	void setDirection( const TextDirection );
 	
 private:
 	QUrl mBlogUrl;

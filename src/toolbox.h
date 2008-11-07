@@ -61,9 +61,15 @@ public slots:
 	void sltGetEntriesCount(int);
 	void sltLoadEntriesFromDB( int blog_id );
 	void sltCurrentPageChanged( int );
+	void sltCurrentBlogChanged( int blog_id );
+	void resetFields();
+	
+signals:
+	void sigCurrentBlogChanged(int blog_id);
 	
 private:
-	
+	void clearCatList();
+	void clearEntriesList();
 	AddEditBlog *addEditBlogWindow;
 	QRadioButton *blogToEdit;
 	QRadioButton *currentBlog;

@@ -74,7 +74,7 @@ QString BilboPost::author() const
 	return mAuthor;
 }
 
-void BilboPost::setId(int id)
+void BilboPost::setId(const int id)
 {
 	mId = id;
 }
