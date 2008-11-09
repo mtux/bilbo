@@ -283,14 +283,38 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item row="1" column="0" >
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons" >
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout" >
+     <item>
+      <spacer name="horizontalSpacer_3" >
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnOk" >
+       <property name="enabled" >
+        <bool>false</bool>
+       </property>
+       <property name="text" >
+        <string>OK</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCancel" >
+       <property name="text" >
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
@@ -299,8 +323,9 @@ p, li { white-space: pre-wrap; }
   <tabstop>txtUser</tabstop>
   <tabstop>txtPass</tabstop>
   <tabstop>btnAutoConf</tabstop>
+  <tabstop>btnOk</tabstop>
+  <tabstop>btnCancel</tabstop>
   <tabstop>tabs</tabstop>
-  <tabstop>buttonBox</tabstop>
   <tabstop>comboAPI</tabstop>
   <tabstop>txtID</tabstop>
   <tabstop>btnFetch</tabstop>
@@ -309,34 +334,98 @@ p, li { white-space: pre-wrap; }
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>AddEditBlogDialog</receiver>
-   <slot>accept()</slot>
+   <sender>txtPass</sender>
+   <signal>returnPressed()</signal>
+   <receiver>btnAutoConf</receiver>
+   <slot>click()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>257</x>
-     <y>470</y>
+     <x>254</x>
+     <y>214</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>157</x>
-     <y>274</y>
+     <x>328</x>
+     <y>252</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
+   <sender>txtUser</sender>
+   <signal>returnPressed()</signal>
+   <receiver>btnAutoConf</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>316</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>343</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txtUrl</sender>
+   <signal>returnPressed()</signal>
+   <receiver>btnAutoConf</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>310</x>
+     <y>138</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>382</x>
+     <y>252</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnOk</sender>
+   <signal>clicked()</signal>
+   <receiver>AddEditBlogDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>300</x>
+     <y>319</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>217</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnCancel</sender>
+   <signal>clicked()</signal>
    <receiver>AddEditBlogDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>325</x>
-     <y>470</y>
+     <x>400</x>
+     <y>313</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>286</x>
-     <y>274</y>
+     <x>96</x>
+     <y>292</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txtID</sender>
+   <signal>returnPressed()</signal>
+   <receiver>btnOk</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>249</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>308</x>
+     <y>319</y>
     </hint>
    </hints>
   </connection>

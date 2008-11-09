@@ -46,7 +46,6 @@ Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 	mBlog->setBlogId(bBlog->blogid());
 }
 
-
 Backend::~Backend()
 {
 }
@@ -102,5 +101,41 @@ void Backend::entriesListed(const QList< KBlog::BlogPost > & posts)
 	emit sigEntriesListFetched(bBlog->id());
 }
 
+void Backend::publishPost(BilboPost * post)
+{
+	///FIXME: Tags problem!
+	///FIXME: Categories problem!
+	qDebug("Backend::publishPost");
+	
+	KBlog::BlogPost *bp = post->toKBlogPost();
+// 	qDebug(bp->title().toLatin1().data());
+// 	BilboPost ppp = (*post);
+// 	QString pStr = ppp.toString();
+// 	qDebug(pStr.toLatin1().data());
+	
+	int api = bBlog->api();
+	if(api==0 || api==1 || api==2){
+		KBlog::Blogger1 *b1 = dynamic_cast<KBlog::Blogger1*>(mBlog);
+		connect(b1, SIGNAL(createdPost( KBlog::BlogPost * )), this, SLOT(postPublished( KBlog::BlogPost * )));
+		b1->createPost(bp);
+	} else if(api==3){
+		KBlog::WordpressBuggy *wp = dynamic_cast<KBlog::WordpressBuggy*>(mBlog);
+		connect(wp, SIGNAL(createdPost( KBlog::BlogPost * )), this, SLOT(postPublished( KBlog::BlogPost * )));
+		wp->createPost(bp);
+	} else if(api==4){
+		KBlog::GData *gd = dynamic_cast<KBlog::GData*>(mBlog);
+		connect(gd, SIGNAL(createdPost( KBlog::BlogPost * )), this, SLOT(postPublished( KBlog::BlogPost * )));
+		gd->createPost(bp);
+	}
+}
 
-
+void Backend::postPublished(KBlog::BlogPost *post)
+{
+	qDebug("Backend::postPublished");
+	BilboPost pp((*post));
+	int post_id = db->addPost(pp, bBlog->id());///FIXME: BUG!!!!!
+	if(post_id!=-1){
+		emit sigPostPublished(bBlog->id(), post_id);
+		qDebug("Backend::sigPostPublished emited!");
+	}
+}

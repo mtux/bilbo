@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 	} else {
 		actToggleToolboxVisible->setText(tr("Show Toolbox"));
 	}
+	
+	connect(tabPosts, SIGNAL(currentChanged( int )), this, SLOT(sltActivePostChanged(int)));
 }
 
 MainWindow::~MainWindow()
@@ -91,8 +93,8 @@ void MainWindow::createUi()
 	toolbarAction->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 	this->addToolBar(Qt::TopToolBarArea,toolbarAction);
 	
-	statusbarMain = new QStatusBar(this);
-	this->setStatusBar(statusbarMain);
+	statusbar = new QStatusBar(this);
+	this->setStatusBar(statusbar);
 	
 	activePost=new PostEntry(this);
 	tabPosts->addTab(activePost,"Untitled");
@@ -100,12 +102,19 @@ void MainWindow::createUi()
 	
 	toolbox=new Toolbox(this);
 	this->addDockWidget(Qt::RightDockWidgetArea,toolbox);
+	
+	btnRemovePost = new QToolButton(tabPosts);
+	btnRemovePost->setIcon(QIcon(":/media/format-text-bold.png"));
+	btnRemovePost->setToolTip("Remove current post");
+	tabPosts->setCornerWidget(btnRemovePost, Qt::TopRightCorner);
+	connect(btnRemovePost, SIGNAL(clicked( bool )), this, SLOT(sltRemoveCurrentPostEntry()));
+// 	connect(tabPosts->tabBar(), SIGNAL());
 }
 
 void MainWindow::createActions()
 {
 	actAddBlog=new QAction(QIcon(":/media/format-text-bold.png"),"Add &Blog",this);
-	connect(actAddBlog,SIGNAL(triggered( bool )),this,SLOT(sltAddNewBlog()));
+	connect(actAddBlog,SIGNAL(triggered( bool )), toolbox, SLOT(sltAddBlog()));
 	
 	actUploadAll=new QAction(QIcon(":/media/format-text-bold.png"),"&Upload All Changes",this);
 	connect(actUploadAll,SIGNAL(triggered( bool )),this,SLOT(sltUploadAllChanges()));
@@ -115,7 +124,7 @@ void MainWindow::createActions()
 	connect(actNewPost,SIGNAL(triggered( bool )),this,SLOT(sltCreateNewPost()));
 	
 	actPublish=new QAction(QIcon(":/media/format-text-bold.png"),"&Publish",this);
-	connect(actPublish,SIGNAL(triggered( bool )),activePost,SLOT(sltPublishPost()));
+	connect(actPublish,SIGNAL(triggered( bool )),this,SLOT(sltPublishPost()));
 	
 	actSaveLocally=new QAction(QIcon(":/media/format-text-bold.png"),"Save Locally",this);
 	connect(actSaveLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltSavePostLocally()));
@@ -129,7 +138,7 @@ void MainWindow::createActions()
 	actDeleteLocally=new QAction(QIcon(":/media/format-text-bold.png"),"Delete Locally",this);
 	connect(actDeleteLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltDelLocally()));
 	
-	actAbout = new QAction(QIcon(":/media/format-text-bold.png"),"About Us",this);
+	actAbout = new QAction(QIcon(":/media/format-text-bold.png"),"About",this);
 	connect(actAbout, SIGNAL(triggered( bool )), this, SLOT(sltBilboAbout()));
 	
 	actQuit = new QAction(QIcon(":/media/format-text-bold.png"), "Quit", this);
@@ -180,10 +189,6 @@ void MainWindow::addCreatedActions()
 	menuAbout->addAction(actAbout);
 }
 
-void MainWindow::sltAddNewBlog()
-{
-}
-
 void MainWindow::sltCreateNewPost()
 {
 	PostEntry *temp=new PostEntry(this);
@@ -206,11 +211,12 @@ void MainWindow::sltPostTitleChanged(const QString& title)
 
 void MainWindow::sltBilboAbout()
 {
-	QMessageBox::information(this, "About Us", "Bilbo Blogger.\n\nAuthors:\n\tMehrdad Momeny\n\tGolnaz Nilieh");
+	QMessageBox::information(this, "About Bilbo", "Bilbo Blogger.\nLicense: GNU GPL v3\n\nAuthors:\n\tMehrdad Momeny\n\tGolnaz Nilieh");
 }
 
 void MainWindow::sltQuit()
 {
+	qDebug("MainWindow::sltQuit");
 	writeConfig();
 	qApp->quit();
 }
@@ -224,6 +230,47 @@ void MainWindow::sltToggleToolboxVisible(bool v)
 		toolbox->show();
 		actToggleToolboxVisible->setText(tr("Hide Toolbox"));
 	}
+}
+
+void MainWindow::sltActivePostChanged(int )
+{
+}
+
+void MainWindow::sltPublishPost()
+{
+	qDebug("MainWindow::sltPublishPost");
+	int blog_id = toolbox->currentBlogId();
+	if(blog_id==-1){
+		QMessageBox::warning(this, "Blog not sets", "You have to select a blog to publish this post to it.");
+		qDebug("MainWindow::sltPublishPost: Blog id not sets correctly.");
+		return;
+	}
+	Backend *b = new Backend(blog_id);
+	connect(b, SIGNAL(sigPostPublished(int, int)), this, SLOT(sltPostPublished(int, int)));
+	BilboPost *post = toolbox->getFieldsValue();
+	post->setContent(*(activePost->postBody()));
+	post->setTitle(activePost->postTitle());
+	qDebug(activePost->postTitle().toLatin1().data());
+	qDebug(post->title().toLatin1().data());
+	post->setPrivate(false);
+	
+	b->publishPost(post);
+}
+
+void MainWindow::sltPostPublished(int blog_id, int post_id)
+{
+	qDebug("MainWindow::sltPostPublished");
+	QMessageBox::information(this, "Successful", "New Post published to \""+toolbox->listBlogs.key(blog_id)+"\" blog successfully");
+	sltRemoveCurrentPostEntry();
+}
+
+void MainWindow::sltRemoveCurrentPostEntry()
+{
+	tabPosts->removeTab(tabPosts->currentIndex());
+	if(tabPosts->count()==0){
+		sltCreateNewPost();
+	}
+	
 }
 
 

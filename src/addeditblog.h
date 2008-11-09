@@ -50,6 +50,7 @@ public:
 	
 protected slots:
 	void enableAutoConfBtn();
+	void enableOkButton( const QString & );
 	void autoConfigure();
 	void fetchBlogId();
 	
@@ -71,6 +72,7 @@ private:
 	BilboBlog *bBlog;
 	KBlog::Blog *mBlog;
 	QTimer* mFetchProfileIdTimer;
+	QTimer* mFetchBlogIdTimer;
 	QTimer* mFetchAPITimer;
 };
 

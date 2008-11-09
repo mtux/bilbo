@@ -38,7 +38,9 @@ public:
     Toolbox(QWidget *parent = 0);
 	
 	void reloadBlogList();
-	
+	BilboPost* getFieldsValue();
+	void setFieldsValue(const BilboPost& post);
+	int currentBlogId();
 	
 	QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
 	QList<QRadioButton*> listBlogRadioButtons;
@@ -68,11 +70,19 @@ signals:
 	void sigCurrentBlogChanged(int blog_id);
 	
 private:
+	QStringList selectedCategoriesTitle();
+	QList<int> selectedCategoriesId();
+	void setSelectedCategories(const QStringList&);
+	void setSelectedCategories(const QList<int>&);
+	QStringList currentTags();
 	void clearCatList();
 	void clearEntriesList();
+	
+	
 	AddEditBlog *addEditBlogWindow;
 	QRadioButton *blogToEdit;
 	QRadioButton *currentBlog;
+	BilboPost *currentPost;
 };
 
 #endif

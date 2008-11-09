@@ -73,11 +73,34 @@ public:
 	bool removeBlog(int blog_id);
 	
 	///Post:
-	int addPost(QString postid, int blog_id, QString author, QString title, QString &content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/, QStringList categories);
+	/**
+	 * 
+	 * @param postid 
+	 * @param blogid 
+	 * @param author 
+	 * @param title 
+	 * @param content 
+	 * @param c_time 
+	 * @param is_private 
+	 * @param is_comment_allowed 
+	 * @param is_trackback_allowed 
+	 * @param link 
+	 * @param perma_link 
+	 * @param summary 
+	 * @param tags 
+	 * @return return post id in database (deffer with postid)
+	 */
+	int addPost(QString postid, int blog_id, QString author, QString title, QString &content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/, QStringList categories, int position);
 	
+	/**
+	 * 
+	 * @param post 
+	 * @param blog_id 
+	 * @return return post id in database (deffer with postid)
+	 */
 	int addPost(const BilboPost& post, int blog_id);
 	
-	bool editPost(int id, int blog_id, QString postid, QString author, QString title, QString &content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags, QStringList categories);
+	bool editPost(int id, int blog_id, QString postid, QString author, QString title, QString &content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags, QStringList categories, int position);
 	
 	bool editPost(BilboPost& post, int blog_id);
 	

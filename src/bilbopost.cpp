@@ -109,4 +109,62 @@ BilboPost::BilboPost(const KBlog::BlogPost &post)
 	this->setTitle(post.title());
 }
 
+BilboPost::Position BilboPost::position() const
+{
+	return mPosition;
+}
+
+void BilboPost::setPosition(const Position pos)
+{
+	mPosition = pos;
+}
+
+KBlog::BlogPost * BilboPost::toKBlogPost()
+{
+	KBlog::BlogPost *pp = new KBlog::BlogPost(QString());
+	pp->setStatus(this->status());
+	pp->setSummary(this->summary());
+	pp->setTags(this->tags());
+	pp->setTitle(this->title());
+	pp->setTrackBackAllowed(this->isTrackBackAllowed());
+	pp->setCategories(this->categories());
+	pp->setCommentAllowed(this->isCommentAllowed());
+	pp->setContent(this->content());
+	pp->setPrivate(this->isPrivate());
+	pp->setCreationDateTime(this->creationDateTime());
+	pp->setError(this->error());
+	pp->setModificationDateTime(this->modificationDateTime());
+	pp->setMood(this->mood());
+	pp->setMusic(this->music());
+	pp->setPostId(this->postId());
+	pp->setLink(this->link());
+	pp->setPermaLink(this->permaLink());
+	
+	return pp;
+}
+
+QString BilboPost::toString() const
+{
+	qDebug("BilboPost::toString");
+// 	if(!title().isEmpty())
+// 		qDebug("BilboPost::toString: title is %s", this->title());
+	QString ret;
+	ret="\n******* Post Info **********";
+	ret+=QString("\nID: ")+postId();
+	ret+=QString("\nTitle: ")+title();
+	ret+=QString("\nContent: ") + content();
+	ret+="\nTags: ";
+	for( int i=0; i<tags().count(); ++i){
+		ret+=","+tags()[i];
+	}
+	ret+="\nCategories: ";
+	for( int i=0; i<categories().count(); ++i){
+		ret+=","+categories()[i];
+	}
+	ret+="\nCreation Date Time: "+cTime().toString();
+	
+	ret+="\n******* End Post Info ********\n";
+	return ret;
+}
+
 

@@ -39,6 +39,9 @@ it's implemented to decrease dependency to KBlog :)
 class BilboPost : public KBlog::BlogPost
 {
 public:
+	enum Position{
+		Published=0, Draft, Local
+	};
     BilboPost();
 	BilboPost(const KBlog::BlogPost&);
 
@@ -62,9 +65,16 @@ public:
 	int id() const;
 	void setId( const int);
 	
+	Position position() const;
+	void setPosition( const Position);
+	
+	KBlog::BlogPost * toKBlogPost();
+	QString toString() const;
+	
 private:
 	QString mAuthor;
 	int mId;///id in DB
+	Position mPosition;
 };
 
 #endif

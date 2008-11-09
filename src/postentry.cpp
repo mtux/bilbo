@@ -22,11 +22,12 @@
 PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
-// 	prop = new PostProperties;
+// 	post = new BilboPost();
 	createUi(parent);
 	editPostWidget=new BilboEditor();
 	this->layout()->addWidget(editPostWidget);
 }
+
 void PostEntry::createUi(QWidget *parentWidget)
 {
 	this->resize(626, 307);
@@ -52,23 +53,33 @@ void PostEntry::createUi(QWidget *parentWidget)
 	//PostWidget->setWindowTitle(QApplication::translate("PostWidget", "Form", 0, QApplication::UnicodeUTF8));
 }
 
-void PostEntry::sltPublishPost()
+// void PostEntry::sltPublishPost()
+// {
+// 	qDebug("publish slot is working now!");
+// }
+// 
+// void PostEntry::sltSavePostLocally()
+// {
+// }
+// 
+// void PostEntry::sltSaveAsDraft()
+// {
+// }
+// 
+// void PostEntry::sltDelPost()
+// {
+// }
+// 
+// void PostEntry::sltDelLocally()
+// {
+// }
+
+QString PostEntry::postTitle() const
 {
-	qDebug("publish slot is working now!");
+	return QString(this->txtTitle->text());
 }
 
-void PostEntry::sltSavePostLocally()
+QString * PostEntry::postBody()
 {
-}
-
-void PostEntry::sltSaveAsDraft()
-{
-}
-
-void PostEntry::sltDelPost()
-{
-}
-
-void PostEntry::sltDelLocally()
-{
+	return this->editPostWidget->htmlContent();
 }

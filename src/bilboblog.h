@@ -40,11 +40,7 @@ public:
 	enum TextDirection{
 		LeftToRight=0, RightToLeft
 	};
-// 	struct API_Type {
-// 		QString title;
-// 		QString code;
-// 		ApiType type;
-// 	};
+
     BilboBlog(QUrl& server);
 	BilboBlog();
     ~BilboBlog();

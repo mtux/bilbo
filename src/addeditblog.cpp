@@ -23,11 +23,12 @@
 
 #include <QMessageBox>
 
-#define TIMEOUT 50000
+#define TIMEOUT 40000
 
 AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
     :QDialog(parent)
 {
+	qDebug("AddEditBlog::AddEditBlog");
 	setupUi(this);
 	this->setWindowTitle("Add a new blog");
 	isNewBlog=true;
@@ -43,6 +44,7 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 		comboAPI->setCurrentIndex(bBlog->api());
 		comboDir->setCurrentIndex(bBlog->direction());
 	}
+	connect(txtID, SIGNAL(textChanged( const QString& )), this, SLOT(enableOkButton(const QString&)));
 	connect(txtUrl, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
 	connect(txtUser, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
 	connect(txtPass, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
@@ -108,10 +110,8 @@ void AddEditBlog::autoConfigure()
 
 void AddEditBlog::fetchBlogId()
 {
-	mFetchProfileIdTimer = new QTimer(this);
-	mFetchProfileIdTimer->setSingleShot(true);
-	connect( mFetchProfileIdTimer, SIGNAL( timeout() ), this, SLOT( handleFetchIDTimeout() ) );
-	mFetchProfileIdTimer->start(TIMEOUT);
+	qDebug("AddEditBlog::fetchBlogId");
+	
 	
 
 	switch( comboAPI->currentIndex() ){
@@ -123,9 +123,12 @@ void AddEditBlog::fetchBlogId()
 			dynamic_cast<KBlog::Blogger1*>(mBlog)->setUsername(txtUser->text());
 			dynamic_cast<KBlog::Blogger1*>(mBlog)->setPassword(txtPass->text());
 			connect( dynamic_cast<KBlog::Blogger1*>(mBlog) , SIGNAL(listedBlogs( const QList<QMap<QString, QString> >&)), this, SLOT(fetchedBlogId( const QList<QMap<QString, QString> >&)));
-			connect( dynamic_cast<KBlog::Blogger1*>(mBlog), SIGNAL(fetchedProfileId( const QString& ) ), this, SLOT( fetchedProfileId( const QString& ) ) );
+// 			connect( dynamic_cast<KBlog::Blogger1*>(mBlog), SIGNAL(fetchedProfileId( const QString& ) ), this, SLOT( fetchedProfileId( const QString& ) ) );
 			connect( dynamic_cast<KBlog::Blogger1*>(mBlog), SIGNAL(error( KBlog::Blog::ErrorType, const QString& ) ), this, SLOT( handleFetchError( KBlog::Blog::ErrorType, const QString& ) ) );
-			
+			mFetchBlogIdTimer = new QTimer(this);
+			mFetchBlogIdTimer->setSingleShot(true);
+			connect( mFetchBlogIdTimer, SIGNAL( timeout() ), this, SLOT( handleFetchIDTimeout() ) );
+			mFetchBlogIdTimer->start(TIMEOUT);
 			dynamic_cast<KBlog::Blogger1*>(mBlog)->listBlogs();
 			break;
 			
@@ -134,35 +137,45 @@ void AddEditBlog::fetchBlogId()
 			dynamic_cast<KBlog::GData*>(mBlog)->setUsername( txtUser->text() );
 			dynamic_cast<KBlog::GData*>(mBlog)->setPassword( txtPass->text() );
 			connect( dynamic_cast<KBlog::GData*>(mBlog), SIGNAL(fetchedProfileId( const QString& ) ),
-					 this, SLOT(  ) );
+					 this, SLOT( fetchedProfileId( const QString& ) ) );
 			dynamic_cast<KBlog::GData*>(mBlog)->fetchProfileId();
+			mFetchProfileIdTimer = new QTimer(this);
+			mFetchProfileIdTimer->setSingleShot(true);
+			connect( mFetchProfileIdTimer, SIGNAL( timeout() ), this, SLOT( handleFetchIDTimeout() ) );
+			mFetchProfileIdTimer->start(TIMEOUT);
 			break;
 	};
 	txtID->setText("Please wait...");
 	txtID->setEnabled(false);
 	btnFetch->setEnabled(false);
-	
+	btnAutoConf->setEnabled(false);
 }
 
 void AddEditBlog::handleFetchIDTimeout()
 {
+	qDebug("AddEditBlog::handleFetchIDTimeout");
 	QMessageBox::critical(this, "Error!", "Fetching the blog's id timed out. Check your internet connection, Or your homepage Url!\nnote that url have to included \"http://\" or ...\nfor example: http://bilbo.sf.net/xmlrpc.php is a good url");
 	txtID->setText(QString());
 	txtID->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
+// 	delete mFetchProfileIdTimer;
+// 	delete mFetchBlogIdTimer;
 }
 
 void AddEditBlog::handleFetchAPITimeout()
 {
+	qDebug("AddEditBlog::handleFetchAPITimeout");
 	QMessageBox::warning(this, "AutoConfiguration Failed", "App cannot get API type automatically, please check your internet connection, otherwise you have to set API type handy.");
 	txtID->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
+// 	delete mFetchAPITimer;
 }
 
 void AddEditBlog::handleFetchError(KBlog::Blog::ErrorType type, const QString & errorMsg)
 {
+	qDebug("AddEditBlog::handleFetchError: ErrorType: %d", type);
 	QMessageBox::critical(this, "Fetching BlogID Faild!", errorMsg);
 	txtID->setEnabled(true);
 	btnFetch->setEnabled(true);
@@ -171,7 +184,12 @@ void AddEditBlog::handleFetchError(KBlog::Blog::ErrorType type, const QString & 
 
 void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list)
 {
-	delete mFetchProfileIdTimer;
+	qDebug("AddEditBlog::fetchedBlogId");
+	delete mFetchBlogIdTimer;
+	if(list.count()>1){
+		///TODO: handle more than one blog!
+		qDebug("AddEditBlog::fetchedBlogId: User has more than ONE blog!");
+	}
 	txtID->setText(list.first().values().first());
 	lblTitle->setText(list.first().values().last());
 	txtID->setEnabled(true);
@@ -183,10 +201,12 @@ void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list
 	bBlog->setPassword(txtPass->text());
 	bBlog->setBlogId(txtID->text());
 	bBlog->setTitle(list.first().values().last());
+	btnOk->setEnabled(true);
 }
 
 void AddEditBlog::fetchedProfileId(const QString &id)
 {
+	qDebug("AddEditBlog::fetchedProfileId");
 	delete mFetchProfileIdTimer;
 	connect( dynamic_cast<KBlog::GData*>(mBlog), SIGNAL(listedBlogs( const QList<QMap<QString, QString> >&)),
 			 this, SLOT(fetchedBlogId( const QList<QMap<QString, QString> >&)));
@@ -197,6 +217,7 @@ void AddEditBlog::fetchedProfileId(const QString &id)
 
 void AddEditBlog::sltAccepted()
 {
+	qDebug("AddEditBlog::sltAccepted");
 	if(bBlog->blogid().isEmpty() && txtID->text().isEmpty()){
 		QMessageBox::critical(this, "Failed to get blog id", "You have to Fetch blog id by hitting \"Auto Configure\" Or \"Fetch ID\" button or Insert your Blog Id manually.");
 		return;
@@ -223,4 +244,12 @@ void AddEditBlog::sltAccepted()
 		if(db->editBlog(*bBlog))
 			emit sigBlogEdited(*bBlog);
 	}
+}
+
+void AddEditBlog::enableOkButton( const QString & txt)
+{
+	if(txt.isEmpty())
+		btnOk->setEnabled(false);
+	else
+		btnOk->setEnabled(true);
 }

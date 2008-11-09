@@ -29,7 +29,7 @@ Toolbox::Toolbox(QWidget *parent)
 	frameCat->layout()->setAlignment(Qt::AlignTop);
 	reloadBlogList();
 	currentBlog=0;
-	
+	currentPost = new BilboPost();
 	datetimeOptionstimestamp->setDateTime(QDateTime::currentDateTime());
 	
 	connect(btnBlogAdd, SIGNAL(clicked()), this, SLOT(sltAddBlog()));
@@ -77,6 +77,7 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 	qDebug("Toolbox::sltBlogAdded");
 	listBlogs.insertMulti(addedBlog.title(), addedBlog.id());
 	QRadioButton *a = new QRadioButton(addedBlog.title());
+	a->setToolTip(addedBlog.blogUrl().toString());
 	listBlogRadioButtons.append(a);
 	frameBlog->layout()->addWidget(a);
 	connect(a, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
@@ -86,6 +87,7 @@ void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 {
 	qDebug("Toolbox::sltBlogEdited");
 	blogToEdit->setText(editedBlog.title());
+	blogToEdit->setToolTip(editedBlog.blogUrl().toString());
 	delete(blogToEdit);
 }
 
@@ -101,6 +103,7 @@ void Toolbox::reloadBlogList()
 	QMap<QString, int>::iterator i;
 	for( i = listBlogs.begin(); i != listBlogs.end(); ++i ){
 		QRadioButton *rb = new QRadioButton(i.key());
+		rb->setToolTip(db->getBlogInfo(i.value())->blogUrl().toString());
 		listBlogRadioButtons.append(rb);
 		frameBlog->layout()->addWidget(rb);
 		connect(rb, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
@@ -203,6 +206,7 @@ void Toolbox::sltGetEntriesCount(int count)
 
 void Toolbox::resetFields()
 {
+	qDebug("Toolbox::resetFields");
 	for(int i=0; i<listCategoryCheckBoxes.count(); ++i){
 		listCategoryCheckBoxes[i]->setChecked(false);
 	}
@@ -231,4 +235,84 @@ void Toolbox::sltCurrentBlogChanged(int blog_id)
 	///TODO: Save current state to a temporary variable!
 	sltLoadCategoryListFromDB(blog_id);
 	sltLoadEntriesFromDB(blog_id);
+}
+
+BilboPost * Toolbox::getFieldsValue()
+{
+	qDebug("Toolbox::getFieldsValue");
+	currentPost->setCategories(this->selectedCategoriesTitle());
+	currentPost->setTags(this->currentTags());
+	if(currentPost->status()==KBlog::BlogPost::Fetched || currentPost->status()==KBlog::BlogPost::Modified){
+		if(chkOptionsTime->isChecked())
+			currentPost->setMTime(datetimeOptionstimestamp->dateTime());
+		else
+			currentPost->setMTime(QDateTime::currentDateTime());
+	} else {
+		if(chkOptionsTime->isChecked()){
+			currentPost->setMTime(datetimeOptionstimestamp->dateTime());
+			currentPost->setCTime(datetimeOptionstimestamp->dateTime());
+		}
+		else {
+			currentPost->setMTime(QDateTime::currentDateTime());
+			currentPost->setCTime(QDateTime::currentDateTime());
+		}
+	}
+	
+	currentPost->setPrivate((comboOptionsStatus->currentIndex()==1)?true:false);
+	currentPost->setCommentAllowed(chkOptionsComments->isChecked());
+	currentPost->setTrackBackAllowed(chkOptionsTrackback->isChecked());
+	currentPost->setPosition((BilboPost::Position)comboOptionsStatus->currentIndex());
+	return currentPost;
+}
+
+void Toolbox::setFieldsValue(const BilboPost & post)
+{
+}
+
+QStringList Toolbox::selectedCategoriesTitle()
+{
+	qDebug("Toolbox::selectedCategoriesTitle");
+	QStringList list;
+	for( int i=0; i<listCategoryCheckBoxes.count(); ++i){
+		if(listCategoryCheckBoxes[i]->isChecked())
+			list.append(listCategoryCheckBoxes[i]->text());
+	}
+	return list;
+}
+
+QList< int > Toolbox::selectedCategoriesId()
+{
+	///TODO: Implement it
+	qDebug("QList< int > Toolbox::selectedCategoriesId() : NOT IMPLEMENTED YET!");
+	return QList<int>();
+}
+
+void Toolbox::setSelectedCategories(const QStringList &list)
+{
+	for( int i=0; i<listCategoryCheckBoxes.count(); ++i){
+		if(list.contains(listCategoryCheckBoxes[i]->text(), Qt::CaseInsensitive))
+			listCategoryCheckBoxes[i]->setChecked(true);
+	}
+}
+
+void Toolbox::setSelectedCategories(const QList< int > &)
+{
+	///TODO: Implement it
+	qDebug("Toolbox::setSelectedCategories(const QList< int > &) : NOT IMPLEMENTED YET!");
+}
+
+QStringList Toolbox::currentTags()
+{
+	qDebug("Toolbox::currentTags");
+	QStringList t;
+	t = txtCatTags->text().split(',', QString::SkipEmptyParts);
+	for(int i=0; i < t.count() ; ++i){
+		t[i] = t[i].trimmed();
+	}
+	return t;
+}
+
+int Toolbox::currentBlogId()
+{
+	return listBlogs.value(currentBlog->text(), -1);
 }

@@ -57,10 +57,16 @@ public:
 	 */
 	void getCategoryListFromServer();
 	void getEntriesListFromServer(int count);
+	void publishPost(BilboPost *post);
     
 protected slots:
 	void categoriesListed(const QList< QMap< QString, QString > > &   categories   );
+	
 	void entriesListed(const QList< KBlog::BlogPost > &posts);
+	
+	void postPublished(KBlog::BlogPost *post);
+	
+	
 signals:
     /**
      * emit when a categoriesListed() Done and Categories added to DB
@@ -72,7 +78,14 @@ signals:
 	 * @param blog_id id of Blog owner of Entries.
 	 */
 	void sigEntriesListFetched( int blog_id );
-
+	/**
+	 * Emits when a post published and added to Database.
+	 * @param blog_id blog id.
+	 * @param post_id post id in Database.
+	 * @param  
+	 */
+	void sigPostPublished(int blog_id, int post_id);
+	
 private:
 	KBlog::Blog *mBlog;
 	BilboBlog *bBlog;

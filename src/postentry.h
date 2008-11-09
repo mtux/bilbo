@@ -22,27 +22,22 @@
 
 #include <QFrame>
 
-//#include "ui_post.h"
 #include "bilboeditor.h"
-// #include "postproperties.h"
+#include "bilbopost.h"
 
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-//class PostEntry: public QFrame, public Ui::PostWidget {
 class PostEntry: public QFrame {
 Q_OBJECT
 public:
     PostEntry(QWidget *parent);
-// 	PostProperties *prop;
+	QString postTitle() const;
+	QString * postBody();
 		
 protected slots:
-	void sltPublishPost();
-	void sltSavePostLocally();
-	void sltSaveAsDraft();
-	void sltDelPost();
-	void sltDelLocally();
+
 	
 private:
 	BilboEditor *editPostWidget;

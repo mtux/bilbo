@@ -66,7 +66,7 @@ bool DBMan::createDB()
 		ret=false;
 	
 	///posts table!
-	if(!q.exec("CREATE TABLE post (id INTEGER PRIMARY KEY, postid TEXT, blog_id NUMERIC, author TEXT, title TEXT, content TEXT, c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC, is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT);"))
+	if(!q.exec("CREATE TABLE post (id INTEGER PRIMARY KEY, postid TEXT, blog_id NUMERIC, author TEXT, title TEXT, content TEXT, c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC, is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT, position int);"))
 		ret=false;
 	
 	///categories table!
@@ -174,27 +174,10 @@ bool DBMan::removeBlog(int blog_id)
 	return q.exec();
 }
 
-/**
- * 
- * @param postid 
- * @param blogid 
- * @param author 
- * @param title 
- * @param content 
- * @param c_time 
- * @param is_private 
- * @param is_comment_allowed 
- * @param is_trackback_allowed 
- * @param link 
- * @param perma_link 
- * @param summary 
- * @param tags 
- * @return return post id in database (deffer with postid)
- */
-int DBMan::addPost(QString postid, int blog_id, QString author, QString title, QString & content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags, QStringList categories)
+int DBMan::addPost(QString postid, int blog_id, QString author, QString title, QString & content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags, QStringList categories, int position)
 {
 	QSqlQuery q;
-	q.prepare("INSERT INTO post (postid, blog_id, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+	q.prepare("INSERT INTO post (postid, blog_id, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags, position) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 	q.addBindValue(postid);
 	q.addBindValue(blog_id);
 	q.addBindValue(author);
@@ -209,6 +192,7 @@ int DBMan::addPost(QString postid, int blog_id, QString author, QString title, Q
 	q.addBindValue(perma_link);
 	q.addBindValue(summary);
 	q.addBindValue(tags);
+	q.addBindValue(position);
 	int ret;
 	if(q.exec()){
 		ret = q.lastInsertId().toInt();
@@ -239,8 +223,9 @@ int DBMan::addPost(QString postid, int blog_id, QString author, QString title, Q
 
 int DBMan::addPost(const BilboPost & post, int blog_id)
 {
+	qDebug("DBMan::addPost: Adding post with title: %s to Blog %d", post.title().toLatin1().data(), blog_id);
 	QSqlQuery q;
-	q.prepare("INSERT INTO post (postid, blog_id, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+	q.prepare("INSERT INTO post (postid, blog_id, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags, position) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 	q.addBindValue(post.postId());
 	q.addBindValue(blog_id);
 	q.addBindValue(post.author());
@@ -254,13 +239,19 @@ int DBMan::addPost(const BilboPost & post, int blog_id)
 	q.addBindValue(post.postLink().toString());
 	q.addBindValue(post.postPermaLink().toString());
 	q.addBindValue(post.summary());
-	QString tags="";
+	QString tags=QString("");
 	
-	int i=0;
-	while(i<post.tags().count())
-		tags = post.tags()[i]+",";
-	tags.remove(tags.length()-1, 1);
-	q.addBindValue(tags);
+	if(post.tags().count()>0){
+		int i=0;
+		while(i<post.tags().count()){
+			tags = post.tags()[i]+",";
+			i++;
+		}
+		tags.remove(tags.length()-1, 1);
+		q.addBindValue(tags);
+	} else 
+		q.addBindValue(QString("Untagged"));
+	q.addBindValue(post.position());
 	
 	int ret;
 	if(q.exec()){
@@ -289,16 +280,18 @@ int DBMan::addPost(const BilboPost & post, int blog_id)
 			i++;
 		}
 	}
-	else
+	else{
+		qDebug("DBMan::addPost: ERROR: Cannot Add post to database!\n\tSQL Error: %s\nSQL query: %s", q.lastError().text().toLatin1().data(), q.lastQuery().toLatin1().data());
 		ret = -1;
+	}
 	
 	return ret;
 }
 
-bool DBMan::editPost(int id, int blog_id, QString postid, QString author, QString title, QString & content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags, QStringList categories)
+bool DBMan::editPost(int id, int blog_id, QString postid, QString author, QString title, QString & content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags, QStringList categories, int position)
 {
 	QSqlQuery q;
-	q.prepare("UPDATE post SET blog_id=?, postid=?, author=?, title=?, content=?, c_time=?, m_time=?, is_private=?, is_comment_allowed=?, is_trackback_allowed=?, link=?, perma_link=?, summary=?, tags=? WHERE id=?");
+	q.prepare("UPDATE post SET blog_id=?, postid=?, author=?, title=?, content=?, c_time=?, m_time=?, is_private=?, is_comment_allowed=?, is_trackback_allowed=?, link=?, perma_link=?, summary=?, tags=?, position=? WHERE id=?");
 	q.addBindValue(blog_id);
 	q.addBindValue(postid);
 	q.addBindValue(author);
@@ -313,6 +306,7 @@ bool DBMan::editPost(int id, int blog_id, QString postid, QString author, QStrin
 	q.addBindValue(perma_link);
 	q.addBindValue(summary);
 	q.addBindValue(tags);
+	q.addBindValue(position);
 	q.addBindValue(id);
 	
 	if(!q.exec())
@@ -351,7 +345,7 @@ bool DBMan::editPost(int id, int blog_id, QString postid, QString author, QStrin
 bool DBMan::editPost(BilboPost & post, int blog_id)
 {
 	QSqlQuery q;
-	q.prepare("UPDATE post SET blog_id=?, postid=?, author=?, title=?, content=?, c_time=?, m_time=?, is_private=?, is_comment_allowed=?, is_trackback_allowed=?, link=?, perma_link=?, summary=?, tags=? WHERE id=?");
+	q.prepare("UPDATE post SET blog_id=?, postid=?, author=?, title=?, content=?, c_time=?, m_time=?, is_private=?, is_comment_allowed=?, is_trackback_allowed=?, link=?, perma_link=?, summary=?, tags=?, position=? WHERE id=?");
 	q.addBindValue(blog_id);
 	q.addBindValue(post.postId());
 	q.addBindValue(post.author());
@@ -372,6 +366,7 @@ bool DBMan::editPost(BilboPost & post, int blog_id)
 		tags = post.tags()[i]+",";
 	tags.remove(tags.length()-1, 1);
 	q.addBindValue(tags);
+	q.addBindValue(post.position());
 	
 	q.addBindValue(post.id());
 	

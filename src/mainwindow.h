@@ -56,13 +56,24 @@ public:
 	QAction *actToggleToolboxVisible;
 	
 protected slots:
-	void sltAddNewBlog();
 	void sltCreateNewPost();
 	void sltUploadAllChanges();
 	void sltPostTitleChanged(const QString& title);
 	void sltBilboAbout();
 	void sltQuit();
 	void sltToggleToolboxVisible(bool);
+	void sltActivePostChanged( int );
+	
+	void sltPublishPost();
+	void sltPostPublished( int, int );
+	/**
+	 *    Slot to remove current Post entry from main tab wigdet!
+	 */
+	void sltRemoveCurrentPostEntry();
+// 	void sltSavePostLocally();
+// 	void sltSaveAsDraft();
+// 	void sltDelPost();
+// 	void sltDelLocally();
 	
 private:
 	void createUi();
@@ -71,7 +82,6 @@ private:
 	void readConfig();
 	void writeConfig();
 
-	
 	
 	Toolbox *toolbox;
 	PostEntry *activePost;
@@ -85,11 +95,9 @@ private:
 	QMenu *menuBilbo;
 	QMenu *menuPost;
 	QMenu *menuAbout;
-	QStatusBar *statusbarMain;
+	QStatusBar *statusbar;
+	QToolButton *btnRemovePost;
 	
-
-	
-
 };
 
 #endif
