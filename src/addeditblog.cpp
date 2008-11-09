@@ -34,6 +34,9 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 	isNewBlog=true;
 	if(blog_id>-1){
 		this->setWindowTitle("Edit Blog Settings");
+		btnOk->setEnabled(true);
+		btnFetch->setEnabled(true);
+		btnAutoConf->setEnabled(true);
 		isNewBlog=false;
 		bBlog = db->getBlogInfo(blog_id);
 		txtUrl->setText(bBlog->blogUrl().toString());
@@ -223,7 +226,7 @@ void AddEditBlog::sltAccepted()
 		return;
 	}
 	bBlog->setApi((BilboBlog::ApiType)comboAPI->currentIndex());
-	bBlog->setDirection((BilboBlog::TextDirection)comboDir->currentIndex());
+	bBlog->setDirection((Qt::LayoutDirection)comboDir->currentIndex());
 	
 	if(bBlog->password().isEmpty())
 		bBlog->setPassword(txtPass->text());

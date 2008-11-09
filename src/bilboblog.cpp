@@ -112,12 +112,12 @@ void BilboBlog::setId(const int id)
 	mId = id;
 }
 
-BilboBlog::TextDirection BilboBlog::direction() const
+Qt::LayoutDirection BilboBlog::direction() const
 {
 	return mDir;
 }
 
-void BilboBlog::setDirection(const TextDirection dir)
+void BilboBlog::setDirection(const Qt::LayoutDirection dir)
 {
 	mDir = dir;
 }

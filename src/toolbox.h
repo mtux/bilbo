@@ -35,7 +35,7 @@
 class Toolbox: public QDockWidget, public Ui::ToolboxWidget {
 Q_OBJECT
 public:
-    Toolbox(QWidget *parent = 0);
+	Toolbox(QStatusBar *mainStatusbar, QWidget *parent = 0);
 	
 	void reloadBlogList();
 	BilboPost* getFieldsValue();
@@ -83,6 +83,7 @@ private:
 	QRadioButton *blogToEdit;
 	QRadioButton *currentBlog;
 	BilboPost *currentPost;
+	QStatusBar *statusbar;
 };
 
 #endif

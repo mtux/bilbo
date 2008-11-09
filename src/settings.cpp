@@ -39,6 +39,8 @@ void Settings::save()
 // 	qDebug(QString(CONF_PATH).toLatin1().data());
 	
 	set->setValue("show_main_on_start", showMainOnStart);
+	set->setValue("toolbox_visible", isToolboxVisibleByDefault);
+	set->sync();
 }
 
 void Settings::load()
@@ -48,6 +50,7 @@ void Settings::load()
 	QSettings *set = new QSettings(CONF_PATH, QSettings::NativeFormat);
 	
 	showMainOnStart = set->value("show_main_on_start", true).toBool();
+	isToolboxVisibleByDefault = set->value ( "toolbox_visible", true ).toBool();
 }
 
 

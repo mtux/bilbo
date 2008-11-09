@@ -523,7 +523,7 @@ BilboBlog * DBMan::getBlogInfo(QString title)
 			b->setStylePath( q.value(5).toString());
 			b->setApi((BilboBlog::ApiType)q.value(6).toInt());
 			b->setTitle( q.value(7).toString());
-			b->setDirection((BilboBlog::TextDirection)q.value(8).toInt());
+			b->setDirection((Qt::LayoutDirection)q.value(8).toInt());
 			return b;
 		}
 	return 0;
@@ -545,7 +545,7 @@ BilboBlog * DBMan::getBlogInfo(int blog_id)
 			b->setStylePath(q.value(5).toString());
 			b->setApi((BilboBlog::ApiType)q.value(6).toInt());
 			b->setTitle( q.value(7).toString());
-			b->setDirection( (BilboBlog::TextDirection)q.value(8).toInt());
+			b->setDirection( (Qt::LayoutDirection) q.value(8).toInt());
 			return b;
 		}
 	}

@@ -108,10 +108,7 @@ void Backend::publishPost(BilboPost * post)
 	qDebug("Backend::publishPost");
 	
 	KBlog::BlogPost *bp = post->toKBlogPost();
-// 	qDebug(bp->title().toLatin1().data());
-// 	BilboPost ppp = (*post);
-// 	QString pStr = ppp.toString();
-// 	qDebug(pStr.toLatin1().data());
+	qDebug(post->toString().toLatin1().data());
 	
 	int api = bBlog->api();
 	if(api==0 || api==1 || api==2){
@@ -133,7 +130,7 @@ void Backend::postPublished(KBlog::BlogPost *post)
 {
 	qDebug("Backend::postPublished");
 	BilboPost pp((*post));
-	int post_id = db->addPost(pp, bBlog->id());///FIXME: BUG!!!!!
+	int post_id = db->addPost(pp, bBlog->id());
 	if(post_id!=-1){
 		emit sigPostPublished(bBlog->id(), post_id);
 		qDebug("Backend::sigPostPublished emited!");

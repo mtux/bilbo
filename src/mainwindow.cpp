@@ -22,11 +22,15 @@
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {
 	createUi();
-	readConfig();
-	toolbox->setMinimumWidth(280);
-	createActions();
 	
-	if(toolbox->isVisible()){
+	toolbox=new Toolbox(statusbar, this);
+	this->addDockWidget(Qt::RightDockWidgetArea,toolbox);
+	toolbox->setMinimumWidth(280);
+	
+	readConfig();
+	createActions();
+	toolbox->setVisible(conf->isToolboxVisibleByDefault);
+	if(conf->isToolboxVisibleByDefault){
 		actToggleToolboxVisible->setText(tr("Hide Toolbox"));
 	} else {
 		actToggleToolboxVisible->setText(tr("Show Toolbox"));
@@ -46,7 +50,7 @@ void MainWindow::readConfig()
 	QPoint pos = config.value("pos", QPoint(300, 200)).toPoint();
 	QSize size = config.value ( "size", QSize ( 800, 600 ) ).toSize();
 	int toolboxWidth = config.value ( "toolbox_width", 300 ).toInt();
-	toolbox->setVisible(config.value ( "toolbox_visible", true ).toBool());
+	
 
 	resize(size);
 	toolbox->resize(toolboxWidth, toolbox->height());
@@ -55,11 +59,13 @@ void MainWindow::readConfig()
 
 void MainWindow::writeConfig()
 {
+	conf->isToolboxVisibleByDefault = toolbox->isVisible();
+	
 	QSettings config(CONF_PATH, QSettings::NativeFormat);
 	config.setValue("pos" , pos());
 	config.setValue("size", size() );
 	config.setValue("toolbox_width", toolbox->width());
-	config.setValue("toolbox_visible", toolbox->isVisible());
+	config.sync();
 }
 
 void MainWindow::createUi()
@@ -99,9 +105,6 @@ void MainWindow::createUi()
 	activePost=new PostEntry(this);
 	tabPosts->addTab(activePost,"Untitled");
 	tabPosts->setCurrentIndex(0);
-	
-	toolbox=new Toolbox(this);
-	this->addDockWidget(Qt::RightDockWidgetArea,toolbox);
 	
 	btnRemovePost = new QToolButton(tabPosts);
 	btnRemovePost->setIcon(QIcon(":/media/format-text-bold.png"));
@@ -248,20 +251,29 @@ void MainWindow::sltPublishPost()
 	Backend *b = new Backend(blog_id);
 	connect(b, SIGNAL(sigPostPublished(int, int)), this, SLOT(sltPostPublished(int, int)));
 	BilboPost *post = toolbox->getFieldsValue();
+	if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
+		if(QMessageBox::warning(this, "Empty fields!",
+							 "Your post title or body is empty!\nAre you sure of pubish this post?",
+		QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
+			return;
+	}
 	post->setContent(*(activePost->postBody()));
 	post->setTitle(activePost->postTitle());
-	qDebug(activePost->postTitle().toLatin1().data());
-	qDebug(post->title().toLatin1().data());
 	post->setPrivate(false);
 	
 	b->publishPost(post);
+	statusbar->showMessage("Request to publish new post sent to server...");
 }
 
 void MainWindow::sltPostPublished(int blog_id, int post_id)
 {
 	qDebug("MainWindow::sltPostPublished");
-	QMessageBox::information(this, "Successful", "New Post published to \""+toolbox->listBlogs.key(blog_id)+"\" blog successfully");
-	sltRemoveCurrentPostEntry();
+	QString blog_name = toolbox->listBlogs.key(blog_id);
+	if(QMessageBox::information(this, "Successful", "New Post published to \"" + blog_name +
+			"\" blog successfully\nDo you want to keep it on editor?",
+	   		QMessageBox::Yes | QMessageBox::No, QMessageBox::No) != QMessageBox::Yes)
+		sltRemoveCurrentPostEntry();
+	statusbar->showMessage("New post published to "+blog_name, STATUSTIMEOUT);
 }
 
 void MainWindow::sltRemoveCurrentPostEntry()

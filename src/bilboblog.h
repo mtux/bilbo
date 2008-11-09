@@ -37,9 +37,6 @@ public:
 	enum ApiType {
 		BLOGGER1_API=0, METAWEBLOG_API, MOVABLETYPE_API, WORDPRESSBUGGY_API, GDATA_API
 	};
-	enum TextDirection{
-		LeftToRight=0, RightToLeft
-	};
 
     BilboBlog(QUrl& server);
 	BilboBlog();
@@ -61,8 +58,8 @@ public:
 	void setApi( const ApiType );
 	int id() const;//id in DB
 	void setId(const int);
-	TextDirection direction() const;
-	void setDirection( const TextDirection );
+	Qt::LayoutDirection direction() const;
+	void setDirection( const Qt::LayoutDirection );
 	
 private:
 	QUrl mBlogUrl;
@@ -73,7 +70,7 @@ private:
 	QString mStylePath;
 	ApiType mApi;
 	int mId;//id in DB
-	TextDirection mDir;
+	Qt::LayoutDirection mDir;
 };
 
 #endif

@@ -38,7 +38,7 @@ public:
 	void load();
 
 	bool showMainOnStart;
-	
+	bool isToolboxVisibleByDefault;
 private:
 // 	QString ini_path;
 };

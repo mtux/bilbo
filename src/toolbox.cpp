@@ -20,10 +20,11 @@
 #include "toolbox.h"
 #include "entriescountdialog.h"
 
-Toolbox::Toolbox(QWidget *parent)
+Toolbox::Toolbox(QStatusBar *mainStatusbar, QWidget *parent)
     :QDockWidget(parent)
 {
 	qDebug("Toolbox::Toolbox");
+	statusbar = mainStatusbar;
 	setupUi(this);
 	frameBlog->layout()->setAlignment(Qt::AlignTop);
 	frameCat->layout()->setAlignment(Qt::AlignTop);
@@ -88,7 +89,7 @@ void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 	qDebug("Toolbox::sltBlogEdited");
 	blogToEdit->setText(editedBlog.title());
 	blogToEdit->setToolTip(editedBlog.blogUrl().toString());
-	delete(blogToEdit);
+// 	delete(blogToEdit);
 }
 
 void Toolbox::reloadBlogList()
@@ -125,6 +126,7 @@ void Toolbox::sltReloadCategoryList()
 	Backend *b = new Backend(blog_id);
 	b->getCategoryListFromServer();
 	connect(b, SIGNAL(sigCategoryListFetched(int)), this, SLOT(sltLoadCategoryListFromDB(int)));
+	statusbar->showMessage("Request for Selected blog's category list sent to server...");
 }
 
 void Toolbox::sltReloadEntries()
@@ -171,7 +173,7 @@ void Toolbox::sltLoadEntriesFromDB(int blog_id)
 		return;
 	}
 	clearEntriesList();
-	
+	statusbar->showMessage("Entries list received.", STATUSTIMEOUT);
 	listEntries = db->listPostsTitle(blog_id);
 	lstEntriesList->addItems(listEntries.keys());
 }
@@ -183,6 +185,7 @@ void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 		qDebug("Toolbox::sltLoadCategoryListFromDB: Blog Id not sets correctly");
 		return;
 	}
+	statusbar->showMessage("Category list received.", STATUSTIMEOUT);
 	
 	clearCatList();
 	listCategories = db->listCategories(blog_id);
@@ -202,6 +205,7 @@ void Toolbox::sltGetEntriesCount(int count)
 	Backend *entryB = new Backend(listBlogs.value(currentBlog->text()));
 	entryB->getEntriesListFromServer(count);
 	connect(entryB, SIGNAL(sigEntriesListFetched(int)), this, SLOT(sltLoadEntriesFromDB(int)));
+	statusbar->showMessage("Request for Selected blog's Entries list sent to server...");
 }
 
 void Toolbox::resetFields()
@@ -235,6 +239,10 @@ void Toolbox::sltCurrentBlogChanged(int blog_id)
 	///TODO: Save current state to a temporary variable!
 	sltLoadCategoryListFromDB(blog_id);
 	sltLoadEntriesFromDB(blog_id);
+	Qt::LayoutDirection ll = db->getBlogInfo(blog_id)->direction();
+	frameCat->setLayoutDirection(ll);
+	lstEntriesList->setLayoutDirection(ll);
+	
 }
 
 BilboPost * Toolbox::getFieldsValue()
@@ -314,5 +322,8 @@ QStringList Toolbox::currentTags()
 
 int Toolbox::currentBlogId()
 {
-	return listBlogs.value(currentBlog->text(), -1);
+	if(currentBlog)
+		return listBlogs.value(currentBlog->text(), -1);
+	else
+		return -1;
 }
