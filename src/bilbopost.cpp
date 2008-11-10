@@ -19,6 +19,8 @@
  ***************************************************************************/
 #include "bilbopost.h"
 #include <QStringList>
+#include <QDateTime>
+#include <kdatetime.h>
 BilboPost::BilboPost()
  : KBlog::BlogPost()
 {
@@ -153,14 +155,8 @@ QString BilboPost::toString() const
 	ret+=QString("\nID: ")+postId();
 	ret+=QString("\nTitle: ")+title();
 	ret+=QString("\nContent: ") + content();
-	ret+="\nTags: ";
-	for( int i=0; i<tags().count(); ++i){
-		ret+=","+tags()[i];
-	}
-	ret+="\nCategories: ";
-	for( int i=0; i<categories().count(); ++i){
-		ret+=","+categories()[i];
-	}
+	ret+="\nTags: " + tags().join(",");
+	ret+="\nCategories: " + categories().join(",");
 	ret+="\nCreation Date Time: "+cTime().toString();
 	
 	ret+="\n******* End Post Info ********\n";

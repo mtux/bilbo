@@ -19,6 +19,9 @@
  ***************************************************************************/
 #include "systray.h"
 #include "global.h"
+#include <QMenu>
+
+// #include <QAction>
 
 SysTray::SysTray(QObject* parent): QSystemTrayIcon(parent)
 {

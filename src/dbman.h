@@ -20,11 +20,11 @@
 #ifndef DBMAN_H
 #define DBMAN_H
 #include <QtSql>
-#include "bilboblog.h"
-#include "bilbopost.h"
-
 
 #include "constants.h"
+class BilboBlog;
+class BilboPost;
+
 /**
 DB manipulation class. this class implement Low level Database operations. and any object of App. have to use this API to store or retrive information and settings from Database.
 

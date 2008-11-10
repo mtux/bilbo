@@ -48,9 +48,13 @@ QT += webkit \
 
 RESOURCES += editor.qrc
 
-INCLUDEPATH += /usr/lib/kde4/include/
 
-LIBS += -L/usr/lib/kde4/lib \
-  -lkdecore \
-  -lkblog
+
+LIBS += -L/usr/lib \
+  -L/usr/lib/kde4/lib \
+  -lbilbokblog \
+  -lkdecore
+
+INCLUDEPATH += /usr/include/bilbo/ \
+  /usr/lib/kde4/include/
 

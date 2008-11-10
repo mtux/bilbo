@@ -20,13 +20,15 @@
 #ifndef BILBOEDITOR_H
 #define BILBOEDITOR_H
 
-#include <QTabWidget>
+// #include <QTabWidget>
 #include <QtGui>
-#include <QWebView>
-#include <QTabWidget>
+// #include <QWebView>
 
-#include "addeditlink.h"
-
+class AddEditLink;
+class QTabWidget;
+class QWebView;
+class QAction;
+class QToolBar;
 //!Class BilboEditor represents the editor part of BilboBlogger
 /*!
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>

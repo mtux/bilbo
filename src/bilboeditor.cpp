@@ -22,7 +22,9 @@
 
 #include "bilboeditor.h"
 #include "htmlexporter.h"
-
+#include "addeditlink.h"
+#include <QWebView>
+// #include <QTabWidget>
 /*!
 Creates a new instance of BilboEditor, and calls createUi() function to initialize its widgets.
 */

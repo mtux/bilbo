@@ -24,10 +24,11 @@
 #include <QtGui>
 
 #include "ui_toolbox.h"
-#include "addeditblog.h"
-#include "global.h"
-#include "backend.h"
 
+class QRadioButton;
+class BilboPost;
+class AddEditBlog;
+class BilboBlog;
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
