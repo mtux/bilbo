@@ -634,7 +634,7 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
             html += QLatin1String(" />");
         }
     } else {
-        Q_ASSERT(!txt.contains(QChar::ObjectReplacementCharacter));
+         Q_ASSERT(!txt.contains(QChar::ObjectReplacementCharacter));
 
         txt = Qt::escape(txt);
 
@@ -644,11 +644,14 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
 
         const QStringList lines = txt.split(QRegExp(forcedLineBreakRegExp));
         for (int i = 0; i < lines.count(); ++i) {
-            //if (i > 0)
-                //html += QLatin1String("<br />"); // space on purpose for compatibility with Netscape, Lynx & Co.
+            if (i > 0)
+                html += QLatin1String("<br />"); // space on purpose for compatibility with Netscape, Lynx & Co.
+			//and to convert LineSeparators to <br /> tags.
             html += lines.at(i);
         }
     }
+	
+	qDebug() << html ;
 
     //Close Tags
     //if (!closeAnchor)
@@ -883,7 +886,8 @@ void htmlExporter::emitBlock(const QTextBlock &block)
 		if (list) {
 			html += QLatin1Char('>');
 		}
-        html += QLatin1String("<div");
+        //html += QLatin1String("<div");
+		html += QLatin1String("<p");
 		emitBlockAttributes(block);
 		html += QLatin1Char('>');
     }
@@ -909,7 +913,8 @@ void htmlExporter::emitBlock(const QTextBlock &block)
 		} else if ( ! (html.right(7).contains(QRegExp("<br[\\s]*/>[\\n]*"))) ) {
         	html += QLatin1String("<br />");//"</p>");
 		}
-		html += QLatin1String("</div>");
+		//html += QLatin1String("</div>");
+		html += QLatin1String("</p>");
 	}
     // HACK html.replace( QRegExp("<br[\\s]*/>[\\n]*<br[\\s]*/>[\\n]*"),"<br />&nbsp;<br />" );
 
