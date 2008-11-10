@@ -23,11 +23,8 @@
 #include "bilboeditor.h"
 #include "htmlexporter.h"
 #include "addeditlink.h"
-#include <QWebView>
+
 // #include <QTabWidget>
-/*!
-Creates a new instance of BilboEditor, and calls createUi() function to initialize its widgets.
-*/
 BilboEditor::BilboEditor()
 {
 	createUi();
@@ -39,11 +36,6 @@ BilboEditor::~BilboEditor()
 {
 }
 
-/*!
-Creates Widget of BilboEditor.
-then assigns default charachter format of the editor tab to defaultCharFormat variable, to be used in remove formatting operation. then calls createActions function.
-\sa sltRemoveFormatting(), createActions()
-*/
 void BilboEditor::createUi()
 {
 	///this:
@@ -58,7 +50,8 @@ void BilboEditor::createUi()
 	prev_index=0;
 	
 	///editor:
-	editor = new QTextEdit(0);
+	//editor = new QTextEdit(0);
+	editor = new MultiLineTextEdit(0);
 	barVisual = new QToolBar(0);
 	barVisual->setIconSize(QSize(22, 22));
 	barVisual->setToolButtonStyle(Qt::ToolButtonIconOnly);
@@ -107,9 +100,6 @@ void BilboEditor::createUi()
 // 	tabVisual->layout()->addWidget(editor);//TODO!
 }
 
-/*!
-Creates actions of Bilbo editor, and assigns each one to a button, then adds each button to barVisual, on the editor tab.
-*/
 void BilboEditor::createActions()
 {
 	actBold = new QAction(QIcon(":/media/format-text-bold.png"), "Bold", this);
@@ -151,6 +141,10 @@ void BilboEditor::createActions()
 	
 	barVisual->addSeparator();
 	
+	actNewParagraph = new QAction(QIcon(":/media/new-paragraph.png"),"New Paragraph",this);
+	connect(actNewParagraph, SIGNAL(triggered(bool)), this, SLOT(sltNewParagraph()));
+	barVisual->addAction(actNewParagraph);
+	
 	actAlignLeft = new QAction(QIcon(":/media/format-justify-left.png"), "Align left", this);
 	connect(actAlignLeft, SIGNAL(triggered(bool)), this, SLOT(sltAlignLeft()));
 	barVisual->addAction(actAlignLeft);
@@ -191,17 +185,11 @@ void BilboEditor::createActions()
 	barVisual->addAction(actAddImage);
 }
 
-/*! 
-Changes Italic style of current format.
-*/
 void BilboEditor::sltToggleItalic()
 {
 	editor->setFontItalic(!editor->fontItalic());
 }
 
-/*!
-Changes Bold style of current text.
-*/
 void BilboEditor::sltToggleBold()
 {
 	if ( editor->fontWeight() >= QFont::Bold )
@@ -210,17 +198,11 @@ void BilboEditor::sltToggleBold()
 		editor->setFontWeight( QFont::Bold );
 }
 
-/*!
-Changes Underline style of current text.
-*/
 void BilboEditor::sltToggleUnderline()
 {
 	editor->setFontUnderline ( !editor->fontUnderline() );
 }
 
-/*!
-Changes Strikeout style of current text.
-*/
 void BilboEditor::sltToggleStrikeout()
 {
 	QFont f( editor->currentFont() );
@@ -228,10 +210,6 @@ void BilboEditor::sltToggleStrikeout()
 	editor->setCurrentFont(f);
 }
 
-/*!
-Changes the current text font into Courier fontfamily, to represent code style.
-or if text font already be in code style, uses the fontfamily it had before.
-*/
 void BilboEditor::sltToggleCode()
 {
 	//TODO
@@ -244,10 +222,6 @@ void BilboEditor::sltToggleCode()
 	}
 }
 
-/*!
-Increments font size by one degree.
-there are five predefined values for font size: "small", "medium", "large", "x-large", "xx-large". Bilboeditor uses "medium" as default font size.
-*/
 void BilboEditor::sltFontSizeIncrease()
 {
 // 	QTextCharFormat format = editor->currentCharFormat();
@@ -266,10 +240,6 @@ void BilboEditor::sltFontSizeIncrease()
 	}
 }
 
-/*!
-Decrements font size by one degree.
-there are five predefined values for font size: "small", "medium", "large", "x-large", "xx-large". Bilboeditor uses "medium" as default font size.
- */
 void BilboEditor::sltFontSizeDecrease()
 {
 // 	QTextCharFormat format = editor->currentCharFormat();
@@ -288,9 +258,6 @@ void BilboEditor::sltFontSizeDecrease()
 	}
 }
 
-/*!
-Opens a dialog to set link address. if cursor has selection and it is a link itself, the link address is shown in the dialog to edit.
-*/
 void BilboEditor::sltAddEditLink()
 {
 	linkDialog = new AddEditLink(this);
@@ -304,9 +271,6 @@ void BilboEditor::sltAddEditLink()
 	}
 }
 
-/*!
-Sets the link address given in the Caller link dialog as AnchorHref of the current text. if link title is set in the link dialog, current text will change into that.
-*/
 void BilboEditor::sltSetLink(QString address, QString target, QString title)
 {
 	QTextCharFormat f = editor->currentCharFormat();
@@ -320,9 +284,6 @@ void BilboEditor::sltSetLink(QString address, QString target, QString title)
 	editor->textCursor().mergeCharFormat(f);
 }
 
-/*!
-Removes link from current text by assigning false to the Anchor property of text format.
-*/
 void BilboEditor::sltRemoveLink()
 {
 	QTextCharFormat f = editor->textCursor().charFormat();
@@ -333,9 +294,6 @@ void BilboEditor::sltRemoveLink()
 	editor->textCursor().mergeCharFormat(f);
 }
 
-/*!
-Changes the forground color of current text.
-*/
 void BilboEditor::sltSelectColor()
 {
 	QColor c = QColorDialog::getColor(QColor("black"), this);
@@ -347,10 +305,6 @@ void BilboEditor::sltSelectColor()
 	editor->textCursor().mergeCharFormat(ch);
 }
 
-/*!
-Changes all properties of current text format into default, except Anchor, AnchorName and AnchorHref properties.
-\sa defaultCharFormat
-*/
 void BilboEditor::sltRemoveFormatting()
 {
 // 	if(editor->textCursor().hasSelection())
@@ -377,25 +331,20 @@ void BilboEditor::sltRemoveFormatting()
 // 	editor->setCurrentCharFormat(f);
 }
 
-/*!
-Changes Alignment of current paragraph into Right Alignment.
-*/
+void BilboEditor::sltNewParagraph()
+{
+	editor->textCursor().insertBlock(editor->textCursor().blockFormat(), editor->textCursor().charFormat());
+}
 void BilboEditor::sltAlignRight()
 {
 	editor->setAlignment(Qt::AlignRight);
 }
 
-/*!
-Changes Alignment of current paragraph into Left Alignment.
- */
 void BilboEditor::sltAlignLeft()
 {
 	editor->setAlignment(Qt::AlignLeft);
 }
 
-/*!
-Changes Alignment of current paragraph into Center Alignment.
- */
 void BilboEditor::sltAlignCenter()
 {
 	editor->setAlignment(Qt::AlignHCenter);
@@ -410,9 +359,6 @@ void BilboEditor::sltAlignJustify()
 // 		editor->setAlignment();
 }
 
-/*!
-Switches Layout Direction of current paragraph between RightToLeft and LeftToRight Directions.
- */
 void BilboEditor::sltChangeLayoutDirection()
 {
 	qDebug("BilboEditor::changeLayoutDirection");
@@ -458,9 +404,6 @@ void BilboEditor::sltAddImage()
 // 	}
 // }
 
-/*!
-Sets the content of the current tab  as other tabs' contents, to apply recent changes. this function executes each time the user switches between tabs. 
-*/
 void BilboEditor::sltSyncEditors(int index)
 {
 // 	editor->document();
@@ -487,9 +430,6 @@ void BilboEditor::sltSyncEditors(int index)
 	delete htmlExp;
 }
 
-/*!
-Prepares the html code to be used by editor->setHtml() function.
-*/
 QString BilboEditor::htmlToRichtext(const QString& html)
 {
 	QString richText = html;
@@ -520,9 +460,6 @@ QString BilboEditor::htmlToRichtext(const QString& html)
 	return h;
 }
 
-/*!
-Synchronizes htmlEditor and editor tabs, by sending content of the current one to another. then copies the content of htmlEditor into the variable mHtmlContent, and returns it.
-*/
 QString* BilboEditor::htmlContent()
 {
 	htmlExporter* htmlExp = new htmlExporter();

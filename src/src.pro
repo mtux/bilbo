@@ -13,7 +13,8 @@ SOURCES += main.cpp \
  bilbopost.cpp \
  bilboblog.cpp \
  backend.cpp \
- entriescountdialog.cpp
+ entriescountdialog.cpp \
+ multilinetextedit.cpp
 TEMPLATE = app
 CONFIG += warn_on \
 	  thread \
@@ -42,7 +43,8 @@ postentry.h \
  bilbopost.h \
  bilboblog.h \
  backend.h \
- entriescountdialog.h
+ entriescountdialog.h \
+ multilinetextedit.h
 QT += webkit \
  sql
 
