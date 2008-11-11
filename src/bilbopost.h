@@ -20,15 +20,18 @@
 #ifndef BILBOPOST_H
 #define BILBOPOST_H
 
-#include <QDateTime>
-#include <QUrl>
+// #include <QDateTime>
+// #include <QUrl>
 
-#include <kurl.h>
-#include <kdatetime.h>
+// #include <kurl.h>
+// #include <kdatetime.h>
 #include <kblog/blogpost.h>
 
+class QUrl;
+class QDateTime;
 class KUrl;
 class KDateTime;
+class KBlog::BlogPost;
 
 /**
 Definition of a blog post!

@@ -18,6 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "mainwindow.h"
+#include "global.h"
+#include "toolbox.h"
+#include "postentry.h"
+#include "addeditblog.h"
+#include "backend.h"
+#include "bilbopost.h"
 #include <QSettings>
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {

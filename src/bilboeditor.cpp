@@ -22,8 +22,9 @@
 
 #include "bilboeditor.h"
 #include "htmlexporter.h"
+#include "addeditlink.h"
 
-
+// #include <QTabWidget>
 BilboEditor::BilboEditor()
 {
 	createUi();

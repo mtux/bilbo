@@ -19,7 +19,10 @@
  ***************************************************************************/
 #include "toolbox.h"
 #include "entriescountdialog.h"
-
+#include "addeditblog.h"
+#include "global.h"
+#include "backend.h"
+#include "bilbopost.h"
 Toolbox::Toolbox(QStatusBar *mainStatusbar, QWidget *parent)
     :QDockWidget(parent)
 {

@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "settings.h"
-#include <QDebug>
+// #include <QDebug>
 #include <QSettings>
 
 Settings::Settings()

@@ -20,7 +20,8 @@
 #include "dbman.h"
 #include <QMessageBox>
 #include <QDebug>
-
+#include "bilboblog.h"
+#include "bilbopost.h"
 
 DBMan::DBMan()
 {

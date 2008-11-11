@@ -22,9 +22,13 @@
 
 #include <QFrame>
 
-#include "bilboeditor.h"
-#include "bilbopost.h"
-
+class BilboPost;
+class BilboEditor;
+class QWidget;
+class QGridLayout;
+class QLabel;
+class QHBoxLayout;
+class QLineEdit;
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>

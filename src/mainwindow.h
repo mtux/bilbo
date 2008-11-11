@@ -21,13 +21,16 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QtGui/QToolBar>
 
-#include "toolbox.h"
-#include "postentry.h"
-#include "addeditblog.h"
-#include "global.h"
 
+
+class QTabWidget;
+class QToolButton;
+class BilboPost;
+class Toolbox;
+class AddEditBlog;
+class PostEntry;
+class Backend;
 /**
 Main window of bilbo blogger implementation...
 

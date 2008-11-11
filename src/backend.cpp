@@ -18,7 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "backend.h"
+#include "bilboblog.h"
+#include "bilbopost.h"
+#include "global.h"
 
+#include <kblog/blogger1.h>
+#include <kblog/gdata.h>
+#include <kblog/metaweblog.h>
+#include <kblog/movabletype.h>
+#include <kblog/wordpressbuggy.h>
 Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 {
 	qDebug("Backend::Backend: with blog id: %d", blog_id);

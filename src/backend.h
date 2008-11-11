@@ -20,20 +20,16 @@
 #ifndef BILBOENGINE_H
 #define BILBOENGINE_H
 
+
+
 #include <QObject>
-
-#include <kurl.h>
+#include <QMap>
+// #include <kurl.h>
 #include <kblog/blog.h>
-#include <kblog/blogger1.h>
-#include <kblog/gdata.h>
-#include <kblog/metaweblog.h>
-#include <kblog/movabletype.h>
-#include <kblog/wordpressbuggy.h>
 
-#include "bilboblog.h"
-#include "bilbopost.h"
-#include "global.h"
-
+class KUrl;
+class BilboBlog;
+class BilboPost;
 /**
 Engine of application, communicate with plugins and UI.
 this is heart and brain of app. ;)

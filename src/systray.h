@@ -20,12 +20,12 @@
 #ifndef SYSTRAY_H
 #define SYSTRAY_H
 
-#include <QSystemTrayIcon>
-#include <QAction>
-
 #include "mainwindow.h"
 #include "settings.h"
 
+#include <QSystemTrayIcon>
+class QMenu;
+class QAction;
 /**
 System tray icon of app
 
