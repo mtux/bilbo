@@ -107,7 +107,7 @@ void MainWindow::createUi()
 	tabPosts->setCurrentIndex(0);
 	
 	btnRemovePost = new QToolButton(tabPosts);
-	btnRemovePost->setIcon(QIcon(":/media/format-text-bold.png"));
+	btnRemovePost->setIcon(QIcon(":/media/tab-close-other.png"));
 	btnRemovePost->setToolTip("Remove current post");
 	tabPosts->setCornerWidget(btnRemovePost, Qt::TopRightCorner);
 	connect(btnRemovePost, SIGNAL(clicked( bool )), this, SLOT(sltRemoveCurrentPostEntry()));
@@ -122,7 +122,7 @@ void MainWindow::createActions()
 	actUploadAll=new QAction(QIcon(":/media/format-text-bold.png"),"&Upload All Changes",this);
 	connect(actUploadAll,SIGNAL(triggered( bool )),this,SLOT(sltUploadAllChanges()));
 	
-	actNewPost=new QAction(QIcon(":/media/format-text-bold.png"),"&New Post",this);
+	actNewPost=new QAction(QIcon(":/media/tab-new.png"),"&New Post",this);
 	actNewPost->setShortcut(tr("Ctrl+N"));
 	connect(actNewPost,SIGNAL(triggered( bool )),this,SLOT(sltCreateNewPost()));
 	

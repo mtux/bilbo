@@ -22,8 +22,11 @@
         <file>media/format-text-superscript.png</file>
         <file>media/format-text-underline.png</file>
         <file>media/insert-link.png</file>
+        <file>media/insert-image.png</file>
         <file>media/draw-eraser.png</file>
         <file>media/gplv3-88x31.png</file>
         <file>media/gplv3-127x51.png</file>
+        <file>media/tab-new.png</file>
+        <file>media/tab-close-other.png</file>
     </qresource>
 </RCC>
