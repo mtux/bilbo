@@ -47,6 +47,7 @@ Toolbox::Toolbox(QStatusBar *mainStatusbar, QWidget *parent)
     
     connect(lstEntriesList, SIGNAL(itemDoubleClicked( QListWidgetItem* )),
             this, SLOT( sltEntrySelected( QListWidgetItem* )));
+    connect(btnEntriesCopyUrl, SIGNAL(clicked( bool )), this, SLOT(sltEntriesCopyUrl()));
     
     lblOptionsTrackBack->setVisible(false);
     txtOptionsTrackback->setVisible(false);
@@ -70,6 +71,7 @@ void Toolbox::sltEditBlog()
 	blogToEdit = currentBlog;
 	
 	addEditBlogWindow = new AddEditBlog(listBlogs.value(blogToEdit->text(), -1), this);
+    connect(addEditBlogWindow, SIGNAL(sigBlogEdited(BilboBlog&)), this, SLOT(sltBlogEdited(BilboBlog&)));
 	addEditBlogWindow->show();
 }
 
@@ -96,9 +98,11 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 {
 	qDebug("Toolbox::sltBlogEdited");
+    listBlogs.remove(blogToEdit->text());
 	blogToEdit->setText(editedBlog.title());
 	blogToEdit->setToolTip(editedBlog.blogUrl().toString());
-// 	delete(blogToEdit);
+    listBlogs.insert(editedBlog.title(), editedBlog.id());
+    emit sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
 }
 
 void Toolbox::reloadBlogList()
@@ -248,7 +252,7 @@ void Toolbox::clearEntriesList()
 
 void Toolbox::sltCurrentBlogChanged(int blog_id)
 {
-	///TODO: Save current state to a temporary variable!
+	///TODO Save current state to a temporary variable!
 	sltLoadCategoryListFromDB(blog_id);
 	sltLoadEntriesFromDB(blog_id);
 	Qt::LayoutDirection ll = db->getBlogInfo(blog_id)->direction();
@@ -370,4 +374,16 @@ void Toolbox::setCurrentBlog(int blog_id)
             break;
         }
     }
+}
+
+void Toolbox::setCurrentPage(int index)
+{
+    box->setCurrentIndex(index);
+}
+
+void Toolbox::sltEntriesCopyUrl()
+{
+    QClipboard *clip = QApplication::clipboard();
+    BilboPost *p = db->getPostInfo(listEntries.value(lstEntriesList->currentItem()->text()));
+    clip->setText(p->postLink().toString());
 }

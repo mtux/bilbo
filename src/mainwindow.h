@@ -79,7 +79,10 @@ protected slots:
 // 	void sltSaveAsDraft();
 // 	void sltDelPost();
 // 	void sltDelLocally();
-	
+
+protected:
+    void keyReleaseEvent ( QKeyEvent * event );
+    
 private:
 	void createUi();
 	void createActions();

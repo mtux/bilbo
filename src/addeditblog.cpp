@@ -46,7 +46,10 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 		lblTitle->setText(bBlog->title());
 		comboApi->setCurrentIndex(bBlog->api());
 		comboDir->setCurrentIndex(bBlog->direction());
-	}
+	} else {
+        bBlog = new BilboBlog();
+        bBlog->setBlogId(0);
+    }
 	connect(txtId, SIGNAL(textChanged( const QString& )), this, SLOT(enableOkButton(const QString&)));
 	connect(txtUrl, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
 	connect(txtUser, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
@@ -61,9 +64,6 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
     connect(txtId, SIGNAL(returnPressed()), this, SLOT(sltReturnPressed()));
 	
 	txtUrl->setFocus();
-	
-	bBlog = new BilboBlog();
-	bBlog->setBlogId(0);
 }
 
 void AddEditBlog::enableAutoConfBtn()
@@ -279,11 +279,12 @@ void AddEditBlog::sltReturnPressed()
 
 void AddEditBlog::sltRejected()
 {
-    mFetchProfileIdTimer->stop();
-    mFetchBlogIdTimer->stop();
-    mFetchAPITimer->stop();
-    
-    delete mFetchProfileIdTimer;
-    delete mFetchBlogIdTimer;
-    delete mFetchAPITimer;
+    ///TODO check timers behavior on accept and reject.
+//     mFetchProfileIdTimer->stop();
+//     mFetchBlogIdTimer->stop();
+//     mFetchAPITimer->stop();
+//     
+//     delete mFetchProfileIdTimer;
+//     delete mFetchBlogIdTimer;
+//     delete mFetchAPITimer;
 }

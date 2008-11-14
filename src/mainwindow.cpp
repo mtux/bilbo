@@ -28,7 +28,7 @@
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {
 	createUi();
-	
+    setFocusPolicy(Qt::StrongFocus);
 	toolbox=new Toolbox(statusbar, this);
 	this->addDockWidget(Qt::RightDockWidgetArea,toolbox);
 	toolbox->setMinimumWidth(280);
@@ -247,7 +247,7 @@ void MainWindow::sltToggleToolboxVisible(bool v)
 void MainWindow::sltActivePostChanged(int index)
 {
     activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
-//     activePost->
+//     activePost->///TODO!!!!!!!!
 }
 
 void MainWindow::sltPublishPost()
@@ -309,6 +309,32 @@ void MainWindow::sltNewPostSelected(BilboPost * newPost)
     
     activePost->setPostTitle(newPost->title());
     activePost->setPostBody(newPost->content());
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent * event)
+{
+    if( event->modifiers() == Qt::ControlModifier){
+        switch( event->key() ){
+        case  Qt::Key_1:
+            toolbox->setCurrentPage(0);
+            break;
+        case Qt::Key_2:
+            toolbox->setCurrentPage(1);
+            break;
+        case Qt::Key_3:
+            toolbox->setCurrentPage(2);
+            break;
+        case Qt::Key_4:
+            toolbox->setCurrentPage(3);
+            break;
+        case Qt::Key_5:
+            toolbox->setCurrentPage(4);
+            break;
+        default:
+            QMainWindow::keyPressEvent(event);
+            break;
+        }
+    }
 }
 
 

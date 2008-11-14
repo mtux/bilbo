@@ -43,6 +43,7 @@ public:
 	void setFieldsValue(const BilboPost& post);
 	int currentBlogId();
     void setCurrentBlog(int blog_id);
+    void setCurrentPage( int index );
 	
 	QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
 	QList<QRadioButton*> listBlogRadioButtons;
@@ -68,6 +69,7 @@ public slots:
 	void sltCurrentBlogChanged( int blog_id );
 	void resetFields();
     void sltEntrySelected( QListWidgetItem *item );
+    void sltEntriesCopyUrl();
 	
 signals:
 	void sigCurrentBlogChanged( int blog_id );
