@@ -65,7 +65,9 @@ protected slots:
 	void sltBilboAbout();
 	void sltQuit();
 	void sltToggleToolboxVisible(bool);
-	void sltActivePostChanged( int );
+	void sltActivePostChanged( int tabIndex );
+    
+    void sltNewPostSelected( BilboPost *newPost );
 	
 	void sltPublishPost();
 	void sltPostPublished( int, int );

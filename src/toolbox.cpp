@@ -44,6 +44,12 @@ Toolbox::Toolbox(QStatusBar *mainStatusbar, QWidget *parent)
 	connect(btnEntriesReload, SIGNAL(clicked()), this, SLOT(sltReloadEntries()));
 	connect(box, SIGNAL(currentChanged ( int )), this, SLOT(sltCurrentPageChanged(int)));
 	connect(this, SIGNAL(sigCurrentBlogChanged(int)), this, SLOT(sltCurrentBlogChanged(int)));
+    
+    connect(lstEntriesList, SIGNAL(itemDoubleClicked( QListWidgetItem* )),
+            this, SLOT( sltEntrySelected( QListWidgetItem* )));
+    
+    lblOptionsTrackBack->setVisible(false);
+    txtOptionsTrackback->setVisible(false);
 }
 
 void Toolbox::sltAddBlog()
@@ -79,7 +85,7 @@ void Toolbox::sltRemoveBlog()
 void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 {
 	qDebug("Toolbox::sltBlogAdded");
-	listBlogs.insertMulti(addedBlog.title(), addedBlog.id());
+	listBlogs.insert(addedBlog.title(), addedBlog.id());
 	QRadioButton *a = new QRadioButton(addedBlog.title());
 	a->setToolTip(addedBlog.blogUrl().toString());
 	listBlogRadioButtons.append(a);
@@ -130,6 +136,7 @@ void Toolbox::sltReloadCategoryList()
 	b->getCategoryListFromServer();
 	connect(b, SIGNAL(sigCategoryListFetched(int)), this, SLOT(sltLoadCategoryListFromDB(int)));
 	statusbar->showMessage("Request for Selected blog's category list sent to server...");
+    this->setCursor(Qt::BusyCursor);
 }
 
 void Toolbox::sltReloadEntries()
@@ -177,6 +184,7 @@ void Toolbox::sltLoadEntriesFromDB(int blog_id)
 	}
 	clearEntriesList();
 	statusbar->showMessage("Entries list received.", STATUSTIMEOUT);
+    this->unsetCursor();
 	listEntries = db->listPostsTitle(blog_id);
 	lstEntriesList->addItems(listEntries.keys());
 }
@@ -189,7 +197,7 @@ void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 		return;
 	}
 	statusbar->showMessage("Category list received.", STATUSTIMEOUT);
-	
+	this->unsetCursor();
 	clearCatList();
 	listCategories = db->listCategories(blog_id);
 	
@@ -209,6 +217,7 @@ void Toolbox::sltGetEntriesCount(int count)
 	entryB->getEntriesListFromServer(count);
 	connect(entryB, SIGNAL(sigEntriesListFetched(int)), this, SLOT(sltLoadEntriesFromDB(int)));
 	statusbar->showMessage("Request for Selected blog's Entries list sent to server...");
+    this->setCursor(Qt::BusyCursor);
 }
 
 void Toolbox::resetFields()
@@ -273,11 +282,23 @@ BilboPost * Toolbox::getFieldsValue()
 	currentPost->setCommentAllowed(chkOptionsComments->isChecked());
 	currentPost->setTrackBackAllowed(chkOptionsTrackback->isChecked());
 	currentPost->setPosition((BilboPost::Position)comboOptionsStatus->currentIndex());
+    currentPost->setSummary(txtSummary->toPlainText());
 	return currentPost;
 }
 
 void Toolbox::setFieldsValue(const BilboPost & post)
 {
+    qDebug("Toolbox::setFieldsValue");
+    setSelectedCategories(post.categories());
+    txtCatTags->setText(post.tags().join(", "));
+    comboOptionsStatus->setCurrentIndex(post.position());
+    if(post.position()!=BilboPost::Local && post.isPrivate())
+        comboOptionsStatus->setCurrentIndex(1);
+    chkOptionsComments->setChecked(post.isCommentAllowed());
+    chkOptionsTrackback->setChecked(post.isTrackBackAllowed());
+    datetimeOptionstimestamp->setDateTime(post.mTime());
+    txtSummary->setPlainText(post.summary());
+//     txtOptionsTrackback->setText(post.);
 }
 
 QStringList Toolbox::selectedCategoriesTitle()
@@ -329,4 +350,24 @@ int Toolbox::currentBlogId()
 		return listBlogs.value(currentBlog->text(), -1);
 	else
 		return -1;
+}
+
+void Toolbox::sltEntrySelected(QListWidgetItem * item)
+{
+    qDebug("Toolbox::sltEntrySelected");
+    BilboPost *post = db->getPostInfo(listEntries.value(item->text()));
+    setFieldsValue(*post);
+    emit sigEntrySelected(post);
+    qDebug("Emiting sigEntrySelected...");
+}
+
+void Toolbox::setCurrentBlog(int blog_id)
+{
+    QString blogTitle = listBlogs.key(blog_id);
+    for( int i=0; i<listBlogRadioButtons.count(); ++i){
+        if(listBlogRadioButtons[i]->text()==blogTitle){
+            listBlogRadioButtons[i]->setChecked(true);
+            break;
+        }
+    }
 }

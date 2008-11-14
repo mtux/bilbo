@@ -19,7 +19,7 @@
       <item row="0" column="0" >
        <widget class="QToolBox" name="box" >
         <property name="currentIndex" >
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="pgBlogs" >
          <property name="geometry" >
@@ -124,8 +124,20 @@
             <property name="editTriggers" >
              <set>QAbstractItemView::NoEditTriggers</set>
             </property>
+            <property name="showDropIndicator" stdset="0" >
+             <bool>false</bool>
+            </property>
+            <property name="alternatingRowColors" >
+             <bool>true</bool>
+            </property>
             <property name="selectionBehavior" >
              <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="isWrapping" stdset="0" >
+             <bool>false</bool>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -317,7 +329,7 @@ p, li { white-space: pre-wrap; }
            <widget class="QDateTimeEdit" name="datetimeOptionstimestamp" />
           </item>
           <item>
-           <widget class="QLabel" name="label_2" >
+           <widget class="QLabel" name="lblOptionsTrackBack" >
             <property name="text" >
              <string>&amp;Trackback URLs :</string>
             </property>
@@ -328,6 +340,16 @@ p, li { white-space: pre-wrap; }
           </item>
           <item>
            <widget class="QLineEdit" name="txtOptionsTrackback" />
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2" >
+            <property name="text" >
+             <string>Summary :</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPlainTextEdit" name="txtSummary" />
           </item>
           <item>
            <spacer name="verticalSpacer" >

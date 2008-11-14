@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>455</width>
-    <height>338</height>
+    <height>374</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -30,11 +30,12 @@
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
 &lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:10pt; font-weight:400; font-style:normal;">
-&lt;table style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
+&lt;table border="0" style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
 &lt;tr>
 &lt;td style="border: none;">
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&amp;amp;Configuring your blog account...&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Please fill these fields, and hit the AutoConfigure button to retrieve your blog settings&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Please fill these fields, and hit the AutoConfigure button to retrieve your blog settings&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">You can set more options on Advanced tab.&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
          </property>
          <property name="scaledContents" >
           <bool>false</bool>
@@ -44,6 +45,28 @@ p, li { white-space: pre-wrap; }
          </property>
          <property name="buddy" >
           <cstring>txtUrl</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" colspan="2" >
+        <widget class="QLabel" name="lblTitle" >
+         <property name="font" >
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet" >
+          <string notr="true" >color: rgb(40, 21, 255);</string>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -94,6 +117,19 @@ p, li { white-space: pre-wrap; }
          </property>
         </widget>
        </item>
+       <item row="5" column="1" >
+        <spacer name="horizontalSpacer_2" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item row="5" column="2" >
         <widget class="QPushButton" name="btnAutoConf" >
          <property name="enabled" >
@@ -117,38 +153,10 @@ p, li { white-space: pre-wrap; }
          </property>
         </spacer>
        </item>
-       <item row="5" column="1" >
-        <spacer name="horizontalSpacer_2" >
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0" colspan="3" >
-        <widget class="QLabel" name="lblTitle" >
-         <property name="font" >
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="styleSheet" >
-          <string notr="true" >color: rgb(40, 21, 255);</string>
-         </property>
-         <property name="frameShape" >
-          <enum>QFrame::StyledPanel</enum>
-         </property>
+       <item row="1" column="0" >
+        <widget class="QLabel" name="label_9" >
          <property name="text" >
-          <string/>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignCenter</set>
+          <string>Your blog Title :</string>
          </property>
         </widget>
        </item>
@@ -177,7 +185,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="1" column="1" >
-        <widget class="QComboBox" name="comboAPI" >
+        <widget class="QComboBox" name="comboApi" >
          <item>
           <property name="text" >
            <string>Blogger 1.0 API</string>
@@ -226,7 +234,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="2" column="1" >
-        <widget class="QLineEdit" name="txtID" />
+        <widget class="QLineEdit" name="txtId" />
        </item>
        <item row="2" column="2" >
         <widget class="QPushButton" name="btnFetch" >
@@ -326,61 +334,13 @@ p, li { white-space: pre-wrap; }
   <tabstop>btnOk</tabstop>
   <tabstop>btnCancel</tabstop>
   <tabstop>tabs</tabstop>
-  <tabstop>comboAPI</tabstop>
-  <tabstop>txtID</tabstop>
+  <tabstop>comboApi</tabstop>
+  <tabstop>txtId</tabstop>
   <tabstop>btnFetch</tabstop>
   <tabstop>comboDir</tabstop>
  </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>txtPass</sender>
-   <signal>returnPressed()</signal>
-   <receiver>btnAutoConf</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>254</x>
-     <y>214</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>328</x>
-     <y>252</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>txtUser</sender>
-   <signal>returnPressed()</signal>
-   <receiver>btnAutoConf</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>316</x>
-     <y>180</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>343</x>
-     <y>238</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>txtUrl</sender>
-   <signal>returnPressed()</signal>
-   <receiver>btnAutoConf</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>310</x>
-     <y>138</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>382</x>
-     <y>252</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>btnOk</sender>
    <signal>clicked()</signal>
@@ -410,22 +370,6 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel" >
      <x>96</x>
      <y>292</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>txtID</sender>
-   <signal>returnPressed()</signal>
-   <receiver>btnOk</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>249</x>
-     <y>113</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>308</x>
-     <y>319</y>
     </hint>
    </hints>
   </connection>

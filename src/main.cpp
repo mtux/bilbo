@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	qDebug("this will be Bilbo Blogger app...");
 	
 	global_init();
-	
+	app.setQuitOnLastWindowClosed(false);
 // 	MainWindow *window=new MainWindow(0);
 // 	window->show();
 	  SysTray *s= new SysTray(0);

@@ -43,6 +43,7 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 	}
 	
 	connect(tabPosts, SIGNAL(currentChanged( int )), this, SLOT(sltActivePostChanged(int)));
+    connect(toolbox, SIGNAL(sigEntrySelected(BilboPost *)), this, SLOT(sltNewPostSelected(BilboPost*)));
 }
 
 MainWindow::~MainWindow()
@@ -56,7 +57,7 @@ void MainWindow::readConfig()
 	QPoint pos = config.value("pos", QPoint(300, 200)).toPoint();
 	QSize size = config.value ( "size", QSize ( 800, 600 ) ).toSize();
 	int toolboxWidth = config.value ( "toolbox_width", 300 ).toInt();
-	
+    toolbox->setCurrentBlog(config.value("selected_blog", -1).toInt());
 
 	resize(size);
 	toolbox->resize(toolboxWidth, toolbox->height());
@@ -71,6 +72,7 @@ void MainWindow::writeConfig()
 	config.setValue("pos" , pos());
 	config.setValue("size", size() );
 	config.setValue("toolbox_width", toolbox->width());
+    config.setValue("selected_blog", toolbox->currentBlogId());
 	config.sync();
 }
 
@@ -81,6 +83,7 @@ void MainWindow::createUi()
 	
 	tabPosts = new QTabWidget(this);
 	tabPosts->setGeometry(QRect(3, 56, 577, 455));
+    tabPosts->setElideMode(Qt::ElideRight);
 	this->setCentralWidget(tabPosts);
 	
 	menubar = new QMenuBar(this);
@@ -113,7 +116,7 @@ void MainWindow::createUi()
 	tabPosts->setCurrentIndex(0);
 	
 	btnRemovePost = new QToolButton(tabPosts);
-	btnRemovePost->setIcon(QIcon(":/media/format-text-bold.png"));
+	btnRemovePost->setIcon(QIcon(":/media/dialog-close.png"));
 	btnRemovePost->setToolTip("Remove current post");
 	tabPosts->setCornerWidget(btnRemovePost, Qt::TopRightCorner);
 	connect(btnRemovePost, SIGNAL(clicked( bool )), this, SLOT(sltRemoveCurrentPostEntry()));
@@ -241,8 +244,10 @@ void MainWindow::sltToggleToolboxVisible(bool v)
 	}
 }
 
-void MainWindow::sltActivePostChanged(int )
+void MainWindow::sltActivePostChanged(int index)
 {
+    activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
+//     activePost->
 }
 
 void MainWindow::sltPublishPost()
@@ -269,6 +274,7 @@ void MainWindow::sltPublishPost()
 	
 	b->publishPost(post);
 	statusbar->showMessage("Request to publish new post sent to server...");
+    this->setCursor(Qt::BusyCursor);
 }
 
 void MainWindow::sltPostPublished(int blog_id, int post_id)
@@ -279,7 +285,8 @@ void MainWindow::sltPostPublished(int blog_id, int post_id)
 			"\" blog successfully\nDo you want to keep it on editor?",
 	   		QMessageBox::Yes | QMessageBox::No, QMessageBox::No) != QMessageBox::Yes)
 		sltRemoveCurrentPostEntry();
-	statusbar->showMessage("New post published to "+blog_name, STATUSTIMEOUT);
+	statusbar->showMessage("New post published to \""+blog_name + "\"" , STATUSTIMEOUT);
+    this->unsetCursor();
 }
 
 void MainWindow::sltRemoveCurrentPostEntry()
@@ -289,6 +296,19 @@ void MainWindow::sltRemoveCurrentPostEntry()
 		sltCreateNewPost();
 	}
 	
+}
+
+void MainWindow::sltNewPostSelected(BilboPost * newPost)
+{
+    PostEntry *temp=new PostEntry(this);
+	tabPosts->addTab(temp,"Untitled");
+    activePost=temp;
+    tabPosts->setCurrentWidget(temp);
+    if(this->isVisible()==false)
+        this->show();
+    
+    activePost->setPostTitle(newPost->title());
+    activePost->setPostBody(newPost->content());
 }
 
 

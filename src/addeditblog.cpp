@@ -42,18 +42,23 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 		txtUrl->setText(bBlog->blogUrl().toString());
 		txtUser->setText(bBlog->username());
 		txtPass->setText(bBlog->password());
-		txtID->setText(bBlog->blogid());
+		txtId->setText(bBlog->blogid());
 		lblTitle->setText(bBlog->title());
-		comboAPI->setCurrentIndex(bBlog->api());
+		comboApi->setCurrentIndex(bBlog->api());
 		comboDir->setCurrentIndex(bBlog->direction());
 	}
-	connect(txtID, SIGNAL(textChanged( const QString& )), this, SLOT(enableOkButton(const QString&)));
+	connect(txtId, SIGNAL(textChanged( const QString& )), this, SLOT(enableOkButton(const QString&)));
 	connect(txtUrl, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
 	connect(txtUser, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
 	connect(txtPass, SIGNAL(textChanged(const QString &)), this, SLOT(enableAutoConfBtn()));
 	connect(btnAutoConf, SIGNAL(clicked()), this, SLOT(autoConfigure()));
 	connect(btnFetch, SIGNAL(clicked()), this, SLOT(fetchBlogId()));
 	connect(this, SIGNAL(accepted()), this, SLOT(sltAccepted()));
+    connect(this, SIGNAL(rejected()), this, SLOT(sltRejected()));
+    connect(txtUrl, SIGNAL(returnPressed()), this, SLOT(sltReturnPressed()));
+    connect(txtUser, SIGNAL(returnPressed()), this, SLOT(sltReturnPressed()));
+    connect(txtPass, SIGNAL(returnPressed()), this, SLOT(sltReturnPressed()));
+    connect(txtId, SIGNAL(returnPressed()), this, SLOT(sltReturnPressed()));
 	
 	txtUrl->setFocus();
 	
@@ -85,25 +90,25 @@ void AddEditBlog::autoConfigure()
 	
 	///Guess API with Url:
 	if(txtUrl->text().contains("xmlrpc.php", Qt::CaseInsensitive)){
-		comboAPI->setCurrentIndex(3);
+		comboApi->setCurrentIndex(3);
 		fetchBlogId();
 		return;
 	}
 	if(txtUrl->text().contains("blogspot", Qt::CaseInsensitive)){
-		comboAPI->setCurrentIndex(4);
+		comboApi->setCurrentIndex(4);
 		fetchBlogId();
 		return;
 	}
 	if(txtUrl->text().contains("wordpress", Qt::CaseInsensitive)){
-		comboAPI->setCurrentIndex(3);
+		comboApi->setCurrentIndex(3);
 		txtUrl->setText(txtUrl->text() + "/xmlrpc.php");
 		fetchBlogId();
 		return;
 	}
 	if(txtUrl->text().contains("livejournal", Qt::CaseInsensitive)){
-		comboAPI->setCurrentIndex(0);
+		comboApi->setCurrentIndex(0);
 		txtUrl->setText("http://www.livejournal.com/interface/blogger/");
-		txtID->setText(txtUser->text());
+		txtId->setText(txtUser->text());
 		btnAutoConf->setEnabled(true);
 		btnFetch->setEnabled(true);
 		return;
@@ -117,7 +122,7 @@ void AddEditBlog::fetchBlogId()
 	
 	
 
-	switch( comboAPI->currentIndex() ){
+	switch( comboApi->currentIndex() ){
 		case 0:
 		case 1:
 		case 2:
@@ -148,8 +153,8 @@ void AddEditBlog::fetchBlogId()
 			mFetchProfileIdTimer->start(TIMEOUT);
 			break;
 	};
-	txtID->setText("Please wait...");
-	txtID->setEnabled(false);
+	txtId->setText("Please wait...");
+	txtId->setEnabled(false);
 	btnFetch->setEnabled(false);
 	btnAutoConf->setEnabled(false);
 }
@@ -158,8 +163,8 @@ void AddEditBlog::handleFetchIDTimeout()
 {
 	qDebug("AddEditBlog::handleFetchIDTimeout");
 	QMessageBox::critical(this, "Error!", "Fetching the blog's id timed out. Check your internet connection, Or your homepage Url!\nnote that url have to included \"http://\" or ...\nfor example: http://bilbo.sf.net/xmlrpc.php is a good url");
-	txtID->setText(QString());
-	txtID->setEnabled(true);
+	txtId->setText(QString());
+	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
 // 	delete mFetchProfileIdTimer;
@@ -170,7 +175,7 @@ void AddEditBlog::handleFetchAPITimeout()
 {
 	qDebug("AddEditBlog::handleFetchAPITimeout");
 	QMessageBox::warning(this, "AutoConfiguration Failed", "App cannot get API type automatically, please check your internet connection, otherwise you have to set API type handy.");
-	txtID->setEnabled(true);
+	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
 // 	delete mFetchAPITimer;
@@ -180,7 +185,7 @@ void AddEditBlog::handleFetchError(KBlog::Blog::ErrorType type, const QString & 
 {
 	qDebug("AddEditBlog::handleFetchError: ErrorType: %d", type);
 	QMessageBox::critical(this, "Fetching BlogID Faild!", errorMsg);
-	txtID->setEnabled(true);
+	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
 }
@@ -193,16 +198,16 @@ void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list
 		///TODO: handle more than one blog!
 		qDebug("AddEditBlog::fetchedBlogId: User has more than ONE blog!");
 	}
-	txtID->setText(list.first().values().first());
+	txtId->setText(list.first().values().first());
 	lblTitle->setText(list.first().values().last());
-	txtID->setEnabled(true);
+	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
 	
 	bBlog->setBlogUrl(QUrl(txtUrl->text()));
 	bBlog->setUsername(txtUser->text());
 	bBlog->setPassword(txtPass->text());
-	bBlog->setBlogId(txtID->text());
+	bBlog->setBlogId(txtId->text());
 	bBlog->setTitle(list.first().values().last());
 	btnOk->setEnabled(true);
 }
@@ -221,11 +226,11 @@ void AddEditBlog::fetchedProfileId(const QString &id)
 void AddEditBlog::sltAccepted()
 {
 	qDebug("AddEditBlog::sltAccepted");
-	if(bBlog->blogid().isEmpty() && txtID->text().isEmpty()){
+	if(bBlog->blogid().isEmpty() && txtId->text().isEmpty()){
 		QMessageBox::critical(this, "Failed to get blog id", "You have to Fetch blog id by hitting \"Auto Configure\" Or \"Fetch ID\" button or Insert your Blog Id manually.");
 		return;
 	}
-	bBlog->setApi((BilboBlog::ApiType)comboAPI->currentIndex());
+	bBlog->setApi((BilboBlog::ApiType)comboApi->currentIndex());
 	bBlog->setDirection((Qt::LayoutDirection)comboDir->currentIndex());
 	
 	if(bBlog->password().isEmpty())
@@ -233,7 +238,7 @@ void AddEditBlog::sltAccepted()
 	if(bBlog->username().isEmpty())
 		bBlog->setUsername(txtUser->text());
 	if(bBlog->blogid().isEmpty())
-		bBlog->setBlogId(txtID->text());
+		bBlog->setBlogId(txtId->text());
 	if(bBlog->blogUrl().isEmpty())
 		bBlog->setBlogUrl(QUrl(txtUrl->text()));
 	
@@ -255,4 +260,30 @@ void AddEditBlog::enableOkButton( const QString & txt)
 		btnOk->setEnabled(false);
 	else
 		btnOk->setEnabled(true);
+}
+
+void AddEditBlog::sltReturnPressed()
+{
+    if(btnOk->isEnabled()){
+        emit accepted();
+    } else {
+        if(tabs->currentIndex()==0){
+            if(btnAutoConf->isEnabled()){
+                autoConfigure();
+            }
+        } else {
+            fetchBlogId();
+        }
+    }
+}
+
+void AddEditBlog::sltRejected()
+{
+    mFetchProfileIdTimer->stop();
+    mFetchBlogIdTimer->stop();
+    mFetchAPITimer->stop();
+    
+    delete mFetchProfileIdTimer;
+    delete mFetchBlogIdTimer;
+    delete mFetchAPITimer;
 }

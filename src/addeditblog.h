@@ -62,7 +62,9 @@ protected slots:
 	void handleFetchError( KBlog::Blog::ErrorType type, const QString& errorMsg);
 	
 	void sltAccepted();
+    void sltRejected();
 	
+    void sltReturnPressed();
 signals:
 	void sigBlogAdded(BilboBlog&);
 	void sigBlogEdited(BilboBlog&);
@@ -74,6 +76,7 @@ private:
 	QTimer* mFetchProfileIdTimer;
 	QTimer* mFetchBlogIdTimer;
 	QTimer* mFetchAPITimer;
+    bool isIdFetched;
 };
 
 #endif

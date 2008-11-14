@@ -25,5 +25,6 @@
         <file>media/draw-eraser.png</file>
         <file>media/gplv3-88x31.png</file>
         <file>media/gplv3-127x51.png</file>
+        <file>media/dialog-close.png</file>
     </qresource>
 </RCC>

@@ -24,7 +24,7 @@
 #include "htmlexporter.h"
 #include "addeditlink.h"
 
-// #include <QTabWidget>
+#include <QWebView>
 BilboEditor::BilboEditor()
 {
 	createUi();
@@ -474,5 +474,10 @@ QString* BilboEditor::htmlContent()
 	
 	mHtmlContent = new QString(htmlEditor->toPlainText());
 	return mHtmlContent;
+}
+
+void BilboEditor::setHtmlContent(const QString & content)
+{
+    this->editor->setHtml(content);
 }
 
