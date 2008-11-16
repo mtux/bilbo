@@ -73,22 +73,22 @@ void BilboPost::setCTime(const QDateTime &t)
 
 QString BilboPost::author() const
 {
-	return mAuthor;
+	return this->mAuthor;
 }
 
 void BilboPost::setId(const int id)
 {
-	mId = id;
+	this->mId = id;
 }
 
 int BilboPost::id() const
 {
-	return mId;
+	return this->mId;
 }
 
 void BilboPost::setAuthor(const QString &author)
 {
-	mAuthor = author;
+	this->mAuthor = author;
 }
 
 BilboPost::BilboPost(const KBlog::BlogPost &post)

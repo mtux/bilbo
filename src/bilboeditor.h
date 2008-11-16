@@ -60,6 +60,10 @@ class BilboEditor : public QTabWidget
 		\return a pointer to an String which contains html text
 		*/
 		QString *htmlContent();
+        
+        void setHtmlContent(const QString &content);
+        
+        void setPlainTextContent(const QString &content);
 	
 	protected slots:
 		/*! 

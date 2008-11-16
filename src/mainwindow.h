@@ -65,7 +65,9 @@ protected slots:
 	void sltBilboAbout();
 	void sltQuit();
 	void sltToggleToolboxVisible(bool);
-	void sltActivePostChanged( int );
+	void sltActivePostChanged( int tabIndex );
+    
+    void sltNewPostSelected( BilboPost *newPost );
 	
 	void sltPublishPost();
 	void sltPostPublished( int, int );
@@ -77,7 +79,10 @@ protected slots:
 // 	void sltSaveAsDraft();
 // 	void sltDelPost();
 // 	void sltDelLocally();
-	
+
+protected:
+    void keyReleaseEvent ( QKeyEvent * event );
+    
 private:
 	void createUi();
 	void createActions();

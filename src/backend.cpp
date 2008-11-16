@@ -111,7 +111,6 @@ void Backend::entriesListed(const QList< KBlog::BlogPost > & posts)
 
 void Backend::publishPost(BilboPost * post)
 {
-	///FIXME: Tags problem!
 	///FIXME: Categories problem!
 	qDebug("Backend::publishPost");
 	

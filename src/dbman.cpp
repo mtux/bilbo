@@ -557,7 +557,7 @@ QList< BilboPost* > DBMan::listPosts(int blog_id)
 {
 	QList<BilboPost *> list;
 	QSqlQuery q;
-	q.prepare("SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags FROM post WHERE blog_id = ?");
+	q.prepare("SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags FROM post WHERE blog_id = ? ORDER BY m_time DESC");
 	q.addBindValue(blog_id);
 	if(q.exec()){
 		while( q.next() ){
@@ -601,7 +601,7 @@ QList< BilboPost* > DBMan::listPosts(int blog_id)
 BilboPost * DBMan::getPostInfo(int post_id)
 {
 	QSqlQuery q;
-	BilboPost *tmp;
+	BilboPost *tmp = new BilboPost();
 	q.prepare("SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags FROM post WHERE id = ?");
 	q.addBindValue(post_id);
 	if(q.exec()){
@@ -645,11 +645,11 @@ QMap< QString, int > DBMan::listPostsTitle(int blog_id)
 {
 	QMap< QString, int > list;
 	QSqlQuery q;
-	q.prepare("SELECT title, id FROM post WHERE blog_id = ?");
+	q.prepare("SELECT title, id FROM post WHERE blog_id = ? ORDER BY m_time DESC");
 	q.addBindValue(blog_id);
 	if(q.exec()){
 		while( q.next() ){
-			list[q.value(0).toString()] = q.value(1).toInt();
+			list.insert(q.value(0).toString(), q.value(1).toInt());
 		}
 	} else
 		qDebug("DBMan::listPostsTitle: Cannot get list of posts for blog with id %d", blog_id);

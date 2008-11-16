@@ -29,5 +29,5 @@ EntriesCountDialog::EntriesCountDialog(QWidget *parent)
 void EntriesCountDialog::sltAccepted()
 {
 	qDebug("EntriesCountDialog::sltAccepted");
-	emit sigAccepted(spnCount->value());
+	emit sigAccepted(spinCount->value());
 }

@@ -87,3 +87,13 @@ QString * PostEntry::postBody()
 {
 	return this->editPostWidget->htmlContent();
 }
+
+void PostEntry::setPostTitle(const QString & title)
+{
+    this->txtTitle->setText(title);
+}
+
+void PostEntry::setPostBody(const QString & body)
+{
+    this->editPostWidget->setHtmlContent(body);
+}

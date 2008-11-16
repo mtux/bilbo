@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
+    <width>351</width>
     <height>582</height>
    </rect>
   </property>
@@ -26,12 +26,12 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>280</width>
+           <width>331</width>
            <height>405</height>
           </rect>
          </property>
          <attribute name="label" >
-          <string>Blogs</string>
+          <string>&amp;Blogs</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_7" >
           <item row="0" column="0" >
@@ -90,12 +90,12 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>280</width>
+           <width>331</width>
            <height>405</height>
           </rect>
          </property>
          <attribute name="label" >
-          <string>Entries</string>
+          <string>E&amp;ntries</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_5" >
           <item row="1" column="0" >
@@ -108,7 +108,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="btnEntriesCopy" >
+             <widget class="QPushButton" name="btnEntriesUpdate" >
+              <property name="text" >
+               <string>U&amp;pdate</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnEntriesCopyUrl" >
               <property name="text" >
                <string>Copy &amp;URL</string>
               </property>
@@ -124,8 +131,20 @@
             <property name="editTriggers" >
              <set>QAbstractItemView::NoEditTriggers</set>
             </property>
+            <property name="showDropIndicator" stdset="0" >
+             <bool>false</bool>
+            </property>
+            <property name="alternatingRowColors" >
+             <bool>true</bool>
+            </property>
             <property name="selectionBehavior" >
              <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="isWrapping" stdset="0" >
+             <bool>false</bool>
+            </property>
+            <property name="wordWrap" >
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -136,12 +155,12 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>280</width>
-           <height>405</height>
+           <width>256</width>
+           <height>117</height>
           </rect>
          </property>
          <attribute name="label" >
-          <string>Categories</string>
+          <string>&amp;Categories</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_4" >
           <item row="0" column="0" >
@@ -207,12 +226,12 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>280</width>
-           <height>405</height>
+           <width>96</width>
+           <height>26</height>
           </rect>
          </property>
          <attribute name="label" >
-          <string>Media files</string>
+          <string>&amp;Media files</string>
          </attribute>
         </widget>
         <widget class="QWidget" name="pgOptions" >
@@ -220,12 +239,12 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>280</width>
-           <height>405</height>
+           <width>220</width>
+           <height>383</height>
           </rect>
          </property>
          <attribute name="label" >
-          <string>Options</string>
+          <string>&amp;Options</string>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_6" >
           <item>
@@ -317,7 +336,7 @@ p, li { white-space: pre-wrap; }
            <widget class="QDateTimeEdit" name="datetimeOptionstimestamp" />
           </item>
           <item>
-           <widget class="QLabel" name="label_2" >
+           <widget class="QLabel" name="lblOptionsTrackBack" >
             <property name="text" >
              <string>&amp;Trackback URLs :</string>
             </property>
@@ -328,6 +347,16 @@ p, li { white-space: pre-wrap; }
           </item>
           <item>
            <widget class="QLineEdit" name="txtOptionsTrackback" />
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2" >
+            <property name="text" >
+             <string>Summary :</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPlainTextEdit" name="txtSummary" />
           </item>
           <item>
            <spacer name="verticalSpacer" >
@@ -355,8 +384,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>btnBlogAdd</tabstop>
   <tabstop>btnBlogEdit</tabstop>
   <tabstop>btnBlogRemove</tabstop>
-  <tabstop>btnEntriesReload</tabstop>
-  <tabstop>btnEntriesCopy</tabstop>
+  <tabstop>btnEntriesCopyUrl</tabstop>
   <tabstop>btnCatAdd</tabstop>
   <tabstop>txtCatTags</tabstop>
   <tabstop>chkOptionsTime</tabstop>

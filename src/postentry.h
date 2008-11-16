@@ -39,6 +39,9 @@ public:
     PostEntry(QWidget *parent);
 	QString postTitle() const;
 	QString * postBody();
+    
+    void setPostTitle(const QString &title);
+    void setPostBody(const QString &body);
 		
 protected slots:
 

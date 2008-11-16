@@ -494,3 +494,8 @@ QString* BilboEditor::htmlContent()
 	return mHtmlContent;
 }
 
+void BilboEditor::setHtmlContent(const QString & content)
+{
+    this->editor->setHtml(content);
+}
+
