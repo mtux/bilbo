@@ -55,30 +55,15 @@ class BilboEditor : public QTabWidget
     	~BilboEditor();
 	
 		//!Returns the editor current text in html format
-		
-		/**
-		 * Synchronizes htmlEditor and editor tabs, by sending content of the current one to another. then copies the content of htmlEditor into the variable mHtmlContent, and returns it.
-		 * @return a pointer to an String which contains html text
-		 */
+		/*!
+		Synchronizes htmlEditor and editor tabs, by sending content of the current one to another. then copies the content of htmlEditor into the variable mHtmlContent, and returns it.
+		\return a pointer to an String which contains html text
+		*/
 		QString *htmlContent();
-		
-		/**
-		 * Retrieves default layout direction from default block format of the editor
-		 * @return default layout direction of the editor.
-		 * @see setDefaultLayoutDirection()
-		 */
-		Qt::LayoutDirection defaultLayoutDirection();
         
         void setHtmlContent(const QString &content);
         
         void setPlainTextContent(const QString &content);
-		
-		/**
-		 * Changes the default layout direction of the editor, to the given direction.
-		 * @param direction is the new layout direction.
-		 * @see defaultLayoutDirection()
-		 */
-		void setDefaultLayoutDirection(Qt::LayoutDirection direction);
 	
 	protected slots:
 		/*! 
@@ -240,7 +225,6 @@ class BilboEditor : public QTabWidget
 		
 		AddEditLink *linkDialog;
 		QTextCharFormat defaultCharFormat;
-		QTextBlockFormat defaultBlockFormat;
 		int prev_index;
 };
 

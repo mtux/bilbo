@@ -55,8 +55,8 @@ QString htmlExporter::toHtml(const QTextDocument* document )
 
 	qDebug()<<doc->blockCount()<<endl;
 	
-    //const QFont defaultFont = doc->defaultFont();
-    //defaultCharFormat.setFont(defaultFont);
+    const QFont defaultFont = doc->defaultFont();
+    defaultCharFormat.setFont(defaultFont);
 
     emitFrame(doc->rootFrame()->begin());
 // 	emitBlock(doc->rootFrame()->begin().currentBlock());
@@ -251,10 +251,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
     QLatin1String styleTag("<span style=\"");
 
 	const QString family = format.fontFamily();
-	
-	//if (!family.isEmpty() && family != defaultCharFormat.fontFamily()) {
-	// NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-	if (!family.isEmpty() && family != mDefaultCharFormat.fontFamily()) {
+	if (!family.isEmpty() && family != defaultCharFormat.fontFamily()) {
 		if ( family.right(7) == "courier" ) {
 			tags << code;
 		} else {
@@ -269,11 +266,8 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
 	}
 
 
-//     if (format.hasProperty(QTextFormat::FontPointSize)
-//             && format.fontPointSize() != defaultCharFormat.fontPointSize()) {
-	// NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-	if (format.hasProperty(QTextFormat::FontPointSize)
-		&& format.fontPointSize() != mDefaultCharFormat.fontPointSize()) {
+    if (format.hasProperty(QTextFormat::FontPointSize)
+            && format.fontPointSize() != defaultCharFormat.fontPointSize()) {
         if (! attributesEmitted ) {
 			html += styleTag;
 		}
@@ -318,9 +312,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
     }
 
 
-//    if (format.fontWeight() > defaultCharFormat.fontWeight()) {
-		// NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-	if (format.fontWeight() > mDefaultCharFormat.fontWeight()) {
+    if (format.fontWeight() > defaultCharFormat.fontWeight()) {
         tags << strong;
         /*if (! attributesEmitted ) html += styleTag;
         html += QLatin1String(" font-weight:");
@@ -329,9 +321,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
         attributesEmitted = true;*/
     }
 
-//    if (format.fontItalic() != defaultCharFormat.fontItalic()) {
-	// NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-	if (format.fontItalic() != mDefaultCharFormat.fontItalic()) {
+    if (format.fontItalic() != defaultCharFormat.fontItalic()) {
         tags << em;
         /*
         if (! attributesEmitted ) html += styleTag;
@@ -341,22 +331,16 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
         attributesEmitted = true;*/
     }
 
-//    if (format.fontUnderline() != defaultCharFormat.fontUnderline()) {
-	// NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-	if (format.fontUnderline() != mDefaultCharFormat.fontUnderline()) {
+    if (format.fontUnderline() != defaultCharFormat.fontUnderline()) {
         tags << u;
     }
 
 
-//    if (format.fontStrikeOut() != defaultCharFormat.fontStrikeOut()) {
-	// NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-	if (format.fontStrikeOut() != mDefaultCharFormat.fontStrikeOut()) {
+    if (format.fontStrikeOut() != defaultCharFormat.fontStrikeOut()) {
         tags << s;
     }
 
-//    if (format.fontOverline() != defaultCharFormat.fontOverline()) {
-	// NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-	if (format.fontOverline() != mDefaultCharFormat.fontOverline()) {
+    if (format.fontOverline() != defaultCharFormat.fontOverline()) {
         if (format.fontOverline()) {
             if (! attributesEmitted ) {
 				html += styleTag;
@@ -414,11 +398,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
     }*/
 
 //     QBrush linkColor = KColorScheme(QPalette::Active, KColorScheme::Window).foreground(KColorScheme::LinkText);
-	
-//    if ( format.foreground() != defaultCharFormat.foreground() &&
-//            format.foreground().style() != Qt::NoBrush) {
-	// NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-	if ( format.foreground() != mDefaultCharFormat.foreground() &&
+    if ( format.foreground() != defaultCharFormat.foreground() &&
             format.foreground().style() != Qt::NoBrush) {
 //         if ( format.foreground() != linkColor ) {
             if (! attributesEmitted ) {
@@ -431,10 +411,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
 //         }
 	}
 
-//    if (format.background() != defaultCharFormat.background()
-//            && format.background().style() != Qt::NoBrush) {
-	// NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-	if (format.background() != mDefaultCharFormat.background()
+    if (format.background() != defaultCharFormat.background()
             && format.background().style() != Qt::NoBrush) {
         if (! attributesEmitted ) {
 			html += styleTag;
@@ -445,9 +422,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
         attributesEmitted = true;
     }
 
-//    if (format.verticalAlignment() != defaultCharFormat.verticalAlignment()) { //TODO
-	// NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-	if (format.verticalAlignment() != mDefaultCharFormat.verticalAlignment()) { //TODO
+    if (format.verticalAlignment() != defaultCharFormat.verticalAlignment()) { //TODO
         if (! attributesEmitted ) {
 			html += styleTag;
 		}
@@ -496,13 +471,10 @@ void htmlExporter::emitTextLength(const char *attribute, const QTextLength &leng
 void htmlExporter::emitAlignment(Qt::Alignment align)
 {
 	//qDebug() << "emitAlignment" << html;
-//    if (align & Qt::AlignLeft) {
-	if (align & mDefaultBlockFormat.alignment()) {
+    if (align & Qt::AlignLeft) {
         return;
 	}
-	if (align & Qt::AlignLeft) {
-		html += QLatin1String(" align=\"left\"");
-	} else if (align & Qt::AlignRight) {
+    if (align & Qt::AlignRight) {
         html += QLatin1String(" align=\"right\"");
 	} else if (align & Qt::AlignHCenter) {
         html += QLatin1String(" align=\"center\"");
@@ -743,17 +715,13 @@ void htmlExporter::emitBlockAttributes(const QTextBlock &block)
 	QTextBlockFormat format = block.blockFormat();
     emitAlignment(format.alignment());
 
-    if (format.layoutDirection() != mDefaultBlockFormat.layoutDirection())
-	{
-		// assume default to not bloat the html too much
-		Qt::LayoutDirection dir = format.layoutDirection();
-
-		if (dir == Qt::LeftToRight) {
-	        html += QLatin1String(" dir='ltr'");
-	    } else {
-	        html += QLatin1String(" dir='rtl'");
-	    }
-	}
+    Qt::LayoutDirection dir = format.layoutDirection();
+    if (dir == Qt::LeftToRight) {
+        // assume default to not bloat the html too much
+        // html += QLatin1String(" dir='ltr'");
+    } else {
+        html += QLatin1String(" dir='rtl'");
+    }
 
 	bool attributesEmitted = false;
     QLatin1String style(" style=\"");
@@ -775,8 +743,7 @@ void htmlExporter::emitBlockAttributes(const QTextBlock &block)
 	}
 
     if (format.hasProperty(QTextBlockFormat::BlockIndent)) {
-//		if (format.indent() == 0) {
-		if (format.indent() == mDefaultBlockFormat.indent()) {
+		if (format.indent() == 0) {
 			// assume default not to bloat the html too much
 		} else {
 			if (!attributesEmitted) {
@@ -790,8 +757,7 @@ void htmlExporter::emitBlockAttributes(const QTextBlock &block)
 	}
 	
 	if (format.hasProperty(QTextBlockFormat::TextIndent)) {
-//		if (format.textIndent() == 0) {
-		if (format.textIndent() == mDefaultBlockFormat.textIndent()) {
+		if (format.textIndent() == 0) {
 			// assume default not to bloat the html too much
 		} else {
 			if (!attributesEmitted) {
@@ -836,9 +802,7 @@ void htmlExporter::emitBlock(const QTextBlock &block)
 
     // save and later restore, in case we 'change' the default format by
     // emitting block char format information
-	
-	// NOTE the bottom line is commented, to use default charFormat, which can be set from outside.
-    //QTextCharFormat oldDefaultCharFormat = defaultCharFormat;
+    QTextCharFormat oldDefaultCharFormat = defaultCharFormat;
 
     QTextList *list = block.textList();
     if (list) {
@@ -964,8 +928,7 @@ void htmlExporter::emitBlock(const QTextBlock &block)
         }
     }
 
-	// NOTE the bottom line is commented, to use default charFormat, which can be set from outside.
-    //defaultCharFormat = oldDefaultCharFormat;
+    defaultCharFormat = oldDefaultCharFormat;
 	//qDebug() << html << endl;
 }
 
@@ -1003,14 +966,3 @@ void htmlExporter::sanitizeHtml()
 //     kDebug() << "AFTER" << html;
 
 }
-
-void htmlExporter::setDefaultCharFormat(QTextCharFormat charFormat)
-{
-	mDefaultCharFormat = charFormat;
-}
-
-void htmlExporter::setDefaultBlockFormat(QTextBlockFormat blockFormat)
-{
-	mDefaultBlockFormat = blockFormat;
-}
-
