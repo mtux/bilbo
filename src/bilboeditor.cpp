@@ -19,12 +19,16 @@
  ***************************************************************************/
 
 #include <QDebug>
+#include <QtGui>
+//#include <QTabWidget>
+#include <QWebView>
 
 #include "bilboeditor.h"
 #include "htmlexporter.h"
+#include "multilinetextedit.h"
 #include "addeditlink.h"
+#include "addimagedialog.h"
 
-// #include <QTabWidget>
 BilboEditor::BilboEditor()
 {
 	createUi();
@@ -374,12 +378,26 @@ void BilboEditor::sltChangeLayoutDirection()
 	editor->setTextCursor(c);
 }
 
-
 void BilboEditor::sltAddImage()
 {
-	//Not permanent!
-	//Just to test postContentHtml function! :D
-	qDebug() << htmlContent() ;
+	AddImageDialog *imageDialog = new AddImageDialog(this);
+	connect(imageDialog, SIGNAL(signalAddImage(const QString&)), this, SLOT(sltSetImage(const QString)));
+	imageDialog->exec();
+}
+
+/**
+ * FIXME it only shows local images in editor, not images with http url.
+ * it doesn't upload images to the blog, or add it to the database.
+ * even for local images, preview tab can not show them yet.
+ */
+void BilboEditor::sltSetImage(const QString url)
+{
+	qDebug() << url;
+// 	QImage *image = new QImage();
+// 	editor->document()->addResource(QTextDocument::ImageResource,QUrl(url), QVariant(image));
+	QTextImageFormat imageFormat;
+	imageFormat.setName(url);
+	editor->textCursor().insertImage(imageFormat);
 }
 // void BilboEditor::insertMedia(KBloggerMedia* media)
 // {

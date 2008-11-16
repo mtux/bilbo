@@ -14,7 +14,8 @@ SOURCES += main.cpp \
  bilboblog.cpp \
  backend.cpp \
  entriescountdialog.cpp \
- multilinetextedit.cpp
+ multilinetextedit.cpp \
+ addimagedialog.cpp
 TEMPLATE = app
 CONFIG += warn_on \
 	  thread \
@@ -27,7 +28,8 @@ CONFIG -= release
 FORMS += toolbox.ui \
 addeditblog.ui \
  addeditlink.ui \
- entriescount.ui
+ entriescount.ui \
+ addimagedialog.ui
 HEADERS += mainwindow.h \
 toolbox.h \
 systray.h \
@@ -44,7 +46,8 @@ postentry.h \
  bilboblog.h \
  backend.h \
  entriescountdialog.h \
- multilinetextedit.h
+ multilinetextedit.h \
+ addimagedialog.h
 QT += webkit \
  sql
 

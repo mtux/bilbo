@@ -24,6 +24,13 @@
 
 #include "ui_addeditlink.h"
 
+/**
+Implements a dialog to get user input for link parameters; address, name and target.
+
+	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ */
+
 class AddEditLink: public QDialog, public Ui::AddEditLinkDialog {
 Q_OBJECT
 public:

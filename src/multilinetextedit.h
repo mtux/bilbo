@@ -21,7 +21,7 @@
 #define MULTILINETEXTEDIT_H
 
 //#include <QWidget>
-#include <QtGui>
+//#include <QtGui>
 #include <QTextEdit>
 
 //!Class MultiLineTextEdit Implements a TextEdit widget that supports new line charachters

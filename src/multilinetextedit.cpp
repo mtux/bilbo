@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QDebug>
+#include <QtGui>
 #include "multilinetextedit.h"
 
 MultiLineTextEdit::MultiLineTextEdit(QWidget *parent) : QTextEdit(parent)

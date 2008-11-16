@@ -20,16 +20,21 @@
 #ifndef BILBOEDITOR_H
 #define BILBOEDITOR_H
 
-// #include <QTabWidget>
-#include <QtGui>
-// #include <QWebView>
-#include "multilinetextedit.h"
+#include <QTabWidget>
+#include <QTextCharFormat>
+//#include <QtGui>
+//#include <QWebView>
+//#include "multilinetextedit.h"
 
-class AddEditLink;
-class QTabWidget;
+//class QTabWidget;
 class QWebView;
+class QPlainTextEdit;
+class MultiLineTextEdit;
 class QAction;
 class QToolBar;
+class AddEditLink;
+class AddImageDialog;
+
 //!Class BilboEditor represents the editor part of BilboBlogger
 /*!
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
@@ -145,7 +150,17 @@ class BilboEditor : public QTabWidget
 		\sa defaultCharFormat
 		 */
 		void sltRemoveFormatting();
+		
+		/**
+		 * Creates an instance of AddImageDialog class,and opens it, to select an image.
+		 */
 		void sltAddImage();
+		
+		/**
+		 * Puts the image with given url in the current cursor position, of the editor.
+		 * @param url is the image url, it may be a path in local file system, or the image url on the web.
+		 */
+		void sltSetImage(QString url);
 		
 		/*!
 		Sets the content of the current tab  as other tabs' contents, to apply recent changes. this function executes each time the user switches between tabs. 
@@ -174,8 +189,8 @@ class BilboEditor : public QTabWidget
 		QWidget *tabHtml;
 		QWidget *tabPreview;
 		
-		QTextEdit *editor;
-		//MultiLineTextEdit *editor;
+		//QTextEdit *editor;
+		MultiLineTextEdit *editor;
 		QPlainTextEdit *htmlEditor;
 		QWebView *preview;
 		
