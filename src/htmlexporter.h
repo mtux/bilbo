@@ -43,7 +43,11 @@ class htmlExporter
 	public:
 		htmlExporter();
 		~htmlExporter();
+		
 		QString toHtml( const QTextDocument* document );
+		
+		void setDefaultCharFormat(QTextCharFormat charFormat);
+		void setDefaultBlockFormat(QTextBlockFormat blockFormat);
 	
 	private:
 		enum StyleMode { EmitStyleTag, OmitStyleTag };
@@ -66,7 +70,9 @@ class htmlExporter
 	
 		QString html;
 		const QTextDocument* doc;
-		QTextCharFormat defaultCharFormat;
+		//QTextCharFormat defaultCharFormat;
+		QTextCharFormat mDefaultCharFormat;
+		QTextBlockFormat mDefaultBlockFormat;
 };
 
 #endif

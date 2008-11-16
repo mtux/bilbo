@@ -97,6 +97,9 @@ void BilboEditor::createUi()
 	defaultCharFormat.setForeground(editor->currentCharFormat().foreground());
 	defaultCharFormat.setProperty(QTextFormat::FontSizeAdjustment,QVariant(0));
 	
+	///defaultBlockFormat
+	defaultBlockFormat = editor->textCursor().blockFormat();
+	
 	createActions();
 	
 	
@@ -425,7 +428,11 @@ void BilboEditor::sltSetImage(const QString url)
 void BilboEditor::sltSyncEditors(int index)
 {
 // 	editor->document();
+	// TODO move htmlExp definiton to BilboEditor constructor.
+	
 	htmlExporter* htmlExp = new htmlExporter();
+	htmlExp->setDefaultCharFormat(this->defaultCharFormat);
+	htmlExp->setDefaultBlockFormat(this->defaultBlockFormat);
 	
 	if(index == 0) {
 		///Qt QTextEdit::setHtml() or QTextDocument::toHtml() convert <h1-5> tags to <span> tags
@@ -480,7 +487,10 @@ QString BilboEditor::htmlToRichtext(const QString& html)
 
 QString* BilboEditor::htmlContent()
 {
+	// TODO move htmlExp definiton to BilboEditor constructor.
 	htmlExporter* htmlExp = new htmlExporter();
+	htmlExp->setDefaultCharFormat(this->defaultCharFormat);
+	htmlExp->setDefaultBlockFormat(this->defaultBlockFormat);
 	
 	if (this->currentIndex() == 0) {
 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
@@ -499,3 +509,12 @@ void BilboEditor::setHtmlContent(const QString & content)
     this->editor->setHtml(content);
 }
 
+Qt::LayoutDirection BilboEditor::defaultLayoutDirection()
+{
+	return this->defaultBlockFormat.layoutDirection();
+}
+
+void BilboEditor::setDefaultLayoutDirection(Qt::LayoutDirection direction)
+{
+	this->defaultBlockFormat.setLayoutDirection(direction);
+}
