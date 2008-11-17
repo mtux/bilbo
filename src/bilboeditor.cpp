@@ -28,6 +28,7 @@
 #include "multilinetextedit.h"
 #include "addeditlink.h"
 #include "addimagedialog.h"
+#include "bilbomedia.h"
 
 BilboEditor::BilboEditor()
 {

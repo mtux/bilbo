@@ -15,7 +15,8 @@ SOURCES += main.cpp \
  backend.cpp \
  entriescountdialog.cpp \
  multilinetextedit.cpp \
- addimagedialog.cpp
+ addimagedialog.cpp \
+ bilbomedia.cpp
 TEMPLATE = app
 CONFIG += warn_on \
 	  thread \
@@ -47,7 +48,8 @@ postentry.h \
  backend.h \
  entriescountdialog.h \
  multilinetextedit.h \
- addimagedialog.h
+ addimagedialog.h \
+ bilbomedia.h
 QT += webkit \
  sql
 

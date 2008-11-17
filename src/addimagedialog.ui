@@ -1,0 +1,110 @@
+<ui version="4.0" >
+ <class>AddImageDialog</class>
+ <widget class="QDialog" name="AddImageDialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>425</width>
+    <height>148</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Add Image</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" >
+   <item row="0" column="1" >
+    <widget class="QLineEdit" name="txtLocalUrl" >
+     <property name="text" >
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" >
+    <widget class="QLabel" name="labelRemoteUrl" >
+     <property name="text" >
+      <string>From the web:</string>
+     </property>
+     <property name="alignment" >
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="buddy" >
+      <cstring>txtRemoteUrl</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="2" >
+    <widget class="QLineEdit" name="txtRemoteUrl" >
+     <property name="toolTip" >
+      <string>Enter the image url here</string>
+     </property>
+     <property name="text" >
+      <string>http://</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" >
+    <widget class="QLabel" name="labelLocalUrl" >
+     <property name="text" >
+      <string>From your computer:</string>
+     </property>
+     <property name="buddy" >
+      <cstring>txtLocalUrl</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" >
+    <widget class="QPushButton" name="btnBrowse" >
+     <property name="text" >
+      <string>Browse</string>
+     </property>
+     <property name="default" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1" >
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>AddImageDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>228</x>
+     <y>116</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>212</x>
+     <y>73</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>AddImageDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>228</x>
+     <y>116</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>212</x>
+     <y>73</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
