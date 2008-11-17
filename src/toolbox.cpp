@@ -23,6 +23,7 @@
 #include "global.h"
 #include "backend.h"
 #include "bilbopost.h"
+
 Toolbox::Toolbox(QStatusBar *mainStatusbar, QWidget *parent)
     :QDockWidget(parent)
 {

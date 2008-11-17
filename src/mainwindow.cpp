@@ -137,7 +137,7 @@ void MainWindow::createActions()
 	actUploadAll=new QAction(QIcon(":/media/format-text-bold.png"),"&Upload All Changes",this);
 	connect(actUploadAll,SIGNAL(triggered( bool )),this,SLOT(sltUploadAllChanges()));
 	
-	actNewPost=new QAction(QIcon(":/media/format-text-bold.png"),"&New Post",this);
+	actNewPost=new QAction(QIcon(":/media/tab-new.png"),"&New Post",this);
 	actNewPost->setShortcut(tr("Ctrl+N"));
 	connect(actNewPost,SIGNAL(triggered( bool )),this,SLOT(sltCreateNewPost()));
 	

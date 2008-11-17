@@ -20,16 +20,21 @@
 #ifndef BILBOEDITOR_H
 #define BILBOEDITOR_H
 
-// #include <QTabWidget>
-#include <QtGui>
-// #include <QWebView>
-#include "multilinetextedit.h"
+#include <QTabWidget>
+#include <QTextCharFormat>
+//#include <QtGui>
+//#include <QWebView>
+//#include "multilinetextedit.h"
 
-class AddEditLink;
-class QTabWidget;
+//class QTabWidget;
 class QWebView;
+class QPlainTextEdit;
+class MultiLineTextEdit;
 class QAction;
 class QToolBar;
+class AddEditLink;
+class AddImageDialog;
+
 //!Class BilboEditor represents the editor part of BilboBlogger
 /*!
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
@@ -50,15 +55,30 @@ class BilboEditor : public QTabWidget
     	~BilboEditor();
 	
 		//!Returns the editor current text in html format
-		/*!
-		Synchronizes htmlEditor and editor tabs, by sending content of the current one to another. then copies the content of htmlEditor into the variable mHtmlContent, and returns it.
-		\return a pointer to an String which contains html text
-		*/
+		
+		/**
+		 * Synchronizes htmlEditor and editor tabs, by sending content of the current one to another. then copies the content of htmlEditor into the variable mHtmlContent, and returns it.
+		 * @return a pointer to an String which contains html text
+		 */
 		QString *htmlContent();
+		
+		/**
+		 * Retrieves default layout direction from default block format of the editor
+		 * @return default layout direction of the editor.
+		 * @see setDefaultLayoutDirection()
+		 */
+		Qt::LayoutDirection defaultLayoutDirection();
         
         void setHtmlContent(const QString &content);
         
         void setPlainTextContent(const QString &content);
+		
+		/**
+		 * Changes the default layout direction of the editor, to the given direction.
+		 * @param direction is the new layout direction.
+		 * @see defaultLayoutDirection()
+		 */
+		void setDefaultLayoutDirection(Qt::LayoutDirection direction);
 	
 	protected slots:
 		/*! 
@@ -149,7 +169,17 @@ class BilboEditor : public QTabWidget
 		\sa defaultCharFormat
 		 */
 		void sltRemoveFormatting();
+		
+		/**
+		 * Creates an instance of AddImageDialog class,and opens it, to select an image.
+		 */
 		void sltAddImage();
+		
+		/**
+		 * Puts the image with given url in the current cursor position, of the editor.
+		 * @param url is the image url, it may be a path in local file system, or the image url on the web.
+		 */
+		void sltSetImage(QString url);
 		
 		/*!
 		Sets the content of the current tab  as other tabs' contents, to apply recent changes. this function executes each time the user switches between tabs. 
@@ -178,8 +208,8 @@ class BilboEditor : public QTabWidget
 		QWidget *tabHtml;
 		QWidget *tabPreview;
 		
-		QTextEdit *editor;
-		//MultiLineTextEdit *editor;
+		//QTextEdit *editor;
+		MultiLineTextEdit *editor;
 		QPlainTextEdit *htmlEditor;
 		QWebView *preview;
 		
@@ -210,6 +240,7 @@ class BilboEditor : public QTabWidget
 		
 		AddEditLink *linkDialog;
 		QTextCharFormat defaultCharFormat;
+		QTextBlockFormat defaultBlockFormat;
 		int prev_index;
 };
 
