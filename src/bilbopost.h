@@ -46,8 +46,8 @@ public:
 		Published=0, Draft, Local
 	};
     BilboPost();
-	BilboPost(const KBlog::BlogPost&);
-
+	BilboPost( const KBlog::BlogPost& );
+    BilboPost( const BilboPost& );
     ~BilboPost();
 
 	QUrl postLink() const;

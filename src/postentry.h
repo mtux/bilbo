@@ -21,7 +21,7 @@
 #define POSTENTRIY_H
 
 #include <QFrame>
-
+#include "bilbopost.h"
 class BilboPost;
 class BilboEditor;
 class QWidget;
@@ -30,6 +30,8 @@ class QLabel;
 class QHBoxLayout;
 class QLineEdit;
 /**
+ * Post Entry Widget
+ * contains Editor, and Title box.
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
@@ -42,19 +44,27 @@ public:
     
     void setPostTitle(const QString &title);
     void setPostBody(const QString &body);
-		
+	
+    int currentPostBlogId();
+    void setCurrentPostBlogId( int blog_id );
+    
+    BilboPost currentPost();
+    void setCurrentPost( BilboPost post=BilboPost() );
 protected slots:
 
 	
 private:
+    void createUi(QWidget *parentWidget);
+    
+    
 	BilboEditor *editPostWidget;
 	QGridLayout *gridLayout;
 	QHBoxLayout *horizontalLayout;
 	QLabel *labelTitle;
 	QLineEdit *txtTitle;
 	QWidget *wPost;
-	
-	void createUi(QWidget *parentWidget);
+    BilboPost *mCurrentPost;
+    int mCurrentPostBlogId;
 };
 
 #endif

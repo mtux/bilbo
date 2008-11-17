@@ -27,6 +27,8 @@
 #include <QSettings>
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {
+    qDebug("MainWindow::MainWindow");
+    previousActivePostIndex = -1;
 	createUi();
     setFocusPolicy(Qt::StrongFocus);
 	toolbox=new Toolbox(statusbar, this);
@@ -52,6 +54,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::readConfig()
 {
+    qDebug("MainWindow::readConfig");
 	QSettings config(CONF_PATH, QSettings::NativeFormat);
 
 	QPoint pos = config.value("pos", QPoint(300, 200)).toPoint();
@@ -66,6 +69,7 @@ void MainWindow::readConfig()
 
 void MainWindow::writeConfig()
 {
+    qDebug("MainWindow::writeConfig");
 	conf->isToolboxVisibleByDefault = toolbox->isVisible();
 	
 	QSettings config(CONF_PATH, QSettings::NativeFormat);
@@ -78,8 +82,9 @@ void MainWindow::writeConfig()
 
 void MainWindow::createUi()
 {
+    qDebug("MainWindow::createUi");
 // 	this->resize(887, 559);
-	this->setWindowTitle("MainWindow");
+	this->setWindowTitle("Bilbo Blogger");
 	
 	tabPosts = new QTabWidget(this);
 	tabPosts->setGeometry(QRect(3, 56, 577, 455));
@@ -114,6 +119,7 @@ void MainWindow::createUi()
 	activePost=new PostEntry(this);
 	tabPosts->addTab(activePost,"Untitled");
 	tabPosts->setCurrentIndex(0);
+    previousActivePostIndex = 0;
 	
 	btnRemovePost = new QToolButton(tabPosts);
 	btnRemovePost->setIcon(QIcon(":/media/dialog-close.png"));
@@ -139,16 +145,16 @@ void MainWindow::createActions()
 	connect(actPublish,SIGNAL(triggered( bool )),this,SLOT(sltPublishPost()));
 	
 	actSaveLocally=new QAction(QIcon(":/media/format-text-bold.png"),"Save Locally",this);
-	connect(actSaveLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltSavePostLocally()));
+// 	connect(actSaveLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltSavePostLocally()));
 	
 	actSaveDraft=new QAction(QIcon(":/media/format-text-bold.png"),"Save as Draft",this);
-	connect(actSaveDraft,SIGNAL(triggered( bool )),activePost,SLOT(sltSaveAsDraft()));
+// 	connect(actSaveDraft,SIGNAL(triggered( bool )),activePost,SLOT(sltSaveAsDraft()));
 	
 	actDeletePost=new QAction(QIcon(":/media/format-text-bold.png"),"Delete from Server",this);
-	connect(actDeletePost,SIGNAL(triggered( bool )),activePost,SLOT(sltDelPost()));
+// 	connect(actDeletePost,SIGNAL(triggered( bool )),activePost,SLOT(sltDelPost()));
 	
 	actDeleteLocally=new QAction(QIcon(":/media/format-text-bold.png"),"Delete Locally",this);
-	connect(actDeleteLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltDelLocally()));
+// 	connect(actDeleteLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltDelLocally()));
 	
 	actAbout = new QAction(QIcon(":/media/format-text-bold.png"),"About",this);
 	connect(actAbout, SIGNAL(triggered( bool )), this, SLOT(sltBilboAbout()));
@@ -159,7 +165,7 @@ void MainWindow::createActions()
 	
 	actToggleToolboxVisible = new QAction(QIcon(":/media/format-text-bold.png"), "Hide Toolbox", this);
 	actToggleToolboxVisible->setShortcut(tr("Ctrl+T"));
-	connect(actToggleToolboxVisible, SIGNAL(triggered( bool )), this, SLOT(sltToggleToolboxVisible(bool)));
+	connect(actToggleToolboxVisible, SIGNAL(triggered( bool )), this, SLOT(sltToggleToolboxVisible()));
 	
 	addCreatedActions();
 	
@@ -203,11 +209,14 @@ void MainWindow::addCreatedActions()
 
 void MainWindow::sltCreateNewPost()
 {
+    qDebug("MainWindow::sltCreateNewPost");
 	PostEntry *temp=new PostEntry(this);
 	tabPosts->addTab(temp,"Untitled");
 	activePost=temp;
+//     toolbox->resetFields();
+    activePost->setCurrentPost();
+    activePost->setCurrentPostBlogId(toolbox->currentBlogId());
 	tabPosts->setCurrentWidget(temp);
-	toolbox->resetFields();
 	if(this->isVisible()==false)
 		this->show();
 }
@@ -233,7 +242,7 @@ void MainWindow::sltQuit()
 	qApp->quit();
 }
 
-void MainWindow::sltToggleToolboxVisible(bool v)
+void MainWindow::sltToggleToolboxVisible()
 {
 	if(toolbox->isVisible()){
 		toolbox->hide();
@@ -246,8 +255,16 @@ void MainWindow::sltToggleToolboxVisible(bool v)
 
 void MainWindow::sltActivePostChanged(int index)
 {
-    activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
-//     activePost->///TODO!!!!!!!!
+    qDebug("MainWindow::sltActivePostChanged");
+//     activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
+    PostEntry *prevActivePost = qobject_cast<PostEntry*>( tabPosts->widget( previousActivePostIndex ) );
+    
+    prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
+    prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
+    
+    toolbox->setFieldsValue(activePost->currentPost());
+    toolbox->setCurrentBlog(activePost->currentPostBlogId());
+    previousActivePostIndex = index;
 }
 
 void MainWindow::sltPublishPost()
@@ -279,7 +296,7 @@ void MainWindow::sltPublishPost()
 
 void MainWindow::sltPostPublished(int blog_id, int post_id)
 {
-	qDebug("MainWindow::sltPostPublished");
+	qDebug("MainWindow::sltPostPublished: Post Id: %d", post_id);
 	QString blog_name = toolbox->listBlogs.key(blog_id);
 	if(QMessageBox::information(this, "Successful", "New Post published to \"" + blog_name +
 			"\" blog successfully\nDo you want to keep it on editor?",
@@ -291,6 +308,7 @@ void MainWindow::sltPostPublished(int blog_id, int post_id)
 
 void MainWindow::sltRemoveCurrentPostEntry()
 {
+    qDebug("MainWindow::sltRemoveCurrentPostEntry");
 	tabPosts->removeTab(tabPosts->currentIndex());
 	if(tabPosts->count()==0){
 		sltCreateNewPost();
@@ -300,15 +318,13 @@ void MainWindow::sltRemoveCurrentPostEntry()
 
 void MainWindow::sltNewPostSelected(BilboPost * newPost)
 {
-    PostEntry *temp=new PostEntry(this);
-	tabPosts->addTab(temp,"Untitled");
-    activePost=temp;
-    tabPosts->setCurrentWidget(temp);
-    if(this->isVisible()==false)
-        this->show();
+    qDebug("MainWindow::sltNewPostSelected");
+    sltCreateNewPost();
     
     activePost->setPostTitle(newPost->title());
     activePost->setPostBody(newPost->content());
+    activePost->setCurrentPost(*newPost);
+    activePost->setCurrentPostBlogId(toolbox->currentBlogId());
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent * event)

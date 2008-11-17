@@ -24,6 +24,23 @@
 BilboPost::BilboPost()
  : KBlog::BlogPost()
 {
+    this->setCTime(QDateTime::currentDateTime());
+    this->setMTime(QDateTime::currentDateTime());
+    this->setPostLink(QUrl());
+    this->setPostPermaLink(QUrl());
+    this->setCategories(QStringList());
+    this->setCommentAllowed(true);
+    this->setContent("");
+    this->setTags(QStringList());
+    this->setMood("");
+    this->setMusic("");
+    this->setPrivate(false);
+    this->setSummary("");
+    this->setTrackBackAllowed(true);
+    this->setTitle("");
+    this->setAuthor("");
+    this->setPosition(Published);
+    this->setId(-1);
 }
 
 
@@ -92,23 +109,24 @@ void BilboPost::setAuthor(const QString &author)
 }
 
 BilboPost::BilboPost(const KBlog::BlogPost &post)
+    :KBlog::BlogPost(post)
 {
-	this->setCreationDateTime(post.creationDateTime());
-	this->setModificationDateTime(post.modificationDateTime());
-	this->setLink(post.link());
-	this->setPermaLink(post.permaLink());
-	this->setCategories(post.categories());
-	this->setCommentAllowed(post.isCommentAllowed());
-	this->setError(post.error());
-	this->setContent(post.content());
-	this->setTags(post.tags());
-	this->setMood(post.mood());
-	this->setMusic(post.music());
-	this->setPrivate(post.isPrivate());
-	this->setStatus(post.status());
-	this->setSummary(post.summary());
-	this->setTrackBackAllowed(post.isTrackBackAllowed());
-	this->setTitle(post.title());
+// 	this->setCreationDateTime(post.creationDateTime());
+// 	this->setModificationDateTime(post.modificationDateTime());
+// 	this->setLink(post.link());
+// 	this->setPermaLink(post.permaLink());
+// 	this->setCategories(post.categories());
+// 	this->setCommentAllowed(post.isCommentAllowed());
+// 	this->setError(post.error());
+// 	this->setContent(post.content());
+// 	this->setTags(post.tags());
+// 	this->setMood(post.mood());
+// 	this->setMusic(post.music());
+// 	this->setPrivate(post.isPrivate());
+// 	this->setStatus(post.status());
+// 	this->setSummary(post.summary());
+// 	this->setTrackBackAllowed(post.isTrackBackAllowed());
+// 	this->setTitle(post.title());
 }
 
 BilboPost::Position BilboPost::position() const
@@ -164,3 +182,28 @@ QString BilboPost::toString() const
 }
 
 
+
+
+BilboPost::BilboPost(const BilboPost &post)
+    :KBlog::BlogPost()
+{
+    this->setCTime(post.cTime());
+    this->setMTime(post.mTime());
+    this->setPostLink(post.postLink());
+    this->setPostPermaLink(post.postPermaLink());
+    this->setCategories(post.categories());
+    this->setCommentAllowed(post.isCommentAllowed());
+    this->setError(post.error());
+    this->setContent(post.content());
+    this->setTags(post.tags());
+    this->setMood(post.mood());
+    this->setMusic(post.music());
+    this->setPrivate(post.isPrivate());
+    this->setStatus(post.status());
+    this->setSummary(post.summary());
+    this->setTrackBackAllowed(post.isTrackBackAllowed());
+    this->setTitle(post.title());
+    this->setAuthor(post.author());
+    this->setPosition(post.position());
+    this->setId(post.id());
+}

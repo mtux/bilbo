@@ -28,6 +28,7 @@ PostEntry::PostEntry(QWidget *parent)
 	createUi(parent);
 	editPostWidget=new BilboEditor();
 	this->layout()->addWidget(editPostWidget);
+    mCurrentPost =0;
 }
 
 void PostEntry::createUi(QWidget *parentWidget)
@@ -55,27 +56,6 @@ void PostEntry::createUi(QWidget *parentWidget)
 	//PostWidget->setWindowTitle(QApplication::translate("PostWidget", "Form", 0, QApplication::UnicodeUTF8));
 }
 
-// void PostEntry::sltPublishPost()
-// {
-// 	qDebug("publish slot is working now!");
-// }
-// 
-// void PostEntry::sltSavePostLocally()
-// {
-// }
-// 
-// void PostEntry::sltSaveAsDraft()
-// {
-// }
-// 
-// void PostEntry::sltDelPost()
-// {
-// }
-// 
-// void PostEntry::sltDelLocally()
-// {
-// }
-
 QString PostEntry::postTitle() const
 {
 	return QString(this->txtTitle->text());
@@ -94,4 +74,29 @@ void PostEntry::setPostTitle(const QString & title)
 void PostEntry::setPostBody(const QString & body)
 {
     this->editPostWidget->setHtmlContent(body);
+}
+
+int PostEntry::currentPostBlogId()
+{
+    return mCurrentPostBlogId;
+}
+
+void PostEntry::setCurrentPostBlogId(int blog_id)
+{
+    mCurrentPostBlogId = blog_id;
+}
+
+BilboPost PostEntry::currentPost()
+{
+    return (*mCurrentPost);
+}
+
+void PostEntry::setCurrentPost(BilboPost post)
+{
+//     if(mCurrentPost!=0)
+//         delete(mCurrentPost);
+//     if(post==0)
+//         mCurrentPost = new BilboPost();
+//     else
+        mCurrentPost = new BilboPost(post);
 }

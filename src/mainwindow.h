@@ -64,7 +64,7 @@ protected slots:
 	void sltPostTitleChanged(const QString& title);
 	void sltBilboAbout();
 	void sltQuit();
-	void sltToggleToolboxVisible(bool);
+	void sltToggleToolboxVisible();
 	void sltActivePostChanged( int tabIndex );
     
     void sltNewPostSelected( BilboPost *newPost );
@@ -106,6 +106,7 @@ private:
 	QStatusBar *statusbar;
 	QToolButton *btnRemovePost;
 	
+    int previousActivePostIndex;
 };
 
 #endif

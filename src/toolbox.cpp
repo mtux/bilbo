@@ -234,6 +234,10 @@ void Toolbox::resetFields()
 	chkOptionsTime->setChecked(false);
 	datetimeOptionstimestamp->setDateTime(QDateTime::currentDateTime());
 	txtOptionsTrackback->clear();
+    txtSummary->setPlainText("");
+    chkOptionsComments->setChecked(true);
+    chkOptionsTrackback->setChecked(true);
+    comboOptionsStatus->setCurrentIndex(0);
 }
 
 void Toolbox::clearCatList()
@@ -360,9 +364,9 @@ void Toolbox::sltEntrySelected(QListWidgetItem * item)
 {
     qDebug("Toolbox::sltEntrySelected");
     BilboPost *post = db->getPostInfo(listEntries.value(item->text()));
-    setFieldsValue(*post);
-    emit sigEntrySelected(post);
+//     setFieldsValue(*post);
     qDebug("Emiting sigEntrySelected...");
+    emit sigEntrySelected(post);
 }
 
 void Toolbox::setCurrentBlog(int blog_id)
