@@ -143,3 +143,11 @@ void Backend::postPublished(KBlog::BlogPost *post)
 		qDebug("Backend::sigPostPublished emited!");
 	}
 }
+
+void Backend::UploadMedia(BilboMedia * media)
+{
+}
+
+void Backend::mediaUploaded(KBlog::BlogMedia * media)
+{
+}

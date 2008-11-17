@@ -30,6 +30,8 @@
 class KUrl;
 class BilboBlog;
 class BilboPost;
+class BilboMedia;
+class KBlog::BlogMedia;
 /**
 Engine of application, communicate with plugins and UI.
 this is heart and brain of app. ;)
@@ -52,8 +54,24 @@ public:
 	 * @param blog_id Id of blog in DB!
 	 */
 	void getCategoryListFromServer();
+    
+	/**
+	 *    retrieve latest posts from server
+	 * @param count number of post to retrieve.
+	 */
 	void getEntriesListFromServer(int count);
-	void publishPost(BilboPost *post);
+    
+	/**
+	 *    Use this to publish a post to server.
+	 * @param post Post to publish.
+	 */
+	void publishPost( BilboPost *post );
+    
+    /**
+     * Upload a new Media object e.g. image to server.
+     * @param  media Media Object to upload.
+     */
+    void UploadMedia( BilboMedia *media );
     
 protected slots:
 	void categoriesListed(const QList< QMap< QString, QString > > &   categories   );
@@ -62,6 +80,7 @@ protected slots:
 	
 	void postPublished(KBlog::BlogPost *post);
 	
+    void mediaUploaded( KBlog::BlogMedia *media );
 	
 signals:
     /**
@@ -69,11 +88,13 @@ signals:
      * @param blog_id id of Blog owner of categories.
      */
     void sigCategoryListFetched( int blog_id );
+    
 	/**
 	 * emit when a entriesListed() Done and Entries added to DB
 	 * @param blog_id id of Blog owner of Entries.
 	 */
 	void sigEntriesListFetched( int blog_id );
+    
 	/**
 	 * Emits when a post published and added to Database.
 	 * @param blog_id blog id.
@@ -81,6 +102,12 @@ signals:
 	 * @param  
 	 */
 	void sigPostPublished(int blog_id, int post_id);
+    
+    /**
+     * This signal is emitted when a media has been uploaded to the server.
+     * @param media Uploaded media Object.
+     */
+    void sigMediaUploaded( BilboMedia *media );
 	
 private:
 	KBlog::Blog *mBlog;
