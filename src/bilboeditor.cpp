@@ -453,8 +453,8 @@ void BilboEditor::sltSyncEditors(int index)
             htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
         }
         QString baseU = "http://bilbo.sourceforge.net";
-        if(currentBlogId > -1){
-            BilboBlog *tmp = db->getBlogInfo(currentBlogId);
+        if(__currentBlogId > -1){
+            BilboBlog *tmp = __db->getBlogInfo(__currentBlogId);
             baseU = tmp->blogUrl();
             delete tmp;
         }

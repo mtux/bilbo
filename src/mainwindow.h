@@ -58,7 +58,7 @@ public:
 	QAction *actQuit;
 	QAction *actToggleToolboxVisible;
 	
-protected slots:
+protected Q_SLOTS:
 	void sltCreateNewPost();
 	void sltUploadAllChanges();
 	void sltPostTitleChanged(const QString& title);

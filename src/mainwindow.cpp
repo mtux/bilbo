@@ -34,8 +34,8 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 	
 	readConfig();
 	createActions();
-	toolbox->setVisible(conf->isToolboxVisibleByDefault);
-	if(conf->isToolboxVisibleByDefault){
+	toolbox->setVisible(__conf->isToolboxVisibleByDefault);
+	if(__conf->isToolboxVisibleByDefault){
 		actToggleToolboxVisible->setText(tr("Hide Toolbox"));
 	} else {
 		actToggleToolboxVisible->setText(tr("Show Toolbox"));
@@ -92,7 +92,7 @@ void MainWindow::readConfig()
 void MainWindow::writeConfig()
 {
     qDebug("MainWindow::writeConfig");
-	conf->isToolboxVisibleByDefault = toolbox->isVisible();
+	__conf->isToolboxVisibleByDefault = toolbox->isVisible();
 	
 	QSettings config(CONF_PATH, QSettings::NativeFormat);
 	config.setValue("pos" , pos());
@@ -394,7 +394,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent * event)
 
 void MainWindow::sltCurrentBlogChanged(int blog_id)
 {
-    BilboBlog *tmp = db->getBlogInfo(blog_id);
+    BilboBlog *tmp = __db->getBlogInfo(blog_id);
     this->centralWidget()->setLayoutDirection(tmp->direction());
     delete tmp;
 }

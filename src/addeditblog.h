@@ -49,7 +49,7 @@ public:
     AddEditBlog(int blog_id, QWidget *parent = 0);
     ~AddEditBlog();
 	
-protected slots:
+protected Q_SLOTS:
 	void enableAutoConfBtn();
 	void enableOkButton( const QString & );
 	void autoConfigure();
@@ -66,7 +66,7 @@ protected slots:
     void sltRejected();
 	
     void sltReturnPressed();
-signals:
+Q_SIGNALS:
 	void sigBlogAdded(BilboBlog&);
 	void sigBlogEdited(BilboBlog&);
 	

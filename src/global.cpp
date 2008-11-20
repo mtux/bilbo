@@ -20,21 +20,21 @@
 
 #include "global.h"
 
-Settings *conf;
-DBMan *db;
-int currentBlogId;
+Settings *__conf;
+DBMan *__db;
+int __currentBlogId;
 
 void global_init()
 {
 	qDebug("global_init");
-	conf = new Settings;
-	db = new DBMan;
-    currentBlogId = -1;
+	__conf = new Settings;
+	__db = new DBMan;
+    __currentBlogId = -1;
 }
 
 void global_end()
 {
 	qDebug("global_end");
-	delete conf;
-	delete db;
+	delete __conf;
+	delete __db;
 }

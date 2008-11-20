@@ -40,7 +40,7 @@ public:
 
     ~SysTray();
 	
-protected slots:
+protected Q_SLOTS:
 	void sltHideShow();
 	void sltActivated(QSystemTrayIcon::ActivationReason);
 

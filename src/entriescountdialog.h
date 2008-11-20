@@ -33,10 +33,10 @@ Q_OBJECT
 public:
     EntriesCountDialog(QWidget *parent = 0);
 	
-signals:
+Q_SIGNALS:
 	void sigAccepted(int count);
 	
-protected slots:
+protected Q_SLOTS:
 	void sltAccepted();
 };
 

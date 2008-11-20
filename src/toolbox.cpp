@@ -79,7 +79,7 @@ void Toolbox::sltEditBlog()
 void Toolbox::sltRemoveBlog()
 {
 	qDebug("Toolbox::sltRemoveBlog");
-	db->removeBlog(listBlogs.value(currentBlog->text()));
+	__db->removeBlog(listBlogs.value(currentBlog->text()));
 	listBlogs.remove(currentBlog->text());
 	delete currentBlog;
 	currentBlog=0;
@@ -110,7 +110,7 @@ void Toolbox::reloadBlogList()
 {
 	qDebug("Toolbox::reloadBlogList");
 	listBlogs.clear();
-	listBlogs = db->listBlogsTitle();
+    listBlogs = __db->listBlogsTitle();
 	for(int j=0; j<listBlogRadioButtons.count(); ++j){
 		delete(listBlogRadioButtons[j]);
 	}
@@ -118,7 +118,7 @@ void Toolbox::reloadBlogList()
 	QMap<QString, int>::iterator i;
 	for( i = listBlogs.begin(); i != listBlogs.end(); ++i ){
 		QRadioButton *rb = new QRadioButton(i.key());
-        BilboBlog *bb = db->getBlogInfo(i.value());
+        BilboBlog *bb = __db->getBlogInfo(i.value());
 		rb->setToolTip(bb->url().toString());
         delete bb;
 		listBlogRadioButtons.append(rb);
@@ -192,7 +192,7 @@ void Toolbox::sltLoadEntriesFromDB(int blog_id)
 	clearEntriesList();
 	statusbar->showMessage("Entries list received.", STATUSTIMEOUT);
     this->unsetCursor();
-	listEntries = db->listPostsTitle(blog_id);
+	listEntries = __db->listPostsTitle(blog_id);
 	lstEntriesList->addItems(listEntries.keys());
 }
 
@@ -206,7 +206,7 @@ void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 	statusbar->showMessage("Category list received.", STATUSTIMEOUT);
 	this->unsetCursor();
 	clearCatList();
-	listCategories = db->listCategories(blog_id);
+	listCategories = __db->listCategories(blog_id);
 	
 	listCategoryCheckBoxes.clear();
 	QMap<QString, int>::iterator i;
@@ -260,9 +260,10 @@ void Toolbox::clearEntriesList()
 void Toolbox::sltCurrentBlogChanged(int blog_id)
 {
 	///TODO Save current state to a temporary variable!
+    __currentBlogId = blog_id;
 	sltLoadCategoryListFromDB(blog_id);
 	sltLoadEntriesFromDB(blog_id);
-	Qt::LayoutDirection ll = db->getBlogInfo(blog_id)->direction();
+    Qt::LayoutDirection ll = __db->getBlogInfo(blog_id)->direction();
 	frameCat->setLayoutDirection(ll);
 	lstEntriesList->setLayoutDirection(ll);
 	
@@ -366,7 +367,7 @@ int Toolbox::currentBlogId()
 void Toolbox::sltEntrySelected(QListWidgetItem * item)
 {
     qDebug("Toolbox::sltEntrySelected");
-    BilboPost *post = db->getPostInfo(listEntries.value(item->text()));
+    BilboPost *post = __db->getPostInfo(listEntries.value(item->text()));
 //     setFieldsValue(*post);
     qDebug("Emiting sigEntrySelected...");
     emit sigEntrySelected(post);
@@ -391,7 +392,7 @@ void Toolbox::setCurrentPage(int index)
 void Toolbox::sltEntriesCopyUrl()
 {
     QClipboard *clip = QApplication::clipboard();
-    BilboPost *p = db->getPostInfo(listEntries.value(lstEntriesList->currentItem()->text()));
+    BilboPost *p = __db->getPostInfo(listEntries.value(lstEntriesList->currentItem()->text()));
     clip->setText(p->postLink().toString());
 }
 

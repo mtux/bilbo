@@ -73,7 +73,7 @@ public:
      */
     void UploadMedia( BilboMedia *media );
     
-protected slots:
+protected Q_SLOTS:
 	void categoriesListed(const QList< QMap< QString, QString > > &   categories   );
 	
 	void entriesListed(const QList< KBlog::BlogPost > &posts);
@@ -82,7 +82,7 @@ protected slots:
 	
     void mediaUploaded( KBlog::BlogMedia *media );
 	
-signals:
+Q_SIGNALS:
     /**
      * emit when a categoriesListed() Done and Categories added to DB
      * @param blog_id id of Blog owner of categories.

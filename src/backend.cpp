@@ -30,7 +30,7 @@
 Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 {
 	qDebug("Backend::Backend: with blog id: %d", blog_id);
-	bBlog = db->getBlogInfo(blog_id);
+	bBlog = __db->getBlogInfo(blog_id);
 	switch( bBlog->api() ){
 	case BilboBlog::BLOGGER1_API:
 		mBlog = new KBlog::Blogger1(KUrl());
@@ -76,7 +76,7 @@ void Backend::getCategoryListFromServer()
 void Backend::categoriesListed(const QList< QMap < QString , QString > > & categories)
 {
 	qDebug("Backend::categoriesListed: Blog Id: %d", bBlog->id());
-	db->clearCategories(bBlog->id());
+	__db->clearCategories(bBlog->id());
 	QString name, description, htmlUrl, rssUrl;
 	const QMap<QString, QString> *category;
 
@@ -88,7 +88,7 @@ void Backend::categoriesListed(const QList< QMap < QString , QString > > & categ
 		htmlUrl = category->value("htmlUrl"); //TODO UNUSED
 		rssUrl = category->value("rssUrl"); //TODO UNUSED
 		
-		db->addCategory(name, bBlog->id());
+		__db->addCategory(name, bBlog->id());
 	}
 	emit sigCategoryListFetched(bBlog->id());
 }
@@ -103,10 +103,10 @@ void Backend::getEntriesListFromServer(int count)
 void Backend::entriesListed(const QList< KBlog::BlogPost > & posts)
 {
 	qDebug("Backend::entriesListed: Blog Id: %d", bBlog->id());
-	db->clearPosts(bBlog->id());
+	__db->clearPosts(bBlog->id());
 	
 	for(int i=0; i<posts.count(); i++){
-		db->addPost(BilboPost(posts[i]), bBlog->id());
+		__db->addPost(BilboPost(posts[i]), bBlog->id());
 	}
 	emit sigEntriesListFetched(bBlog->id());
 }
@@ -139,7 +139,7 @@ void Backend::postPublished(KBlog::BlogPost *post)
 {
 	qDebug("Backend::postPublished");
 	BilboPost pp((*post));
-	int post_id = db->addPost(pp, bBlog->id());
+	int post_id = __db->addPost(pp, bBlog->id());
 	if(post_id!=-1){
 		emit sigPostPublished(bBlog->id(), post_id);
 		qDebug("Backend::sigPostPublished emited!");
