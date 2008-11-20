@@ -28,7 +28,7 @@
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {
     qDebug("MainWindow::MainWindow");
-    previousActivePostIndex = -1;
+//     previousActivePostIndex = -1;
 	createUi();
     setFocusPolicy(Qt::StrongFocus);
 	toolbox=new Toolbox(statusbar, this);
@@ -119,7 +119,7 @@ void MainWindow::createUi()
 	activePost=new PostEntry(this);
 	tabPosts->addTab(activePost,"Untitled");
 	tabPosts->setCurrentIndex(0);
-    previousActivePostIndex = 0;
+//     previousActivePostIndex = 0;
 	
 	btnRemovePost = new QToolButton(tabPosts);
 	btnRemovePost->setIcon(QIcon(":/media/dialog-close.png"));
@@ -256,15 +256,15 @@ void MainWindow::sltToggleToolboxVisible()
 void MainWindow::sltActivePostChanged(int index)
 {
     qDebug("MainWindow::sltActivePostChanged");
-//     activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
-    PostEntry *prevActivePost = qobject_cast<PostEntry*>( tabPosts->widget( previousActivePostIndex ) );
-    
-    prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
-    prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
-    
-    toolbox->setFieldsValue(activePost->currentPost());
-    toolbox->setCurrentBlog(activePost->currentPostBlogId());
-    previousActivePostIndex = index;
+// // //     activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
+//     PostEntry *prevActivePost = qobject_cast<PostEntry*>( tabPosts->widget( previousActivePostIndex ) );
+//     
+//     prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
+//     prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
+//     
+//     toolbox->setFieldsValue(activePost->currentPost());
+//     toolbox->setCurrentBlog(activePost->currentPostBlogId());
+//     previousActivePostIndex = index;
 }
 
 void MainWindow::sltPublishPost()

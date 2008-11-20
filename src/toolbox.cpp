@@ -118,7 +118,9 @@ void Toolbox::reloadBlogList()
 	QMap<QString, int>::iterator i;
 	for( i = listBlogs.begin(); i != listBlogs.end(); ++i ){
 		QRadioButton *rb = new QRadioButton(i.key());
-		rb->setToolTip(db->getBlogInfo(i.value())->blogUrl().toString());
+        BilboBlog *bb = db->getBlogInfo(i.value());
+		rb->setToolTip(bb->blogUrl().toString());
+        delete bb;
 		listBlogRadioButtons.append(rb);
 		frameBlog->layout()->addWidget(rb);
 		connect(rb, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));

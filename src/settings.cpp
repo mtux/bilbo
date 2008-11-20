@@ -41,6 +41,8 @@ void Settings::save()
 	set->setValue("show_main_on_start", showMainOnStart);
 	set->setValue("toolbox_visible", isToolboxVisibleByDefault);
 	set->sync();
+    
+    delete set;
 }
 
 void Settings::load()
@@ -51,6 +53,8 @@ void Settings::load()
 	
 	showMainOnStart = set->value("show_main_on_start", true).toBool();
 	isToolboxVisibleByDefault = set->value ( "toolbox_visible", true ).toBool();
+    
+    delete set;
 }
 
 
