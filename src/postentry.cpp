@@ -102,3 +102,14 @@ void PostEntry::setCurrentPost(BilboPost post)
 //     else
         mCurrentPost = new BilboPost(post);
 }
+
+PostEntry::~PostEntry()
+{
+    delete editPostWidget;
+    delete gridLayout;
+    delete horizontalLayout;
+    delete labelTitle;
+    delete txtTitle;
+    delete wPost;
+    delete mCurrentPost;
+}

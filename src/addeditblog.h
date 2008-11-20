@@ -47,6 +47,7 @@ public:
      * @param parent Parent
      */
     AddEditBlog(int blog_id, QWidget *parent = 0);
+    ~AddEditBlog();
 	
 protected slots:
 	void enableAutoConfBtn();

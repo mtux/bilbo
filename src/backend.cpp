@@ -56,6 +56,8 @@ Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 
 Backend::~Backend()
 {
+    delete mBlog;
+    delete bBlog;
 }
 
 void Backend::getCategoryListFromServer()

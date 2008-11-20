@@ -394,3 +394,12 @@ void Toolbox::sltEntriesCopyUrl()
     BilboPost *p = db->getPostInfo(listEntries.value(lstEntriesList->currentItem()->text()));
     clip->setText(p->postLink().toString());
 }
+
+Toolbox::~Toolbox()
+{
+    delete addEditBlogWindow;
+    delete blogToEdit;
+    delete currentBlog;
+    delete currentPost;
+    delete statusbar;
+}

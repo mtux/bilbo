@@ -37,6 +37,7 @@ class Toolbox: public QDockWidget, public Ui::ToolboxWidget {
 Q_OBJECT
 public:
 	Toolbox(QStatusBar *mainStatusbar, QWidget *parent = 0);
+    ~Toolbox();
 	
 	void reloadBlogList();
 	BilboPost* getFieldsValue();

@@ -39,6 +39,7 @@ class PostEntry: public QFrame {
 Q_OBJECT
 public:
     PostEntry(QWidget *parent);
+    ~PostEntry();
 	QString postTitle() const;
 	QString * postBody();
     

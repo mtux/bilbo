@@ -39,6 +39,12 @@ SysTray::SysTray(QObject* parent): QSystemTrayIcon(parent)
 
 SysTray::~SysTray()
 {
+    delete trayMenu;
+    delete actQuit;
+    delete actNewPost;
+    delete actHideShow;
+    delete actAbout;
+    delete bilbo;
 }
 
 void SysTray::createActions()

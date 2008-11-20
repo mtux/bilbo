@@ -288,3 +288,12 @@ void AddEditBlog::sltRejected()
 //     delete mFetchBlogIdTimer;
 //     delete mFetchAPITimer;
 }
+
+AddEditBlog::~AddEditBlog()
+{
+    delete bBlog;
+    delete mBlog;
+    delete mFetchProfileIdTimer;
+    delete mFetchBlogIdTimer;
+    delete mFetchAPITimer;
+}

@@ -50,6 +50,30 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 
 MainWindow::~MainWindow()
 {
+    delete toolbox;
+    delete activePost;
+    delete addBlogPage;
+    delete tabPosts;
+    delete toolbarPost;
+    delete toolbarBlogger;
+    delete toolbarAction;
+    delete menubar;
+    delete menuBilbo;
+    delete menuPost;
+    delete menuAbout;
+    delete statusbar;
+    delete btnRemovePost;
+    delete actAddBlog;
+    delete actUploadAll;
+    delete actNewPost;
+    delete actPublish;
+    delete actSaveLocally;
+    delete actSaveDraft;
+    delete actDeletePost;
+    delete actDeleteLocally;
+    delete actAbout;
+    delete actQuit;
+    delete actToggleToolboxVisible;
 }
 
 void MainWindow::readConfig()

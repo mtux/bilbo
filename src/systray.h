@@ -52,10 +52,7 @@ private:
 	QAction *actQuit;
 	QAction *actNewPost;
 	QAction *actHideShow;
-// 	QAction *actConfigure;
 	QAction *actAbout;
-// 	QAction *actPublishAllPosts;
-// 	QAction *
 	
 	MainWindow *bilbo;
 
