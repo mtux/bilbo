@@ -16,7 +16,8 @@ SOURCES += main.cpp \
  entriescountdialog.cpp \
  multilinetextedit.cpp \
  addimagedialog.cpp \
- bilbomedia.cpp
+ bilbomedia.cpp \
+ addcategory.cpp
 TEMPLATE = app
 CONFIG += warn_on \
 	  thread \
@@ -30,7 +31,8 @@ FORMS += toolbox.ui \
 addeditblog.ui \
  addeditlink.ui \
  entriescount.ui \
- addimagedialog.ui
+ addimagedialog.ui \
+ addcategory.ui
 HEADERS += mainwindow.h \
 toolbox.h \
 systray.h \
@@ -49,7 +51,8 @@ postentry.h \
  entriescountdialog.h \
  multilinetextedit.h \
  addimagedialog.h \
- bilbomedia.h
+ bilbomedia.h \
+ addcategory.h
 QT += webkit \
  sql
 
