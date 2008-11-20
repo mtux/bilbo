@@ -25,15 +25,12 @@
 #include "backend.h"
 #include "bilbopost.h"
 #include <QSettings>
+
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {
     qDebug("MainWindow::MainWindow");
     previousActivePostIndex = -1;
 	createUi();
-    setFocusPolicy(Qt::StrongFocus);
-	toolbox=new Toolbox(statusbar, this);
-	this->addDockWidget(Qt::RightDockWidgetArea,toolbox);
-	toolbox->setMinimumWidth(280);
 	
 	readConfig();
 	createActions();
@@ -141,16 +138,22 @@ void MainWindow::createUi()
 	statusbar = new QStatusBar(this);
 	this->setStatusBar(statusbar);
 	
-	activePost=new PostEntry(this);
-	tabPosts->addTab(activePost,"Untitled");
-	tabPosts->setCurrentIndex(0);
+    setFocusPolicy(Qt::StrongFocus);
+    toolbox=new Toolbox(statusbar, this);
+    this->addDockWidget(Qt::RightDockWidgetArea,toolbox);
+    toolbox->setMinimumWidth(280);
+    
+    btnRemovePost = new QToolButton(tabPosts);
+    btnRemovePost->setIcon(QIcon(":/media/dialog-close.png"));
+    btnRemovePost->setToolTip("Remove current post");
+    tabPosts->setCornerWidget(btnRemovePost, Qt::TopRightCorner);
+    connect(btnRemovePost, SIGNAL(clicked( bool )), this, SLOT(sltRemoveCurrentPostEntry()));
+    
+	sltCreateNewPost();
+    activePost = qobject_cast<PostEntry*>(tabPosts->currentWidget());
     previousActivePostIndex = 0;
 	
-	btnRemovePost = new QToolButton(tabPosts);
-	btnRemovePost->setIcon(QIcon(":/media/dialog-close.png"));
-	btnRemovePost->setToolTip("Remove current post");
-	tabPosts->setCornerWidget(btnRemovePost, Qt::TopRightCorner);
-	connect(btnRemovePost, SIGNAL(clicked( bool )), this, SLOT(sltRemoveCurrentPostEntry()));
+	
 // 	connect(tabPosts->tabBar(), SIGNAL());
 }
 
@@ -239,8 +242,8 @@ void MainWindow::sltCreateNewPost()
 	tabPosts->addTab(temp,"Untitled");
     temp->setCurrentPost();
     temp->setCurrentPostBlogId(toolbox->currentBlogId());
-    connect(temp, SIGNAL(sigTitleChanged(const QString &title)), this, SLOT(sltPostTitleChanged(const QString&)));
-	activePost=temp;
+    connect(temp, SIGNAL(sigTitleChanged(const QString& )), this, SLOT(sltPostTitleChanged(const QString&)));
+// 	activePost=temp;
 	tabPosts->setCurrentWidget(temp);
 	if(this->isVisible()==false)
 		this->show();
@@ -281,15 +284,20 @@ void MainWindow::sltToggleToolboxVisible()
 void MainWindow::sltActivePostChanged(int index)
 {
     qDebug("MainWindow::sltActivePostChanged");
+    activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
     PostEntry *prevActivePost = qobject_cast<PostEntry*>( tabPosts->widget( previousActivePostIndex ) );
-    if(prevActivePost!=0){
+    if(prevActivePost != 0){
     prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
     prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
     }
-    
+    if(activePost != 0){
     toolbox->setFieldsValue(activePost->currentPost());
     toolbox->setCurrentBlog(activePost->currentPostBlogId());
     previousActivePostIndex = index;
+    } else {
+        qDebug() << "MainWindow::sltActivePostChanged: ActivePost is NULL! \
+                tabPosts Current index is: " << tabPosts->currentIndex() ;
+    }
 }
 
 void MainWindow::sltPublishPost()
@@ -337,8 +345,9 @@ void MainWindow::sltRemoveCurrentPostEntry()
 	tabPosts->removeTab(tabPosts->currentIndex());
 	if(tabPosts->count()==0){
 		sltCreateNewPost();
+        previousActivePostIndex = 0;
 	}
-	
+    tabPosts->setCurrentIndex(previousActivePostIndex);
 }
 
 void MainWindow::sltNewPostSelected(BilboPost * newPost)
@@ -346,14 +355,14 @@ void MainWindow::sltNewPostSelected(BilboPost * newPost)
     qDebug("MainWindow::sltNewPostSelected");
     PostEntry *temp=new PostEntry(this);
     tabPosts->addTab(temp,newPost->title());
-    
+    connect(temp, SIGNAL(sigTitleChanged( const QString& )), this, SLOT(sltPostTitleChanged( const QString& )));
     
     temp->setPostTitle(newPost->title());
     temp->setPostBody(newPost->content());
     temp->setCurrentPost(*newPost);
     temp->setCurrentPostBlogId(toolbox->currentBlogId());
 
-    activePost=temp;
+//     activePost=temp;
     tabPosts->setCurrentWidget(temp);
 }
 
