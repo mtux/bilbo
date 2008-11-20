@@ -281,12 +281,12 @@ void MainWindow::sltToggleToolboxVisible()
 void MainWindow::sltActivePostChanged(int index)
 {
     qDebug("MainWindow::sltActivePostChanged");
-// // //     activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
     PostEntry *prevActivePost = qobject_cast<PostEntry*>( tabPosts->widget( previousActivePostIndex ) );
-//     
+    if(prevActivePost!=0){
     prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
     prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
-//     
+    }
+    
     toolbox->setFieldsValue(activePost->currentPost());
     toolbox->setCurrentBlog(activePost->currentPostBlogId());
     previousActivePostIndex = index;
