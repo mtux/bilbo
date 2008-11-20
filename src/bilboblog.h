@@ -42,8 +42,15 @@ public:
 	BilboBlog();
     ~BilboBlog();
 	
-	QUrl blogUrl() const;
-	void setBlogUrl(const QUrl&);
+	/**
+	 * returns blog xmlrpc Url!
+     * For http://bilbo.wordpress.com :
+     * it's url() is http://bilbo.wordpress.com/xmlrpc.php
+     * and it's blogUrl() is http://bilbo.wordpress.com/
+	 * @return url usable for xmlrpc!
+	 */
+	QUrl url() const;
+	void setUrl(const QUrl&);
 	QString blogid() const;
 	void setBlogId(const QString&);
 	QString username() const;
@@ -60,9 +67,18 @@ public:
 	void setId(const int);
 	Qt::LayoutDirection direction() const;
 	void setDirection( const Qt::LayoutDirection );
+    
+    /**
+     * return Blog Actual Url!
+     * For http://bilbo.wordpress.com :
+     * it's url() is http://bilbo.wordpress.com/xmlrpc.php
+     * and it's blogUrl() is http://bilbo.wordpress.com/
+     * @return Blog actual url.
+     */
+    QString blogUrl();
 	
 private:
-	QUrl mBlogUrl;
+	QUrl mUrl;
 	QString mBlogid;
 	QString mUsername;
 	QString mPassword;

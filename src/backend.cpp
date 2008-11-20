@@ -50,7 +50,7 @@ Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 	
 	mBlog->setUsername(bBlog->username());
 	mBlog->setPassword(bBlog->password());
-	mBlog->setUrl(KUrl(bBlog->blogUrl()));
+	mBlog->setUrl(KUrl(bBlog->url()));
 	mBlog->setBlogId(bBlog->blogid());
 }
 

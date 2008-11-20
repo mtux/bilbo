@@ -21,7 +21,7 @@
 
 BilboBlog::BilboBlog(QUrl &server)
 {
-	this->setBlogUrl( server);
+	this->setUrl( server);
 }
 
 BilboBlog::BilboBlog()
@@ -32,14 +32,14 @@ BilboBlog::~BilboBlog()
 {
 }
 
-QUrl BilboBlog::blogUrl() const
+QUrl BilboBlog::url() const
 {
-	return mBlogUrl;
+	return mUrl;
 }
 
-void BilboBlog::setBlogUrl(const QUrl &url)
+void BilboBlog::setUrl(const QUrl &url)
 {
-	mBlogUrl = url;
+	mUrl = url;
 }
 
 QString BilboBlog::blogid() const
@@ -120,6 +120,23 @@ Qt::LayoutDirection BilboBlog::direction() const
 void BilboBlog::setDirection(const Qt::LayoutDirection dir)
 {
 	mDir = dir;
+}
+
+QString BilboBlog::blogUrl()
+{
+    QString url=this->url().toString();
+    switch( this->api() ){
+    case BLOGGER1_API:
+        break;
+    case METAWEBLOG_API:
+    case MOVABLETYPE_API:
+    case WORDPRESSBUGGY_API:
+        url = url.remove("xmlrpc.php", Qt::CaseInsensitive);
+        break;
+    case GDATA_API:
+        break;
+    }
+    return url;
 }
 
 

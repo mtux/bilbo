@@ -38,6 +38,8 @@ extern Settings *conf;
 
 extern DBMan *db;
 
+extern int currentBlogId;
+
 enum api_type { BLOGGER_API = 0,
 	METAWEBLOG_API,
  MOVABLETYPE_API,

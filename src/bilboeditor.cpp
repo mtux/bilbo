@@ -29,6 +29,8 @@
 #include "addeditlink.h"
 #include "addimagedialog.h"
 #include "bilbomedia.h"
+#include "global.h"
+#include "bilboblog.h"
 
 BilboEditor::BilboEditor()
 {
@@ -444,13 +446,20 @@ void BilboEditor::sltSyncEditors(int index)
 	} else if (index == 1) {
 		qDebug()<<editor->toHtml()<<endl;
 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
-	} else if (prev_index == 1) {
-		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
-		preview->setHtml(htmlEditor->toPlainText(), QUrl("#"));
-	} else if (prev_index == 0) {
-		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
-		preview->setHtml(htmlEditor->toPlainText(), QUrl("#"));
-	}
+	} else {
+        if (prev_index == 1) {
+            editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
+        } else {
+            htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+        }
+        QString baseU = "http://bilbo.sourceforge.net";
+        if(currentBlogId > -1){
+            BilboBlog *tmp = db->getBlogInfo(currentBlogId);
+            baseU = tmp->blogUrl();
+            delete tmp;
+        }
+            preview->setHtml(htmlEditor->toPlainText(), QUrl(baseU));
+    }
 	
 	prev_index = index;
 	delete htmlExp;

@@ -114,7 +114,7 @@ int DBMan::addBlog(BilboBlog & blog)
 	QSqlQuery q;
 	q.prepare("INSERT INTO blog (blogid, blog_url, username, password, style_url, api_type, title, direction) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
 	q.addBindValue(blog.blogid());
-	q.addBindValue(blog.blogUrl().toString());
+	q.addBindValue(blog.url().toString());
 	q.addBindValue(blog.username());
 	q.addBindValue(blog.password());
 	q.addBindValue(blog.stylePath());
@@ -486,7 +486,7 @@ QList< BilboBlog *> DBMan::listBlogs()
 		BilboBlog *tmp;
 		tmp->setId(q.value(0).toInt());
 		tmp->setBlogId( q.value(1).toString());
-		tmp->setBlogUrl (QUrl(q.value(2).toString()));
+		tmp->setUrl (QUrl(q.value(2).toString()));
 		tmp->setUsername (q.value(3).toString());
 		tmp->setPassword (q.value(4).toString());
 		tmp->setStylePath(q.value(5).toString());
@@ -518,7 +518,7 @@ BilboBlog * DBMan::getBlogInfo(QString title)
 		if( q.next() ){
 			b->setId(q.value(0).toInt());
 			b->setBlogId (q.value(1).toString());
-			b->setBlogUrl( QUrl(q.value(2).toString()));
+			b->setUrl( QUrl(q.value(2).toString()));
 			b->setUsername (q.value(3).toString());
 			b->setPassword (q.value(4).toString());
 			b->setStylePath( q.value(5).toString());
@@ -540,7 +540,7 @@ BilboBlog * DBMan::getBlogInfo(int blog_id)
 		if( q.next() ){
 			b->setId(q.value(0).toInt());
 			b->setBlogId( q.value(1).toString());
-			b->setBlogUrl(QUrl(q.value(2).toString()));
+			b->setUrl(QUrl(q.value(2).toString()));
 			b->setUsername (q.value(3).toString());
 			b->setPassword (q.value(4).toString());
 			b->setStylePath(q.value(5).toString());

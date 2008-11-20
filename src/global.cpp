@@ -22,12 +22,14 @@
 
 Settings *conf;
 DBMan *db;
+int currentBlogId;
 
 void global_init()
 {
 	qDebug("global_init");
 	conf = new Settings;
 	db = new DBMan;
+    currentBlogId = -1;
 }
 
 void global_end()

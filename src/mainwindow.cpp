@@ -28,7 +28,7 @@
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {
     qDebug("MainWindow::MainWindow");
-//     previousActivePostIndex = -1;
+    previousActivePostIndex = -1;
 	createUi();
     setFocusPolicy(Qt::StrongFocus);
 	toolbox=new Toolbox(statusbar, this);
@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 	
 	connect(tabPosts, SIGNAL(currentChanged( int )), this, SLOT(sltActivePostChanged(int)));
     connect(toolbox, SIGNAL(sigEntrySelected(BilboPost *)), this, SLOT(sltNewPostSelected(BilboPost*)));
+    connect(toolbox, SIGNAL(sigCurrentBlogChanged(int)), this, SLOT(sltCurrentBlogChanged(int)));
 }
 
 MainWindow::~MainWindow()
@@ -143,7 +144,7 @@ void MainWindow::createUi()
 	activePost=new PostEntry(this);
 	tabPosts->addTab(activePost,"Untitled");
 	tabPosts->setCurrentIndex(0);
-//     previousActivePostIndex = 0;
+    previousActivePostIndex = 0;
 	
 	btnRemovePost = new QToolButton(tabPosts);
 	btnRemovePost->setIcon(QIcon(":/media/dialog-close.png"));
@@ -236,10 +237,10 @@ void MainWindow::sltCreateNewPost()
     qDebug("MainWindow::sltCreateNewPost");
 	PostEntry *temp=new PostEntry(this);
 	tabPosts->addTab(temp,"Untitled");
+    temp->setCurrentPost();
+    temp->setCurrentPostBlogId(toolbox->currentBlogId());
+    connect(temp, SIGNAL(sigTitleChanged(const QString &title)), this, SLOT(sltPostTitleChanged(const QString&)));
 	activePost=temp;
-//     toolbox->resetFields();
-    activePost->setCurrentPost();
-    activePost->setCurrentPostBlogId(toolbox->currentBlogId());
 	tabPosts->setCurrentWidget(temp);
 	if(this->isVisible()==false)
 		this->show();
@@ -281,14 +282,14 @@ void MainWindow::sltActivePostChanged(int index)
 {
     qDebug("MainWindow::sltActivePostChanged");
 // // //     activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
-//     PostEntry *prevActivePost = qobject_cast<PostEntry*>( tabPosts->widget( previousActivePostIndex ) );
+    PostEntry *prevActivePost = qobject_cast<PostEntry*>( tabPosts->widget( previousActivePostIndex ) );
 //     
-//     prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
-//     prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
+    prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
+    prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
 //     
-//     toolbox->setFieldsValue(activePost->currentPost());
-//     toolbox->setCurrentBlog(activePost->currentPostBlogId());
-//     previousActivePostIndex = index;
+    toolbox->setFieldsValue(activePost->currentPost());
+    toolbox->setCurrentBlog(activePost->currentPostBlogId());
+    previousActivePostIndex = index;
 }
 
 void MainWindow::sltPublishPost()
@@ -343,12 +344,17 @@ void MainWindow::sltRemoveCurrentPostEntry()
 void MainWindow::sltNewPostSelected(BilboPost * newPost)
 {
     qDebug("MainWindow::sltNewPostSelected");
-    sltCreateNewPost();
+    PostEntry *temp=new PostEntry(this);
+    tabPosts->addTab(temp,newPost->title());
     
-    activePost->setPostTitle(newPost->title());
-    activePost->setPostBody(newPost->content());
-    activePost->setCurrentPost(*newPost);
-    activePost->setCurrentPostBlogId(toolbox->currentBlogId());
+    
+    temp->setPostTitle(newPost->title());
+    temp->setPostBody(newPost->content());
+    temp->setCurrentPost(*newPost);
+    temp->setCurrentPostBlogId(toolbox->currentBlogId());
+
+    activePost=temp;
+    tabPosts->setCurrentWidget(temp);
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent * event)
@@ -375,6 +381,13 @@ void MainWindow::keyReleaseEvent(QKeyEvent * event)
             break;
         }
     }
+}
+
+void MainWindow::sltCurrentBlogChanged(int blog_id)
+{
+    BilboBlog *tmp = db->getBlogInfo(blog_id);
+    this->centralWidget()->setLayoutDirection(tmp->direction());
+    delete tmp;
 }
 
 

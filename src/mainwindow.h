@@ -75,10 +75,8 @@ protected slots:
 	 *    Slot to remove current Post entry from main tab wigdet!
 	 */
 	void sltRemoveCurrentPostEntry();
-// 	void sltSavePostLocally();
-// 	void sltSaveAsDraft();
-// 	void sltDelPost();
-// 	void sltDelLocally();
+
+    void sltCurrentBlogChanged( int blog_id );
 
 protected:
     void keyReleaseEvent ( QKeyEvent * event );

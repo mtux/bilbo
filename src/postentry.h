@@ -51,11 +51,17 @@ public:
     
     BilboPost currentPost();
     void setCurrentPost( BilboPost post=BilboPost() );
-protected slots:
+
+Q_SIGNALS:
+    /**
+     * emitted when title of this entry changed.
+     * @param  
+     */
+    void sigTitleChanged(const QString &title);
 
 	
 private:
-    void createUi(QWidget *parentWidget);
+    void createUi();
     
     
 	BilboEditor *editPostWidget;

@@ -90,7 +90,7 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 	qDebug("Toolbox::sltBlogAdded");
 	listBlogs.insert(addedBlog.title(), addedBlog.id());
 	QRadioButton *a = new QRadioButton(addedBlog.title());
-	a->setToolTip(addedBlog.blogUrl().toString());
+	a->setToolTip(addedBlog.url().toString());
 	listBlogRadioButtons.append(a);
 	frameBlog->layout()->addWidget(a);
 	connect(a, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
@@ -101,7 +101,7 @@ void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 	qDebug("Toolbox::sltBlogEdited");
     listBlogs.remove(blogToEdit->text());
 	blogToEdit->setText(editedBlog.title());
-	blogToEdit->setToolTip(editedBlog.blogUrl().toString());
+	blogToEdit->setToolTip(editedBlog.url().toString());
     listBlogs.insert(editedBlog.title(), editedBlog.id());
     emit sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
 }
@@ -119,7 +119,7 @@ void Toolbox::reloadBlogList()
 	for( i = listBlogs.begin(); i != listBlogs.end(); ++i ){
 		QRadioButton *rb = new QRadioButton(i.key());
         BilboBlog *bb = db->getBlogInfo(i.value());
-		rb->setToolTip(bb->blogUrl().toString());
+		rb->setToolTip(bb->url().toString());
         delete bb;
 		listBlogRadioButtons.append(rb);
 		frameBlog->layout()->addWidget(rb);
