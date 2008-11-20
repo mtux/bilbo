@@ -94,6 +94,8 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 	listBlogRadioButtons.append(a);
 	frameBlog->layout()->addWidget(a);
 	connect(a, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
+    a->setChecked(true);
+    sltReloadCategoryList();
 }
 
 void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
@@ -104,6 +106,7 @@ void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 	blogToEdit->setToolTip(editedBlog.url().toString());
     listBlogs.insert(editedBlog.title(), editedBlog.id());
     emit sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
+    sltReloadCategoryList();
 }
 
 void Toolbox::reloadBlogList()
@@ -142,7 +145,7 @@ void Toolbox::sltReloadCategoryList()
 	Backend *b = new Backend(blog_id);
 	b->getCategoryListFromServer();
 	connect(b, SIGNAL(sigCategoryListFetched(int)), this, SLOT(sltLoadCategoryListFromDB(int)));
-	statusbar->showMessage("Request for Selected blog's category list sent to server...");
+	statusbar->showMessage("Requesting category list...");
     this->setCursor(Qt::BusyCursor);
 }
 
@@ -223,7 +226,7 @@ void Toolbox::sltGetEntriesCount(int count)
 	Backend *entryB = new Backend(listBlogs.value(currentBlog->text()));
 	entryB->getEntriesListFromServer(count);
 	connect(entryB, SIGNAL(sigEntriesListFetched(int)), this, SLOT(sltLoadEntriesFromDB(int)));
-	statusbar->showMessage("Request for Selected blog's Entries list sent to server...");
+	statusbar->showMessage("Requesting Entry list...");
     this->setCursor(Qt::BusyCursor);
 }
 
@@ -295,12 +298,16 @@ BilboPost * Toolbox::getFieldsValue()
 	currentPost->setTrackBackAllowed(chkOptionsTrackback->isChecked());
 	currentPost->setPosition((BilboPost::Position)comboOptionsStatus->currentIndex());
     currentPost->setSummary(txtSummary->toPlainText());
+//     qDebug()<<"Toolbox::getFieldsValue: Post will return:"<<currentPost->toString();
 	return currentPost;
 }
 
 void Toolbox::setFieldsValue(const BilboPost & post)
 {
     qDebug("Toolbox::setFieldsValue");
+//     qDebug()<<"Toolbox::setFieldsValue: New Post is: "<<post.toString();
+    delete currentPost;
+    currentPost = new BilboPost(post);
     setSelectedCategories(post.categories());
     txtCatTags->setText(post.tags().join(", "));
     comboOptionsStatus->setCurrentIndex(post.position());
@@ -333,6 +340,7 @@ QList< int > Toolbox::selectedCategoriesId()
 
 void Toolbox::setSelectedCategories(const QStringList &list)
 {
+    unCheckCatList();
 	for( int i=0; i<listCategoryCheckBoxes.count(); ++i){
 		if(list.contains(listCategoryCheckBoxes[i]->text(), Qt::CaseInsensitive))
 			listCategoryCheckBoxes[i]->setChecked(true);
@@ -403,4 +411,11 @@ Toolbox::~Toolbox()
     delete currentBlog;
     delete currentPost;
     delete statusbar;
+}
+
+void Toolbox::unCheckCatList()
+{
+    for(int j=0; j<listCategoryCheckBoxes.count(); ++j){
+        listCategoryCheckBoxes[j]->setChecked(false);
+    }
 }

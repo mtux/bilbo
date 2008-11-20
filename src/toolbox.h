@@ -84,7 +84,7 @@ private:
 	QStringList currentTags();
 	void clearCatList();
 	void clearEntriesList();
-	
+    void unCheckCatList();
 	
 	AddEditBlog *addEditBlogWindow;
 	QRadioButton *blogToEdit;

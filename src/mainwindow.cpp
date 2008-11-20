@@ -139,9 +139,10 @@ void MainWindow::createUi()
 	this->setStatusBar(statusbar);
 	
     setFocusPolicy(Qt::StrongFocus);
+    
     toolbox=new Toolbox(statusbar, this);
     this->addDockWidget(Qt::RightDockWidgetArea,toolbox);
-    toolbox->setMinimumWidth(280);
+//     toolbox->setMinimumWidth(280);
     
     btnRemovePost = new QToolButton(tabPosts);
     btnRemovePost->setIcon(QIcon(":/media/dialog-close.png"));
@@ -255,6 +256,7 @@ void MainWindow::sltUploadAllChanges()
 
 void MainWindow::sltPostTitleChanged(const QString& title)
 {
+    qDebug("MainWindow::sltPostTitleChanged");
 	tabPosts->setTabText(tabPosts->currentIndex(),title);
 }
 
@@ -284,16 +286,20 @@ void MainWindow::sltToggleToolboxVisible()
 void MainWindow::sltActivePostChanged(int index)
 {
     qDebug("MainWindow::sltActivePostChanged");
-    activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
+    qDebug()<<"new post index: "<<index<<"\tPrev Index: "<<previousActivePostIndex;
+
+    activePost = qobject_cast<PostEntry*>( tabPosts->widget(index) );
     PostEntry *prevActivePost = qobject_cast<PostEntry*>( tabPosts->widget( previousActivePostIndex ) );
-    if(prevActivePost != 0){
+    if(prevActivePost != 0 && index != previousActivePostIndex){
     prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
     prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
+    tabPosts->setTabText(previousActivePostIndex, prevActivePost->postTitle());
     }
     if(activePost != 0){
     toolbox->setFieldsValue(activePost->currentPost());
     toolbox->setCurrentBlog(activePost->currentPostBlogId());
     previousActivePostIndex = index;
+    sltPostTitleChanged( activePost->postTitle() );
     } else {
         qDebug() << "MainWindow::sltActivePostChanged: ActivePost is NULL! \
                 tabPosts Current index is: " << tabPosts->currentIndex() ;
@@ -342,11 +348,11 @@ void MainWindow::sltPostPublished(int blog_id, int post_id)
 void MainWindow::sltRemoveCurrentPostEntry()
 {
     qDebug("MainWindow::sltRemoveCurrentPostEntry");
-	tabPosts->removeTab(tabPosts->currentIndex());
-	if(tabPosts->count()==0){
+	if(tabPosts->count()==1){
 		sltCreateNewPost();
         previousActivePostIndex = 0;
 	}
+	tabPosts->removeTab(tabPosts->currentIndex());
     tabPosts->setCurrentIndex(previousActivePostIndex);
 }
 
