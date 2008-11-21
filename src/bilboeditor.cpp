@@ -172,7 +172,7 @@ void BilboEditor::createActions()
 	barVisual->addAction(actJustify);
 	
 	actRightToLeft = new QAction(QIcon(":/media/format-text-direction-rtl.png"), "Right to Left", this);
-	actRightToLeft->setCheckable(true);
+ 	actRightToLeft->setCheckable(true);
 	connect(actRightToLeft, SIGNAL(triggered(bool)), this, SLOT(sltChangeLayoutDirection()));
 	barVisual->addAction(actRightToLeft);
 	
@@ -198,6 +198,7 @@ void BilboEditor::createActions()
 void BilboEditor::sltToggleItalic()
 {
 	editor->setFontItalic(!editor->fontItalic());
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltToggleBold()
@@ -206,11 +207,13 @@ void BilboEditor::sltToggleBold()
 		editor->setFontWeight( QFont::Normal );
 	else
 		editor->setFontWeight( QFont::Bold );
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltToggleUnderline()
 {
 	editor->setFontUnderline ( !editor->fontUnderline() );
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltToggleStrikeout()
@@ -218,6 +221,7 @@ void BilboEditor::sltToggleStrikeout()
 	QFont f( editor->currentFont() );
 	f.setStrikeOut(!f.strikeOut());
 	editor->setCurrentFont(f);
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltToggleCode()
@@ -230,6 +234,7 @@ void BilboEditor::sltToggleCode()
 	} else {
 		editor->setFontFamily(preFontFamily);
 	}
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltFontSizeIncrease()
@@ -248,6 +253,7 @@ void BilboEditor::sltFontSizeIncrease()
 		format.setProperty(QTextFormat::FontSizeAdjustment, QVariant( ++idx ));
 		editor->textCursor().mergeCharFormat(format);
 	}
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltFontSizeDecrease()
@@ -266,6 +272,7 @@ void BilboEditor::sltFontSizeDecrease()
 		format.setProperty(QTextFormat::FontSizeAdjustment, QVariant( --idx ));
 		editor->textCursor().mergeCharFormat(format);
 	}
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltAddEditLink()
@@ -292,6 +299,7 @@ void BilboEditor::sltSetLink(QString address, QString target, QString title)
 	//f.setForeground(br);
 	//editor->setCurrentCharFormat(f);
 	editor->textCursor().mergeCharFormat(f);
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltRemoveLink()
@@ -302,6 +310,7 @@ void BilboEditor::sltRemoveLink()
 	//f.clearForeground();
 	//editor->textCursor().setCharFormat(f);
 	editor->textCursor().mergeCharFormat(f);
+	editor->setFocus(Qt::MouseFocusReason);
 }
 
 void BilboEditor::sltSelectColor()
@@ -313,6 +322,7 @@ void BilboEditor::sltSelectColor()
 	ch.setForeground(br);
 	//editor->setCurrentCharFormat(ch);
 	editor->textCursor().mergeCharFormat(ch);
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltRemoveFormatting()
@@ -327,6 +337,7 @@ void BilboEditor::sltRemoveFormatting()
 // 	}
  	
 	editor->textCursor().mergeCharFormat(defaultCharFormat);
+	editor->setFocus(Qt::OtherFocusReason);
 	
 // 	QTextCharFormat f = editor->currentCharFormat();
 // 	
@@ -344,20 +355,24 @@ void BilboEditor::sltRemoveFormatting()
 void BilboEditor::sltNewParagraph()
 {
 	editor->textCursor().insertBlock(editor->textCursor().blockFormat(), editor->textCursor().charFormat());
+	editor->setFocus(Qt::OtherFocusReason);
 }
 void BilboEditor::sltAlignRight()
 {
 	editor->setAlignment(Qt::AlignRight);
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltAlignLeft()
 {
 	editor->setAlignment(Qt::AlignLeft);
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltAlignCenter()
 {
 	editor->setAlignment(Qt::AlignHCenter);
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltAlignJustify()
@@ -365,6 +380,7 @@ void BilboEditor::sltAlignJustify()
 	if (editor->alignment() != Qt::AlignJustify) {
 		editor->setAlignment(Qt::AlignJustify);
 	}
+	editor->setFocus(Qt::OtherFocusReason);
 // 	else
 // 		editor->setAlignment();
 }
@@ -376,12 +392,13 @@ void BilboEditor::sltChangeLayoutDirection()
 	QTextBlockFormat f = c.blockFormat();
 	
 	if (f.layoutDirection() != Qt::RightToLeft) {
-		f.setLayoutDirection(Qt::RightToLeft);
+		f.setLayoutDirection(Qt::RightToLeft);	
 	} else {
 		f.setLayoutDirection(Qt::LeftToRight);
 	}
 	c.setBlockFormat(f);
 	editor->setTextCursor(c);
+	editor->setFocus(Qt::OtherFocusReason);
 }
 
 void BilboEditor::sltAddImage()
@@ -404,6 +421,7 @@ void BilboEditor::sltSetImage(const QString url)
 	QTextImageFormat imageFormat;
 	imageFormat.setName(url);
 	editor->textCursor().insertImage(imageFormat);
+	editor->setFocus(Qt::OtherFocusReason);
 }
 // void BilboEditor::insertMedia(KBloggerMedia* media)
 // {
@@ -517,14 +535,37 @@ QString* BilboEditor::htmlContent()
 void BilboEditor::setHtmlContent(const QString & content)
 {
     this->editor->setHtml(content);
+	
+	// FIXME at the end of the document, a new block should be inserted so that editor doesn't change old text direction, and new direction be applied only to newly inserted text.
+	
+// 	this->editor->textCursor().movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+// 	qDebug() << this->editor->textCursor().position();
+// 	editor->setFocus(Qt::MouseFocusReason);
+// 	this->editor->textCursor().insertBlock();
 }
 
-Qt::LayoutDirection BilboEditor::defaultLayoutDirection()
+	// reason to remove:
+	// this way, editor didn't generate html tags for default parameters, so no tag would be generated for rtl direction, if the default layout changed to rtl.
+	//so browsers would show all texts in ltr direction.
+	
+// Qt::LayoutDirection BilboEditor::defaultLayoutDirection()
+// {
+// 	return this->defaultBlockFormat.layoutDirection();
+// }
+// 
+// void BilboEditor::setDefaultLayoutDirection(Qt::LayoutDirection direction)
+// {
+//  	this->defaultBlockFormat.setLayoutDirection(direction);
+// }
+void BilboEditor::setLayoutDirection(Qt::LayoutDirection direction)
 {
-	return this->defaultBlockFormat.layoutDirection();
-}
-
-void BilboEditor::setDefaultLayoutDirection(Qt::LayoutDirection direction)
-{
-	this->defaultBlockFormat.setLayoutDirection(direction);
+	QTextBlockFormat f;
+	f.setLayoutDirection(direction);
+	editor->textCursor().mergeBlockFormat(f);
+	if (direction == Qt::LeftToRight)
+	{
+		this->actRightToLeft->setChecked(false);
+	} else {
+		this->actRightToLeft->setChecked(true);
+	}
 }

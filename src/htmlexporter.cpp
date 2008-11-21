@@ -167,7 +167,7 @@ void htmlExporter::emitTable(const QTextTable *table)
         columnWidths.resize(columns);
         columnWidths.fill(QTextLength());
     }
-    Q_ASSERT(columnWidths.count() == columns);
+//    Q_ASSERT(columnWidths.count() == columns);
 
     QVarLengthArray<bool> widthEmittedForColumn(columns);
     for (int i = 0; i < columns; ++i) {
@@ -530,7 +530,7 @@ void htmlExporter::emitFloatStyle(QTextFrameFormat::Position pos, StyleMode mode
 	} else if (pos == QTextFrameFormat::FloatRight) {
         html += QLatin1String(" right;");
 	} else {
-        Q_ASSERT_X(0, "htmlExporter::emitFloatStyle()", "pos should be a valid enum type");
+//        Q_ASSERT_X(0, "htmlExporter::emitFloatStyle()", "pos should be a valid enum type");
 	}
 
     if (mode == EmitStyleTag) {
@@ -662,7 +662,7 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
             html += QLatin1String(" />");
         }
     } else {
-         Q_ASSERT(!txt.contains(QChar::ObjectReplacementCharacter));
+//         Q_ASSERT(!txt.contains(QChar::ObjectReplacementCharacter));
 
         txt = Qt::escape(txt);
 

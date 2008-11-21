@@ -27,9 +27,11 @@ PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
 	createUi();
-	editPostWidget=new BilboEditor();
+	editPostWidget = new BilboEditor();
 	this->layout()->addWidget(editPostWidget);
-    mCurrentPost =0;
+    mCurrentPost = 0;
+	
+// 	mCurrentPostBlogId = 0;
 }
 
 void PostEntry::createUi()
@@ -99,6 +101,17 @@ void PostEntry::setCurrentPost(BilboPost post)
 //         mCurrentPost = new BilboPost();
 //     else
         mCurrentPost = new BilboPost(post);
+}
+
+Qt::LayoutDirection PostEntry::defaultLayoutDirection()
+{
+	return this->txtTitle->layoutDirection();
+}
+
+void PostEntry::setDefaultLayoutDirection(Qt::LayoutDirection direction)
+{
+	this->editPostWidget->setLayoutDirection(direction);
+	this->txtTitle->setLayoutDirection(direction);
 }
 
 PostEntry::~PostEntry()

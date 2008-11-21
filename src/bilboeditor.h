@@ -67,7 +67,7 @@ class BilboEditor : public QTabWidget
 		 * @return default layout direction of the editor.
 		 * @see setDefaultLayoutDirection()
 		 */
-		Qt::LayoutDirection defaultLayoutDirection();
+// 		Qt::LayoutDirection defaultLayoutDirection();
         
         void setHtmlContent(const QString &content);
         
@@ -78,7 +78,13 @@ class BilboEditor : public QTabWidget
 		 * @param direction is the new layout direction.
 		 * @see defaultLayoutDirection()
 		 */
-		void setDefaultLayoutDirection(Qt::LayoutDirection direction);
+// 		void setDefaultLayoutDirection(Qt::LayoutDirection direction);
+		
+		/**
+		 * Changes the layout direction of the editor, to the given direction.
+		 * @param direction is the new layout direction.
+		 */
+		void setLayoutDirection(Qt::LayoutDirection direction);
 	
 	protected slots:
 		/*! 
