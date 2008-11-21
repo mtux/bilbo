@@ -34,18 +34,18 @@ Global variables like settings stored here.
 class QSettings;
 class Settings;
 
-extern Settings *conf;
+extern Settings *__conf;
 
-extern DBMan *db;
+extern DBMan *__db;
 
-extern int currentBlogId;
+extern int __currentBlogId;
 
-enum api_type { BLOGGER_API = 0,
-	METAWEBLOG_API,
- MOVABLETYPE_API,
- WORDPRESSBUGGY_API,
- GDATA_API
-};
+// enum api_type { BLOGGER_API = 0,
+// 	METAWEBLOG_API,
+//  MOVABLETYPE_API,
+//  WORDPRESSBUGGY_API,
+//  GDATA_API
+// };
 
 void global_init();
 void global_end();

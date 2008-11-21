@@ -54,7 +54,7 @@ public:
 	
 	QMap<QString, int> listEntries;///Contain Post title(QString) and Post id(int)
 	
-public slots:
+public Q_SLOTS:
 	void sltAddBlog();
 	void sltBlogAdded(BilboBlog&);
 	void sltEditBlog();
@@ -72,7 +72,7 @@ public slots:
     void sltEntrySelected( QListWidgetItem *item );
     void sltEntriesCopyUrl();
 	
-signals:
+Q_SIGNALS:
 	void sigCurrentBlogChanged( int blog_id );
     void sigEntrySelected( BilboPost *post );
 	
@@ -84,7 +84,7 @@ private:
 	QStringList currentTags();
 	void clearCatList();
 	void clearEntriesList();
-	
+    void unCheckCatList();
 	
 	AddEditBlog *addEditBlogWindow;
 	QRadioButton *blogToEdit;

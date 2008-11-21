@@ -17,24 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "addcategory.h"
 
-#include "global.h"
-
-Settings *__conf;
-DBMan *__db;
-int __currentBlogId;
-
-void global_init()
+AddCategory::AddCategory(QWidget *parent)
+    :QDialog(parent)
 {
-	qDebug("global_init");
-	__conf = new Settings;
-	__db = new DBMan;
-    __currentBlogId = -1;
-}
-
-void global_end()
-{
-	qDebug("global_end");
-	delete __conf;
-	delete __db;
+    setupUi(this);
 }

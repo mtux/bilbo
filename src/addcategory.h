@@ -17,24 +17,16 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef ADDCATEGORY_H
+#define ADDCATEGORY_H
 
-#include "global.h"
+#include <QDialog>
+#include "ui_addcategory.h"
 
-Settings *__conf;
-DBMan *__db;
-int __currentBlogId;
+class AddCategory: public QDialog, public Ui::AddCategoryDialog {
+Q_OBJECT
+public:
+    AddCategory(QWidget *parent = 0);
+};
 
-void global_init()
-{
-	qDebug("global_init");
-	__conf = new Settings;
-	__db = new DBMan;
-    __currentBlogId = -1;
-}
-
-void global_end()
-{
-	qDebug("global_end");
-	delete __conf;
-	delete __db;
-}
+#endif

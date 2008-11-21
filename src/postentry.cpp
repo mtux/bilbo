@@ -90,17 +90,17 @@ void PostEntry::setCurrentPostBlogId(int blog_id)
 
 BilboPost PostEntry::currentPost()
 {
+    mCurrentPost->setContent(*postBody());
+    mCurrentPost->setTitle(postTitle());
     return (*mCurrentPost);
 }
 
 void PostEntry::setCurrentPost(BilboPost post)
 {
-//     if(mCurrentPost!=0)
-//         delete(mCurrentPost);
-//     if(post==0)
-//         mCurrentPost = new BilboPost();
-//     else
-        mCurrentPost = new BilboPost(post);
+    ///TODO: Set post Body and title with new values.
+    mCurrentPost = new BilboPost(post);
+    this->setPostBody(mCurrentPost->content());
+    this->setPostTitle(mCurrentPost->title());
 }
 
 Qt::LayoutDirection PostEntry::defaultLayoutDirection()

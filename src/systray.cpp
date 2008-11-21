@@ -30,7 +30,7 @@ SysTray::SysTray(QObject* parent): QSystemTrayIcon(parent)
 	trayMenu = new QMenu;
 	createActions();
 	
-	if(conf->showMainOnStart)
+	if(__conf->showMainOnStart)
 		bilbo->show();
 	
 	connect(this,  SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(sltActivated(QSystemTrayIcon::ActivationReason)) );
