@@ -21,7 +21,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "bilbopost.h"
 
 
 class QTabWidget;
@@ -49,7 +49,6 @@ public:
 	QAction *actUploadAll;
 	QAction *actNewPost;
 	QAction *actPublish;
-	//QActionGroup *saveActions;
 	QAction *actSaveLocally;
 	QAction *actSaveDraft;
 	QAction *actDeletePost;
@@ -57,6 +56,7 @@ public:
 	QAction *actAbout;
 	QAction *actQuit;
 	QAction *actToggleToolboxVisible;
+    QAction *actSave;
 	
 protected Q_SLOTS:
 	void sltCreateNewPost();
@@ -70,13 +70,16 @@ protected Q_SLOTS:
     void sltNewPostSelected( BilboPost *newPost );
 	
 	void sltPublishPost();
-	void sltPostPublished( int, int );
+    void sltPostPublished( int blog_id, int post_id, bool isPrivate );
 	/**
 	 *    Slot to remove current Post entry from main tab wigdet!
 	 */
 	void sltRemoveCurrentPostEntry();
 
     void sltCurrentBlogChanged( int blog_id );
+    
+    void sltSavePostLocally();
+    void sltSaveAsDraft();
 
 protected:
     void keyReleaseEvent ( QKeyEvent * event );
@@ -101,6 +104,7 @@ private:
 	QMenu *menuBilbo;
 	QMenu *menuPost;
 	QMenu *menuAbout;
+    QMenu *menuSave;
 	QStatusBar *statusbar;
 	QToolButton *btnRemovePost;
 	

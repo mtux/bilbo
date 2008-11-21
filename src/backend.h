@@ -20,8 +20,6 @@
 #ifndef BILBOENGINE_H
 #define BILBOENGINE_H
 
-
-
 #include <QObject>
 #include <QMap>
 // #include <kurl.h>
@@ -101,7 +99,7 @@ Q_SIGNALS:
 	 * @param post_id post id in Database.
 	 * @param  
 	 */
-	void sigPostPublished(int blog_id, int post_id);
+	void sigPostPublished(int blog_id, int post_id, bool isPrivate);
     
     /**
      * This signal is emitted when a media has been uploaded to the server.

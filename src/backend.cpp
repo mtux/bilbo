@@ -19,9 +19,10 @@
  ***************************************************************************/
 #include "backend.h"
 #include "bilboblog.h"
-#include "bilbopost.h"
 #include "global.h"
+#include "bilbopost.h"
 
+#include <kurl.h>
 #include <kblog/blogger1.h>
 #include <kblog/gdata.h>
 #include <kblog/metaweblog.h>
@@ -141,7 +142,7 @@ void Backend::postPublished(KBlog::BlogPost *post)
 	BilboPost pp((*post));
 	int post_id = __db->addPost(pp, bBlog->id());
 	if(post_id!=-1){
-		emit sigPostPublished(bBlog->id(), post_id);
+		emit sigPostPublished(bBlog->id(), post_id, post->isPrivate());
 		qDebug("Backend::sigPostPublished emited!");
 	}
 }

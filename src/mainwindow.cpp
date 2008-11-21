@@ -23,7 +23,6 @@
 #include "postentry.h"
 #include "addeditblog.h"
 #include "backend.h"
-#include "bilbopost.h"
 #include <QSettings>
 
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
@@ -118,6 +117,7 @@ void MainWindow::createUi()
 	menuBilbo = new QMenu("Bilbo",menubar);
 	menuPost = new QMenu("Post",menubar);
 	menuAbout = new QMenu("About",menubar);
+    menuSave = new QMenu("Save", 0);
 	this->setMenuBar(menubar);
 	
 	toolbarPost=new QToolBar(this);
@@ -172,12 +172,18 @@ void MainWindow::createActions()
 	
 	actPublish=new QAction(QIcon(":/media/format-text-bold.png"),"&Publish",this);
 	connect(actPublish,SIGNAL(triggered( bool )),this,SLOT(sltPublishPost()));
+    
+    actSave = new QAction(QIcon(":/media/format-text-bold.png"), "Save", this);
+    actSave->setMenu(menuSave);
+    connect(actSave, SIGNAL(triggered( bool )), this, SLOT(sltSavePostLocally()));
 	
 	actSaveLocally=new QAction(QIcon(":/media/format-text-bold.png"),"Save Locally",this);
-// 	connect(actSaveLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltSavePostLocally()));
+    actSaveLocally->setShortcut(tr("Ctrl+S"));
+	connect(actSaveLocally, SIGNAL(triggered( bool )), this, SLOT(sltSavePostLocally()));
 	
 	actSaveDraft=new QAction(QIcon(":/media/format-text-bold.png"),"Save as Draft",this);
-// 	connect(actSaveDraft,SIGNAL(triggered( bool )),activePost,SLOT(sltSaveAsDraft()));
+    actSaveDraft->setShortcut(tr("Ctrl+Shift+S"));
+	connect(actSaveDraft, SIGNAL(triggered( bool )), this, SLOT(sltSaveAsDraft()));
 	
 	actDeletePost=new QAction(QIcon(":/media/format-text-bold.png"),"Delete from Server",this);
 // 	connect(actDeletePost,SIGNAL(triggered( bool )),activePost,SLOT(sltDelPost()));
@@ -197,7 +203,6 @@ void MainWindow::createActions()
 	connect(actToggleToolboxVisible, SIGNAL(triggered( bool )), this, SLOT(sltToggleToolboxVisible()));
 	
 	addCreatedActions();
-	
 }
 
 void MainWindow::addCreatedActions()
@@ -205,9 +210,12 @@ void MainWindow::addCreatedActions()
 // 	saveActions=new QActionGroup(this);
 // 	saveActions->addAction(actSaveLocally);
 // 	saveActions->addAction(actSaveDraft);
+    
+    menuSave->addAction(actSaveDraft);
+    menuSave->addAction(actSaveLocally);
 	
 	toolbarPost->addAction(actNewPost);
-	toolbarPost->addAction(actSaveLocally);
+	toolbarPost->addAction(actSave);
 	toolbarPost->addAction(actPublish);
 	
 	toolbarBlogger->addAction(actAddBlog);
@@ -316,7 +324,7 @@ void MainWindow::sltPublishPost()
 		return;
 	}
 	Backend *b = new Backend(blog_id);
-	connect(b, SIGNAL(sigPostPublished(int, int)), this, SLOT(sltPostPublished(int, int)));
+    connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
 	BilboPost *post = toolbox->getFieldsValue();
 	if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
 		if(QMessageBox::warning(this, "Empty fields!",
@@ -329,19 +337,29 @@ void MainWindow::sltPublishPost()
 	post->setPrivate(false);
 	
 	b->publishPost(post);
-	statusbar->showMessage("Request to publish new post sent to server...");
+	statusbar->showMessage("publishing new post...");
     this->setCursor(Qt::BusyCursor);
 }
 
-void MainWindow::sltPostPublished(int blog_id, int post_id)
+void MainWindow::sltPostPublished(int blog_id, int post_id, bool isPrivate)
 {
 	qDebug("MainWindow::sltPostPublished: Post Id: %d", post_id);
 	QString blog_name = toolbox->listBlogs.key(blog_id);
-	if(QMessageBox::information(this, "Successful", "New Post published to \"" + blog_name +
-			"\" blog successfully\nDo you want to keep it on editor?",
-	   		QMessageBox::Yes | QMessageBox::No, QMessageBox::No) != QMessageBox::Yes)
+    QString msg;
+    if(isPrivate){
+        msg = "New Draft saved to \"" + blog_name +
+                "\" successfully\nDo you want to keep it on editor?";
+        statusbar->showMessage("New draft saved to \""+blog_name + "\"" , STATUSTIMEOUT);
+    }
+    else {
+        msg = "New Post published to \"" + blog_name +
+                "\" successfully\nDo you want to keep it on editor?";
+        statusbar->showMessage("New post published to \""+blog_name + "\"" , STATUSTIMEOUT);
+    }
+	if(QMessageBox::information(this, "Successful",  msg, QMessageBox::Yes | QMessageBox::No, QMessageBox::No)
+           != QMessageBox::Yes)
 		sltRemoveCurrentPostEntry();
-	statusbar->showMessage("New post published to \""+blog_name + "\"" , STATUSTIMEOUT);
+	
     this->unsetCursor();
 }
 
@@ -363,8 +381,8 @@ void MainWindow::sltNewPostSelected(BilboPost * newPost)
     tabPosts->addTab(temp,newPost->title());
     connect(temp, SIGNAL(sigTitleChanged( const QString& )), this, SLOT(sltPostTitleChanged( const QString& )));
     
-    temp->setPostTitle(newPost->title());
-    temp->setPostBody(newPost->content());
+//     temp->setPostTitle(newPost->title());
+//     temp->setPostBody(newPost->content());
     temp->setCurrentPost(*newPost);
     temp->setCurrentPostBlogId(toolbox->currentBlogId());
 
@@ -400,9 +418,41 @@ void MainWindow::keyReleaseEvent(QKeyEvent * event)
 
 void MainWindow::sltCurrentBlogChanged(int blog_id)
 {
-    BilboBlog *tmp = __db->getBlogInfo(blog_id);
-    this->centralWidget()->setLayoutDirection(tmp->direction());
-    delete tmp;
+//     BilboBlog *tmp = __db->getBlogInfo(blog_id);
+//     this->centralWidget()->setLayoutDirection(tmp->direction());
+//     delete tmp;
+}
+
+void MainWindow::sltSavePostLocally()
+{
+    qDebug("MainWindow::sltSavePostLocally");
+}
+
+void MainWindow::sltSaveAsDraft()
+{
+    qDebug("MainWindow::sltSaveAsDraft");
+    int blog_id = toolbox->currentBlogId();
+    if(blog_id==-1){
+        QMessageBox::warning(this, "Blog not sets", "You have to select a blog to save this post as draft to it.");
+        qDebug("MainWindow::sltSaveAsDraft: Blog id not sets correctly.");
+        return;
+    }
+    Backend *b = new Backend(blog_id);
+    connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
+    BilboPost *post = toolbox->getFieldsValue();
+    if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
+        if(QMessageBox::warning(this, "Empty fields!",
+           "Your post title or body is empty!\nAre you sure of pubish this post?",
+           QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
+            return;
+    }
+    post->setContent(*(activePost->postBody()));
+    post->setTitle(activePost->postTitle());
+    post->setPrivate(true);
+	
+    b->publishPost(post);
+    statusbar->showMessage("Save new post draft...");
+    this->setCursor(Qt::BusyCursor);
 }
 
 
