@@ -52,21 +52,21 @@ class AddImageDialog: public QDialog, public Ui::AddImageDialog
 		 */
 		QString selectedImageUrl();
 		
-	signals:
+	Q_SIGNALS:
 		/**
 		 * when the dialog is accepted, sends the selected image url to the caller function.
 		 * @param url 
 		 */
 		void signalAddImage(const QString& url);
 		
-	public slots:
+	public Q_SLOTS:
 		void accept();
 		void reject();
 		
 	private:
 		QString mSelectedImageUrl;
 		
-	private slots:
+	private Q_SLOTS:
 		void slotBrowseFiles();
 		void slotDisableLocalPath();
 };

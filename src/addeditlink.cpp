@@ -33,7 +33,7 @@ AddEditLink::AddEditLink(QWidget *parent)
 void AddEditLink::accept()
 {
 	if ( txtAddress->text().isEmpty()) return;
-	emit addLink( txtAddress->text(), (comboTarget->currentIndex()==1 || comboTarget->currentIndex()==1)?"_self":"_blank", txtTitle->text() );
+	Q_EMIT addLink( txtAddress->text(), (comboTarget->currentIndex()==1 || comboTarget->currentIndex()==1)?"_self":"_blank", txtTitle->text() );
 	close();
 	QDialog::accept();
 // 	hide();

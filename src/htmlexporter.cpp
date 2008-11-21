@@ -418,18 +418,26 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
 //    if ( format.foreground() != defaultCharFormat.foreground() &&
 //            format.foreground().style() != Qt::NoBrush) {
 	// NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-	if ( format.foreground() != mDefaultCharFormat.foreground() &&
-            format.foreground().style() != Qt::NoBrush) {
-//         if ( format.foreground() != linkColor ) {
-            if (! attributesEmitted ) {
-				html += styleTag;
-			}
-            html += QLatin1String(" color:");
-            html += format.foreground().color().name();
-            html += QLatin1Char(';');
-            attributesEmitted = true;
-//         }
-	}
+		if ( format.foreground() != mDefaultCharFormat.foreground() &&
+				format.foreground().style() != Qt::NoBrush && !format.isAnchor()) {
+	//         if ( format.foreground() != linkColor ) {
+// 			if ( format.anchorHref().isNull() ) {
+				if (! attributesEmitted ) {
+					html += styleTag;
+					attributesEmitted = true;
+				}
+// 			} else {
+// 				html += QLatin1String(" style=\"");
+// 			}
+			html += QLatin1String(" color:");
+			html += format.foreground().color().name();
+			html += QLatin1Char(';');
+// 			if ( !format.anchorHref().isNull() ) {
+// 				html += QLatin1String("\"");
+// 			}
+// 			attributesEmitted = true;
+	//         }
+		}
 
 //    if (format.background() != defaultCharFormat.background()
 //            && format.background().style() != Qt::NoBrush) {
@@ -467,7 +475,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle(const QTextCharFormat
     //Append close span Tag
     if (attributesEmitted) {
         html += QLatin1String("\">");
-        tags.prepend(span);
+		tags.prepend(span);
     }
 
 //     kDebug() << "html=>" << html << tags;
@@ -578,10 +586,15 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
             html += href;
             html += QLatin1String("\">");
             closeAnchor = true;
+// 			html += QLatin1String("\"");
         }
     }
 
     QList<tag> tags = emitCharFormatStyle(format);
+// 	if ( !format.anchorHref().isNull() ) {
+// 		html += QLatin1String(">");
+// 		closeAnchor = true;
+// 	}
 	qDebug() << "tags count" << tags.count() << endl;
     for ( int i = 0; i < tags.count(); ++i ) {
         switch ( tags.at(i) ) {

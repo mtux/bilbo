@@ -306,8 +306,8 @@ void BilboEditor::sltRemoveLink()
 {
 	QTextCharFormat f = editor->textCursor().charFormat();
 	f.setAnchor(false);
-	//f.setUnderlineStyle(QTextCharFormat::NoUnderline);
-	//f.clearForeground();
+	f.setUnderlineStyle(this->defaultCharFormat.underlineStyle());
+	f.setForeground(this->defaultCharFormat.foreground());
 	//editor->textCursor().setCharFormat(f);
 	editor->textCursor().mergeCharFormat(f);
 	editor->setFocus(Qt::MouseFocusReason);
@@ -409,7 +409,7 @@ void BilboEditor::sltAddImage()
 }
 
 /**
- * FIXME it only shows local images in editor, not images with http url.
+ * FIXME
  * it doesn't upload images to the blog, or add it to the database.
  * even for local images, preview tab can not show them yet.
  */

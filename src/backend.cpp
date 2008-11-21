@@ -91,7 +91,7 @@ void Backend::categoriesListed(const QList< QMap < QString , QString > > & categ
 		
 		__db->addCategory(name, bBlog->id());
 	}
-	emit sigCategoryListFetched(bBlog->id());
+	Q_EMIT sigCategoryListFetched(bBlog->id());
 }
 
 void Backend::getEntriesListFromServer(int count)
@@ -109,7 +109,7 @@ void Backend::entriesListed(const QList< KBlog::BlogPost > & posts)
 	for(int i=0; i<posts.count(); i++){
 		__db->addPost(BilboPost(posts[i]), bBlog->id());
 	}
-	emit sigEntriesListFetched(bBlog->id());
+	Q_EMIT sigEntriesListFetched(bBlog->id());
 }
 
 void Backend::publishPost(BilboPost * post)
@@ -142,7 +142,7 @@ void Backend::postPublished(KBlog::BlogPost *post)
 	BilboPost pp((*post));
 	int post_id = __db->addPost(pp, bBlog->id());
 	if(post_id!=-1){
-		emit sigPostPublished(bBlog->id(), post_id, post->isPrivate());
+		Q_EMIT sigPostPublished(bBlog->id(), post_id, post->isPrivate());
 		qDebug("Backend::sigPostPublished emited!");
 	}
 }

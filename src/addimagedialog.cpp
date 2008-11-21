@@ -34,7 +34,7 @@ AddImageDialog::~AddImageDialog()
 
 void AddImageDialog::accept()
 {
-	emit signalAddImage(selectedImageUrl());
+	Q_EMIT signalAddImage(selectedImageUrl());
 	QDialog::accept();
 }
 

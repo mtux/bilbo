@@ -32,16 +32,16 @@ Implements a dialog to get user input for link parameters; address, name and tar
  */
 
 class AddEditLink: public QDialog, public Ui::AddEditLinkDialog {
-Q_OBJECT
-public:
-    AddEditLink(QWidget *parent = 0);
-	void show(QString address="", QString title="");
-	
-signals:
-	void addLink( const QString& address, const QString& target, const QString& title);
-public slots:
-	virtual void accept(); // OK Button
-	virtual void reject(); // Cancel Button
+	Q_OBJECT
+	public:
+		AddEditLink(QWidget *parent = 0);
+		void show(QString address="", QString title="");
+		
+	Q_SIGNALS:
+		void addLink( const QString& address, const QString& target, const QString& title);
+	public Q_SLOTS:
+		virtual void accept(); // OK Button
+		virtual void reject(); // Cancel Button
 };
 
 #endif

@@ -86,7 +86,7 @@ class BilboEditor : public QTabWidget
 		 */
 		void setLayoutDirection(Qt::LayoutDirection direction);
 	
-	protected slots:
+	protected Q_SLOTS:
 		/*! 
 		Changes Italic style of current format.
 		 */

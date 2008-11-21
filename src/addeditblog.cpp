@@ -246,11 +246,11 @@ void AddEditBlog::sltAccepted()
         int blog_id = __db->addBlog(*bBlog);
 		bBlog->setId(blog_id);
 		if(blog_id!=-1)
-			emit sigBlogAdded(*bBlog);
+			Q_EMIT sigBlogAdded(*bBlog);
 	}
 	else{
         if(__db->editBlog(*bBlog))
-			emit sigBlogEdited(*bBlog);
+			Q_EMIT sigBlogEdited(*bBlog);
 	}
 }
 
@@ -265,7 +265,7 @@ void AddEditBlog::enableOkButton( const QString & txt)
 void AddEditBlog::sltReturnPressed()
 {
     if(btnOk->isEnabled()){
-        emit accepted();
+		Q_EMIT accepted();
     } else {
         if(tabs->currentIndex()==0){
             if(btnAutoConf->isEnabled()){

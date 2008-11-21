@@ -105,7 +105,7 @@ void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 	blogToEdit->setText(editedBlog.title());
 	blogToEdit->setToolTip(editedBlog.url().toString());
     listBlogs.insert(editedBlog.title(), editedBlog.id());
-    emit sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
+    Q_EMIT sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
     sltReloadCategoryList();
 }
 
@@ -166,7 +166,7 @@ void Toolbox::sltSetCurrentBlog(bool checked)
 {
 	if(checked){
 		currentBlog = dynamic_cast<QRadioButton*>(sender());
-		emit sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
+		Q_EMIT sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
 	}
 }
 
@@ -378,7 +378,7 @@ void Toolbox::sltEntrySelected(QListWidgetItem * item)
     BilboPost *post = __db->getPostInfo(listEntries.value(item->text()));
 //     setFieldsValue(*post);
     qDebug("Emiting sigEntrySelected...");
-    emit sigEntrySelected(post);
+	Q_EMIT sigEntrySelected(post);
 }
 
 void Toolbox::setCurrentBlog(int blog_id)
