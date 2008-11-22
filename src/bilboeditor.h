@@ -34,6 +34,7 @@ class QAction;
 class QToolBar;
 class AddEditLink;
 class AddImageDialog;
+class BilboMedia;
 
 //!Class BilboEditor represents the editor part of BilboBlogger
 /*!
@@ -185,7 +186,7 @@ class BilboEditor : public QTabWidget
 		 * Puts the image with given url in the current cursor position, of the editor.
 		 * @param url is the image url, it may be a path in local file system, or the image url on the web.
 		 */
-		void sltSetImage(QString url);
+		void sltSetImage(BilboMedia *media);
 		
 		/*!
 		Sets the content of the current tab  as other tabs' contents, to apply recent changes. this function executes each time the user switches between tabs. 
@@ -247,6 +248,7 @@ class BilboEditor : public QTabWidget
 		AddEditLink *linkDialog;
 		QTextCharFormat defaultCharFormat;
 		QTextBlockFormat defaultBlockFormat;
+		QMap <QString, BilboMedia*> mediaList;
 		int prev_index;
 };
 

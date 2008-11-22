@@ -17,9 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <QFileDialog> 
+#include <QFileDialog>
 
 #include "addimagedialog.h"
+#include "bilbomedia.h"
+#include "constants.h"
 
 AddImageDialog::AddImageDialog(QWidget *parent) :QDialog(parent)
 {
@@ -34,7 +36,21 @@ AddImageDialog::~AddImageDialog()
 
 void AddImageDialog::accept()
 {
-	Q_EMIT signalAddImage(selectedImageUrl());
+	BilboMedia *media = new BilboMedia();
+	
+	QStringList list1 = selectedImageUrl().split("/", QString::SkipEmptyParts);
+	QString name = list1.last();
+	media->setName(name);
+	
+	if (txtRemoteUrl->isEnabled()) {
+		media->setRemoteUrl(mSelectedImageUrl);
+		media->setAsUploded(true);
+	} else {
+		QFile::copy(mSelectedImageUrl, TEMP_MEDIA_DIR + name);
+		media->setLocalUrl(TEMP_MEDIA_DIR + name);
+		media->setAsUploded(false);
+	}
+	Q_EMIT signalAddImage(media);
 	QDialog::accept();
 }
 

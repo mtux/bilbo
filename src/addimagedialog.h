@@ -24,12 +24,14 @@
 
 #include "ui_addimagedialog.h"
 
+class BilboMedia;
 /**
 Implements a dialog to enter address of a local or remote image file.
 
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
+// TODO change the class to support more than one type of media.
 
 class AddImageDialog: public QDialog, public Ui::AddImageDialog
 {
@@ -57,7 +59,7 @@ class AddImageDialog: public QDialog, public Ui::AddImageDialog
 		 * when the dialog is accepted, sends the selected image url to the caller function.
 		 * @param url 
 		 */
-		void signalAddImage(const QString& url);
+		void signalAddImage(BilboMedia *media);
 		
 	public Q_SLOTS:
 		void accept();

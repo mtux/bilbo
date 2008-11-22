@@ -404,7 +404,7 @@ void BilboEditor::sltChangeLayoutDirection()
 void BilboEditor::sltAddImage()
 {
 	AddImageDialog *imageDialog = new AddImageDialog(this);
-	connect(imageDialog, SIGNAL(signalAddImage(const QString&)), this, SLOT(sltSetImage(const QString)));
+	connect(imageDialog, SIGNAL(signalAddImage(BilboMedia *)), this, SLOT(sltSetImage(BilboMedia *)));
 	imageDialog->exec();
 }
 
@@ -412,12 +412,24 @@ void BilboEditor::sltAddImage()
  * FIXME
  * it doesn't upload images to the blog, or add it to the database.
  * even for local images, preview tab can not show them yet.
+ * TODO 
+ * use this slt to insert all needed media types.
  */
-void BilboEditor::sltSetImage(const QString url)
+void BilboEditor::sltSetImage(BilboMedia *media)
 {
-	qDebug() << url;
+	QString url;
+//	qDebug() << url;
 // 	QImage *image = new QImage();
 // 	editor->document()->addResource(QTextDocument::ImageResource,QUrl(url), QVariant(image));
+	if ( media->isUploaded()) {
+		url = media->remoteUrl();
+	} else {
+		if (mediaList.contains(media->localUrl())) {
+		} else {
+		mediaList.insert(media->localUrl(), media);
+		url = media->localUrl();
+		}
+	}
 	QTextImageFormat imageFormat;
 	imageFormat.setName(url);
 	editor->textCursor().insertImage(imageFormat);

@@ -281,6 +281,7 @@ void MainWindow::sltBilboAbout()
 
 void MainWindow::sltQuit()
 {
+	//clear /TempMedia content here.
 	qDebug("MainWindow::sltQuit");
 	writeConfig();
 	qApp->quit();
@@ -325,7 +326,7 @@ void MainWindow::sltPublishPost()
 	qDebug("MainWindow::sltPublishPost");
 	int blog_id = toolbox->currentBlogId();
 	if(blog_id==-1){
-		QMessageBox::warning(this, "Blog not sets", "You have to select a blog to publish this post to it.");
+		QMessageBox::warning(this, "No blog is selected", "You have to select a blog to publish this post to it.");
 		qDebug("MainWindow::sltPublishPost: Blog id not sets correctly.");
 		return;
 	}
