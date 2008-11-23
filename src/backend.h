@@ -25,11 +25,12 @@
 // #include <kurl.h>
 #include <kblog/blog.h>
 
+
 class KUrl;
 class BilboBlog;
 class BilboPost;
 class BilboMedia;
-class KBlog::BlogMedia;
+// class KBlog::BlogMedia;
 /**
 Engine of application, communicate with plugins and UI.
 this is heart and brain of app. ;)
@@ -71,6 +72,13 @@ public:
      */
     void UploadMedia( BilboMedia *media );
     
+    /**
+     * Modify an existing post.
+     * Note: posiId must sets correctly.
+     * @param post post to modify.
+     */
+    void ModifyPost( BilboPost *post );
+    
 protected Q_SLOTS:
 	void categoriesListed(const QList< QMap< QString, QString > > &   categories   );
 	
@@ -79,6 +87,10 @@ protected Q_SLOTS:
 	void postPublished(KBlog::BlogPost *post);
 	
     void mediaUploaded( KBlog::BlogMedia *media );
+    
+    void postModified( KBlog::BlogPost *post );
+    
+    void error( KBlog::Blog::ErrorType type, const QString &errorMessage );
 	
 Q_SIGNALS:
     /**
@@ -97,7 +109,7 @@ Q_SIGNALS:
 	 * Emits when a post published and added to Database.
 	 * @param blog_id blog id.
 	 * @param post_id post id in Database.
-	 * @param  
+     * @param isPrivate show if this post was draft!
 	 */
 	void sigPostPublished(int blog_id, int post_id, bool isPrivate);
     
@@ -106,6 +118,39 @@ Q_SIGNALS:
      * @param media Uploaded media Object.
      */
     void sigMediaUploaded( BilboMedia *media );
+    
+    /**
+     * This signal emitted when a modifying successed, and updated in database.
+     * @param blog_id 
+     * @param post_id 
+     * @param isPrivate 
+     */
+    void sigPostModified( int blog_id, int post_id, bool isPrivate );
+    
+    /**
+     * this signal emitted when an error occured on current transaction.
+     * @param type type of error
+     * @param errorMessage error message.
+     */
+    void sigError( QString &errorMessage);
+    
+    /**
+     * This signal is emitted when an error occurs with XML parsing or
+     * a structural problem in an operation involving a blog post.
+     * @param type the type of the error.
+     * @param errorMessage the error message.
+     * @param post the post that caused the error.
+     */
+//     void sigPostError( KBlog::Blog::ErrorType type, const QString &errorMessage, KBlog::BlogPost *post );
+    
+    /**
+     * This signal is emitted when an error occurs with XML parsing or
+     * a structural problem in an operation involving some blog media.
+     * @param type the type of the error.
+     * @param errorMessage the error message.
+     * @param media the media that caused the error.
+     */
+//     void sigMediaError( KBlog::Blog::ErrorType type, const QString & errorMessage, BilboMedia * media );
 	
 private:
 	KBlog::Blog *mBlog;

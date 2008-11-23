@@ -80,6 +80,8 @@ protected Q_SLOTS:
     
     void sltSavePostLocally();
     void sltSaveAsDraft();
+    
+    void sltError( QString &errorMessage );
 
 protected:
     void keyReleaseEvent ( QKeyEvent * event );

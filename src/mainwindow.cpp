@@ -332,6 +332,7 @@ void MainWindow::sltPublishPost()
 	}
 	Backend *b = new Backend(blog_id);
     connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
+    connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
 	BilboPost *post = toolbox->getFieldsValue();
 	if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
 		if(QMessageBox::warning(this, "Empty fields!",
@@ -456,6 +457,7 @@ void MainWindow::sltSaveAsDraft()
     }
     Backend *b = new Backend(blog_id);
     connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
+    connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
     BilboPost *post = toolbox->getFieldsValue();
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
         if(QMessageBox::warning(this, "Empty fields!",
@@ -470,6 +472,12 @@ void MainWindow::sltSaveAsDraft()
     b->publishPost(post);
     statusbar->showMessage("Save new post draft...");
     this->setCursor(Qt::BusyCursor);
+}
+
+void MainWindow::sltError(QString & errorMessage)
+{
+    qDebug()<<"MainWindow::sltError: "<<errorMessage;
+    QMessageBox::critical(this, "Error", "An Error ocurred on previous transaction: "+errorMessage);
 }
 
 

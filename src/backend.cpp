@@ -53,6 +53,15 @@ Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 	mBlog->setPassword(bBlog->password());
 	mBlog->setUrl(KUrl(bBlog->url()));
 	mBlog->setBlogId(bBlog->blogid());
+    
+    connect( mBlog, SIGNAL( error( KBlog::Blog::ErrorType, const QString& ) ),
+            this, SLOT( void error( KBlog::Blog::ErrorType, const QString& ) ) );
+    connect( mBlog, SIGNAL( errorPost( KBlog::Blog::ErrorType, const QString &, KBlog::BlogPost* ) ),
+            this, SLOT( void error( KBlog::Blog::ErrorType, const QString& ) ) );
+    connect( mBlog, SIGNAL( errorComment( KBlog::Blog::ErrorType, const QString &, KBlog::BlogPost*, KBlog::BlogComment* ) ),
+            this, SLOT( void error( KBlog::Blog::ErrorType, const QString& ) ) );
+    connect( mBlog, SIGNAL( errorMedia( KBlog::Blog::ErrorType, const QString &, KBlog::BlogMedia* ) ),
+             this, SLOT( void error( KBlog::Blog::ErrorType, const QString& ) ) );
 }
 
 Backend::~Backend()
@@ -118,7 +127,7 @@ void Backend::publishPost(BilboPost * post)
 	qDebug("Backend::publishPost");
 	
 	KBlog::BlogPost *bp = post->toKBlogPost();
-	qDebug(post->toString().toLatin1().data());
+// 	qDebug(post->toString().toLatin1().data());
 	
 	int api = bBlog->api();
 	if(api==0 || api==1 || api==2){
@@ -142,8 +151,8 @@ void Backend::postPublished(KBlog::BlogPost *post)
 	BilboPost pp((*post));
 	int post_id = __db->addPost(pp, bBlog->id());
 	if(post_id!=-1){
+        qDebug("Backend::postPublished emiteding sigPostPublished!");
 		Q_EMIT sigPostPublished(bBlog->id(), post_id, post->isPrivate());
-		qDebug("Backend::sigPostPublished emited!");
 	}
 }
 
@@ -153,4 +162,41 @@ void Backend::UploadMedia(BilboMedia * media)
 
 void Backend::mediaUploaded(KBlog::BlogMedia * media)
 {
+}
+
+void Backend::ModifyPost(BilboPost * post)
+{
+}
+
+void Backend::postModified(KBlog::BlogPost * post)
+{
+}
+
+void Backend::error(KBlog::Blog::ErrorType type, const QString & errorMessage)
+{
+    qDebug("Backend::error");
+    QString errType;
+    switch (type) {
+        case KBlog::Blog::XmlRpc:
+            errType = tr("XML RPC Error: ");
+            break;
+        case KBlog::Blog::Atom:
+            errType = tr("Atom API Error: ");
+            break;
+        case KBlog::Blog::ParsingError:
+            errType = tr("KBlog Parsing Error: ");
+            break;
+        case KBlog::Blog::AuthenticationError:
+            errType = tr("Authentication Error: ");
+            break;
+        case KBlog::Blog::NotSupported:
+            errType = tr("Not Supported Error: ");
+            break;
+        default:
+            errType = tr("Unknown Error type: ");
+    };
+    errType += errorMessage;
+    qDebug()<<"Backend::error: "<<errType;
+    
+    Q_EMIT sigError( errType );
 }

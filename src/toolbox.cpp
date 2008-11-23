@@ -90,7 +90,7 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 	qDebug("Toolbox::sltBlogAdded");
 	listBlogs.insert(addedBlog.title(), addedBlog.id());
 	QRadioButton *a = new QRadioButton(addedBlog.title());
-	a->setToolTip(addedBlog.url().toString());
+	a->setToolTip(addedBlog.blogUrl());
 	listBlogRadioButtons.append(a);
 	frameBlog->layout()->addWidget(a);
 	connect(a, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
@@ -103,7 +103,7 @@ void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 	qDebug("Toolbox::sltBlogEdited");
     listBlogs.remove(blogToEdit->text());
 	blogToEdit->setText(editedBlog.title());
-	blogToEdit->setToolTip(editedBlog.url().toString());
+	blogToEdit->setToolTip(editedBlog.blogUrl());
     listBlogs.insert(editedBlog.title(), editedBlog.id());
     Q_EMIT sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
     sltReloadCategoryList();
@@ -122,7 +122,7 @@ void Toolbox::reloadBlogList()
 	for( i = listBlogs.begin(); i != listBlogs.end(); ++i ){
 		QRadioButton *rb = new QRadioButton(i.key());
         BilboBlog *bb = __db->getBlogInfo(i.value());
-		rb->setToolTip(bb->url().toString());
+		rb->setToolTip(bb->blogUrl());
         delete bb;
 		listBlogRadioButtons.append(rb);
 		frameBlog->layout()->addWidget(rb);
@@ -145,6 +145,7 @@ void Toolbox::sltReloadCategoryList()
 	Backend *b = new Backend(blog_id);
 	b->getCategoryListFromServer();
 	connect(b, SIGNAL(sigCategoryListFetched(int)), this, SLOT(sltLoadCategoryListFromDB(int)));
+    connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
 	statusbar->showMessage("Requesting category list...");
     this->setCursor(Qt::BusyCursor);
 }
@@ -226,6 +227,7 @@ void Toolbox::sltGetEntriesCount(int count)
 	Backend *entryB = new Backend(listBlogs.value(currentBlog->text()));
 	entryB->getEntriesListFromServer(count);
 	connect(entryB, SIGNAL(sigEntriesListFetched(int)), this, SLOT(sltLoadEntriesFromDB(int)));
+    connect(entryB, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
 	statusbar->showMessage("Requesting Entry list...");
     this->setCursor(Qt::BusyCursor);
 }

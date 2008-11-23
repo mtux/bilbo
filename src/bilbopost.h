@@ -31,7 +31,7 @@ class QUrl;
 class QDateTime;
 class KUrl;
 class KDateTime;
-class KBlog::BlogPost;
+// class KBlog::BlogPost;
 
 /**
 Definition of a blog post!
