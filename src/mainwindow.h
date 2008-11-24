@@ -31,6 +31,7 @@ class Toolbox;
 class AddEditBlog;
 class PostEntry;
 class Backend;
+class BilboMedia;
 /**
 Main window of bilbo blogger implementation...
 
@@ -59,6 +60,12 @@ public:
     QAction *actSave;
 	
 protected Q_SLOTS:
+    /**
+     * Function/Slot for testing a thing!
+     */
+    void test();
+    void test2(BilboMedia*);
+    void test3(QString&);
 	void sltCreateNewPost();
 	void sltUploadAllChanges();
 	void sltPostTitleChanged(const QString& title);

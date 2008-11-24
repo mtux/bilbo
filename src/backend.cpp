@@ -21,6 +21,7 @@
 #include "bilboblog.h"
 #include "global.h"
 #include "bilbopost.h"
+#include "bilbomedia.h"
 
 #include <kurl.h>
 #include <kblog/blogger1.h>
@@ -28,6 +29,10 @@
 #include <kblog/metaweblog.h>
 #include <kblog/movabletype.h>
 #include <kblog/wordpressbuggy.h>
+#include <kblog/blogmedia.h>
+
+#include <QMimeData>
+
 Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 {
 	qDebug("Backend::Backend: with blog id: %d", blog_id);
@@ -52,7 +57,9 @@ Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 	mBlog->setUsername(bBlog->username());
 	mBlog->setPassword(bBlog->password());
 	mBlog->setUrl(KUrl(bBlog->url()));
-	mBlog->setBlogId(bBlog->blogid());
+    mBlog->setBlogId(bBlog->blogid());
+    mChecksum = 0;
+    mediaLocalUrl= "";
     
     connect( mBlog, SIGNAL( error( KBlog::Blog::ErrorType, const QString& ) ),
             this, SLOT( void error( KBlog::Blog::ErrorType, const QString& ) ) );
@@ -148,6 +155,13 @@ void Backend::publishPost(BilboPost * post)
 void Backend::postPublished(KBlog::BlogPost *post)
 {
 	qDebug("Backend::postPublished");
+    if(post->status()==KBlog::BlogPost::Error){
+        qDebug()<<"Backend::postPublished : Publishing Failed";
+        QString tmp("Publishing Post failed : ");
+        tmp += post->error();
+        Q_EMIT sigError(tmp);
+        return;
+    }
 	BilboPost pp((*post));
 	int post_id = __db->addPost(pp, bBlog->id());
 	if(post_id!=-1){
@@ -156,15 +170,86 @@ void Backend::postPublished(KBlog::BlogPost *post)
 	}
 }
 
-void Backend::UploadMedia(BilboMedia * media)
+void Backend::uploadMedia(BilboMedia * media)
 {
+    qDebug("Backend::UploadMedia");
+    
+    switch(bBlog->api())
+    {
+    case BilboBlog::BLOGGER1_API:
+    case BilboBlog::GDATA_API:
+        qDebug("Backend::UploadMedia: the Blogger1 and GData API type doesn't support uploading Media files.");
+        break;
+    case BilboBlog::METAWEBLOG_API:
+    case BilboBlog::MOVABLETYPE_API:
+    case BilboBlog::WORDPRESSBUGGY_API:
+        KBlog::BlogMedia *m = new KBlog::BlogMedia() ;
+        KBlog::MetaWeblog *MWBlog = qobject_cast<KBlog::MetaWeblog*>(mBlog);
+        
+        m->setMimetype( media->mimeType() );
+        
+        QByteArray data;
+        QFile file(media->localUrl());
+        
+        if( !file.open(QIODevice::ReadOnly) ) {
+            qWarning() << "Backend::UploadMedia: Cannot open file " << media->localUrl();
+            return;
+        }
+        
+        data = file.readAll();
+        
+        Q_ASSERT( data.count() );
+        
+        m->setData(data);
+        m->setName(media->name());
+        this->mediaLocalUrl = media->localUrl();
+        
+        mChecksum = qChecksum(data.data(), data.count());
+        
+        if (mChecksum==0) {
+            qCritical() << "Backend::UploadMedia: Media file checksum is zero";
+            return;
+        }
+        
+        if(!MWBlog) { // FIXME do not crash on GDATA for the moment
+            qCritical() << "MWBlog is NULL: casting has not worked, this should NEVER happen, has the gui allowed using GDATA?" << endl;
+            return;
+        }
+        connect (MWBlog, SIGNAL(createdMedia( KBlog::BlogMedia* )), this, SLOT(mediaUploaded( KBlog::BlogMedia* )));
+        MWBlog->createMedia(m);
+        break;
+    }
 }
 
 void Backend::mediaUploaded(KBlog::BlogMedia * media)
 {
+    qDebug("Backend::mediaUploaded");
+    if(media->status() == KBlog::BlogMedia::Error){
+        qWarning("Backend::mediaUploaded : Upload error!");
+        QString tmp("Uploading Media failed : ");
+        tmp += media->error();
+        Q_EMIT sigError(tmp);
+        return;
+    }
+    if( qChecksum(media->data().data(), media->data().count()) != mChecksum ){
+        qWarning()<<"Backend::mediaUploaded : Check sum not the same!";
+        QString tmp("Uploading Media failed : Check sum Error.");
+        tmp += media->error();
+        Q_EMIT sigError(tmp);
+        return;
+    }
+    BilboMedia * m = new BilboMedia();
+    m->setUploded(true);
+    m->setLocalUrl(mediaLocalUrl);
+    m->setBlogId(bBlog->id());//TODO un comment this.
+    m->setRemoteUrl(QUrl(media->url().url()).toString());
+//     m->setMimeData(new QMimeData(media->mimetype()));
+    m->setName(media->name());
+    
+    Q_EMIT sigMediaUploaded(m);
 }
 
-void Backend::ModifyPost(BilboPost * post)
+void Backend::modifyPost(BilboPost * post)
 {
 }
 

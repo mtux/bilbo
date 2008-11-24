@@ -56,7 +56,8 @@ postentry.h \
 QT += webkit \
  sql
 
-RESOURCES += editor.qrc
+RESOURCES += editor.qrc \
+ main.qrc
 
 
 

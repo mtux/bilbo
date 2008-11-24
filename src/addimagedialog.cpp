@@ -44,11 +44,11 @@ void AddImageDialog::accept()
 	
 	if (txtRemoteUrl->isEnabled()) {
 		media->setRemoteUrl(mSelectedImageUrl);
-		media->setAsUploded(true);
+		media->setUploded(true);
 	} else {
 		QFile::copy(mSelectedImageUrl, TEMP_MEDIA_DIR + name);
 		media->setLocalUrl(TEMP_MEDIA_DIR + name);
-		media->setAsUploded(false);
+		media->setUploded(false);
 	}
 	Q_EMIT signalAddImage(media);
 	QDialog::accept();
