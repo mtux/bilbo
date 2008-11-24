@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <QFileDialog>
+#include <QFileSystemModel>
+#include <QDebug>
 
 #include "addimagedialog.h"
 #include "bilbomedia.h"
@@ -40,6 +42,9 @@ void AddImageDialog::accept()
 	
 	QStringList list1 = selectedImageUrl().split("/", QString::SkipEmptyParts);
 	QString name = list1.last();
+// 	QFileSystemModel *fs = new QFileSystemModel();
+// 	QString type = fs->type(fs->index(selectedImageUrl()));
+// 	qDebug() << type;
 	media->setName(name);
 	
 	if (txtRemoteUrl->isEnabled()) {

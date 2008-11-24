@@ -29,12 +29,12 @@ BilboMedia::~BilboMedia()
 {
 }
 
-QString BilboMedia::blogId() const
+int BilboMedia::blogId() const
 {
 	return mBlogId;
 }
 
-void BilboMedia::setBlogId(const QString blog_id)
+void BilboMedia::setBlogId(int blog_id)
 {
 	mBlogId = blog_id;
 }

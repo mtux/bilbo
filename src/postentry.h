@@ -29,6 +29,7 @@ class QGridLayout;
 class QLabel;
 class QHBoxLayout;
 class QLineEdit;
+class BilboMedia;
 /**
  * Post Entry Widget
  * contains Editor, and Title box.
@@ -54,6 +55,8 @@ public:
 	
 	Qt::LayoutDirection defaultLayoutDirection();
 	void setDefaultLayoutDirection(Qt::LayoutDirection direction);
+	
+	void addMedia(const QString &url);
 
 Q_SIGNALS:
     /**
@@ -75,6 +78,7 @@ private:
 	QWidget *wPost;
     BilboPost *mCurrentPost;
     int mCurrentPostBlogId;
+	QMap <QString, BilboMedia*> *mediaList;
 };
 
 #endif

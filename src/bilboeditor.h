@@ -63,6 +63,8 @@ class BilboEditor : public QTabWidget
 		 */
 		QString *htmlContent();
 		
+		QMap <QString, BilboMedia*> * mediaList();
+		
 		/**
 		 * Retrieves default layout direction from default block format of the editor
 		 * @return default layout direction of the editor.
@@ -71,6 +73,8 @@ class BilboEditor : public QTabWidget
 // 		Qt::LayoutDirection defaultLayoutDirection();
         
         void setHtmlContent(const QString &content);
+		
+		void setMediaList(QMap <QString, BilboMedia*> *list);
         
         void setPlainTextContent(const QString &content);
 		
@@ -248,7 +252,7 @@ class BilboEditor : public QTabWidget
 		AddEditLink *linkDialog;
 		QTextCharFormat defaultCharFormat;
 		QTextBlockFormat defaultBlockFormat;
-		QMap <QString, BilboMedia*> mediaList;
+		QMap <QString, BilboMedia*> *mMediaList;
 		int prev_index;
 };
 

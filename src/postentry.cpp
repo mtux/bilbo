@@ -27,7 +27,9 @@ PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
 	createUi();
+	mediaList = new QMap<QString, BilboMedia*>();
 	editPostWidget = new BilboEditor();
+	editPostWidget->setMediaList(mediaList);
 	this->layout()->addWidget(editPostWidget);
     mCurrentPost = 0;
 	
@@ -114,6 +116,10 @@ void PostEntry::setDefaultLayoutDirection(Qt::LayoutDirection direction)
 	this->txtTitle->setLayoutDirection(direction);
 }
 
+void PostEntry::addMedia(const QString &url)
+{
+}
+
 PostEntry::~PostEntry()
 {
     delete editPostWidget;
@@ -123,4 +129,5 @@ PostEntry::~PostEntry()
     delete txtTitle;
     delete wPost;
     delete mCurrentPost;
+	delete mediaList;
 }

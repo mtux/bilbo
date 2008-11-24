@@ -424,10 +424,11 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 	if ( media->isUploaded()) {
 		url = media->remoteUrl();
 	} else {
-		if (mediaList.contains(media->localUrl())) {
+		if (mMediaList->contains(media->localUrl())) {
+			//nedia is already added.
 		} else {
-		mediaList.insert(media->localUrl(), media);
-		url = media->localUrl();
+			mMediaList->insert(media->localUrl(), media);
+			url = media->localUrl();
 		}
 	}
 	QTextImageFormat imageFormat;
@@ -556,6 +557,15 @@ void BilboEditor::setHtmlContent(const QString & content)
 // 	this->editor->textCursor().insertBlock();
 }
 
+QMap <QString, BilboMedia*> * BilboEditor::mediaList()
+{
+	return mMediaList;
+}
+
+void BilboEditor::setMediaList(QMap <QString, BilboMedia*> *list)
+{
+	mMediaList = list;
+}
 	// reason to remove:
 	// this way, editor didn't generate html tags for default parameters, so no tag would be generated for rtl direction, if the default layout changed to rtl.
 	//so browsers would show all texts in ltr direction.

@@ -38,8 +38,8 @@ class BilboMedia
 		///BilboMedia destructor
 		~BilboMedia();
 		
-		QString blogId() const;
-		void setBlogId(const QString blog_id);
+		int blogId() const;
+		void setBlogId(int blog_id);
 		
 		QString mediaId();
 		void setMediaId(const QString media_id);
@@ -60,7 +60,7 @@ class BilboMedia
 		void setName(const QString &name);
 		
 	private:
-		QString mBlogId;
+		int mBlogId;
 		QString mMediaId;
 		bool mIsUploaded;
 		QString mLocalUrl;
