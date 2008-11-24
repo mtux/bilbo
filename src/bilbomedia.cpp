@@ -22,7 +22,6 @@
 
 BilboMedia::BilboMedia()
 {
-	mMimeData = new QMimeData();
 }
 
 BilboMedia::~BilboMedia()
@@ -34,62 +33,63 @@ int BilboMedia::blogId() const
 	return mBlogId;
 }
 
-void BilboMedia::setBlogId(int blog_id)
+
+void BilboMedia::setBlogId(const int blog_id)
 {
 	mBlogId = blog_id;
 }
 
-QString BilboMedia::mediaId()
+int BilboMedia::mediaId() const
 {
 	return mMediaId;
 }
 
-void BilboMedia::setMediaId(const QString media_id)
+void BilboMedia::setMediaId(const int media_id)
 {
 	mMediaId = media_id;
 }
 
-bool BilboMedia::isUploaded()
+bool BilboMedia::isUploaded() const
 {
 	return mIsUploaded;
 }
 
-void BilboMedia::setAsUploded(bool uploaded)
+void BilboMedia::setUploded(bool uploaded)
 {
 	mIsUploaded = uploaded;
 }
 
-QString BilboMedia::localUrl()
+QString BilboMedia::localUrl() const
 {
 	return mLocalUrl;
 }
 
-void BilboMedia::setLocalUrl(const QString url)
+void BilboMedia::setLocalUrl(const QString& url)
 {
 	mLocalUrl = url;
 }
 
-QString BilboMedia::remoteUrl()
+QString BilboMedia::remoteUrl() const
 {
 	return mRemoteUrl;
 }
 
-void BilboMedia::setRemoteUrl(const QString url)
+void BilboMedia::setRemoteUrl(const QString& url)
 {
 	mRemoteUrl = url;
 }
 
-QMimeData * BilboMedia::mimeData()
+QString BilboMedia::mimeType() const
 {
-	return mMimeData;
+	return mMimeType;
 }
 
-void BilboMedia::setMimeData(QMimeData *data)
+void BilboMedia::setMimeData(const QString &type)
 {
-	mMimeData = data;
+	mMimeType = type;
 }
 
-QString BilboMedia::name()
+QString BilboMedia::name() const
 {
 	return mName;
 }

@@ -70,14 +70,14 @@ public:
      * Upload a new Media object e.g. image to server.
      * @param  media Media Object to upload.
      */
-    void UploadMedia( BilboMedia *media );
+    void uploadMedia( BilboMedia *media );
     
     /**
      * Modify an existing post.
      * Note: posiId must sets correctly.
      * @param post post to modify.
      */
-    void ModifyPost( BilboPost *post );
+    void modifyPost( BilboPost *post );
     
 protected Q_SLOTS:
 	void categoriesListed(const QList< QMap< QString, QString > > &   categories   );
@@ -155,6 +155,8 @@ Q_SIGNALS:
 private:
 	KBlog::Blog *mBlog;
 	BilboBlog *bBlog;
+    quint16 mChecksum;
+    QString mediaLocalUrl;
 };
 
 #endif

@@ -24,13 +24,14 @@
 #include "addeditblog.h"
 #include "backend.h"
 #include <QSettings>
+#include "bilbomedia.h"
 
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {
     qDebug("MainWindow::MainWindow");
     previousActivePostIndex = -1;
 	createUi();
-	
+	this->setWindowIcon(QIcon(":/media/bilbo.png"));
 	readConfig();
 	createActions();
 	toolbox->setVisible(__conf->isToolboxVisibleByDefault);
@@ -43,6 +44,8 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 	connect(tabPosts, SIGNAL(currentChanged( int )), this, SLOT(sltActivePostChanged(int)));
     connect(toolbox, SIGNAL(sigEntrySelected(BilboPost *)), this, SLOT(sltNewPostSelected(BilboPost*)));
     connect(toolbox, SIGNAL(sigCurrentBlogChanged(int)), this, SLOT(sltCurrentBlogChanged(int)));
+    
+//     connect(actUploadAll, SIGNAL(triggered(bool)), this, SLOT(test()));
 }
 
 MainWindow::~MainWindow()
@@ -480,4 +483,29 @@ void MainWindow::sltError(QString & errorMessage)
     QMessageBox::critical(this, "Error", "An Error ocurred on previous transaction: "+errorMessage);
 }
 
+void MainWindow::test()
+{
+//     BilboMedia *media = new BilboMedia;
+//     QMimeData *data = new QMimeData;
+//     QFile f(QString(TEMP_MEDIA_DIR)+"/test.png");
+//     data->setData("image/png", f.readAll());
+//     media->setLocalUrl(QString(TEMP_MEDIA_DIR)+"/test.png");
+//     media->setName("mehrdad.png");
+//     media->setBlogId(4);
+//     media->setMimeData(data);
+//     Backend *b = new Backend(4);
+//     connect(b, SIGNAL(sigMediaUploaded( BilboMedia* )), this, SLOT(test2(BilboMedia*)));
+//     connect(b, SIGNAL(sigError( QString &)), this, SLOT());
+//     b->uploadMedia(media);
+}
 
+void MainWindow::test2(BilboMedia *media)
+{
+//     QMessageBox::information(this, "Uploaded", "media file uploaded!");
+//     qDebug()<<"Url: "<<media->remoteUrl()<<"\nLocal: "<<media->localUrl();
+}
+
+void MainWindow::test3(QString &msg)
+{
+//     QMessageBox::warning(this, "Cannot upload", msg);
+}

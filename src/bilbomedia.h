@@ -39,33 +39,37 @@ class BilboMedia
 		~BilboMedia();
 		
 		int blogId() const;
-		void setBlogId(int blog_id);
+		void setBlogId(const int blog_id);
 		
-		QString mediaId();
-		void setMediaId(const QString media_id);
+		int mediaId() const;
+		void setMediaId(const int media_id);
 		
-		bool isUploaded();
-		void setAsUploded(bool uploaded);
+        bool isUploaded() const;
+		void setUploded(bool uploaded);
 		
-		QString localUrl();
-		void setLocalUrl(const QString url);
+        QString localUrl() const;
+		void setLocalUrl(const QString &url);
 		
-		QString remoteUrl();
-		void setRemoteUrl(const QString url);
+        QString remoteUrl() const;
+		void setRemoteUrl(const QString &url);
 		
-		QMimeData * mimeData();
-		void setMimeData(QMimeData *data);
+        QString mimeType() const;
+		void setMimeData(const QString &data);
 		
-		QString name();
+        QString name() const;
 		void setName(const QString &name);
 		
 	private:
 		int mBlogId;
+<<<<<<< HEAD:src/bilbomedia.h
 		QString mMediaId;
+=======
+		int mMediaId;
+>>>>>>> origin/master:src/bilbomedia.h
 		bool mIsUploaded;
 		QString mLocalUrl;
 		QString mRemoteUrl;
-		QMimeData *mMimeData;
+		QString mMimeType;
 		QString mName;
 		
 };

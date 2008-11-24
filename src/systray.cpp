@@ -26,7 +26,8 @@
 SysTray::SysTray(QObject* parent): QSystemTrayIcon(parent)
 {
 	bilbo = new MainWindow(0);
-	this->setIcon(QIcon("/usr/lib/kde4/share/icons/oxygen/128x128/apps/kde.png"));
+	this->setIcon(QIcon(":/media/bilbo.png"));
+    this->setToolTip(tr("Bilbo Blogger"));
 	trayMenu = new QMenu;
 	createActions();
 	
