@@ -61,11 +61,7 @@ class BilboMedia
 		
 	private:
 		int mBlogId;
-<<<<<<< HEAD:src/bilbomedia.h
-		QString mMediaId;
-=======
 		int mMediaId;
->>>>>>> origin/master:src/bilbomedia.h
 		bool mIsUploaded;
 		QString mLocalUrl;
 		QString mRemoteUrl;
