@@ -19,30 +19,35 @@
  ***************************************************************************/
 
 #include "systray.h"
-#include <QApplication>
+#include <kapplication.h>
 #include "global.h"
 #include "constants.h"
 
 #include <kaboutdata.h>
 #include <kcomponentdata.h>
+#include <kcmdlineargs.h>
 
+static const char description[] =
+    I18N_NOOP("A KDE Blogging client.");
 
 int main(int argc, char *argv[])
 {
-	KAboutData aboutData("bilbo", 0, ki18n("Bilbo Blogger"), VERSION);
-	KComponentData componentData(&aboutData);
+    KAboutData about("bilbo", 0, ki18n("Bilbo Blogger"), VERSION, ki18n(description),
+                         KAboutData::License_GPL_V3, ki18n("(C) 2007 Bilbo Developers"), 
+                                 KLocalizedString(), "http://bilbo.sourceforge.net", 0);
+    about.addAuthor( ki18n("Mehrdad Momeny"), ki18n("Core Developer"), "mehrdad.momeny@gmail.com" );
+    about.addAuthor( ki18n("Golnaz Nilieh"), ki18n("Core Developer"), "g382nilieh@gmail.com" );
+// 	KComponentData componentData(&about);
+    KCmdLineArgs::init(argc, argv, &about);
+    KCmdLineOptions options;
 
-	QApplication app(argc, argv);
-	qDebug("this will be Bilbo Blogger app...");
+	KApplication app;
 	
 	global_init();
 	app.setQuitOnLastWindowClosed(false);
-// 	MainWindow *window=new MainWindow(0);
-// 	window->show();
-	  SysTray *s= new SysTray(0);
-	  s->show();
-//	  BilboEditor *f= new BilboEditor();
-//	  f->show();
+
+	SysTray *s= new SysTray;
+	s->show();
 	  
 	int r = app.exec();
 	
