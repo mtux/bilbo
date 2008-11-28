@@ -36,7 +36,7 @@ class SysTray : public QSystemTrayIcon
 {
 	Q_OBJECT
 public:
-    SysTray(QObject* parent);
+    SysTray(QObject* parent=0);
 
     ~SysTray();
 	
