@@ -22,7 +22,8 @@
 
 //#include <QWidget>
 //#include <QtGui>
-#include <QTextEdit>
+//#include <QTextEdit>
+#include "krichtextedit.h"
 
 //!Class MultiLineTextEdit Implements a TextEdit widget that supports new line charachters
 /*!
@@ -30,13 +31,13 @@
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 
-class MultiLineTextEdit : public QTextEdit
+class MultiLineTextEdit : public KRichTextEdit
 {
 	Q_OBJECT
 	public:
 		//!Implements the class constructor.
 		/*!
-		 * \param *parent is needed for QTextEdit constructor, which MultiLineTextEdit inherits from.
+		 * \param *parent is needed for KRichTextEdit constructor, which MultiLineTextEdit inherits from.
 		 */
 		MultiLineTextEdit(QWidget *parent = 0);
 		
@@ -47,7 +48,7 @@ class MultiLineTextEdit : public QTextEdit
 		
 		/*!
 		 * When MultiLineTextEdit is focused on, checks each presssed key; then replaces "Return" characters with QChar::LineSeparator special character.
-		 * this function is defined virtual in parent class: QTextEdit.
+		 * this function is defined virtual in parent class: KRichTextEdit.
 		 */
 		void keyPressEvent(QKeyEvent *event);
 };
