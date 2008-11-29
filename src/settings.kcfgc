@@ -1,0 +1,6 @@
+# Code generation options for kconfig_compiler
+File=bilbo.kcfg
+ClassName=Settings
+Singleton=true
+Mutators=show_main_on_start,show_toolbox_on_start
+# will create the necessary code for setting those variables

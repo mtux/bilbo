@@ -23,371 +23,315 @@
 #include "postentry.h"
 #include "addeditblog.h"
 #include "backend.h"
-#include <QSettings>
 #include "bilbomedia.h"
+#include "settings.h"
+#include "systray.h"
 
-MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
+#include <ktabwidget.h>
+#include <kstatusbar.h>
+#include <kaction.h>
+// #include <ktoggleaction.h>
+#include <kactioncollection.h>
+#include <kstandardaction.h>
+#include <kconfigdialog.h>
+#include <kdebug.h>
+#include <KDE/KLocale>
+
+MainWindow::MainWindow(): KXmlGuiWindow(),
+        tabPosts(new KTabWidget(this))
 {
     qDebug("MainWindow::MainWindow");
     previousActivePostIndex = -1;
-	createUi();
-	this->setWindowIcon(QIcon(":/media/bilbo.png"));
-	readConfig();
-	createActions();
-	toolbox->setVisible(__conf->isToolboxVisibleByDefault);
-	if(__conf->isToolboxVisibleByDefault){
-		actToggleToolboxVisible->setText(tr("Hide Toolbox"));
-	} else {
-		actToggleToolboxVisible->setText(tr("Show Toolbox"));
-	}
+        
+    // tell the KXmlGuiWindow that this is indeed the main widget
+    tabPosts->setElideMode(Qt::ElideRight);
+    setCentralWidget(tabPosts);
+
+    toolbox=new Toolbox(this);
+    toolboxDock = new QDockWidget(i18n("Post properties"), this);
+    toolboxDock->setObjectName("dock_toolbox");
+    toolbox->setObjectName("toolbox");
+    toolboxDock->setWidget(toolbox);
+    this->addDockWidget(Qt::RightDockWidgetArea, toolboxDock);
+    
+    btnRemovePost = new QToolButton(tabPosts);
+    btnRemovePost->setIcon(KIcon("tab-close"));
+    btnRemovePost->setToolTip(i18n("Remove current post"));
+    tabPosts->setCornerWidget(btnRemovePost, Qt::TopRightCorner);
+    connect(btnRemovePost, SIGNAL(clicked( bool )), this, SLOT(sltRemoveCurrentPostEntry()));
+    
+    // then, setup our actions
+    setupActions();
+
+    // add a status bar
+    statusBar()->show();
+    toolbox->show();
+
+    // a call to KXmlGuiWindow::setupGUI() populates the GUI
+    // with actions, using KXMLGUI.
+    // It also applies the saved mainwindow settings, if any, and ask the
+    // mainwindow to automatically save settings if changed: window size,
+    // toolbar position, icon size, etc.
+    setupGUI();
+    
+    
+    sltCreateNewPost();
+    activePost = qobject_cast<PostEntry*>(tabPosts->currentWidget());
+    previousActivePostIndex = 0;
+    
+//     this->setWindowIcon(KIcon(":/media/bilbo.png"));
+//     readConfig();
+    toolbox->setVisible(Settings::show_toolbox_on_start());
+    if(Settings::show_toolbox_on_start()){
+        actToggleToolboxVisible->setText(tr("Hide Toolbox"));
+    } else {
+        actToggleToolboxVisible->setText(tr("Show Toolbox"));
+    }
+    setupSystemTray();
 	
-	connect(tabPosts, SIGNAL(currentChanged( int )), this, SLOT(sltActivePostChanged(int)));
+    connect(tabPosts, SIGNAL(currentChanged( int )), this, SLOT(sltActivePostChanged(int)));
     connect(toolbox, SIGNAL(sigEntrySelected(BilboPost *)), this, SLOT(sltNewPostSelected(BilboPost*)));
     connect(toolbox, SIGNAL(sigCurrentBlogChanged(int)), this, SLOT(sltCurrentBlogChanged(int)));
-    
-//     connect(actUploadAll, SIGNAL(triggered(bool)), this, SLOT(test()));
 }
 
 MainWindow::~MainWindow()
 {
-    delete toolbox;
-    delete activePost;
-    delete addBlogPage;
-    delete tabPosts;
-    delete toolbarPost;
-    delete toolbarBlogger;
-    delete toolbarAction;
-    delete menubar;
-    delete menuBilbo;
-    delete menuPost;
-    delete menuAbout;
-    delete statusbar;
-    delete btnRemovePost;
-    delete actAddBlog;
-    delete actUploadAll;
-    delete actNewPost;
-    delete actPublish;
-    delete actSaveLocally;
-    delete actSaveDraft;
-    delete actDeletePost;
-    delete actDeleteLocally;
-    delete actAbout;
-    delete actQuit;
-    delete actToggleToolboxVisible;
+//     delete toolbox;
+//     delete activePost;
+//     delete addBlogPage;
+//     delete tabPosts;
+//     delete toolbarPost;
+//     delete toolbarBlogger;
+//     delete toolbarAction;
+//     delete menubar;
+//     delete menuBilbo;
+//     delete menuPost;
+//     delete menuAbout;
+//     delete statusbar;
+//     delete btnRemovePost;
+//     delete actAddBlog;
+//     delete actUploadAll;
+//     delete actNewPost;
+//     delete actPublish;
+//     delete actSaveLocally;
+//     delete actSaveDraft;
+//     delete actDeletePost;
+//     delete actDeleteLocally;
+//     delete actAbout;
+//     delete actQuit;
+//     delete actToggleToolboxVisible;
 }
 
-void MainWindow::readConfig()
+void MainWindow::setupActions()
 {
-    qDebug("MainWindow::readConfig");
-	QSettings config(CONF_PATH, QSettings::NativeFormat);
+    KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection());
 
-	QPoint pos = config.value("pos", QPoint(300, 200)).toPoint();
-	QSize size = config.value ( "size", QSize ( 800, 600 ) ).toSize();
-	int toolboxWidth = config.value ( "toolbox_width", 300 ).toInt();
-    toolbox->setCurrentBlog(config.value("selected_blog", -1).toInt());
+    KStandardAction::preferences(this, SLOT(optionsPreferences()), actionCollection());
 
-	resize(size);
-	toolbox->resize(toolboxWidth, toolbox->height());
-	move(pos);
-}
-
-void MainWindow::writeConfig()
-{
-    qDebug("MainWindow::writeConfig");
-	__conf->isToolboxVisibleByDefault = toolbox->isVisible();
-	
-	QSettings config(CONF_PATH, QSettings::NativeFormat);
-	config.setValue("pos" , pos());
-	config.setValue("size", size() );
-	config.setValue("toolbox_width", toolbox->width());
-    config.setValue("selected_blog", toolbox->currentBlogId());
-	config.sync();
-}
-
-void MainWindow::createUi()
-{
-    qDebug("MainWindow::createUi");
-// 	this->resize(887, 559);
-	this->setWindowTitle("Bilbo Blogger");
-	
-	tabPosts = new QTabWidget(this);
-	tabPosts->setGeometry(QRect(3, 56, 577, 455));
-    tabPosts->setElideMode(Qt::ElideRight);
-	this->setCentralWidget(tabPosts);
-	
-	menubar = new QMenuBar(this);
-	//menubar->setGeometry(QRect(0, 0, 887, 22));
-	menuBilbo = new QMenu("Bilbo",menubar);
-	menuPost = new QMenu("Post",menubar);
-	menuAbout = new QMenu("About",menubar);
-    menuSave = new QMenu("Save", 0);
-	this->setMenuBar(menubar);
-	
-	toolbarPost=new QToolBar(this);
-	//toolbarPost->setGeometry(QRect(0,20,311,45));
-	//toolbarPost->setAllowedAreas(Qt::TopToolBarArea);
-	toolbarPost->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-	this->addToolBar(Qt::TopToolBarArea,toolbarPost);
-	
-	toolbarBlogger=new QToolBar(this);
-	//toolbarBlogger->setGeometry(QRect(315,20,261,45));
-	toolbarBlogger->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-	this->addToolBar(Qt::TopToolBarArea,toolbarBlogger);
-	
-	toolbarAction = new QToolBar(this);
-	toolbarAction->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-	this->addToolBar(Qt::TopToolBarArea,toolbarAction);
-	
-	statusbar = new QStatusBar(this);
-	this->setStatusBar(statusbar);
-	
-    setFocusPolicy(Qt::StrongFocus);
+    // custom menu and menu item - the slot is in the class bilboView
+    actNewPost = new KAction(KIcon("document-new"), i18n("&New Post"), this);
+    actionCollection()->addAction( QLatin1String("new_post"), actNewPost );
+    actNewPost->setShortcut(Qt::CTRL + Qt::Key_N);
+    connect(actNewPost, SIGNAL(triggered(bool)), this, SLOT(sltCreateNewPost()));
     
-    toolbox=new Toolbox(statusbar, this);
-    this->addDockWidget(Qt::RightDockWidgetArea,toolbox);
-//     toolbox->setMinimumWidth(280);
+    actAddBlog=new KAction(KIcon("document-new"), i18n("Add &Blog"),this);
+    actionCollection()->addAction(QLatin1String("add_blog"), actAddBlog);
+    connect(actAddBlog, SIGNAL(triggered( bool )), toolbox, SLOT(sltAddBlog()));
+	
+    actUploadAll=new KAction(KIcon("arrow-up-double"), i18n("&Upload All Changes"),this);
+    actionCollection()->addAction(QLatin1String("upload_all"), actUploadAll);
+    connect(actUploadAll,SIGNAL(triggered( bool )),this,SLOT(sltUploadAllChanges()));
+	
+    actPublish=new KAction(KIcon("arrow-up"),i18n("&Publish"),this);
+    actionCollection()->addAction(QLatin1String("publish_post"), actPublish);
+    connect(actPublish,SIGNAL(triggered( bool )),this,SLOT(sltPublishPost()));
     
-    btnRemovePost = new QToolButton(tabPosts);
-    btnRemovePost->setIcon(QIcon(":/media/dialog-close.png"));
-    btnRemovePost->setToolTip("Remove current post");
-    tabPosts->setCornerWidget(btnRemovePost, Qt::TopRightCorner);
-    connect(btnRemovePost, SIGNAL(clicked( bool )), this, SLOT(sltRemoveCurrentPostEntry()));
-    
-	sltCreateNewPost();
-    activePost = qobject_cast<PostEntry*>(tabPosts->currentWidget());
-    previousActivePostIndex = 0;
-	
-	
-// 	connect(tabPosts->tabBar(), SIGNAL());
-}
-
-void MainWindow::createActions()
-{
-	actAddBlog=new QAction(QIcon(":/media/format-text-bold.png"),"Add &Blog",this);
-	connect(actAddBlog,SIGNAL(triggered( bool )), toolbox, SLOT(sltAddBlog()));
-	
-	actUploadAll=new QAction(QIcon(":/media/format-text-bold.png"),"&Upload All Changes",this);
-	connect(actUploadAll,SIGNAL(triggered( bool )),this,SLOT(sltUploadAllChanges()));
-	
-	actNewPost=new QAction(QIcon(":/media/tab-new.png"),"&New Post",this);
-	actNewPost->setShortcut(tr("Ctrl+N"));
-	connect(actNewPost,SIGNAL(triggered( bool )),this,SLOT(sltCreateNewPost()));
-	
-	actPublish=new QAction(QIcon(":/media/format-text-bold.png"),"&Publish",this);
-	connect(actPublish,SIGNAL(triggered( bool )),this,SLOT(sltPublishPost()));
-    
-    actSave = new QAction(QIcon(":/media/format-text-bold.png"), "Save", this);
-    actSave->setMenu(menuSave);
+    actSave = new KAction(KIcon("document-save"), i18n("Save"), this);
+    actionCollection()->addAction(QLatin1String("save"), actSave);
     connect(actSave, SIGNAL(triggered( bool )), this, SLOT(sltSavePostLocally()));
 	
-	actSaveLocally=new QAction(QIcon(":/media/format-text-bold.png"),"Save Locally",this);
-    actSaveLocally->setShortcut(tr("Ctrl+S"));
-	connect(actSaveLocally, SIGNAL(triggered( bool )), this, SLOT(sltSavePostLocally()));
+    actSaveLocally=new KAction(KIcon("document-save"), i18n("Save Locally"),this);
+    actionCollection()->addAction(QLatin1String("save_locally"), actSaveLocally);
+    actSaveLocally->setShortcut(Qt::CTRL + Qt::Key_S);
+    connect(actSaveLocally, SIGNAL(triggered( bool )), this, SLOT(sltSavePostLocally()));
 	
-	actSaveDraft=new QAction(QIcon(":/media/format-text-bold.png"),"Save as Draft",this);
-    actSaveDraft->setShortcut(tr("Ctrl+Shift+S"));
-	connect(actSaveDraft, SIGNAL(triggered( bool )), this, SLOT(sltSaveAsDraft()));
+    actSaveDraft=new KAction(KIcon("document-save-as"), i18n("Save as Draft"),this);
+    actionCollection()->addAction(QLatin1String("save_draft"), actSaveDraft);
+    actSaveDraft->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_S);
+    connect(actSaveDraft, SIGNAL(triggered( bool )), this, SLOT(sltSaveAsDraft()));
 	
-	actDeletePost=new QAction(QIcon(":/media/format-text-bold.png"),"Delete from Server",this);
+    actDeletePost=new KAction(KIcon("edit-delete"), i18n("Delete from Server"),this);
+    actionCollection()->addAction(QLatin1String("delete_post"), actDeletePost);
 // 	connect(actDeletePost,SIGNAL(triggered( bool )),activePost,SLOT(sltDelPost()));
 	
-	actDeleteLocally=new QAction(QIcon(":/media/format-text-bold.png"),"Delete Locally",this);
+    actDeleteLocally=new KAction(KIcon("edit-delete"), i18n("Delete Locally"),this);
+    actionCollection()->addAction(QLatin1String("delete_locally"), actDeleteLocally);
 // 	connect(actDeleteLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltDelLocally()));
 	
-	actAbout = new QAction(QIcon(":/media/format-text-bold.png"),"About",this);
-	connect(actAbout, SIGNAL(triggered( bool )), this, SLOT(sltBilboAbout()));
-	
-	actQuit = new QAction(QIcon(":/media/format-text-bold.png"), "Quit", this);
-	actQuit->setShortcut(tr("Ctrl+Q"));
-	connect(actQuit, SIGNAL(triggered( bool )), this, SLOT(sltQuit()));
-	
-	actToggleToolboxVisible = new QAction(QIcon(":/media/format-text-bold.png"), "Hide Toolbox", this);
-	actToggleToolboxVisible->setShortcut(tr("Ctrl+T"));
-	connect(actToggleToolboxVisible, SIGNAL(triggered( bool )), this, SLOT(sltToggleToolboxVisible()));
-	
-	addCreatedActions();
-}
-
-void MainWindow::addCreatedActions()
-{
-// 	saveActions=new QActionGroup(this);
-// 	saveActions->addAction(actSaveLocally);
-// 	saveActions->addAction(actSaveDraft);
-    
-    menuSave->addAction(actSaveDraft);
-    menuSave->addAction(actSaveLocally);
-	
-	toolbarPost->addAction(actNewPost);
-	toolbarPost->addAction(actSave);
-	toolbarPost->addAction(actPublish);
-	
-	toolbarBlogger->addAction(actAddBlog);
-	toolbarBlogger->addAction(actUploadAll);
-	
-	toolbarAction->addAction(actAbout);
-	//toolbarAction->addAction(actQuit);
-	
-	menubar->addAction(menuBilbo->menuAction());
-	menubar->addAction(menuPost->menuAction());
-	menubar->addAction(menuAbout->menuAction());
-	
-	menuBilbo->addAction(actToggleToolboxVisible);
-	menuBilbo->addAction(actQuit);
-	
-	menuPost->addAction(actNewPost);
-	menuPost->addSeparator();
-	menuPost->addAction(actPublish);
-	menuPost->addSeparator();
-	menuPost->addAction(actSaveDraft);
-	menuPost->addAction(actSaveLocally);
-	menuPost->addSeparator();
-	menuPost->addAction(actDeletePost);
-	menuPost->addAction(actDeleteLocally);
-	
-	menuAbout->addAction(actAbout);
+    actToggleToolboxVisible = new KAction( i18n("Hide Toolbox"), this);
+    actionCollection()->addAction(QLatin1String("toggle_toolbox"), actToggleToolboxVisible );
+    actToggleToolboxVisible->setShortcut(Qt::CTRL + Qt::Key_T);
+    connect(actToggleToolboxVisible, SIGNAL(triggered( bool )), this, SLOT(sltToggleToolboxVisible()));
 }
 
 void MainWindow::sltCreateNewPost()
 {
-    qDebug("MainWindow::sltCreateNewPost");
-	PostEntry *temp=new PostEntry(this);
-	tabPosts->addTab(temp,"Untitled");
+    kDebug();
+    PostEntry *temp=new PostEntry(this);
+    tabPosts->addTab(temp,"Untitled");
     temp->setCurrentPost();
     temp->setCurrentPostBlogId(toolbox->currentBlogId());
 	
-	// FIXME these lines added to set direction for new posts, but it generates Segmentation fault at run time!
-// 	BilboBlog *tmp = __db->getBlogInfo(toolbox->currentBlogId());
-// 	temp->setDefaultLayoutDirection(tmp->direction());
-// 	delete tmp;
-	
-    connect(temp, SIGNAL(sigTitleChanged(const QString& )), this, SLOT(sltPostTitleChanged(const QString&)));
-// 	activePost=temp;
-	tabPosts->setCurrentWidget(temp);
-	if(this->isVisible()==false)
-		this->show();
+// 	// FIXME these lines added to set direction for new posts, but it generates Segmentation fault at run time!
+// // 	BilboBlog *tmp = __db->getBlogInfo(toolbox->currentBlogId());
+// // 	temp->setDefaultLayoutDirection(tmp->direction());
+// // 	delete tmp;
+// 	
+//     connect(temp, SIGNAL(sigTitleChanged(const QString& )), this, SLOT(sltPostTitleChanged(const QString&)));
+// // 	activePost=temp;
+    tabPosts->setCurrentWidget(temp);
+    if(this->isVisible()==false)
+        this->show();
+}
+
+void MainWindow::optionsPreferences()
+{
+    // The preference dialog is derived from prefs_base.ui
+    //
+    // compare the names of the widgets in the .ui file
+    // to the names of the variables in the .kcfg file
+    //avoid to have 2 dialogs shown
+    if ( KConfigDialog::showDialog( "settings" ) )  {
+        return;
+    }
+    KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self());
+    QWidget *generalSettingsDlg = new QWidget;
+    ui_prefs_base.setupUi(generalSettingsDlg);
+    dialog->addPage(generalSettingsDlg, i18n("General"), "package_setting");
+    connect(dialog, SIGNAL(settingsChanged(QString)), this, SLOT(settingsChanged()));
+    dialog->setAttribute( Qt::WA_DeleteOnClose );
+    dialog->show();
+}
+
+void MainWindow::settingsChanged()
+{
+}
+
+void MainWindow::setupSystemTray()
+{
+    systemTray = new SysTray(this);
+    systemTray->actionCollection()->addAction("new_post", this->actNewPost);
+    systemTray->show();
 }
 
 void MainWindow::sltUploadAllChanges()
 {
+    kDebug();
 }
 
 void MainWindow::sltPostTitleChanged(const QString& title)
 {
-    qDebug("MainWindow::sltPostTitleChanged");
-	tabPosts->setTabText(tabPosts->currentIndex(),title);
-}
-
-void MainWindow::sltBilboAbout()
-{
-	QMessageBox::information(this, "About Bilbo", "Bilbo Blogger.\nLicense: GNU GPL v3\n\nAuthors:\n\tMehrdad Momeny\n\tGolnaz Nilieh");
-}
-
-void MainWindow::sltQuit()
-{
-	//clear /TempMedia content here.
-	qDebug("MainWindow::sltQuit");
-	writeConfig();
-	qApp->quit();
+    kDebug();
+    tabPosts->setTabText(tabPosts->currentIndex(),title);
 }
 
 void MainWindow::sltToggleToolboxVisible()
 {
-	if(toolbox->isVisible()){
-		toolbox->hide();
-		actToggleToolboxVisible->setText(tr("Show Toolbox"));
-	} else {
-		toolbox->show();
-		actToggleToolboxVisible->setText(tr("Hide Toolbox"));
-	}
+    if(toolbox->isVisible()){
+        toolboxDock->hide();
+        actToggleToolboxVisible->setText(tr("Show Toolbox"));
+    } else {
+        toolboxDock->show();
+        actToggleToolboxVisible->setText(tr("Hide Toolbox"));
+    }
 }
 
 void MainWindow::sltActivePostChanged(int index)
 {
-    qDebug("MainWindow::sltActivePostChanged");
-    qDebug()<<"new post index: "<<index<<"\tPrev Index: "<<previousActivePostIndex;
+    kDebug()<<"new post index: "<<index<<"\tPrev Index: "<<previousActivePostIndex;
 
     activePost = qobject_cast<PostEntry*>( tabPosts->widget(index) );
     PostEntry *prevActivePost = qobject_cast<PostEntry*>( tabPosts->widget( previousActivePostIndex ) );
     if(prevActivePost != 0 && index != previousActivePostIndex){
-    prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
-    prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
-    tabPosts->setTabText(previousActivePostIndex, prevActivePost->postTitle());
+        prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
+        prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
+        tabPosts->setTabText(previousActivePostIndex, prevActivePost->postTitle());
     }
     if(activePost != 0){
-    toolbox->setFieldsValue(activePost->currentPost());
-    toolbox->setCurrentBlog(activePost->currentPostBlogId());
-    previousActivePostIndex = index;
-    sltPostTitleChanged( activePost->postTitle() );
+        toolbox->setFieldsValue(activePost->currentPost());
+        toolbox->setCurrentBlog(activePost->currentPostBlogId());
+        previousActivePostIndex = index;
+        sltPostTitleChanged( activePost->postTitle() );
     } else {
-        qDebug() << "MainWindow::sltActivePostChanged: ActivePost is NULL! \
+        kError() << "MainWindow::sltActivePostChanged: ActivePost is NULL! \
                 tabPosts Current index is: " << tabPosts->currentIndex() ;
     }
 }
 
 void MainWindow::sltPublishPost()
 {
-	qDebug("MainWindow::sltPublishPost");
-	int blog_id = toolbox->currentBlogId();
-	if(blog_id==-1){
-		QMessageBox::warning(this, "No blog is selected", "You have to select a blog to publish this post to it.");
-		qDebug("MainWindow::sltPublishPost: Blog id not sets correctly.");
-		return;
-	}
-	Backend *b = new Backend(blog_id);
+    kDebug();
+    int blog_id = toolbox->currentBlogId();
+    if(blog_id==-1){
+        QMessageBox::warning(this, "No blog is selected", "You have to select a blog to publish this post to it.");
+        kDebug()<<"Blog id not sets correctly.";
+        return;
+    }
+    Backend *b = new Backend(blog_id);
     connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
     connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
-	BilboPost *post = toolbox->getFieldsValue();
-	if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
-		if(QMessageBox::warning(this, "Empty fields!",
-							 "Your post title or body is empty!\nAre you sure of pubish this post?",
-		QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
-			return;
-	}
-	post->setContent(*(activePost->postBody()));
-	post->setTitle(activePost->postTitle());
-	post->setPrivate(false);
+    BilboPost *post = toolbox->getFieldsValue();
+    if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
+        if(QMessageBox::warning(this, "Empty fields!",
+           "Your post title or body is empty!\nAre you sure of pubish this post?",
+           QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
+            return;
+    }
+    post->setContent(*(activePost->postBody()));
+    post->setTitle(activePost->postTitle());
+    post->setPrivate(false);
 	
-	b->publishPost(post);
-	statusbar->showMessage("publishing new post...");
+    b->publishPost(post);
+    statusBar()->showMessage("publishing new post...");
     this->setCursor(Qt::BusyCursor);
 }
 
 void MainWindow::sltPostPublished(int blog_id, int post_id, bool isPrivate)
 {
-	qDebug("MainWindow::sltPostPublished: Post Id: %d", post_id);
-	QString blog_name = toolbox->listBlogs.key(blog_id);
+    kDebug()<<"Post Id: "<< post_id;
+    QString blog_name = toolbox->listBlogs.key(blog_id);
     QString msg;
     if(isPrivate){
         msg = "New Draft saved to \"" + blog_name +
                 "\" successfully\nDo you want to keep it on editor?";
-        statusbar->showMessage("New draft saved to \""+blog_name + "\"" , STATUSTIMEOUT);
+        statusBar()->showMessage("New draft saved to \""+blog_name + "\"" , STATUSTIMEOUT);
     }
     else {
         msg = "New Post published to \"" + blog_name +
                 "\" successfully\nDo you want to keep it on editor?";
-        statusbar->showMessage("New post published to \""+blog_name + "\"" , STATUSTIMEOUT);
+        statusBar()->showMessage("New post published to \""+blog_name + "\"" , STATUSTIMEOUT);
     }
-	if(QMessageBox::information(this, "Successful",  msg, QMessageBox::Yes | QMessageBox::No, QMessageBox::No)
-           != QMessageBox::Yes)
-		sltRemoveCurrentPostEntry();
+    if(QMessageBox::information(this, "Successful",  msg, QMessageBox::Yes | QMessageBox::No, QMessageBox::No)
+       != QMessageBox::Yes)
+        sltRemoveCurrentPostEntry();
 	
     this->unsetCursor();
 }
 
 void MainWindow::sltRemoveCurrentPostEntry()
 {
-    qDebug("MainWindow::sltRemoveCurrentPostEntry");
-	if(tabPosts->count()==1){
-		sltCreateNewPost();
+    kDebug();
+    if(tabPosts->count()==1){
+        sltCreateNewPost();
         previousActivePostIndex = 0;
-	}
-	tabPosts->removeTab(tabPosts->currentIndex());
+    }
+    tabPosts->removeTab(tabPosts->currentIndex());
     tabPosts->setCurrentIndex(previousActivePostIndex);
 }
 
 void MainWindow::sltNewPostSelected(BilboPost * newPost)
 {
-    qDebug("MainWindow::sltNewPostSelected");
+    kDebug();
     PostEntry *temp=new PostEntry(this);
     tabPosts->addTab(temp,newPost->title());
     connect(temp, SIGNAL(sigTitleChanged( const QString& )), this, SLOT(sltPostTitleChanged( const QString& )));
@@ -397,65 +341,40 @@ void MainWindow::sltNewPostSelected(BilboPost * newPost)
     temp->setCurrentPost(*newPost);
     temp->setCurrentPostBlogId(toolbox->currentBlogId());
 	
-	BilboBlog *tmp = __db->getBlogInfo(toolbox->currentBlogId());
-	temp->setDefaultLayoutDirection(tmp->direction());
-	delete tmp;
+    BilboBlog *tmp = __db->getBlogInfo(toolbox->currentBlogId());
+    temp->setDefaultLayoutDirection(tmp->direction());
+    delete tmp;
 
 //     activePost=temp;
     tabPosts->setCurrentWidget(temp);
 }
 
-void MainWindow::keyReleaseEvent(QKeyEvent * event)
-{
-    if( event->modifiers() == Qt::ControlModifier){
-        switch( event->key() ){
-        case  Qt::Key_1:
-            toolbox->setCurrentPage(0);
-            break;
-        case Qt::Key_2:
-            toolbox->setCurrentPage(1);
-            break;
-        case Qt::Key_3:
-            toolbox->setCurrentPage(2);
-            break;
-        case Qt::Key_4:
-            toolbox->setCurrentPage(3);
-            break;
-        case Qt::Key_5:
-            toolbox->setCurrentPage(4);
-            break;
-        default:
-            QMainWindow::keyPressEvent(event);
-            break;
-        }
-    }
-}
-
 void MainWindow::sltCurrentBlogChanged(int blog_id)
 {
-	//suggestion:
+    kDebug();
+	///suggestion:
 	//this->activePost->setCurrentPostBlogId(blog_id);
 	
 //     BilboBlog *tmp = __db->getBlogInfo(blog_id);
 //     this->centralWidget()->setLayoutDirection(tmp->direction());
 //     delete tmp;
-	BilboBlog *tmp = __db->getBlogInfo(blog_id);
+    BilboBlog *tmp = __db->getBlogInfo(blog_id);
     this->activePost->setDefaultLayoutDirection(tmp->direction());
-	delete tmp;
+    delete tmp;
 }
 
 void MainWindow::sltSavePostLocally()
 {
-    qDebug("MainWindow::sltSavePostLocally");
+    kDebug();
 }
 
 void MainWindow::sltSaveAsDraft()
 {
-    qDebug("MainWindow::sltSaveAsDraft");
+    kDebug();
     int blog_id = toolbox->currentBlogId();
     if(blog_id==-1){
         QMessageBox::warning(this, "Blog not sets", "You have to select a blog to save this post as draft to it.");
-        qDebug("MainWindow::sltSaveAsDraft: Blog id not sets correctly.");
+        kDebug()<<"Blog id not sets correctly.";
         return;
     }
     Backend *b = new Backend(blog_id);
@@ -473,39 +392,14 @@ void MainWindow::sltSaveAsDraft()
     post->setPrivate(true);
 	
     b->publishPost(post);
-    statusbar->showMessage("Save new post draft...");
+    statusBar()->showMessage("Save new post draft...");
     this->setCursor(Qt::BusyCursor);
 }
 
 void MainWindow::sltError(QString & errorMessage)
 {
-    qDebug()<<"MainWindow::sltError: "<<errorMessage;
+    kDebug()<<"Error message: "<<errorMessage;
     QMessageBox::critical(this, "Error", "An Error ocurred on previous transaction: "+errorMessage);
 }
 
-void MainWindow::test()
-{
-//     BilboMedia *media = new BilboMedia;
-//     QMimeData *data = new QMimeData;
-//     QFile f(QString(TEMP_MEDIA_DIR)+"/test.png");
-//     data->setData("image/png", f.readAll());
-//     media->setLocalUrl(QString(TEMP_MEDIA_DIR)+"/test.png");
-//     media->setName("mehrdad.png");
-//     media->setBlogId(4);
-//     media->setMimeData(data);
-//     Backend *b = new Backend(4);
-//     connect(b, SIGNAL(sigMediaUploaded( BilboMedia* )), this, SLOT(test2(BilboMedia*)));
-//     connect(b, SIGNAL(sigError( QString &)), this, SLOT());
-//     b->uploadMedia(media);
-}
-
-void MainWindow::test2(BilboMedia *media)
-{
-//     QMessageBox::information(this, "Uploaded", "media file uploaded!");
-//     qDebug()<<"Url: "<<media->remoteUrl()<<"\nLocal: "<<media->localUrl();
-}
-
-void MainWindow::test3(QString &msg)
-{
-//     QMessageBox::warning(this, "Cannot upload", msg);
-}
+#include "mainwindow.moc"

@@ -18,10 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "systray.h"
+#include "mainwindow.h"
 #include <kapplication.h>
 #include "global.h"
 #include "constants.h"
+#include "settings.h"
 
 #include <kaboutdata.h>
 #include <kcomponentdata.h>
@@ -45,10 +46,11 @@ int main(int argc, char *argv[])
 	
 	global_init();
 	app.setQuitOnLastWindowClosed(false);
-
-	SysTray *s= new SysTray;
-	s->show();
-	  
+    
+    MainWindow *bilbo = new MainWindow;
+    if(Settings::show_main_on_start())
+        bilbo->show();
+	
 	int r = app.exec();
 	
 	global_end();

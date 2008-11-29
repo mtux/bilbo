@@ -118,7 +118,7 @@ PostEntry::~PostEntry()
 {
     delete editPostWidget;
     delete gridLayout;
-    delete horizontalLayout;
+//     delete horizontalLayout;
     delete labelTitle;
     delete txtTitle;
     delete wPost;

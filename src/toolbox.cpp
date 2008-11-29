@@ -24,11 +24,17 @@
 #include "backend.h"
 #include "bilbopost.h"
 
-Toolbox::Toolbox(QStatusBar *mainStatusbar, QWidget *parent)
-    :QDockWidget(parent)
+#include <kstatusbar.h>
+#include <kdebug.h>
+#include <kxmlguiwindow.h>
+Toolbox::Toolbox(QWidget *parent)
+    :QWidget(parent)
 {
-	qDebug("Toolbox::Toolbox");
-	statusbar = mainStatusbar;
+	kDebug();
+    if(parent)
+        this->statusbar = qobject_cast<KXmlGuiWindow*>(parent)->statusBar();
+    else
+        this->statusbar = new KStatusBar(this);
 	setupUi(this);
 	frameBlog->layout()->setAlignment(Qt::AlignTop);
 	frameCat->layout()->setAlignment(Qt::AlignTop);
@@ -408,11 +414,11 @@ void Toolbox::sltEntriesCopyUrl()
 
 Toolbox::~Toolbox()
 {
-    delete addEditBlogWindow;
-    delete blogToEdit;
-    delete currentBlog;
-    delete currentPost;
-    delete statusbar;
+//     delete addEditBlogWindow;
+//     delete blogToEdit;
+//     delete currentBlog;
+//     delete currentPost;
+//     delete statusbar;
 }
 
 void Toolbox::unCheckCatList()
@@ -421,3 +427,5 @@ void Toolbox::unCheckCatList()
         listCategoryCheckBoxes[j]->setChecked(false);
     }
 }
+
+#include "toolbox.moc"

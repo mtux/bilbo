@@ -30,7 +30,7 @@
 #include <kblog/wordpressbuggy.h>
 #include <kurl.h>
 
-#include "ui_addeditblog.h"
+#include "ui_addeditblogbase.h"
 
 #include "bilboblog.h"
 
@@ -38,7 +38,7 @@
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-class AddEditBlog: public QDialog, public Ui::AddEditBlogDialog {
+class AddEditBlog: public QDialog, public Ui::AddEditBlogBase {
 Q_OBJECT
 public:
     /**

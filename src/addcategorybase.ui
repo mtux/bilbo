@@ -1,12 +1,12 @@
 <ui version="4.0" >
- <class>AddCategoryDialog</class>
- <widget class="QDialog" name="AddCategoryDialog" >
+ <class>AddCategoryBase</class>
+ <widget class="QDialog" name="AddCategoryBase" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
     <width>326</width>
-    <height>188</height>
+    <height>189</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -110,7 +110,7 @@
   <connection>
    <sender>okButton</sender>
    <signal>clicked()</signal>
-   <receiver>AddCategoryDialog</receiver>
+   <receiver>AddCategoryBase</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
@@ -126,7 +126,7 @@
   <connection>
    <sender>cancelButton</sender>
    <signal>clicked()</signal>
-   <receiver>AddCategoryDialog</receiver>
+   <receiver>AddCategoryBase</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >

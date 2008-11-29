@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>AddEditBlogDialog</class>
- <widget class="QDialog" name="AddEditBlogDialog" >
+ <class>AddEditBlogBase</class>
+ <widget class="QDialog" name="AddEditBlogBase" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -344,7 +344,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>btnOk</sender>
    <signal>clicked()</signal>
-   <receiver>AddEditBlogDialog</receiver>
+   <receiver>AddEditBlogBase</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
@@ -360,7 +360,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>btnCancel</sender>
    <signal>clicked()</signal>
-   <receiver>AddEditBlogDialog</receiver>
+   <receiver>AddEditBlogBase</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >

@@ -22,13 +22,13 @@
 
 #include <QDialog>
 
-#include "ui_entriescount.h"
+#include "ui_entriescountdialogbase.h"
 
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-class EntriesCountDialog: public QDialog, public Ui::EntriesCount {
+class EntriesCountDialog: public QDialog, public Ui::EntriesCountDialogBase {
 Q_OBJECT
 public:
     EntriesCountDialog(QWidget *parent = 0);
