@@ -40,7 +40,7 @@
 MainWindow::MainWindow(): KXmlGuiWindow(),
         tabPosts(new KTabWidget(this))
 {
-    qDebug("MainWindow::MainWindow");
+    kDebug();
     previousActivePostIndex = -1;
         
     // tell the KXmlGuiWindow that this is indeed the main widget
@@ -352,6 +352,10 @@ void MainWindow::sltNewPostSelected(BilboPost * newPost)
 void MainWindow::sltCurrentBlogChanged(int blog_id)
 {
     kDebug();
+    if(blog_id==-1){
+        kDebug()<<"Blog id do not sets correctly";
+        return;
+    }
 	///suggestion:
 	//this->activePost->setCurrentPostBlogId(blog_id);
 	

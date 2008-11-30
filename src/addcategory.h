@@ -20,13 +20,16 @@
 #ifndef ADDCATEGORY_H
 #define ADDCATEGORY_H
 
-#include <QDialog>
+#include <kdialog.h>
 #include "ui_addcategorybase.h"
 
-class AddCategory: public QDialog, public Ui::AddCategoryBase {
+class AddCategory: public KDialog{
 Q_OBJECT
 public:
-    AddCategory(QWidget *parent = 0);
+    AddCategory(QWidget *parent = 0, Qt::WFlags flags=0);
+
+private:
+    Ui::AddCategoryBase ui;
 };
 
 #endif

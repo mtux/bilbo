@@ -27,7 +27,7 @@
 #include <kaboutdata.h>
 #include <kcomponentdata.h>
 #include <kcmdlineargs.h>
-
+#include <kstandarddirs.h>
 static const char description[] =
     I18N_NOOP("A KDE Blogging client.");
 
@@ -50,7 +50,6 @@ int main(int argc, char *argv[])
     MainWindow *bilbo = new MainWindow;
     if(Settings::show_main_on_start())
         bilbo->show();
-	
 	int r = app.exec();
 	
 	global_end();

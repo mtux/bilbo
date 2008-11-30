@@ -173,7 +173,7 @@ void Toolbox::sltSetCurrentBlog(bool checked)
 {
 	if(checked){
 		currentBlog = dynamic_cast<QRadioButton*>(sender());
-		Q_EMIT sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
+		emit sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
 	}
 }
 
@@ -194,9 +194,9 @@ void Toolbox::sltCurrentPageChanged(int index)
 
 void Toolbox::sltLoadEntriesFromDB(int blog_id)
 {
-	qDebug("Toolbox::sltLoadEntriesFromDB");
+	kDebug();
 	if(blog_id==-1){
-		qDebug("Toolbox::loadEntriesFromDB: Blog Id not sets correctly");
+        kDebug()<<"Blog Id do not sets correctly";
 		return;
 	}
 	clearEntriesList();
@@ -208,9 +208,9 @@ void Toolbox::sltLoadEntriesFromDB(int blog_id)
 
 void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 {
-	qDebug("Toolbox::sltLoadCategoryListFromDB");
+	kDebug();
 	if(blog_id==-1){
-		qDebug("Toolbox::sltLoadCategoryListFromDB: Blog Id not sets correctly");
+		kDebug()<<"Blog Id do not sets correctly";
 		return;
 	}
 	statusbar->showMessage("Category list received.", STATUSTIMEOUT);
@@ -271,13 +271,17 @@ void Toolbox::clearEntriesList()
 void Toolbox::sltCurrentBlogChanged(int blog_id)
 {
 	///TODO Save current state to a temporary variable!
+    kDebug();
+    if(blog_id==-1){
+        kDebug()<<"Blog id do not sets correctly";
+        return;
+    }
     __currentBlogId = blog_id;
 	sltLoadCategoryListFromDB(blog_id);
 	sltLoadEntriesFromDB(blog_id);
     Qt::LayoutDirection ll = __db->getBlogInfo(blog_id)->direction();
 	frameCat->setLayoutDirection(ll);
 	lstEntriesList->setLayoutDirection(ll);
-	
 }
 
 BilboPost * Toolbox::getFieldsValue()
