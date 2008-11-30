@@ -20,41 +20,39 @@
 #ifndef SYSTRAY_H
 #define SYSTRAY_H
 
-#include "mainwindow.h"
-#include "settings.h"
+#include <ksystemtrayicon.h>
 
-#include <QSystemTrayIcon>
 class QMenu;
-class QAction;
+// class Action;
 /**
 System tray icon of app
 
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
-class SysTray : public QSystemTrayIcon
+class SysTray : public KSystemTrayIcon
 {
 	Q_OBJECT
 public:
-    SysTray(QObject* parent=0);
+    SysTray(QWidget* parent=0);
 
     ~SysTray();
 	
 protected Q_SLOTS:
-	void sltHideShow();
+// 	void sltHideShow();
 	void sltActivated(QSystemTrayIcon::ActivationReason);
 
 private:
 	void createActions();
 	
-	QMenu *trayMenu;
+// 	QMenu *trayMenu;
 	
-	QAction *actQuit;
-	QAction *actNewPost;
-	QAction *actHideShow;
-	QAction *actAbout;
+// 	QAction *actQuit;
+// 	QAction *actNewPost;
+// 	QAction *actHideShow;
+// 	QAction *actAbout;
 	
-	MainWindow *bilbo;
+// 	MainWindow *bilbo;
 
 };
 

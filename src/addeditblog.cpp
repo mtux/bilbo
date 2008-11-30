@@ -21,19 +21,19 @@
 #include "global.h"
 #include "bilboblog.h"
 
-#include <QMessageBox>
-
+#include <kmessagebox.h>
+#include <kdebug.h>
 #define TIMEOUT 40000
 
 AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
     :QDialog(parent)
 {
-	qDebug("AddEditBlog::AddEditBlog");
+	kDebug();
 	setupUi(this);
-	this->setWindowTitle("Add a new blog");
+	this->setWindowTitle(i18n("Add a new blog"));
 	isNewBlog=true;
 	if(blog_id>-1){
-		this->setWindowTitle("Edit Blog Settings");
+		this->setWindowTitle(i18n("Edit Blog Settings"));
 		btnOk->setEnabled(true);
 		btnFetch->setEnabled(true);
 		btnAutoConf->setEnabled(true);
@@ -80,10 +80,10 @@ void AddEditBlog::enableAutoConfBtn()
 
 void AddEditBlog::autoConfigure()
 {
-	qDebug("AddEditBlog::autoConfigure");
+	kDebug();
 	if(txtUrl->text().isEmpty() || txtUser->text().isEmpty() || txtPass->text().isEmpty()){
-		qDebug("AddEditBlog::autoConfigure: Username, Password or Url isn't set!");
-		QMessageBox::warning(this, "Incomplete fields", "You need to set the username, password and url of your blog or website.");
+		kDebug()<<"Username, Password or Url isn't set!";
+		KMessageBox::sorry(this, i18n("You need to set the username, password and url of your blog or website."), i18n("Incomplete fields"));
 		return;
 	}
 	btnAutoConf->setEnabled(false);
@@ -119,9 +119,7 @@ void AddEditBlog::autoConfigure()
 
 void AddEditBlog::fetchBlogId()
 {
-	qDebug("AddEditBlog::fetchBlogId");
-	
-	
+	kDebug();
 
 	switch( comboApi->currentIndex() ){
 		case 0:
@@ -154,7 +152,7 @@ void AddEditBlog::fetchBlogId()
 			mFetchProfileIdTimer->start(TIMEOUT);
 			break;
 	};
-	txtId->setText("Please wait...");
+	txtId->setText(i18n("Please wait..."));
 	txtId->setEnabled(false);
 	btnFetch->setEnabled(false);
 	btnAutoConf->setEnabled(false);
@@ -162,8 +160,8 @@ void AddEditBlog::fetchBlogId()
 
 void AddEditBlog::handleFetchIDTimeout()
 {
-	qDebug("AddEditBlog::handleFetchIDTimeout");
-	QMessageBox::critical(this, "Error!", "Fetching the blog's id timed out. Check your internet connection, Or your homepage Url!\nnote that url have to included \"http://\" or ...\nfor example: http://bilbo.sf.net/xmlrpc.php is a good url");
+	kDebug();
+	KMessageBox::error(this, i18n("Fetching the blog's id timed out. Check your internet connection, Or your homepage Url!\nnote that the url has to contain \"http://\" or ...\nfor example: http://bilbo.sf.net/xmlrpc.php is a good url"));
 	txtId->setText(QString());
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
@@ -174,8 +172,8 @@ void AddEditBlog::handleFetchIDTimeout()
 
 void AddEditBlog::handleFetchAPITimeout()
 {
-	qDebug("AddEditBlog::handleFetchAPITimeout");
-	QMessageBox::warning(this, "AutoConfiguration Failed", "App cannot get API type automatically, please check your internet connection, otherwise you have to set API type handy.");
+	kDebug();
+    KMessageBox::sorry(this, i18n("Sorry, Bilbo cannot get API type automatically, please check your internet connection, otherwise you have to set API type on advanced tab handy."), i18n("AutoConfiguration Failed"));
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
@@ -184,8 +182,8 @@ void AddEditBlog::handleFetchAPITimeout()
 
 void AddEditBlog::handleFetchError(KBlog::Blog::ErrorType type, const QString & errorMsg)
 {
-	qDebug("AddEditBlog::handleFetchError: ErrorType: %d", type);
-	QMessageBox::critical(this, "Fetching BlogID Faild!", errorMsg);
+	kDebug()<<" ErrorType: "<< type;
+	KMessageBox::detailedError(this, i18n("Fetching BlogID Faild!\nplease check you internet connection."), errorMsg);
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
@@ -193,11 +191,11 @@ void AddEditBlog::handleFetchError(KBlog::Blog::ErrorType type, const QString & 
 
 void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list)
 {
-	qDebug("AddEditBlog::fetchedBlogId");
+	kDebug();
 	delete mFetchBlogIdTimer;
 	if(list.count()>1){
 		///TODO: handle more than one blog!
-		qDebug("AddEditBlog::fetchedBlogId: User has more than ONE blog!");
+		kDebug()<<"User has more than ONE blog!";
 	}
 	txtId->setText(list.first().values().first());
 	lblTitle->setText(list.first().values().last());
@@ -215,7 +213,7 @@ void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list
 
 void AddEditBlog::fetchedProfileId(const QString &id)
 {
-	qDebug("AddEditBlog::fetchedProfileId");
+	kDebug();
 	delete mFetchProfileIdTimer;
 	connect( dynamic_cast<KBlog::GData*>(mBlog), SIGNAL(listedBlogs( const QList<QMap<QString, QString> >&)),
 			 this, SLOT(fetchedBlogId( const QList<QMap<QString, QString> >&)));
@@ -226,9 +224,9 @@ void AddEditBlog::fetchedProfileId(const QString &id)
 
 void AddEditBlog::sltAccepted()
 {
-	qDebug("AddEditBlog::sltAccepted");
+	kDebug();
 	if(bBlog->blogid().isEmpty() && txtId->text().isEmpty()){
-		QMessageBox::critical(this, "Failed to get blog id", "You have to Fetch blog id by hitting \"Auto Configure\" Or \"Fetch ID\" button or Insert your Blog Id manually.");
+		KMessageBox::sorry(this, i18n("Sorry, BlogId not retrived yet,\nYou have to Fetch blog id by hitting \"Auto Configure\" Or \"Fetch ID\" button or Insert your Blog Id manually."));
 		return;
 	}
 	bBlog->setApi((BilboBlog::ApiType)comboApi->currentIndex());
@@ -298,3 +296,5 @@ AddEditBlog::~AddEditBlog()
     delete mFetchBlogIdTimer;
     delete mFetchAPITimer;
 }
+
+#include "addeditblog.moc"

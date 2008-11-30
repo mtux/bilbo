@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <kcfgfile name="bilborc"/>
+  <group name="Preferences">
+    <entry name="show_main_on_start" type="Bool">
+	    <label>Show Bilbo Window on startup</label>
+	    <default>true</default>
+    </entry>
+    <entry name="show_toolbox_on_start" hidden="true" type="Bool">
+	    <default>true</default>
+    </entry>
+<!--    <entry name="val_time" type="Int">
+	    <label>size of a ball</label>
+	    <default>2</default>
+    </entry>-->
+  </group>
+</kcfg>

@@ -24,11 +24,17 @@
 #include "backend.h"
 #include "bilbopost.h"
 
-Toolbox::Toolbox(QStatusBar *mainStatusbar, QWidget *parent)
-    :QDockWidget(parent)
+#include <kstatusbar.h>
+#include <kdebug.h>
+#include <kxmlguiwindow.h>
+Toolbox::Toolbox(QWidget *parent)
+    :QWidget(parent)
 {
-	qDebug("Toolbox::Toolbox");
-	statusbar = mainStatusbar;
+	kDebug();
+    if(parent)
+        this->statusbar = qobject_cast<KXmlGuiWindow*>(parent)->statusBar();
+    else
+        this->statusbar = new KStatusBar(this);
 	setupUi(this);
 	frameBlog->layout()->setAlignment(Qt::AlignTop);
 	frameCat->layout()->setAlignment(Qt::AlignTop);
@@ -167,7 +173,7 @@ void Toolbox::sltSetCurrentBlog(bool checked)
 {
 	if(checked){
 		currentBlog = dynamic_cast<QRadioButton*>(sender());
-		Q_EMIT sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
+		emit sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
 	}
 }
 
@@ -188,9 +194,9 @@ void Toolbox::sltCurrentPageChanged(int index)
 
 void Toolbox::sltLoadEntriesFromDB(int blog_id)
 {
-	qDebug("Toolbox::sltLoadEntriesFromDB");
+	kDebug();
 	if(blog_id==-1){
-		qDebug("Toolbox::loadEntriesFromDB: Blog Id not sets correctly");
+        kDebug()<<"Blog Id do not sets correctly";
 		return;
 	}
 	clearEntriesList();
@@ -202,9 +208,9 @@ void Toolbox::sltLoadEntriesFromDB(int blog_id)
 
 void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 {
-	qDebug("Toolbox::sltLoadCategoryListFromDB");
+	kDebug();
 	if(blog_id==-1){
-		qDebug("Toolbox::sltLoadCategoryListFromDB: Blog Id not sets correctly");
+		kDebug()<<"Blog Id do not sets correctly";
 		return;
 	}
 	statusbar->showMessage("Category list received.", STATUSTIMEOUT);
@@ -265,13 +271,17 @@ void Toolbox::clearEntriesList()
 void Toolbox::sltCurrentBlogChanged(int blog_id)
 {
 	///TODO Save current state to a temporary variable!
+    kDebug();
+    if(blog_id==-1){
+        kDebug()<<"Blog id do not sets correctly";
+        return;
+    }
     __currentBlogId = blog_id;
 	sltLoadCategoryListFromDB(blog_id);
 	sltLoadEntriesFromDB(blog_id);
     Qt::LayoutDirection ll = __db->getBlogInfo(blog_id)->direction();
 	frameCat->setLayoutDirection(ll);
 	lstEntriesList->setLayoutDirection(ll);
-	
 }
 
 BilboPost * Toolbox::getFieldsValue()
@@ -408,11 +418,11 @@ void Toolbox::sltEntriesCopyUrl()
 
 Toolbox::~Toolbox()
 {
-    delete addEditBlogWindow;
-    delete blogToEdit;
-    delete currentBlog;
-    delete currentPost;
-    delete statusbar;
+//     delete addEditBlogWindow;
+//     delete blogToEdit;
+//     delete currentBlog;
+//     delete currentPost;
+//     delete statusbar;
 }
 
 void Toolbox::unCheckCatList()
@@ -421,3 +431,5 @@ void Toolbox::unCheckCatList()
         listCategoryCheckBoxes[j]->setChecked(false);
     }
 }
+
+#include "toolbox.moc"

@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include <klocalizedstring.h>
+//#include <klocalizedstring.h>
 #include "addeditlink.h"
 
 AddEditLink::AddEditLink(QWidget *parent)
@@ -59,3 +59,5 @@ void AddEditLink::show(QString address, QString title)
 		txtTitle->setText(title);
 	}
 }
+
+#include "addeditlink.moc"

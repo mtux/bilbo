@@ -21,7 +21,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include <QDir>
+#include <kstandarddirs.h>
 
 /**
 Constants.
@@ -30,10 +30,10 @@ Constants.
  */
 
 #define VERSION "0.1"
-#define CONF_DIR QDir::homePath()+QString("/.bilbo")
-#define CONF_PATH QString(CONF_DIR)+QString("/bilbo.conf")
-#define CONF_DB QString(CONF_DIR)+QString("/bilbo.db")
-#define TEMP_MEDIA_DIR QString(CONF_DIR)+QString("/TempMedia/")
+#define DATA_DIR KStandardDirs::locateLocal("data", "bilbo")
+// #define CONF_PATH QString(CONF_DIR)+QString("/bilbo.conf")
+#define CONF_DB QString(DATA_DIR)+QString("/bilbo.db")
+#define TEMP_MEDIA_DIR KStandardDirs::locateLocal("data", "bilbo/tempmedia", true)
 #define STATUSTIMEOUT 5000
 
 #endif

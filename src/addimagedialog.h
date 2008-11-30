@@ -21,6 +21,7 @@
 #define ADDIMAGEDIALOG_H
 
 #include <QDialog>
+//#include <KDialog>
 
 #include "ui_addimagedialog.h"
 
@@ -32,6 +33,8 @@ Implements a dialog to enter address of a local or remote image file.
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 // TODO change the class to support more than one type of media.
+// TODO use KDialog instead of QDialog.
+// now when using it default ok-cancel buttons appear on top right corner of the dialog window.
 
 class AddImageDialog: public QDialog, public Ui::AddImageDialog
 {

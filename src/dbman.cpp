@@ -18,19 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "dbman.h"
-#include <QMessageBox>
-#include <QDebug>
+#include <kmessagebox.h>
 #include "bilboblog.h"
 #include "bilbopost.h"
+#include <kdebug.h>
+#include <KDE/KLocale>
 
 DBMan::DBMan()
 {
-	qDebug("DBMan::DBMan");
+	kDebug();
 	
 	if(!QFile::exists(CONF_DB)){
 		if(!this->createDB()){
-			QMessageBox::critical(0, "DB Error", "cannot create configuration database");
-			qDebug()<<"DBMan::DBMan : cannot create configuration database, SQL error: "<<db.lastError().text()<<endl;
+            KMessageBox::detailedError(0, i18n("Cannot create configuration database"), i18n(db.lastError().text().toUtf8().data()));
+			kDebug()<<"Cannot create configuration database, SQL error: "<<db.lastError().text()<<endl;
 		}
 	}else if (!connectDB())
 		exit(1);
@@ -38,13 +39,13 @@ DBMan::DBMan()
 
 bool DBMan::connectDB()
 {
-	qDebug("DBMan::connectDB");
+	kDebug();
 	db = QSqlDatabase::addDatabase("QSQLITE");
 	db.setDatabaseName(CONF_DB);
 	
 	if(!db.open()){
-		QMessageBox::critical(0, "DB Error", "cannot connect to configuration database");
-		qDebug()<<"DBMan::connectDB : cannot connect to configuration database, SQL error: "<<db.lastError().text()<<endl;
+        KMessageBox::detailedError(0, i18n("Cannot connect to configuration database"), i18n(db.lastError().text().toUtf8().data()));
+		kDebug()<<"Cannot connect to configuration database, SQL error: "<<db.lastError().text()<<endl;
 		return false;
 	}
 	return true;
@@ -56,7 +57,7 @@ DBMan::~DBMan()
 
 bool DBMan::createDB()
 {
-	qDebug("DBMan::createDB");
+	kDebug();
 	bool ret=true;
 	if(!connectDB())
 		exit(1);
@@ -207,13 +208,13 @@ int DBMan::addPost(QString postid, int blog_id, QString author, QString title, Q
 			q.addBindValue(categories[i]);
 			q.addBindValue(blog_id);
 			if(!q.exec())
-				qDebug("DBMan::addPost: Cannot get category id for category %s", categories[i].toLatin1().data());
+				kDebug()<<"Cannot get category id for category "<< categories[i];
 			else
 				if(q.next()){
 					q2.addBindValue(ret);
 					q2.addBindValue(q.value(0).toInt());
 					if(q2.exec())
-						qDebug("DBMan::addPost: Category %s added to post.", categories[i].toLatin1().data());
+						kDebug()<<"Category "<< categories[i] <<"added to post.";
 				}
 		}
 	}
@@ -225,7 +226,7 @@ int DBMan::addPost(QString postid, int blog_id, QString author, QString title, Q
 
 int DBMan::addPost(const BilboPost & post, int blog_id)
 {
-	qDebug("DBMan::addPost: Adding post with title: %s to Blog %d", post.title().toLatin1().data(), blog_id);
+	kDebug()<<"Adding post with title: "<< post.title() <<" to Blog "<< blog_id;
 	QSqlQuery q;
 	q.prepare("INSERT INTO post (postid, blog_id, author, title, content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags, position) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 	q.addBindValue(post.postId());
@@ -267,23 +268,21 @@ int DBMan::addPost(const BilboPost & post, int blog_id)
 			q.addBindValue(post.categories()[i]);
 			q.addBindValue(blog_id);
 			if(!q.exec())
-				qDebug("DBMan::addPost: Cannot get category id for category %s", post.categories()[i].toLatin1().data());
+				kDebug()<<"Cannot get category id for category "<< post.categories()[i];
 			else
 				if(q.next()){
 					catid = q.value(0).toInt();
 					q2.addBindValue(ret);
 					q2.addBindValue(catid);
-					if(q2.exec()){
-						qDebug("DBMan::addPost: Category %d added to post %d.", catid, ret);
-					} else{
-						qDebug("DBMan::addPost: Cannot add Category %d to Post, SQL Error: %s", catid, q2.lastError().text().toLatin1().data());
+					if(!q2.exec()){
+                        kDebug()<<"Cannot add Category "<< catid <<" to Post, SQL Error: "<< q2.lastError().text();
 					}
 				}
 			i++;
 		}
 	}
 	else{
-		qDebug("DBMan::addPost: ERROR: Cannot Add post to database!\n\tSQL Error: %s\nSQL query: %s", q.lastError().text().toLatin1().data(), q.lastQuery().toLatin1().data());
+		kDebug()<<"Cannot Add post to database!\n\tSQL Error: "<< q.lastError().text();
 		ret = -1;
 	}
 	
@@ -319,7 +318,7 @@ bool DBMan::editPost(int id, int blog_id, QString postid, QString author, QStrin
 	qd.prepare("DELETE FROM post_cat WHERE post_id=?");
 	qd.addBindValue(id);
 	if(!qd.exec())
-		qDebug("DBMan::editPost: Cannot delete previouse categories.");
+		kDebug()<< "Cannot delete previouse categories.";
 	
 	///Add new Categories:
 	int cat_count = categories.count();
@@ -331,13 +330,13 @@ bool DBMan::editPost(int id, int blog_id, QString postid, QString author, QStrin
 		q1.addBindValue(categories[i]);
 		q1.addBindValue(blog_id);
 		if(!q1.exec())
-			qDebug("DBMan::editPost: Cannot get category id for category %s", categories[i].toLatin1().data());
+			kDebug()<<"Cannot get category id for category "<< categories[i];
 		else
 			if(q1.next()){
 			q2.addBindValue(id);
 			q2.addBindValue(q.value(0).toInt());
-			if(q2.exec())
-				qDebug("DBMan::editPost: Category %s added to post.", categories[i].toLatin1().data());
+			if(!q2.exec())
+                kDebug()<<"Cannot add Category "<< categories[i] <<" to Post, SQL Error: "<< q2.lastError().text();
 			}
 	}
 	
@@ -380,7 +379,7 @@ bool DBMan::editPost(BilboPost & post, int blog_id)
 	qd.prepare("DELETE FROM post_cat WHERE post_id=?");
 	qd.addBindValue(post.id());
 	if(!qd.exec())
-		qDebug("DBMan::editPost: Cannot delete previouse categories.");
+		kDebug()<<"Cannot delete previouse categories.";
 	
 	///Add new Categories:
 	if(q.exec()){
@@ -393,18 +392,18 @@ bool DBMan::editPost(BilboPost & post, int blog_id)
 			q.addBindValue(post.categories()[i]);
 			q.addBindValue(blog_id);
 			if(!q.exec())
-				qDebug("DBMan::editPost: Cannot get category id for category %s", post.categories()[i].toLatin1().data());
+				kDebug()<<"Cannot get category id for category "<< post.categories()[i];
 			else
 				if(q.next()){
 				q2.addBindValue(post.id());
 				q2.addBindValue(q.value(0).toInt());
-				if(q2.exec())
-					qDebug("DBMan::editPost: Category %s added to post.", post.categories()[i].toLatin1().data());
+                if(!q2.exec())
+                    kDebug()<<"Cannot add Category "<< post.categories()[i] <<" to Post, SQL Error: "<< q2.lastError().text();
 				}
 		}
 	}
 	else
-		qDebug("DBMan::editPost: Cannot edit categories.");
+		kDebug()<<"Cannot edit categories.";
 	
 	return true;
 }
@@ -594,7 +593,7 @@ QList< BilboPost* > DBMan::listPosts(int blog_id)
 			list.append(tmp);
 		}
 	} else
-		qDebug("DBMan::listPosts: Cannot get list of posts for blog with id %d", blog_id);
+		kDebug()<<"Cannot get list of posts for blog with id "<< blog_id;
 	
 	return list;
 }
@@ -637,7 +636,7 @@ BilboPost * DBMan::getPostInfo(int post_id)
 			tmp->setCategories(catList);
 		}
 	} else
-		qDebug("DBMan::getPostInfo: Cannot get post with id %d", post_id);
+		kDebug()<<"Cannot get post with id "<< post_id;
 	
 	return tmp;
 }
@@ -653,7 +652,7 @@ QMap< QString, int > DBMan::listPostsTitle(int blog_id)
 			list.insert(q.value(0).toString(), q.value(1).toInt());
 		}
 	} else
-		qDebug("DBMan::listPostsTitle: Cannot get list of posts for blog with id %d", blog_id);
+		kDebug()<<"Cannot get list of posts for blog with id "<< blog_id;
 	
 	return list;
 }
@@ -669,7 +668,7 @@ QMap< QString, int > DBMan::listCategories(int blog_id)
 			list[q.value(0).toString()] = q.value(1).toInt();
 		}
 	} else
-		qDebug("DBMan::listCategories: Cannot get list of categories for blog with id %d", blog_id);
+		kDebug()<<"Cannot get list of categories for blog with id "<< blog_id;
 	
 	return list;
 }

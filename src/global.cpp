@@ -20,14 +20,14 @@
 
 #include "global.h"
 
-Settings *__conf;
+// Settings *__conf;
 DBMan *__db;
 int __currentBlogId;
 
 void global_init()
 {
 	qDebug("global_init");
-	__conf = new Settings;
+// // 	__conf = new Settings;
 	__db = new DBMan;
     __currentBlogId = -1;
 }
@@ -35,6 +35,6 @@ void global_init()
 void global_end()
 {
 	qDebug("global_end");
-	delete __conf;
+// 	delete __conf;
 	delete __db;
 }

@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDebug>
+//#include <QDebug>
 #include <QtGui>
 //#include <QTabWidget>
 #include <QWebView>
@@ -26,6 +26,7 @@
 #include <ktoolbar.h>
 #include <kaction.h>
 #include <kicon.h>
+#include <kdebug.h>
 
 #include "bilboeditor.h"
 #include "htmlexporter.h"
@@ -660,44 +661,44 @@ void BilboEditor::createUi()
 
 void BilboEditor::createActions()
 {
-	actBold = new KAction(KIcon(":/media/format-text-bold.png"), i18nc("Makes text bold", "Bold"), this);
+	actBold = new KAction(KIcon("format-text-bold"), i18nc("Makes text bold", "Bold"), this);
 	actBold->setShortcut(Qt::CTRL + Qt::Key_B);
 	actBold->setCheckable(true);
 	connect(actBold, SIGNAL(triggered(bool)), editor, SLOT(setTextBold( bool )));
 	barVisual->addAction(actBold);
 	
-	actItalic = new KAction(KIcon(":/media/format-text-italic.png"), i18nc("Makes text italic", "Italic"), this);
+	actItalic = new KAction(KIcon("format-text-italic"), i18nc("Makes text italic", "Italic"), this);
 	actItalic->setShortcut(Qt::CTRL + Qt::Key_I);
 	actItalic->setCheckable(true);
 	connect(actItalic, SIGNAL(triggered(bool)), editor, SLOT(setTextItalic( bool )));
 	barVisual->addAction(actItalic);
 	
-	actUnderline = new KAction(KIcon(":/media/format-text-underline.png"), i18nc("Makes text underlined", "Underline"), this);
+	actUnderline = new KAction(KIcon("format-text-underline"), i18nc("Makes text underlined", "Underline"), this);
 	actUnderline->setShortcut(Qt::CTRL + Qt::Key_U);
 	actUnderline->setCheckable(true);
 	connect(actUnderline, SIGNAL(triggered(bool)), editor, SLOT(setTextUnderline( bool )));
 	barVisual->addAction(actUnderline);
 	
-	actStrikeout = new KAction(KIcon(":/media/format-text-strikethrough.png"), i18nc("Makes text overlined", "Strikeout"), this);
+	actStrikeout = new KAction(KIcon("format-text-strikethrough"), i18nc("Makes text overlined", "Strikeout"), this);
 	actStrikeout->setShortcut(Qt::CTRL + Qt::Key_L);
 	actStrikeout->setCheckable(true);
 	connect(actStrikeout, SIGNAL(triggered(bool)), editor, SLOT(setTextStrikeOut( bool )));
 	barVisual->addAction(actStrikeout);
 	
-	actCode = new KAction(KIcon(":/media/format-text-code.png"), i18nc("Sets text font to code style", "Code"), this);
+	actCode = new KAction(KIcon("format-text-code"), i18nc("Sets text font to code style", "Code"), this);
 	actCode->setCheckable(true);
 	connect(actCode, SIGNAL(triggered(bool)), this, SLOT(sltToggleCode()));
 	barVisual->addAction(actCode);
 	
-	actFontIncrease = new KAction(KIcon(":/media/format-font-size-more.png"), i18n("Increase font size"), this);
+	actFontIncrease = new KAction(KIcon("format-font-size-more"), i18n("Increase font size"), this);
 	connect(actFontIncrease, SIGNAL(triggered(bool)), this, SLOT(sltFontSizeIncrease()));
 	barVisual->addAction(actFontIncrease);
 	
-	actFontDecrease = new KAction(KIcon(":/media/format-font-size-less.png"), i18n("Decrease font size"), this);
+	actFontDecrease = new KAction(KIcon("format-font-size-less"), i18n("Decrease font size"), this);
 	connect(actFontDecrease, SIGNAL(triggered(bool)), this, SLOT(sltFontSizeDecrease()));
 	barVisual->addAction(actFontDecrease);
 	
-	actRemoveFormatting= new KAction(KIcon(":/media/draw-eraser.png"), i18n("Remove formatting"), this);
+	actRemoveFormatting= new KAction(KIcon("draw-eraser"), i18n("Remove formatting"), this);
 	actRemoveFormatting->setShortcut(Qt::CTRL + Qt::Key_R);
 	connect(actRemoveFormatting, SIGNAL(triggered(bool)), this, SLOT(sltRemoveFormatting()));
 	barVisual->addAction(actRemoveFormatting);
@@ -709,28 +710,28 @@ void BilboEditor::createActions()
 	connect(actNewParagraph, SIGNAL(triggered(bool)), this, SLOT(sltNewParagraph()));
 	barVisual->addAction(actNewParagraph);
 	
-	actAlignLeft = new KAction(KIcon(":/media/format-justify-left.png"), i18nc("verb, to align text from left", "Align left"), this);
+	actAlignLeft = new KAction(KIcon("format-justify-left"), i18nc("verb, to align text from left", "Align left"), this);
 	connect(actAlignLeft, SIGNAL(triggered(bool)), editor, SLOT(alignLeft()));
 	barVisual->addAction(actAlignLeft);
 	
-	actAlignCenter = new KAction(KIcon(":/media/format-justify-center.png"), i18nc("verb, to align text from center", "Align center"), this);
+	actAlignCenter = new KAction(KIcon("format-justify-center"), i18nc("verb, to align text from center", "Align center"), this);
 	connect(actAlignCenter, SIGNAL(triggered(bool)), editor, SLOT(alignCenter()));
 	barVisual->addAction(actAlignCenter);
 	
-	actAlignRight = new KAction(KIcon(":/media/format-justify-right.png"), i18nc("verb, to align text from right", "Align right"), this);
+	actAlignRight = new KAction(KIcon("format-justify-right"), i18nc("verb, to align text from right", "Align right"), this);
 	connect(actAlignRight, SIGNAL(triggered(bool)), editor, SLOT(alignRight()));
 	barVisual->addAction(actAlignRight);
 	
-	actJustify = new KAction(KIcon(":/media/format-justify-fill.png"), i18nc("verb, to justify text", "Justify"), this);
+	actJustify = new KAction(KIcon("format-justify-fill"), i18nc("verb, to justify text", "Justify"), this);
 	connect(actJustify, SIGNAL(triggered(bool)), editor, SLOT(alignJustify()));
 	barVisual->addAction(actJustify);
 	
-	actRightToLeft = new KAction(KIcon(":/media/format-text-direction-rtl.png"), i18nc("Sets text direction to right to left", "Right to Left"), this);
+	actRightToLeft = new KAction(KIcon("format-text-direction-rtl"), i18nc("Sets text direction to right to left", "Right to Left"), this);
 	actRightToLeft->setCheckable(true);
 	connect(actRightToLeft, SIGNAL(triggered(bool)), this, SLOT(sltChangeLayoutDirection()));
 	barVisual->addAction(actRightToLeft);
 	
-	actAddLink = new KAction(KIcon(":/media/insert-link.png"), i18nc("verb, to add a new link or edit an existing one", "Add/Edit Link"), this);
+	actAddLink = new KAction(KIcon("insert-link"), i18nc("verb, to add a new link or edit an existing one", "Add/Edit Link"), this);
 	actAddLink->setShortcut(Qt::CTRL + Qt::Key_L);
 	connect(actAddLink, SIGNAL(triggered(bool)), this, SLOT(sltAddEditLink()));
 	barVisual->addAction(actAddLink);
@@ -741,11 +742,11 @@ void BilboEditor::createActions()
 	
 	barVisual->addSeparator();
 	
-	actColorSelect = new KAction(KIcon(":/media/format-text-color.png"), i18nc("verb, to select text color", "Select Color"), this);
+	actColorSelect = new KAction(KIcon("format-text-color"), i18nc("verb, to select text color", "Select Color"), this);
 	connect(actColorSelect, SIGNAL(triggered(bool)), this, SLOT(sltSelectColor()));
 	barVisual->addAction(actColorSelect);
 	
-	actAddImage = new KAction(KIcon(":/media/insert-image.png"), i18nc("verb, to insert an image", "Add Image"), this);
+	actAddImage = new KAction(KIcon("insert-image"), i18nc("verb, to insert an image", "Add Image"), this);
 	connect(actAddImage, SIGNAL(triggered(bool)), this, SLOT(sltAddImage()));
 	barVisual->addAction(actAddImage);
 }
@@ -1035,7 +1036,7 @@ void BilboEditor::sltSyncEditors(int index)
 		//qDebug()<<editor->document()->toHtml()<<endl;
 		editor->setTextOrHtml(htmlEditor->toPlainText());
 	} else if (index == 1) {
-		qDebug()<<editor->toHtml()<<endl;
+		kDebug() << editor->toHtml() << endl;
 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 	} else {
 		if (prev_index == 1) {
@@ -1143,3 +1144,5 @@ void BilboEditor::setLayoutDirection(Qt::LayoutDirection direction)
 		this->actRightToLeft->setChecked(true);
 	}
 }
+
+#include "bilboeditor.moc"

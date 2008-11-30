@@ -20,8 +20,9 @@
 #ifndef BILBOEDITOR_H
 #define BILBOEDITOR_H
 
-#include <QTabWidget>
+//#include <QTabWidget>
 #include <QTextCharFormat>
+#include <ktabwidget.h>
 //#include <QtGui>
 //#include <QWebView>
 //#include "multilinetextedit.h"
@@ -46,7 +47,7 @@ class BilboMedia;
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 
-class BilboEditor : public QTabWidget
+class BilboEditor : public KTabWidget
 {
 	Q_OBJECT
 	public:

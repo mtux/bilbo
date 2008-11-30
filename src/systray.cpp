@@ -19,67 +19,67 @@
  ***************************************************************************/
 #include "systray.h"
 #include "global.h"
-#include <QMenu>
+#include "settings.h"
+#include <kmenu.h>
+#include <KDE/KLocale>
 
-// #include <QAction>
 
-SysTray::SysTray(QObject* parent): QSystemTrayIcon(parent)
+SysTray::SysTray(QWidget* parent): KSystemTrayIcon(parent)
 {
-	bilbo = new MainWindow(0);
-	this->setIcon(QIcon(":/media/bilbo.png"));
-    this->setToolTip(tr("Bilbo Blogger"));
-	trayMenu = new QMenu;
-	createActions();
+// 	bilbo = new MainWindow();
+	this->setIcon(parent->windowIcon());
+    this->setToolTip(i18n("Bilbo Blogger"));
+// 	trayMenu = new QMenu;
+// 	createActions();
 	
-	if(__conf->showMainOnStart)
-		bilbo->show();
-	
-	connect(this,  SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(sltActivated(QSystemTrayIcon::ActivationReason)) );
+// 	connect(this,  SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(sltActivated(QSystemTrayIcon::ActivationReason)) );
 }
 
 
 SysTray::~SysTray()
 {
-    delete trayMenu;
-    delete actQuit;
-    delete actNewPost;
-    delete actHideShow;
-    delete actAbout;
-    delete bilbo;
+//     delete trayMenu;
+//     delete actQuit;
+//     delete actNewPost;
+//     delete actHideShow;
+//     delete actAbout;
+//     delete bilbo;
 }
 
 void SysTray::createActions()
 {
-	this->actNewPost = bilbo->actNewPost;
+// 	this->actNewPost = bilbo->actNewPost;
 	
-	this->actAbout = bilbo->actAbout;
+// 	this->actAbout = bilbo->actAbout;
 	
-	this->actQuit = bilbo->actQuit;
+// 	this->actQuit = bilbo->actQuit;
 	
-	trayMenu->addAction(this->actNewPost);
-	trayMenu->addSeparator();
-	trayMenu->addAction(this->actAbout);
-	trayMenu->addSeparator();
-	trayMenu->addAction(this->actQuit);
-	
-	this->setContextMenu(trayMenu);
+// 	trayMenu->addAction(this->actNewPost);
+// 	trayMenu->addSeparator();
+// 	trayMenu->addAction(this->actAbout);
+// 	trayMenu->addSeparator();
+// 	trayMenu->addAction(this->actQuit);
+// 	
+// 	this->setContextMenu(trayMenu);
 }
 
-void SysTray::sltHideShow()
-{
-}
+// void SysTray::sltHideShow()
+// {
+// }
 
 void SysTray::sltActivated(QSystemTrayIcon::ActivationReason reason)
 {
-	if(reason==2 || reason==3){
-		if(bilbo){
-			if(bilbo->isVisible())
-				bilbo->hide();
-			else
-				bilbo->show();
-		} else {
-			bilbo = new MainWindow;
-			bilbo->show();
-		}
-	}
+// 	if(reason==2 || reason==3){
+// 		if(bilbo){
+// 			if(bilbo->isVisible())
+// 				bilbo->hide();
+// 			else
+// 				bilbo->show();
+// 		} else {
+// 			bilbo = new MainWindow;
+// 			bilbo->show();
+// 		}
+// 	}
 }
+
+#include "systray.moc"

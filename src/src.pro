@@ -61,11 +61,12 @@ RESOURCES += editor.qrc \
 
 
 
-LIBS += -L/usr/lib \
-  -L/usr/lib/kde4/lib \
-  -lbilbokblog \
-  -lkdecore
 
 INCLUDEPATH += /usr/include/bilbo/ \
   /usr/lib/kde4/include/
+
+LIBS += -L/usr/lib \
+  -lkdeui \
+  -lkdecore \
+  -lbilbokblog
 

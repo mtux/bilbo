@@ -23,8 +23,8 @@
 #include <QDockWidget>
 #include <QtGui>
 
-#include "ui_toolbox.h"
-
+#include "ui_toolboxbase.h"
+class KStatusBar;
 class QRadioButton;
 class BilboPost;
 class AddEditBlog;
@@ -33,10 +33,10 @@ class BilboBlog;
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-class Toolbox: public QDockWidget, public Ui::ToolboxWidget {
+class Toolbox: public QWidget, public Ui::ToolboxBase {
 Q_OBJECT
 public:
-	Toolbox(QStatusBar *mainStatusbar, QWidget *parent = 0);
+	Toolbox(QWidget *parent);
     ~Toolbox();
 	
 	void reloadBlogList();
@@ -54,7 +54,7 @@ public:
 	
 	QMap<QString, int> listEntries;///Contain Post title(QString) and Post id(int)
 	
-public Q_SLOTS:
+public slots:
 	void sltAddBlog();
 	void sltBlogAdded(BilboBlog&);
 	void sltEditBlog();
@@ -72,7 +72,7 @@ public Q_SLOTS:
     void sltEntrySelected( QListWidgetItem *item );
     void sltEntriesCopyUrl();
 	
-Q_SIGNALS:
+signals:
 	void sigCurrentBlogChanged( int blog_id );
     void sigEntrySelected( BilboPost *post );
 	
@@ -90,7 +90,7 @@ private:
 	QRadioButton *blogToEdit;
 	QRadioButton *currentBlog;
 	BilboPost *currentPost;
-	QStatusBar *statusbar;
+	KStatusBar *statusbar;
 };
 
 #endif
