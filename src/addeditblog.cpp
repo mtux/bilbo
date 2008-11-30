@@ -39,7 +39,8 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 		btnAutoConf->setEnabled(true);
 		isNewBlog=false;
         bBlog = __db->getBlogInfo(blog_id);
-		txtUrl->setText(bBlog->url().toString());
+		//txtUrl->setText(bBlog->url().toString());
+		txtUrl->setText(bBlog->url().url());
 		txtUser->setText(bBlog->username());
 		txtPass->setText(bBlog->password());
 		txtId->setText(bBlog->blogid());

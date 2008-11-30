@@ -304,16 +304,17 @@ void MainWindow::sltToggleToolboxVisible()
 void MainWindow::sltActivePostChanged(int index)
 {
     qDebug("MainWindow::sltActivePostChanged");
-    qDebug()<<"new post index: "<<index<<"\tPrev Index: "<<previousActivePostIndex;
+    qDebug() << "new post index: " << index << "\tPrev Index: " << previousActivePostIndex;
 
     activePost = qobject_cast<PostEntry*>( tabPosts->widget(index) );
     PostEntry *prevActivePost = qobject_cast<PostEntry*>( tabPosts->widget( previousActivePostIndex ) );
-    if(prevActivePost != 0 && index != previousActivePostIndex){
+    if ((prevActivePost != 0) && (index != previousActivePostIndex)) {
     prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
     prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
-    tabPosts->setTabText(previousActivePostIndex, prevActivePost->postTitle());
+	qDebug() << prevActivePost->postTitle();
+	tabPosts->setTabText(previousActivePostIndex, prevActivePost->postTitle());
     }
-    if(activePost != 0){
+    if (activePost != 0) {
     toolbox->setFieldsValue(activePost->currentPost());
     toolbox->setCurrentBlog(activePost->currentPostBlogId());
     previousActivePostIndex = index;
@@ -509,3 +510,4 @@ void MainWindow::test3(QString &msg)
 {
 //     QMessageBox::warning(this, "Cannot upload", msg);
 }
+

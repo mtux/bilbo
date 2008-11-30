@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <QtGui> 
+#include <klocalizedstring.h>
 
 #include "postentry.h"
 #include "bilboeditor.h"
@@ -43,7 +44,7 @@ void PostEntry::createUi()
 	horizontalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
 	
 	labelTitle = new QLabel(this);
-	labelTitle->setText("&Title :");
+	labelTitle->setText(i18nc("noun, the post title", "Title:"));
 	horizontalLayout->addWidget(labelTitle);
 
 	txtTitle = new QLineEdit(this);
@@ -70,7 +71,7 @@ QString * PostEntry::postBody()
 
 void PostEntry::setPostTitle(const QString & title)
 {
-    this->txtTitle->setText(title);
+	this->txtTitle->setText(title);
 }
 
 void PostEntry::setPostBody(const QString & body)
