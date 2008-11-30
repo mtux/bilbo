@@ -17,6 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+//#include <klocalizedstring.h>
 #include "addeditlink.h"
 
 AddEditLink::AddEditLink(QWidget *parent)
@@ -51,9 +53,11 @@ void AddEditLink::show(QString address, QString title)
 	QDialog::show();
 	if(!address.isEmpty()){
 		txtAddress->setText(address);
-		this->setWindowTitle("Edit Link");
+		this->setWindowTitle(i18nc("verb, to edit link", "Edit Link"));
 	}
 	if(!title.isEmpty()){
 		txtTitle->setText(title);
 	}
 }
+
+#include "addeditlink.moc"

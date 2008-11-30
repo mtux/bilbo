@@ -22,8 +22,8 @@
 
 #include "constants.h"
 // #include <kblog/blog.h>
-#include <QUrl>
-// #include <kurl.h>
+//#include <QUrl> 
+#include <kurl.h>
 
 /**
 Blog definition class!
@@ -38,7 +38,7 @@ public:
 		BLOGGER1_API=0, METAWEBLOG_API, MOVABLETYPE_API, WORDPRESSBUGGY_API, GDATA_API
 	};
 
-    BilboBlog(QUrl& server);
+    BilboBlog(KUrl& server);
 	BilboBlog();
     ~BilboBlog();
 	
@@ -49,8 +49,8 @@ public:
      * and it's blogUrl() is http://bilbo.wordpress.com/
 	 * @return url usable for xmlrpc!
 	 */
-	QUrl url() const;
-	void setUrl(const QUrl&);
+	KUrl url() const;
+	void setUrl(const KUrl&);
 	QString blogid() const;
 	void setBlogId(const QString&);
 	QString username() const;
@@ -78,7 +78,7 @@ public:
     QString blogUrl();
 	
 private:
-	QUrl mUrl;
+	KUrl mUrl;
 	QString mBlogid;
 	QString mUsername;
 	QString mPassword;

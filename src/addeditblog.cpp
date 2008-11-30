@@ -48,7 +48,8 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 		btnAutoConf->setEnabled(true);
 		isNewBlog=false;
         bBlog = __db->getBlogInfo(blog_id);
-		txtUrl->setText(bBlog->url().toString());
+		//txtUrl->setText(bBlog->url().toString());
+		txtUrl->setText(bBlog->url().url());
 		txtUser->setText(bBlog->username());
 		txtPass->setText(bBlog->password());
 		txtId->setText(bBlog->blogid());
@@ -169,7 +170,7 @@ void AddEditBlog::fetchBlogId()
 void AddEditBlog::handleFetchIDTimeout()
 {
 	kDebug();
-	KMessageBox::error(this, i18n("Fetching the blog's id timed out. Check your internet connection, Or your homepage Url!\nnote that url have to included \"http://\" or ...\nfor example: http://bilbo.sf.net/xmlrpc.php is a good url"));
+	KMessageBox::error(this, i18n("Fetching the blog's id timed out. Check your internet connection, Or your homepage Url!\nnote that the url has to contain \"http://\" or ...\nfor example: http://bilbo.sf.net/xmlrpc.php is a good url"));
 	txtId->setText(QString());
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);

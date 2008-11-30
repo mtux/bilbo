@@ -10,13 +10,13 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Add Link</string>
+   <string comment="verb, insert a link into the text" >Add Link</string>
   </property>
   <layout class="QGridLayout" name="gridLayout" >
    <item row="0" column="0" >
     <widget class="QLabel" name="label" >
      <property name="text" >
-      <string>Link &amp;Address :</string>
+      <string comment="the web address of the link" >Link &amp;Address :</string>
      </property>
      <property name="buddy" >
       <cstring>txtAddress</cstring>
@@ -33,7 +33,7 @@
    <item row="1" column="0" >
     <widget class="QLabel" name="label_2" >
      <property name="text" >
-      <string>Link &amp;Title :</string>
+      <string comment="the word which is showed as a link" >Link &amp;Title :</string>
      </property>
      <property name="buddy" >
       <cstring>txtTitle</cstring>

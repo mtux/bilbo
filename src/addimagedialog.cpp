@@ -17,7 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <QFileDialog>
+//#include <QFileDialog>
+#include <kfiledialog.h>
 
 #include "addimagedialog.h"
 #include "bilbomedia.h"
@@ -46,27 +47,31 @@ void AddImageDialog::accept()
 		media->setRemoteUrl(mSelectedImageUrl);
 		media->setUploded(true);
 	} else {
-		QFile::copy(mSelectedImageUrl, TEMP_MEDIA_DIR + name);
-		media->setLocalUrl(TEMP_MEDIA_DIR + name);
+		QFile::copy(mSelectedImageUrl, TEMP_MEDIA_DIR + "/" + name);
+		media->setLocalUrl(TEMP_MEDIA_DIR + "/" + name);
 		media->setUploded(false);
 	}
 	Q_EMIT signalAddImage(media);
+// 	KDialog::accept();
 	QDialog::accept();
 }
 
 void AddImageDialog::reject()
 {
+// 	KDialog::reject();
 	QDialog::reject();
 }
 
 void AddImageDialog::slotBrowseFiles()
 {
-	QFileDialog *fileDialog = new QFileDialog(this);
-	fileDialog->setFileMode(QFileDialog::ExistingFiles);
+	KFileDialog *fileDialog = new KFileDialog(KUrl(), "", this->parentWidget());
+	//fileDialog->setFileMode(QFileDialog::ExistingFiles);
+	fileDialog->setMode(KFile::File & KFile::LocalOnly & KFile::ExistingOnly);
 
 	if (fileDialog->exec())
 	{
-		mSelectedImageUrl = fileDialog->selectedFiles().at(0);
+		//mSelectedImageUrl = fileDialog->selectedFiles().at(0);
+		mSelectedImageUrl = fileDialog->selectedFile();
 		txtLocalUrl->setText(mSelectedImageUrl);
 		txtRemoteUrl->setDisabled(true);
 	}
@@ -74,7 +79,7 @@ void AddImageDialog::slotBrowseFiles()
 
 void AddImageDialog::slotDisableLocalPath()
 {
-	if (txtRemoteUrl->text() == "")
+	if (txtRemoteUrl->text().isEmpty())
 	{
 		txtLocalUrl->setDisabled(false);
 		btnBrowse->setDisabled(false);
@@ -90,3 +95,5 @@ QString AddImageDialog::selectedImageUrl()
 		mSelectedImageUrl = txtRemoteUrl->text();
 	return mSelectedImageUrl;
 }
+
+#include "addimagedialog.moc"

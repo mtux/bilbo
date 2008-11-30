@@ -115,7 +115,8 @@ int DBMan::addBlog(BilboBlog & blog)
 	QSqlQuery q;
 	q.prepare("INSERT INTO blog (blogid, blog_url, username, password, style_url, api_type, title, direction) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
 	q.addBindValue(blog.blogid());
-	q.addBindValue(blog.url().toString());
+	//q.addBindValue(blog.url().toString());
+	q.addBindValue(blog.url().url());
 	q.addBindValue(blog.username());
 	q.addBindValue(blog.password());
 	q.addBindValue(blog.stylePath());

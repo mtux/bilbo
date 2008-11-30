@@ -15,7 +15,7 @@
      <item row="0" column="0" >
       <widget class="QToolBox" name="box" >
        <property name="currentIndex" >
-        <number>0</number>
+        <number>4</number>
        </property>
        <widget class="QWidget" name="pgBlogs" >
         <property name="geometry" >
@@ -23,7 +23,7 @@
           <x>0</x>
           <y>0</y>
           <width>298</width>
-          <height>407</height>
+          <height>412</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -59,21 +59,21 @@
            <item>
             <widget class="QPushButton" name="btnBlogAdd" >
              <property name="text" >
-              <string>&amp;Add...</string>
+              <string comment="verb, add new blog" >&amp;Add...</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="btnBlogEdit" >
              <property name="text" >
-              <string>&amp;Edit...</string>
+              <string comment="verb, edit selected blog properties" >&amp;Edit...</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="btnBlogRemove" >
              <property name="text" >
-              <string>&amp;Remove</string>
+              <string comment="verb, remove selected blog from the blog list" >&amp;Remove</string>
              </property>
             </widget>
            </item>
@@ -86,8 +86,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>328</width>
-          <height>179</height>
+          <width>298</width>
+          <height>412</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -151,8 +151,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>256</width>
-          <height>117</height>
+          <width>298</width>
+          <height>412</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -222,8 +222,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>96</width>
-          <height>26</height>
+          <width>298</width>
+          <height>412</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -235,8 +235,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>220</width>
-          <height>383</height>
+          <width>298</width>
+          <height>412</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -248,7 +248,7 @@
            <item>
             <widget class="QLabel" name="label_3" >
              <property name="text" >
-              <string>Status :</string>
+              <string comment="Status of the current post" >Status :</string>
              </property>
             </widget>
            </item>

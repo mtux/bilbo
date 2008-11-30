@@ -44,9 +44,9 @@ kde4_add_ui_files(
    bilbo_SRCS 
   toolboxbase.ui
   addeditblogbase.ui
-  addeditlink.ui
+  addeditlinkbase.ui
   entriescountdialogbase.ui
-  addimagedialog.ui
+  addimagedialogbase.ui
   addcategorybase.ui
   settingsbase.ui
 )

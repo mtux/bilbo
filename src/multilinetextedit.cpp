@@ -22,7 +22,7 @@
 #include <QtGui>
 #include "multilinetextedit.h"
 
-MultiLineTextEdit::MultiLineTextEdit(QWidget *parent) : QTextEdit(parent)
+MultiLineTextEdit::MultiLineTextEdit(QWidget *parent) : KRichTextEdit(parent)
 {
 }
 
@@ -42,7 +42,7 @@ void MultiLineTextEdit::keyPressEvent(QKeyEvent *event)
 	} else {
 		//dynamic_cast <QTextEdit*>(this) ->keyPressEvent(event);
 		//dynamic_cast <QWidget*>(this) ->keyPressEvent(event);
-		QTextEdit::keyPressEvent(event);
+		KRichTextEdit::keyPressEvent(event);
 
 	}
 }
