@@ -17,15 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "mainwindow.h"
-#include "global.h"
-#include "toolbox.h"
-#include "postentry.h"
-#include "addeditblog.h"
-#include "backend.h"
-#include "bilbomedia.h"
-#include "settings.h"
-#include "systray.h"
 
 #include <ktabwidget.h>
 #include <kstatusbar.h>
@@ -35,7 +26,19 @@
 #include <kstandardaction.h>
 #include <kconfigdialog.h>
 #include <kdebug.h>
+#include <kmessagebox.h>
 #include <KDE/KLocale>
+
+#include "mainwindow.h"
+#include "global.h"
+#include "toolbox.h"
+#include "postentry.h"
+#include "addeditblog.h"
+#include "backend.h"
+#include "bilbomedia.h"
+#include "settings.h"
+#include "systray.h"
+#include "bilboblog.h"
 
 MainWindow::MainWindow(): KXmlGuiWindow(),
         tabPosts(new KTabWidget(this))
@@ -83,9 +86,9 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
 //     readConfig();
     toolbox->setVisible(Settings::show_toolbox_on_start());
     if(Settings::show_toolbox_on_start()){
-        actToggleToolboxVisible->setText(tr("Hide Toolbox"));
+        actToggleToolboxVisible->setText(i18n("Hide Toolbox"));
     } else {
-        actToggleToolboxVisible->setText(tr("Show Toolbox"));
+        actToggleToolboxVisible->setText(i18n("Show Toolbox"));
     }
     setupSystemTray();
 	
@@ -178,7 +181,7 @@ void MainWindow::sltCreateNewPost()
 {
     kDebug();
     PostEntry *temp=new PostEntry(this);
-    tabPosts->addTab(temp,"Untitled");
+    tabPosts->addTab(temp,i18n("Untitled"));
     temp->setCurrentPost();
     temp->setCurrentPostBlogId(toolbox->currentBlogId());
 	
@@ -239,10 +242,10 @@ void MainWindow::sltToggleToolboxVisible()
 {
     if(toolbox->isVisible()){
         toolboxDock->hide();
-        actToggleToolboxVisible->setText(tr("Show Toolbox"));
+        actToggleToolboxVisible->setText(i18n("Show Toolbox"));
     } else {
         toolboxDock->show();
-        actToggleToolboxVisible->setText(tr("Hide Toolbox"));
+        actToggleToolboxVisible->setText(i18n("Hide Toolbox"));
     }
 }
 
@@ -263,8 +266,7 @@ void MainWindow::sltActivePostChanged(int index)
         previousActivePostIndex = index;
         sltPostTitleChanged( activePost->postTitle() );
     } else {
-        kError() << "MainWindow::sltActivePostChanged: ActivePost is NULL! \
-                tabPosts Current index is: " << tabPosts->currentIndex() ;
+        kError() << "ActivePost is NULL! tabPosts Current index is: " << tabPosts->currentIndex() ;
     }
 }
 
@@ -273,7 +275,7 @@ void MainWindow::sltPublishPost()
     kDebug();
     int blog_id = toolbox->currentBlogId();
     if(blog_id==-1){
-        QMessageBox::warning(this, "No blog is selected", "You have to select a blog to publish this post to it.");
+        KMessageBox::sorry(this, i18n("You have to select a blog to publish this post to it."));
         kDebug()<<"Blog id not sets correctly.";
         return;
     }
@@ -282,9 +284,8 @@ void MainWindow::sltPublishPost()
     connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
     BilboPost *post = toolbox->getFieldsValue();
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
-        if(QMessageBox::warning(this, "Empty fields!",
-           "Your post title or body is empty!\nAre you sure of pubish this post?",
-           QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
+        if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
+           ) == KMessageBox::Cancel)
             return;
     }
     post->setContent(*(activePost->postBody()));
@@ -292,7 +293,7 @@ void MainWindow::sltPublishPost()
     post->setPrivate(false);
 	
     b->publishPost(post);
-    statusBar()->showMessage("publishing new post...");
+    statusBar()->showMessage(i18n("publishing new post..."));
     this->setCursor(Qt::BusyCursor);
 }
 
@@ -302,17 +303,14 @@ void MainWindow::sltPostPublished(int blog_id, int post_id, bool isPrivate)
     QString blog_name = toolbox->listBlogs.key(blog_id);
     QString msg;
     if(isPrivate){
-        msg = "New Draft saved to \"" + blog_name +
-                "\" successfully\nDo you want to keep it on editor?";
-        statusBar()->showMessage("New draft saved to \""+blog_name + "\"" , STATUSTIMEOUT);
+        msg = i18n("New Draft saved to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
+        statusBar()->showMessage(i18n("New draft saved to \"%1\"", blog_name) , STATUSTIMEOUT);
     }
     else {
-        msg = "New Post published to \"" + blog_name +
-                "\" successfully\nDo you want to keep it on editor?";
-        statusBar()->showMessage("New post published to \""+blog_name + "\"" , STATUSTIMEOUT);
+        msg = i18n("New Post published to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
+        statusBar()->showMessage(i18n("New post published to \"%1\"",blog_name) , STATUSTIMEOUT);
     }
-    if(QMessageBox::information(this, "Successful",  msg, QMessageBox::Yes | QMessageBox::No, QMessageBox::No)
-       != QMessageBox::Yes)
+    if(KMessageBox::questionYesNo(this, msg, "Successful") != KMessageBox::Yes)
         sltRemoveCurrentPostEntry();
 	
     this->unsetCursor();
@@ -377,7 +375,7 @@ void MainWindow::sltSaveAsDraft()
     kDebug();
     int blog_id = toolbox->currentBlogId();
     if(blog_id==-1){
-        QMessageBox::warning(this, "Blog not sets", "You have to select a blog to save this post as draft to it.");
+        KMessageBox::sorry(this, i18n("You have to select a blog to save this post as draft on it."));
         kDebug()<<"Blog id not sets correctly.";
         return;
     }
@@ -386,9 +384,8 @@ void MainWindow::sltSaveAsDraft()
     connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
     BilboPost *post = toolbox->getFieldsValue();
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
-        if(QMessageBox::warning(this, "Empty fields!",
-           "Your post title or body is empty!\nAre you sure of pubish this post?",
-           QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
+        if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
+                                             ) == KMessageBox::Cancel)
             return;
     }
     post->setContent(*(activePost->postBody()));
@@ -396,14 +393,14 @@ void MainWindow::sltSaveAsDraft()
     post->setPrivate(true);
 	
     b->publishPost(post);
-    statusBar()->showMessage("Save new post draft...");
+    statusBar()->showMessage(i18n("Saving draft..."));
     this->setCursor(Qt::BusyCursor);
 }
 
 void MainWindow::sltError(QString & errorMessage)
 {
     kDebug()<<"Error message: "<<errorMessage;
-    QMessageBox::critical(this, "Error", "An Error ocurred on previous transaction: "+errorMessage);
+    KMessageBox::detailedError(this, "An Error ocurred on latest transaction ", errorMessage);
 }
 
 #include "mainwindow.moc"

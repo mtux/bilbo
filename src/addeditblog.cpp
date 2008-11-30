@@ -17,12 +17,21 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "addeditblog.h"
-#include "global.h"
-#include "bilboblog.h"
 
+
+#include <kblog/gdata.h>
+#include <kblog/blogger1.h>
+#include <kblog/metaweblog.h>
+#include <kblog/movabletype.h>
+#include <kblog/wordpressbuggy.h>
+#include <kurl.h>
 #include <kmessagebox.h>
 #include <kdebug.h>
+
+#include "bilboblog.h"
+#include "addeditblog.h"
+#include "global.h"
+
 #define TIMEOUT 40000
 
 AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
@@ -30,10 +39,10 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 {
 	kDebug();
 	setupUi(this);
-	this->setWindowTitle("Add a new blog");
+	this->setWindowTitle(i18n("Add a new blog"));
 	isNewBlog=true;
 	if(blog_id>-1){
-		this->setWindowTitle("Edit Blog Settings");
+		this->setWindowTitle(i18n("Edit Blog Settings"));
 		btnOk->setEnabled(true);
 		btnFetch->setEnabled(true);
 		btnAutoConf->setEnabled(true);
@@ -81,8 +90,8 @@ void AddEditBlog::autoConfigure()
 {
 	kDebug();
 	if(txtUrl->text().isEmpty() || txtUser->text().isEmpty() || txtPass->text().isEmpty()){
-		kDebug()<<"Username, Password or Url isn't set!";
-		KMessageBox::sorry(this, i18n("You need to set the username, password and url of your blog or website."), i18n("Incomplete fields"));
+		kDebug()<<"Username, Password or Url doesn't set!";
+		KMessageBox::sorry(this, i18n("You have to set the username, password and url of your blog or website."), i18n("Incomplete fields"));
 		return;
 	}
 	btnAutoConf->setEnabled(false);
@@ -182,7 +191,7 @@ void AddEditBlog::handleFetchAPITimeout()
 void AddEditBlog::handleFetchError(KBlog::Blog::ErrorType type, const QString & errorMsg)
 {
 	kDebug()<<" ErrorType: "<< type;
-	KMessageBox::detailedError(this, "Fetching BlogID Faild!\nplease check you internet connection.", errorMsg);
+	KMessageBox::detailedError(this, i18n("Fetching BlogID Faild!\nplease check you internet connection."), errorMsg);
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);

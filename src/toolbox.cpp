@@ -17,16 +17,20 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include <kstatusbar.h>
+#include <kdebug.h>
+#include <kxmlguiwindow.h>
+#include <kmessagebox.h>
+
 #include "toolbox.h"
 #include "entriescountdialog.h"
 #include "addeditblog.h"
 #include "global.h"
 #include "backend.h"
 #include "bilbopost.h"
+#include "bilboblog.h"
 
-#include <kstatusbar.h>
-#include <kdebug.h>
-#include <kxmlguiwindow.h>
 Toolbox::Toolbox(QWidget *parent)
     :QWidget(parent)
 {
@@ -62,7 +66,7 @@ Toolbox::Toolbox(QWidget *parent)
 
 void Toolbox::sltAddBlog()
 {
-	qDebug("Toolbox::sltAddBlog");
+	kDebug();
 	addEditBlogWindow = new AddEditBlog(-1, this);
 	addEditBlogWindow->show();
 	connect(addEditBlogWindow, SIGNAL(sigBlogAdded(BilboBlog&)), this, SLOT(sltBlogAdded(BilboBlog&)));
@@ -70,9 +74,9 @@ void Toolbox::sltAddBlog()
 
 void Toolbox::sltEditBlog()
 {
-	qDebug("Toolbox::sltEditBlog");
+	kDebug();
 	if(!currentBlog){
-		QMessageBox::warning(this, "First select a blog", "There isn't any selected blog, you have to select a blog first.");
+		KMessageBox::sorry(this, i18n("There isn't any selected blog, you have to select a blog first."));
 		return;
 	}
 	blogToEdit = currentBlog;
@@ -84,7 +88,7 @@ void Toolbox::sltEditBlog()
 
 void Toolbox::sltRemoveBlog()
 {
-	qDebug("Toolbox::sltRemoveBlog");
+	kDebug();
 	__db->removeBlog(listBlogs.value(currentBlog->text()));
 	listBlogs.remove(currentBlog->text());
 	delete currentBlog;
@@ -93,7 +97,7 @@ void Toolbox::sltRemoveBlog()
 
 void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 {
-	qDebug("Toolbox::sltBlogAdded");
+	kDebug();
 	listBlogs.insert(addedBlog.title(), addedBlog.id());
 	QRadioButton *a = new QRadioButton(addedBlog.title());
 	a->setToolTip(addedBlog.blogUrl());
@@ -102,22 +106,24 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 	connect(a, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
     a->setChecked(true);
     sltReloadCategoryList();
+    delete addEditBlogWindow;
 }
 
 void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 {
-	qDebug("Toolbox::sltBlogEdited");
+	kDebug();
     listBlogs.remove(blogToEdit->text());
 	blogToEdit->setText(editedBlog.title());
 	blogToEdit->setToolTip(editedBlog.blogUrl());
     listBlogs.insert(editedBlog.title(), editedBlog.id());
     Q_EMIT sigCurrentBlogChanged(listBlogs.value(currentBlog->text(), -1));
     sltReloadCategoryList();
+    delete addEditBlogWindow;
 }
 
 void Toolbox::reloadBlogList()
 {
-	qDebug("Toolbox::reloadBlogList");
+	kDebug();
 	listBlogs.clear();
     listBlogs = __db->listBlogsTitle();
 	for(int j=0; j<listBlogRadioButtons.count(); ++j){
@@ -138,9 +144,9 @@ void Toolbox::reloadBlogList()
 
 void Toolbox::sltReloadCategoryList()
 {
-	qDebug("Toolbox::sltReloadCategoryList");
+	kDebug();
 	if(!currentBlog){
-		QMessageBox::warning(this, "First select a blog", "There isn't any selected blog, you have to select a blog from Blogs page befor ask for Category list");
+		KMessageBox::sorry(this, i18n("There isn't any selected blog, you have to select a blog from Blogs page befor ask for Category list"));
 		return;
 	}
 	
@@ -152,16 +158,16 @@ void Toolbox::sltReloadCategoryList()
 	b->getCategoryListFromServer();
 	connect(b, SIGNAL(sigCategoryListFetched(int)), this, SLOT(sltLoadCategoryListFromDB(int)));
     connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
-	statusbar->showMessage("Requesting category list...");
+	statusbar->showMessage(i18n("Requesting category list..."));
     this->setCursor(Qt::BusyCursor);
 }
 
 void Toolbox::sltReloadEntries()
 {
-	qDebug("Toolbox::sltReloadEntries");
+	kDebug();
 	if(!currentBlog){
-		QMessageBox::warning(this, "First select a blog", "There isn't any selected blog, you have to select a blog from Blogs page befor ask for Entries list");
-		qDebug("there isn't any selected blog.");
+		KMessageBox::sorry(this, i18n("There isn't any selected blog, you have to select a blog from Blogs page befor ask for Entries list"));
+		kDebug()<<"There isn't any selected blog.";
 		return;
 	}
 	EntriesCountDialog *dia = new EntriesCountDialog(this);
@@ -179,7 +185,7 @@ void Toolbox::sltSetCurrentBlog(bool checked)
 
 void Toolbox::sltCurrentPageChanged(int index)
 {
-// 	qDebug("Toolbox::sltCurrentPageChanged");
+// 	kDebug();
 	if(!currentBlog)
 		return;
 	switch( index ){
@@ -200,7 +206,7 @@ void Toolbox::sltLoadEntriesFromDB(int blog_id)
 		return;
 	}
 	clearEntriesList();
-	statusbar->showMessage("Entries list received.", STATUSTIMEOUT);
+	statusbar->showMessage(i18n("Entries list received."), STATUSTIMEOUT);
     this->unsetCursor();
 	listEntries = __db->listPostsTitle(blog_id);
 	lstEntriesList->addItems(listEntries.keys());
@@ -213,7 +219,7 @@ void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 		kDebug()<<"Blog Id do not sets correctly";
 		return;
 	}
-	statusbar->showMessage("Category list received.", STATUSTIMEOUT);
+	statusbar->showMessage(i18n("Category list received."), STATUSTIMEOUT);
 	this->unsetCursor();
 	clearCatList();
 	listCategories = __db->listCategories(blog_id);
@@ -229,18 +235,18 @@ void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 
 void Toolbox::sltGetEntriesCount(int count)
 {
-	qDebug("Toolbox::sltGetEntriesCount");
+	kDebug();
 	Backend *entryB = new Backend(listBlogs.value(currentBlog->text()));
 	entryB->getEntriesListFromServer(count);
 	connect(entryB, SIGNAL(sigEntriesListFetched(int)), this, SLOT(sltLoadEntriesFromDB(int)));
     connect(entryB, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
-	statusbar->showMessage("Requesting Entry list...");
+	statusbar->showMessage(i18n("Requesting Entry list..."));
     this->setCursor(Qt::BusyCursor);
 }
 
 void Toolbox::resetFields()
 {
-	qDebug("Toolbox::resetFields");
+	kDebug();
 	for(int i=0; i<listCategoryCheckBoxes.count(); ++i){
 		listCategoryCheckBoxes[i]->setChecked(false);
 	}
@@ -248,7 +254,7 @@ void Toolbox::resetFields()
 	chkOptionsTime->setChecked(false);
 	datetimeOptionstimestamp->setDateTime(QDateTime::currentDateTime());
 	txtOptionsTrackback->clear();
-    txtSummary->setPlainText("");
+    txtSummary->setPlainText(QString());
     chkOptionsComments->setChecked(true);
     chkOptionsTrackback->setChecked(true);
     comboOptionsStatus->setCurrentIndex(0);
@@ -286,7 +292,7 @@ void Toolbox::sltCurrentBlogChanged(int blog_id)
 
 BilboPost * Toolbox::getFieldsValue()
 {
-	qDebug("Toolbox::getFieldsValue");
+	kDebug();
 	currentPost->setCategories(this->selectedCategoriesTitle());
 	currentPost->setTags(this->currentTags());
 	if(currentPost->status()==KBlog::BlogPost::Fetched || currentPost->status()==KBlog::BlogPost::Modified){
@@ -310,14 +316,13 @@ BilboPost * Toolbox::getFieldsValue()
 	currentPost->setTrackBackAllowed(chkOptionsTrackback->isChecked());
 	currentPost->setPosition((BilboPost::Position)comboOptionsStatus->currentIndex());
     currentPost->setSummary(txtSummary->toPlainText());
-//     qDebug()<<"Toolbox::getFieldsValue: Post will return:"<<currentPost->toString();
 	return currentPost;
 }
 
 void Toolbox::setFieldsValue(const BilboPost & post)
 {
-    qDebug("Toolbox::setFieldsValue");
-//     qDebug()<<"Toolbox::setFieldsValue: New Post is: "<<post.toString();
+    kDebug();
+//     kDebug()<<"New Post is: "<<post.toString();
     delete currentPost;
     currentPost = new BilboPost(post);
     setSelectedCategories(post.categories());
@@ -334,7 +339,7 @@ void Toolbox::setFieldsValue(const BilboPost & post)
 
 QStringList Toolbox::selectedCategoriesTitle()
 {
-	qDebug("Toolbox::selectedCategoriesTitle");
+	kDebug();
 	QStringList list;
 	for( int i=0; i<listCategoryCheckBoxes.count(); ++i){
 		if(listCategoryCheckBoxes[i]->isChecked())
@@ -346,7 +351,7 @@ QStringList Toolbox::selectedCategoriesTitle()
 QList< int > Toolbox::selectedCategoriesId()
 {
 	///TODO: Implement it
-	qDebug("QList< int > Toolbox::selectedCategoriesId() : NOT IMPLEMENTED YET!");
+	kDebug()<<"NOT IMPLEMENTED YET!";
 	return QList<int>();
 }
 
@@ -362,12 +367,12 @@ void Toolbox::setSelectedCategories(const QStringList &list)
 void Toolbox::setSelectedCategories(const QList< int > &)
 {
 	///TODO: Implement it
-	qDebug("Toolbox::setSelectedCategories(const QList< int > &) : NOT IMPLEMENTED YET!");
+	kDebug()<<"NOT IMPLEMENTED YET!";
 }
 
 QStringList Toolbox::currentTags()
 {
-	qDebug("Toolbox::currentTags");
+	kDebug();
 	QStringList t;
 	t = txtCatTags->text().split(',', QString::SkipEmptyParts);
 	for(int i=0; i < t.count() ; ++i){
@@ -386,10 +391,10 @@ int Toolbox::currentBlogId()
 
 void Toolbox::sltEntrySelected(QListWidgetItem * item)
 {
-    qDebug("Toolbox::sltEntrySelected");
+    kDebug();
     BilboPost *post = __db->getPostInfo(listEntries.value(item->text()));
 //     setFieldsValue(*post);
-    qDebug("Emiting sigEntrySelected...");
+    kDebug()<<"Emiting sigEntrySelected...";
 	Q_EMIT sigEntrySelected(post);
 }
 
