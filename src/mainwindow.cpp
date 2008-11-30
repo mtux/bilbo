@@ -137,7 +137,7 @@ void MainWindow::setupActions()
     actNewPost->setShortcut(Qt::CTRL + Qt::Key_N);
     connect(actNewPost, SIGNAL(triggered(bool)), this, SLOT(sltCreateNewPost()));
     
-    actAddBlog=new KAction(KIcon("document-new"), i18n("Add &Blog"),this);
+    actAddBlog=new KAction(KIcon("list-add"), i18n("Add &Blog"),this);
     actionCollection()->addAction(QLatin1String("add_blog"), actAddBlog);
     connect(actAddBlog, SIGNAL(triggered( bool )), toolbox, SLOT(sltAddBlog()));
 	

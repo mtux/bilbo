@@ -18,16 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "entriescountdialog.h"
-
+#include <kdebug.h>
 EntriesCountDialog::EntriesCountDialog(QWidget *parent)
-    :QDialog(parent)
+    :KDialog(parent)
 {
-	setupUi(this);
+    QWidget *dialog = new QWidget;
+    ui.setupUi(dialog);
+    dialog->setAttribute( Qt::WA_DeleteOnClose );
+    this->setMainWidget(dialog);
 	connect(this, SIGNAL(accepted()), this, SLOT(sltAccepted()));
 }
 
 void EntriesCountDialog::sltAccepted()
 {
-	qDebug("EntriesCountDialog::sltAccepted");
-	Q_EMIT sigAccepted(spinCount->value());
+    kDebug()<<"Emiting sigAccepted...";
+	Q_EMIT sigAccepted(ui.spinCount->value());
 }

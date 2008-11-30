@@ -38,16 +38,16 @@ int main(int argc, char *argv[])
                                  KLocalizedString(), "http://bilbo.sourceforge.net", 0);
     about.addAuthor( ki18n("Mehrdad Momeny"), ki18n("Core Developer"), "mehrdad.momeny@gmail.com" );
     about.addAuthor( ki18n("Golnaz Nilieh"), ki18n("Core Developer"), "g382nilieh@gmail.com" );
-// 	KComponentData componentData(&about);
     KCmdLineArgs::init(argc, argv, &about);
-    KCmdLineOptions options;
+//     KCmdLineOptions options;
 
 	KApplication app;
 	
 	global_init();
-	app.setQuitOnLastWindowClosed(false);
+// 	app.setQuitOnLastWindowClosed(false);
     
     MainWindow *bilbo = new MainWindow;
+//     bilbo->setAttribute(Qt::WA_DeleteOnClose);
     if(Settings::show_main_on_start())
         bilbo->show();
 	int r = app.exec();

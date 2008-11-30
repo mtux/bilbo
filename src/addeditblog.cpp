@@ -73,6 +73,9 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
     connect(txtPass, SIGNAL(returnPressed()), this, SLOT(sltReturnPressed()));
     connect(txtId, SIGNAL(returnPressed()), this, SLOT(sltReturnPressed()));
 	
+    btnOk->setIcon(KIcon("dialog-ok-apply"));
+    btnCancel->setIcon(KIcon("dialog-cancel"));
+    
 	txtUrl->setFocus();
 }
 
@@ -301,9 +304,9 @@ AddEditBlog::~AddEditBlog()
 {
     delete bBlog;
     delete mBlog;
-    delete mFetchProfileIdTimer;
-    delete mFetchBlogIdTimer;
-    delete mFetchAPITimer;
+//     delete mFetchProfileIdTimer;
+//     delete mFetchBlogIdTimer;
+//     delete mFetchAPITimer;
 }
 
 #include "addeditblog.moc"

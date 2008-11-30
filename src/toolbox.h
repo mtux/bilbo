@@ -26,6 +26,7 @@
 #include "ui_toolboxbase.h"
 class KStatusBar;
 class QRadioButton;
+class QButtonGroup;
 class BilboPost;
 class AddEditBlog;
 class BilboBlog;
@@ -47,7 +48,7 @@ public:
     void setCurrentPage( int index );
 	
 	QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
-	QList<QRadioButton*> listBlogRadioButtons;
+    QButtonGroup listBlogRadioButtons;
 	
 	QMap<QString, int> listCategories;///Contain Category name(QString) and Category id(int)
 	QList<QCheckBox*> listCategoryCheckBoxes;
@@ -60,7 +61,7 @@ public slots:
 	void sltEditBlog();
 	void sltBlogEdited(BilboBlog&);
 	void sltRemoveBlog();
-	void sltSetCurrentBlog( bool );
+	void sltSetCurrentBlog();
 	void sltReloadCategoryList();
 	void sltLoadCategoryListFromDB( int blog_id );
 	void sltReloadEntries();
@@ -85,10 +86,11 @@ private:
 	void clearCatList();
 	void clearEntriesList();
     void unCheckCatList();
+    void setButtonsIcon();
 	
 	AddEditBlog *addEditBlogWindow;
 	QRadioButton *blogToEdit;
-	QRadioButton *currentBlog;
+// 	QRadioButton *currentBlog;
 	BilboPost *currentPost;
 	KStatusBar *statusbar;
 };

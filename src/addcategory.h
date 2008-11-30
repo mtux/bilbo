@@ -26,7 +26,7 @@
 class AddCategory: public KDialog{
 Q_OBJECT
 public:
-    AddCategory(QWidget *parent = 0, Qt::WFlags flags=0);
+    AddCategory(QWidget *parent = 0);
 
 private:
     Ui::AddCategoryBase ui;

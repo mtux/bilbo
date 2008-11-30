@@ -19,8 +19,8 @@
  ***************************************************************************/
 #include "addcategory.h"
 
-AddCategory::AddCategory(QWidget *parent, Qt::WFlags flags)
-    :KDialog(parent, flags)
+AddCategory::AddCategory(QWidget *parent)
+    :KDialog(parent)
 {
     QWidget *dialog = new QWidget;
     ui.setupUi(dialog);
