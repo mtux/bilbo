@@ -190,7 +190,7 @@ void MainWindow::sltCreateNewPost()
 // // 	temp->setDefaultLayoutDirection(tmp->direction());
 // // 	delete tmp;
 // 	
-//     connect(temp, SIGNAL(sigTitleChanged(const QString& )), this, SLOT(sltPostTitleChanged(const QString&)));
+     connect(temp, SIGNAL(sigTitleChanged(const QString& )), this, SLOT(sltPostTitleChanged(const QString&)));
 // // 	activePost=temp;
     tabPosts->setCurrentWidget(temp);
     if(this->isVisible()==false)
@@ -258,14 +258,15 @@ void MainWindow::sltActivePostChanged(int index)
     if ((prevActivePost != 0) && (index != previousActivePostIndex)) {
 		prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
 		prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
-		tabPosts->setTabText(previousActivePostIndex, prevActivePost->postTitle());
+		//tabPosts->setTabText(previousActivePostIndex, prevActivePost->postTitle());
     }
 
     if (activePost != 0) {
         toolbox->setFieldsValue(activePost->currentPost());
         toolbox->setCurrentBlog(activePost->currentPostBlogId());
         previousActivePostIndex = index;
-        sltPostTitleChanged( activePost->postTitle() );
+        //sltPostTitleChanged( activePost->postTitle() );
+		//tabPosts->setTabText(tabPosts->currentIndex(),activePost->postTitle());
     } else {
         kError() << "ActivePost is NULL! tabPosts Current index is: " << tabPosts->currentIndex() ;
     }

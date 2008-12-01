@@ -14,7 +14,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout" >
    <item row="0" column="1" >
-    <widget class="QLineEdit" name="txtLocalUrl" >
+    <widget class="KLineEdit" name="txtLocalUrl" >
      <property name="text" >
       <string/>
      </property>
@@ -34,7 +34,7 @@
     </widget>
    </item>
    <item row="3" column="1" colspan="2" >
-    <widget class="QLineEdit" name="txtRemoteUrl" >
+    <widget class="KLineEdit" name="txtRemoteUrl" >
      <property name="toolTip" >
       <string>Enter the image url here</string>
      </property>
@@ -54,7 +54,7 @@
     </widget>
    </item>
    <item row="0" column="2" >
-    <widget class="QPushButton" name="btnBrowse" >
+    <widget class="KPushButton" name="btnBrowse" >
      <property name="text" >
       <string comment="browse your computer for an image" >Browse</string>
      </property>
