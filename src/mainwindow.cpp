@@ -68,7 +68,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
 
     // add a status bar
     statusBar()->show();
-    toolbox->show();
+//     toolbox->show();
 
     // a call to KXmlGuiWindow::setupGUI() populates the GUI
     // with actions, using KXMLGUI.
@@ -95,22 +95,21 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     connect(tabPosts, SIGNAL(currentChanged( int )), this, SLOT(sltActivePostChanged(int)));
     connect(toolbox, SIGNAL(sigEntrySelected(BilboPost *)), this, SLOT(sltNewPostSelected(BilboPost*)));
     connect(toolbox, SIGNAL(sigCurrentBlogChanged(int)), this, SLOT(sltCurrentBlogChanged(int)));
+    
+//     if(Settings::show_main_on_start())
+//         this->show();
+//     else
+//         this->hide();
 }
 
 MainWindow::~MainWindow()
 {
+    writeConfigs();
 //     delete toolbox;
 //     delete activePost;
-//     delete addBlogPage;
+//     delete systemTray;
+//     delete toolboxDock;
 //     delete tabPosts;
-//     delete toolbarPost;
-//     delete toolbarBlogger;
-//     delete toolbarAction;
-//     delete menubar;
-//     delete menuBilbo;
-//     delete menuPost;
-//     delete menuAbout;
-//     delete statusbar;
 //     delete btnRemovePost;
 //     delete actAddBlog;
 //     delete actUploadAll;
@@ -120,8 +119,6 @@ MainWindow::~MainWindow()
 //     delete actSaveDraft;
 //     delete actDeletePost;
 //     delete actDeleteLocally;
-//     delete actAbout;
-//     delete actQuit;
 //     delete actToggleToolboxVisible;
 }
 
@@ -402,6 +399,15 @@ void MainWindow::sltError(QString & errorMessage)
 {
     kDebug()<<"Error message: "<<errorMessage;
     KMessageBox::detailedError(this, "An Error ocurred on latest transaction ", errorMessage);
+}
+
+void MainWindow::writeConfigs()
+{
+    kDebug();
+    if(toolboxDock->isVisible())
+        Settings::setShow_toolbox_on_start(true);
+    else
+        Settings::setShow_toolbox_on_start(false);
 }
 
 #include "mainwindow.moc"

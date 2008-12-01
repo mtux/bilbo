@@ -11,11 +11,24 @@
   </property>
   <layout class="QGridLayout" >
    <item row="0" column="0" >
-    <widget class="QCheckBox" name="checkBox" >
+    <widget class="QCheckBox" name="kcfg_show_main_on_start" >
      <property name="text" >
       <string>Show Bilbo window on startup</string>
      </property>
     </widget>
+   </item>
+   <item row="1" column="0" >
+    <spacer name="verticalSpacer" >
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0" >
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

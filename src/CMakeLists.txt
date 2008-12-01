@@ -38,6 +38,7 @@ set(bilbo_SRCS
  addimagedialog.cpp
  bilbomedia.cpp
  addcategory.cpp
+ blogradiobutton.cpp
 )
 
 kde4_add_ui_files(
