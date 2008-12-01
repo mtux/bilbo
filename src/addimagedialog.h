@@ -23,7 +23,7 @@
 #include <QDialog>
 //#include <KDialog>
 
-#include "ui_addimagedialog.h"
+#include "ui_addimagedialogbase.h"
 
 class BilboMedia;
 /**
@@ -36,7 +36,7 @@ Implements a dialog to enter address of a local or remote image file.
 // TODO use KDialog instead of QDialog.
 // now when using it default ok-cancel buttons appear on top right corner of the dialog window.
 
-class AddImageDialog: public QDialog, public Ui::AddImageDialog
+class AddImageDialog: public QDialog, public Ui::AddImageDialogBase
 {
 	Q_OBJECT
 	public:

@@ -97,3 +97,5 @@ void BilboMedia::setName(const QString &name)
 {
 	mName = name;
 }
+
+#include <bilbomedia.moc>

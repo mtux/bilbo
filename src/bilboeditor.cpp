@@ -26,6 +26,7 @@
 #include <ktoolbar.h>
 #include <kaction.h>
 #include <kicon.h>
+#include <kcolordialog.h>
 #include <kdebug.h>
 
 #include "bilboeditor.h"
@@ -875,8 +876,12 @@ void BilboEditor::sltRemoveLink()
 
 void BilboEditor::sltSelectColor()
 {
-	QColor c = QColorDialog::getColor(QColor("black"), this);
-	editor->setTextForegroundColor(c);
+// 	QColor c = QColorDialog::getColor(QColor("black"), this);
+// 	editor->setTextForegroundColor(c);
+	QColor c;
+	int result = KColorDialog::getColor(c, QColor("black"), this);
+	if (result == KColorDialog::Accepted)
+		editor->setTextForegroundColor(c);
 // 	const QBrush br(c, Qt::SolidPattern);
 // 	//QTextCharFormat ch = editor->currentCharFormat();
 // 	QTextCharFormat ch;

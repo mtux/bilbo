@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>AddImageDialog</class>
- <widget class="QDialog" name="AddImageDialog" >
+ <class>AddImageDialogBase</class>
+ <widget class="QDialog" name="AddImageDialogBase" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -77,7 +77,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>AddImageDialog</receiver>
+   <receiver>AddImageDialogBase</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
@@ -93,7 +93,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>AddImageDialog</receiver>
+   <receiver>AddImageDialogBase</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >

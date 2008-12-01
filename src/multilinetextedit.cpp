@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDebug>
+//#include <QDebug>
 #include <QtGui>
 #include "multilinetextedit.h"
 
@@ -46,3 +46,5 @@ void MultiLineTextEdit::keyPressEvent(QKeyEvent *event)
 
 	}
 }
+
+#include <multilinetextedit.moc>

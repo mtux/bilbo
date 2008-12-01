@@ -23,7 +23,7 @@
 #include <QDialog>
 //#include <KDialog>
 
-#include "ui_addeditlink.h"
+#include "ui_addeditlinkbase.h"
 
 /**
 Implements a dialog to get user input for link parameters; address, name and target.
@@ -34,7 +34,9 @@ Implements a dialog to get user input for link parameters; address, name and tar
 // TODO use KDialog instead of QDialog.
 // now when using it default ok-cancel buttons appear on top right corner of the dialog window.
 
-class AddEditLink: public QDialog, public Ui::AddEditLinkDialog {
+//class AddEditLink: public QDialog, public Ui::AddEditLinkDialog {
+class AddEditLink: public QDialog, public Ui::AddEditLinkBase
+{
 	Q_OBJECT
 	public:
 		AddEditLink(QWidget *parent = 0);
