@@ -14,13 +14,13 @@
   </property>
   <layout class="QGridLayout" name="gridLayout" >
    <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabs" >
+    <widget class="KTabWidget" name="tabs" >
      <property name="currentIndex" >
       <number>0</number>
      </property>
      <widget class="QWidget" name="tabBasic" >
       <attribute name="title" >
-       <string>&amp;Basic</string>
+       <string>Basic</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2" >
        <item row="0" column="0" colspan="3" >
@@ -81,7 +81,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="2" column="1" colspan="2" >
-        <widget class="QLineEdit" name="txtUrl" >
+        <widget class="KLineEdit" name="txtUrl" >
          <property name="text" >
           <string>http://</string>
          </property>
@@ -98,7 +98,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="3" column="1" colspan="2" >
-        <widget class="QLineEdit" name="txtUser" />
+        <widget class="KLineEdit" name="txtUser" />
        </item>
        <item row="4" column="0" >
         <widget class="QLabel" name="label_3" >
@@ -111,9 +111,9 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="4" column="1" colspan="2" >
-        <widget class="QLineEdit" name="txtPass" >
+        <widget class="KLineEdit" name="txtPass" >
          <property name="echoMode" >
-          <enum>QLineEdit::Password</enum>
+          <enum>QLineEdit::Normal</enum>
          </property>
         </widget>
        </item>
@@ -131,7 +131,7 @@ p, li { white-space: pre-wrap; }
         </spacer>
        </item>
        <item row="5" column="2" >
-        <widget class="QPushButton" name="btnAutoConf" >
+        <widget class="KPushButton" name="btnAutoConf" >
          <property name="enabled" >
           <bool>false</bool>
          </property>
@@ -164,7 +164,7 @@ p, li { white-space: pre-wrap; }
      </widget>
      <widget class="QWidget" name="tabAdvanced" >
       <attribute name="title" >
-       <string>A&amp;dvanced</string>
+       <string>Advanced</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3" >
        <item row="0" column="0" colspan="3" >
@@ -185,7 +185,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="1" column="1" >
-        <widget class="QComboBox" name="comboApi" >
+        <widget class="KComboBox" name="comboApi" >
          <item>
           <property name="text" >
            <string>Blogger 1.0 API</string>
@@ -234,10 +234,10 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="2" column="1" >
-        <widget class="QLineEdit" name="txtId" />
+        <widget class="KLineEdit" name="txtId" />
        </item>
        <item row="2" column="2" >
-        <widget class="QPushButton" name="btnFetch" >
+        <widget class="KPushButton" name="btnFetch" >
          <property name="maximumSize" >
           <size>
            <width>100</width>
@@ -273,7 +273,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="3" column="1" >
-        <widget class="QComboBox" name="comboDir" >
+        <widget class="KComboBox" name="comboDir" >
          <item>
           <property name="text" >
            <string>Left to right</string>
@@ -306,7 +306,7 @@ p, li { white-space: pre-wrap; }
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnOk" >
+      <widget class="KPushButton" name="btnOk" >
        <property name="enabled" >
         <bool>false</bool>
        </property>
@@ -316,7 +316,7 @@ p, li { white-space: pre-wrap; }
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnCancel" >
+      <widget class="KPushButton" name="btnCancel" >
        <property name="text" >
         <string>Cancel</string>
        </property>
@@ -326,6 +326,29 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KComboBox</class>
+   <extends>QComboBox</extends>
+   <header>kcombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KPushButton</class>
+   <extends>QPushButton</extends>
+   <header>kpushbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>ktabwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>txtUrl</tabstop>
   <tabstop>txtUser</tabstop>

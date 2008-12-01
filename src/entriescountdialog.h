@@ -20,7 +20,7 @@
 #ifndef ENTRIESCOUNTDIALOG_H
 #define ENTRIESCOUNTDIALOG_H
 
-#include <QDialog>
+#include <kdialog.h>
 
 #include "ui_entriescountdialogbase.h"
 
@@ -28,7 +28,7 @@
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-class EntriesCountDialog: public QDialog, public Ui::EntriesCountDialogBase {
+class EntriesCountDialog: public KDialog{
 Q_OBJECT
 public:
     EntriesCountDialog(QWidget *parent = 0);
@@ -38,6 +38,9 @@ Q_SIGNALS:
 	
 protected Q_SLOTS:
 	void sltAccepted();
+    
+private:
+    Ui::EntriesCountDialogBase ui;
 };
 
 #endif

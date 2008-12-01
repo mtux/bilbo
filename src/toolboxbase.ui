@@ -15,7 +15,7 @@
      <item row="0" column="0" >
       <widget class="QToolBox" name="box" >
        <property name="currentIndex" >
-        <number>4</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="pgBlogs" >
         <property name="geometry" >
@@ -23,7 +23,7 @@
           <x>0</x>
           <y>0</y>
           <width>298</width>
-          <height>412</height>
+          <height>407</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -57,21 +57,21 @@
             <enum>QLayout::SetMinimumSize</enum>
            </property>
            <item>
-            <widget class="QPushButton" name="btnBlogAdd" >
+            <widget class="KPushButton" name="btnBlogAdd" >
              <property name="text" >
               <string comment="verb, add new blog" >&amp;Add...</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnBlogEdit" >
+            <widget class="KPushButton" name="btnBlogEdit" >
              <property name="text" >
               <string comment="verb, edit selected blog properties" >&amp;Edit...</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnBlogRemove" >
+            <widget class="KPushButton" name="btnBlogRemove" >
              <property name="text" >
               <string comment="verb, remove selected blog from the blog list" >&amp;Remove</string>
              </property>
@@ -86,8 +86,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>298</width>
-          <height>412</height>
+          <width>328</width>
+          <height>179</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -97,21 +97,21 @@
          <item row="1" column="0" >
           <layout class="QHBoxLayout" name="horizontalLayout_4" >
            <item>
-            <widget class="QPushButton" name="btnEntriesReload" >
+            <widget class="KPushButton" name="btnEntriesReload" >
              <property name="text" >
               <string>&amp;Reload</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnEntriesUpdate" >
+            <widget class="KPushButton" name="btnEntriesUpdate" >
              <property name="text" >
               <string>U&amp;pdate</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnEntriesCopyUrl" >
+            <widget class="KPushButton" name="btnEntriesCopyUrl" >
              <property name="text" >
               <string>Copy &amp;URL</string>
              </property>
@@ -123,7 +123,7 @@
           <layout class="QHBoxLayout" name="horizontalLayout" />
          </item>
          <item row="0" column="0" >
-          <widget class="QListWidget" name="lstEntriesList" >
+          <widget class="KListWidget" name="lstEntriesList" >
            <property name="editTriggers" >
             <set>QAbstractItemView::NoEditTriggers</set>
            </property>
@@ -151,8 +151,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>298</width>
-          <height>412</height>
+          <width>256</width>
+          <height>117</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -181,14 +181,14 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3" >
              <item>
-              <widget class="QPushButton" name="btnCatReload" >
+              <widget class="KPushButton" name="btnCatReload" >
                <property name="text" >
                 <string>Reload</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="btnCatAdd" >
+              <widget class="KPushButton" name="btnCatAdd" >
                <property name="text" >
                 <string>Add &amp;Category...</string>
                </property>
@@ -209,7 +209,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="txtCatTags" />
+              <widget class="KLineEdit" name="txtCatTags" />
              </item>
             </layout>
            </item>
@@ -222,8 +222,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>298</width>
-          <height>412</height>
+          <width>100</width>
+          <height>30</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -236,7 +236,7 @@
           <x>0</x>
           <y>0</y>
           <width>298</width>
-          <height>412</height>
+          <height>407</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -253,7 +253,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="comboOptionsStatus" >
+            <widget class="KComboBox" name="comboOptionsStatus" >
              <item>
               <property name="text" >
                <string>Published</string>
@@ -329,7 +329,7 @@ p, li { white-space: pre-wrap; }
           <layout class="QVBoxLayout" name="verticalLayout_3" />
          </item>
          <item>
-          <widget class="QDateTimeEdit" name="datetimeOptionstimestamp" />
+          <widget class="KDateTimeWidget" name="datetimeOptionstimestamp" />
          </item>
          <item>
           <widget class="QLabel" name="lblOptionsTrackBack" >
@@ -342,7 +342,7 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="txtOptionsTrackback" />
+          <widget class="KLineEdit" name="txtOptionsTrackback" />
          </item>
          <item>
           <widget class="QLabel" name="label_2" >
@@ -377,7 +377,6 @@ p, li { white-space: pre-wrap; }
  </widget>
  <tabstops>
   <tabstop>btnBlogAdd</tabstop>
-  <tabstop>btnBlogEdit</tabstop>
   <tabstop>btnBlogRemove</tabstop>
   <tabstop>btnEntriesCopyUrl</tabstop>
   <tabstop>btnCatAdd</tabstop>
