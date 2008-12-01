@@ -44,10 +44,12 @@ public:
 	
 	void reloadBlogList();
 	BilboPost* getFieldsValue();
-	void setFieldsValue(const BilboPost& post);
+	//void setFieldsValue(const BilboPost& post);
+	void setFieldsValue(BilboPost* post = 0);
 	int currentBlogId();
     void setCurrentBlog(int blog_id);
     void setCurrentPage( int index );
+	void setCurrentPost(BilboPost* post);
 	
 	QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
     QButtonGroup listBlogRadioButtons;
@@ -74,6 +76,7 @@ public slots:
 	void resetFields();
     void sltEntrySelected( QListWidgetItem *item );
     void sltEntriesCopyUrl();
+	//void sltSetCurrentPost(BilboPost* post);
 	
 signals:
 	void sigCurrentBlogChanged( int blog_id );

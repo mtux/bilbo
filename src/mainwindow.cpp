@@ -81,6 +81,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     sltCreateNewPost();
     activePost = qobject_cast<PostEntry*>(tabPosts->currentWidget());
     previousActivePostIndex = 0;
+	toolbox->setCurrentPost(activePost->currentPost());
     
 //     this->setWindowIcon(KIcon(":/media/bilbo.png"));
 //     readConfig();
@@ -190,8 +191,11 @@ void MainWindow::sltCreateNewPost()
      connect(temp, SIGNAL(sigTitleChanged(const QString& )), this, SLOT(sltPostTitleChanged(const QString&)));
 // // 	activePost=temp;
     tabPosts->setCurrentWidget(temp);
-    if(this->isVisible()==false)
+	//sltActivePostChanged(tabPosts->currentIndex());
+	
+    if (this->isVisible() == false) {
         this->show();
+	}
 }
 
 void MainWindow::optionsPreferences()
@@ -250,14 +254,17 @@ void MainWindow::sltActivePostChanged(int index)
 {
     kDebug() << "new post index: " << index << "\tPrev Index: " << previousActivePostIndex;
     
-    activePost = qobject_cast<PostEntry*>( tabPosts->widget(index) );
+	activePost = qobject_cast<PostEntry*>( tabPosts->widget(index) );
     PostEntry *prevActivePost = qobject_cast<PostEntry*>( tabPosts->widget( previousActivePostIndex ) );
+	
     if ((prevActivePost != 0) && (index != previousActivePostIndex)) {
+		//QString tempTitle = prevActivePost->postTitle();
 		prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
+		//prevActivePost->setPostTitle(tempTitle);
 		prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
 		//tabPosts->setTabText(previousActivePostIndex, prevActivePost->postTitle());
     }
-
+	
     if (activePost != 0) {
         toolbox->setFieldsValue(activePost->currentPost());
         toolbox->setCurrentBlog(activePost->currentPostBlogId());

@@ -337,21 +337,41 @@ BilboPost * Toolbox::getFieldsValue()
 	return currentPost;
 }
 
-void Toolbox::setFieldsValue(const BilboPost & post)
+// void Toolbox::setFieldsValue(const BilboPost & post)
+// {
+//     kDebug();
+// //     kDebug()<<"New Post is: "<<post.toString();
+//     delete currentPost;
+//     currentPost = new BilboPost(post);
+//     setSelectedCategories(post.categories());
+//     txtCatTags->setText(post.tags().join(", "));
+//     comboOptionsStatus->setCurrentIndex(post.position());
+//     if(post.position()!=BilboPost::Local && post.isPrivate())
+//         comboOptionsStatus->setCurrentIndex(1);
+//     chkOptionsComments->setChecked(post.isCommentAllowed());
+//     chkOptionsTrackback->setChecked(post.isTrackBackAllowed());
+//     datetimeOptionstimestamp->setDateTime(post.mTime());
+//     txtSummary->setPlainText(post.summary());
+// //     txtOptionsTrackback->setText(post.);
+// }
+
+void Toolbox::setFieldsValue(BilboPost* post)
 {
-    kDebug();
+	kDebug();
 //     kDebug()<<"New Post is: "<<post.toString();
-    delete currentPost;
-    currentPost = new BilboPost(post);
-    setSelectedCategories(post.categories());
-    txtCatTags->setText(post.tags().join(", "));
-    comboOptionsStatus->setCurrentIndex(post.position());
-    if(post.position()!=BilboPost::Local && post.isPrivate())
-        comboOptionsStatus->setCurrentIndex(1);
-    chkOptionsComments->setChecked(post.isCommentAllowed());
-    chkOptionsTrackback->setChecked(post.isTrackBackAllowed());
-    datetimeOptionstimestamp->setDateTime(post.mTime());
-    txtSummary->setPlainText(post.summary());
+	//delete currentPost;
+	if (post != 0) {
+		currentPost = post;
+	}
+	setSelectedCategories(currentPost->categories());
+	txtCatTags->setText(currentPost->tags().join(", "));
+	comboOptionsStatus->setCurrentIndex(currentPost->position());
+	if(currentPost->position()!=BilboPost::Local && currentPost->isPrivate())
+		comboOptionsStatus->setCurrentIndex(1);
+	chkOptionsComments->setChecked(currentPost->isCommentAllowed());
+	chkOptionsTrackback->setChecked(currentPost->isTrackBackAllowed());
+	datetimeOptionstimestamp->setDateTime(currentPost->mTime());
+	txtSummary->setPlainText(currentPost->summary());
 //     txtOptionsTrackback->setText(post.);
 }
 
@@ -435,6 +455,11 @@ void Toolbox::setCurrentBlog(int blog_id)
 void Toolbox::setCurrentPage(int index)
 {
     box->setCurrentIndex(index);
+}
+
+void Toolbox::setCurrentPost(BilboPost* post)
+{
+	currentPost = post;
 }
 
 void Toolbox::sltEntriesCopyUrl()

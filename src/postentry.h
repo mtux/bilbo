@@ -49,7 +49,7 @@ public:
     int currentPostBlogId();
     void setCurrentPostBlogId( int blog_id );
     
-    BilboPost currentPost();
+    BilboPost* currentPost();
     void setCurrentPost( BilboPost post=BilboPost() );
 	
 	Qt::LayoutDirection defaultLayoutDirection();
@@ -62,6 +62,8 @@ Q_SIGNALS:
      */
     void sigTitleChanged(const QString &title);
 
+private Q_SLOTS:
+	void sltTitleChanged(const QString& title);
 	
 private:
     void createUi();

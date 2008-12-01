@@ -17,7 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <QtGui> 
+#include <QtGui>
+#include <kdebug.h>
 #include <klocalizedstring.h>
 
 #include "postentry.h"
@@ -50,7 +51,7 @@ void PostEntry::createUi()
 	txtTitle = new QLineEdit(this);
 	horizontalLayout->addWidget(txtTitle);
 	labelTitle->setBuddy(txtTitle);
-    connect(txtTitle, SIGNAL(textChanged(const QString&)), this, SIGNAL( sigTitleChanged(const QString&) ));
+    connect(txtTitle, SIGNAL(textChanged(const QString&)), this, SLOT( sltTitleChanged(const QString&) ));
 	
 	gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
 	
@@ -59,9 +60,16 @@ void PostEntry::createUi()
 	
 }
 
+void PostEntry::sltTitleChanged(const QString& title)
+{
+	mCurrentPost->setTitle(title);
+	Q_EMIT sigTitleChanged(title);
+}
+
 QString PostEntry::postTitle() const
 {
-	return QString(this->txtTitle->text());
+	//return QString(this->txtTitle->text());
+	return mCurrentPost->title();
 }
 
 QString * PostEntry::postBody()
@@ -72,6 +80,7 @@ QString * PostEntry::postBody()
 void PostEntry::setPostTitle(const QString & title)
 {
 	this->txtTitle->setText(title);
+	mCurrentPost->setTitle(title);
 }
 
 void PostEntry::setPostBody(const QString & body)
@@ -89,11 +98,12 @@ void PostEntry::setCurrentPostBlogId(int blog_id)
     mCurrentPostBlogId = blog_id;
 }
 
-BilboPost PostEntry::currentPost()
+BilboPost* PostEntry::currentPost()
 {
     mCurrentPost->setContent(*postBody());
-    mCurrentPost->setTitle(postTitle());
-    return (*mCurrentPost);
+    //mCurrentPost->setTitle(postTitle());
+    //return (*mCurrentPost);
+	return (mCurrentPost);
 }
 
 void PostEntry::setCurrentPost(BilboPost post)
