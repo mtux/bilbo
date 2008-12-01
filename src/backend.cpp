@@ -30,12 +30,13 @@
 #include <kblog/movabletype.h>
 #include <kblog/wordpressbuggy.h>
 #include <kblog/blogmedia.h>
-
-#include <QMimeData>
+#include <kdebug.h>
+#include <KDE/KLocale>
+// #include <QMimeData>
 
 Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 {
-	qDebug("Backend::Backend: with blog id: %d", blog_id);
+	kDebug()<<"with blog id: "<< blog_id;
 	bBlog = __db->getBlogInfo(blog_id);
 	switch( bBlog->api() ){
 	case BilboBlog::BLOGGER1_API:
@@ -73,26 +74,27 @@ Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 
 Backend::~Backend()
 {
+    kDebug();
     delete mBlog;
     delete bBlog;
 }
 
 void Backend::getCategoryListFromServer()
 {
-	qDebug("Backend::getCategoryListFromServer: Blog Id: %d", bBlog->id());
+	kDebug()<<"Blog Id: "<< bBlog->id();
 	if(bBlog->api()==1 || bBlog->api()==2 || bBlog->api()==3){
 		KBlog::MetaWeblog *tmp = dynamic_cast<KBlog::MetaWeblog*>(mBlog);
 		connect(tmp, SIGNAL(listedCategories(const QList< QMap< QString, QString > > &)),
 				this, SLOT(categoriesListed(const QList< QMap< QString, QString > > &)));
 		tmp->listCategories();
     } else {
-		qDebug("Backend::getCategoryListFromServer: Blog API doesn't support getting Category list.");
+		kDebug()<<"Blog API doesn't support getting Category list.";
     }
 }
 
 void Backend::categoriesListed(const QList< QMap < QString , QString > > & categories)
 {
-	qDebug("Backend::categoriesListed: Blog Id: %d", bBlog->id());
+	kDebug()<<"Blog Id: "<< bBlog->id();
 	__db->clearCategories(bBlog->id());
 	QString name, description, htmlUrl, rssUrl;
 	const QMap<QString, QString> *category;
@@ -112,14 +114,14 @@ void Backend::categoriesListed(const QList< QMap < QString , QString > > & categ
 
 void Backend::getEntriesListFromServer(int count)
 {
-	qDebug("Backend::getEntriesListFromServer: Blog Id: %d", bBlog->id());
+	kDebug()<<"Blog Id: "<< bBlog->id();
 	mBlog->listRecentPosts(count);
 	connect(mBlog, SIGNAL(listedRecentPosts(const QList<KBlog::BlogPost> & )), this, SLOT(entriesListed(const QList<KBlog::BlogPost >&)));
 }
 
 void Backend::entriesListed(const QList< KBlog::BlogPost > & posts)
 {
-	qDebug("Backend::entriesListed: Blog Id: %d", bBlog->id());
+    kDebug()<<"Blog Id: "<< bBlog->id();
 	__db->clearPosts(bBlog->id());
 	
 	for(int i=0; i<posts.count(); i++){
@@ -131,7 +133,7 @@ void Backend::entriesListed(const QList< KBlog::BlogPost > & posts)
 void Backend::publishPost(BilboPost * post)
 {
 	///FIXME: Categories problem!
-	qDebug("Backend::publishPost");
+    kDebug()<<"Blog Id: "<< bBlog->id();
 	
 	KBlog::BlogPost *bp = post->toKBlogPost();
 // 	qDebug(post->toString().toLatin1().data());
@@ -154,10 +156,10 @@ void Backend::publishPost(BilboPost * post)
 
 void Backend::postPublished(KBlog::BlogPost *post)
 {
-	qDebug("Backend::postPublished");
+    kDebug()<<"Blog Id: "<< bBlog->id();
     if(post->status()==KBlog::BlogPost::Error){
-        qDebug()<<"Backend::postPublished : Publishing Failed";
-        QString tmp("Publishing Post failed : ");
+        kDebug()<<"Publishing Failed";
+        QString tmp(i18n("Publishing Post failed : "));
         tmp += post->error();
         Q_EMIT sigError(tmp);
         return;
@@ -165,20 +167,21 @@ void Backend::postPublished(KBlog::BlogPost *post)
 	BilboPost pp((*post));
 	int post_id = __db->addPost(pp, bBlog->id());
 	if(post_id!=-1){
-        qDebug("Backend::postPublished emiteding sigPostPublished!");
+        kDebug()<<"Emiteding sigPostPublished...";
 		Q_EMIT sigPostPublished(bBlog->id(), post_id, post->isPrivate());
 	}
 }
 
 void Backend::uploadMedia(BilboMedia * media)
 {
-    qDebug("Backend::UploadMedia");
+    kDebug()<<"Blog Id: "<< bBlog->id();
     
     switch(bBlog->api())
     {
     case BilboBlog::BLOGGER1_API:
     case BilboBlog::GDATA_API:
-        qDebug("Backend::UploadMedia: the Blogger1 and GData API type doesn't support uploading Media files.");
+        kDebug()<<"The Blogger1 and GData API type doesn't support uploading Media files.";
+        return;
         break;
     case BilboBlog::METAWEBLOG_API:
     case BilboBlog::MOVABLETYPE_API:
@@ -192,7 +195,9 @@ void Backend::uploadMedia(BilboMedia * media)
         QFile file(media->localUrl());
         
         if( !file.open(QIODevice::ReadOnly) ) {
-            qWarning() << "Backend::UploadMedia: Cannot open file " << media->localUrl();
+            kError() << "Cannot open file " << media->localUrl();
+            QString tmp(i18n("Uploading media failed : Cannot open file %1", media->localUrl()));
+            Q_EMIT sigError(tmp);
             return;
         }
         
@@ -207,34 +212,42 @@ void Backend::uploadMedia(BilboMedia * media)
         mChecksum = qChecksum(data.data(), data.count());
         
         if (mChecksum==0) {
-            qCritical() << "Backend::UploadMedia: Media file checksum is zero";
+            kError() << "Media file checksum is zero";
+            QString tmp(i18n("Uploading media failed : Media file checksum is zero, please check file path. path: %1", media->localUrl()));
+            Q_EMIT sigError(tmp);
             return;
         }
         
         if(!MWBlog) { // FIXME do not crash on GDATA for the moment
-            qCritical() << "MWBlog is NULL: casting has not worked, this should NEVER happen, has the gui allowed using GDATA?" << endl;
+            kError() << "MWBlog is NULL: casting has not worked, this should NEVER happen, has the gui allowed using GDATA?" << endl;
+            QString tmp(i18n("MWBlog is NULL: casting has not worked, this should NEVER happen, has the gui allowed using GDATA?"));
+            Q_EMIT sigError(tmp);
             return;
         }
         connect (MWBlog, SIGNAL(createdMedia( KBlog::BlogMedia* )), this, SLOT(mediaUploaded( KBlog::BlogMedia* )));
         MWBlog->createMedia(m);
+        return;
         break;
     }
+    kError() <<"Api type does not sets correctly!";
+    QString tmp(i18n("Api type does not sets correctly!"));
+    Q_EMIT sigError(tmp);
 }
 
 void Backend::mediaUploaded(KBlog::BlogMedia * media)
 {
-    qDebug("Backend::mediaUploaded");
+    kDebug()<<"Blog Id: "<< bBlog->id();
     if(media->status() == KBlog::BlogMedia::Error){
-        qWarning("Backend::mediaUploaded : Upload error!");
-        QString tmp("Uploading Media failed : ");
-        tmp += media->error();
+        kError()<<"Upload error! with this message: "<< media->error();
+        QString tmp(i18n("Uploading Media failed : %1", media->error()));
         Q_EMIT sigError(tmp);
         return;
     }
-    if( qChecksum(media->data().data(), media->data().count()) != mChecksum ){
-        qWarning()<<"Backend::mediaUploaded : Check sum not the same!";
-        QString tmp("Uploading Media failed : Check sum Error.");
-        tmp += media->error();
+    quint16 newChecksum = qChecksum(media->data().data(), media->data().count());
+    if( newChecksum != mChecksum ){
+        kError()<<"Check sum error: checksum of sent file: "<<mChecksum<<" Checksum of recived file: "<<newChecksum<<
+                "Error: "<<media->error()<<endl;
+        QString tmp(i18n("Uploading Media failed : Check sum Error. returned error: %1", media->error()));
         Q_EMIT sigError(tmp);
         return;
     }
@@ -245,7 +258,7 @@ void Backend::mediaUploaded(KBlog::BlogMedia * media)
     m->setRemoteUrl(QUrl(media->url().url()).toString());
 //     m->setMimeData(new QMimeData(media->mimetype()));
     m->setName(media->name());
-    
+    kDebug()<<"Emitting sigMediaUploaded...";
     Q_EMIT sigMediaUploaded(m);
 }
 
@@ -259,29 +272,31 @@ void Backend::postModified(KBlog::BlogPost * post)
 
 void Backend::error(KBlog::Blog::ErrorType type, const QString & errorMessage)
 {
-    qDebug("Backend::error");
+    kDebug()<<"Blog Id: "<< bBlog->id();
     QString errType;
     switch (type) {
         case KBlog::Blog::XmlRpc:
-            errType = tr("XML RPC Error: ");
+            errType = i18n("XML RPC Error: ");
             break;
         case KBlog::Blog::Atom:
-            errType = tr("Atom API Error: ");
+            errType = i18n("Atom API Error: ");
             break;
         case KBlog::Blog::ParsingError:
-            errType = tr("KBlog Parsing Error: ");
+            errType = i18n("KBlog Parsing Error: ");
             break;
         case KBlog::Blog::AuthenticationError:
-            errType = tr("Authentication Error: ");
+            errType = i18n("Authentication Error: ");
             break;
         case KBlog::Blog::NotSupported:
-            errType = tr("Not Supported Error: ");
+            errType = i18n("Not Supported Error: ");
             break;
         default:
-            errType = tr("Unknown Error type: ");
+            errType = i18n("Unknown Error type: ");
     };
     errType += errorMessage;
-    qDebug()<<"Backend::error: "<<errType;
-    
+    kDebug()<<errType;
+    kDebug()<<"Emitting sigError";
     Q_EMIT sigError( errType );
 }
+
+#include "backend.moc"

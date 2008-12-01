@@ -27,3 +27,5 @@ AddCategory::AddCategory(QWidget *parent)
     dialog->setAttribute( Qt::WA_DeleteOnClose );
     this->setMainWidget(dialog);
 }
+
+#include "addcategory.moc"

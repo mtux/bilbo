@@ -77,6 +77,9 @@ protected slots:
 private slots:
     void optionsPreferences();
     
+protected:
+    void keyReleaseEvent ( QKeyEvent * event );
+    
 private:
     void setupActions();
     void setupSystemTray();
