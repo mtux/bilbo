@@ -80,6 +80,7 @@ private slots:
 private:
     void setupActions();
     void setupSystemTray();
+    void writeConfigs();
     
     Ui::SettingsBase ui_prefs_base;
     
@@ -97,8 +98,8 @@ private:
     KAction *actSaveDraft;
     KAction *actDeletePost;
     KAction *actDeleteLocally;
-    KAction *actAbout;
-    KAction *actQuit;
+//     KAction *actAbout;
+//     KAction *actQuit;
     KAction *actToggleToolboxVisible;
     KAction *actSave;
     

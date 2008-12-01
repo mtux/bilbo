@@ -30,6 +30,8 @@ class QButtonGroup;
 class BilboPost;
 class AddEditBlog;
 class BilboBlog;
+class BlogRadioButton;
+
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
@@ -89,8 +91,7 @@ private:
     void setButtonsIcon();
 	
 	AddEditBlog *addEditBlogWindow;
-	QRadioButton *blogToEdit;
-// 	QRadioButton *currentBlog;
+	BlogRadioButton *blogToEdit;
 	BilboPost *currentPost;
 	KStatusBar *statusbar;
 };

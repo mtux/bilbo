@@ -31,6 +31,7 @@
 #include "backend.h"
 #include "bilbopost.h"
 #include "bilboblog.h"
+#include "blogradiobutton.h"
 
 Toolbox::Toolbox(QWidget *parent)
     :QWidget(parent)
@@ -83,9 +84,9 @@ void Toolbox::sltEditBlog()
 		KMessageBox::sorry(this, i18n("There isn't any selected blog, you have to select a blog first."));
 		return;
 	}
-    blogToEdit = qobject_cast<QRadioButton*>(listBlogRadioButtons.checkedButton());
+    blogToEdit = qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton());
 	
-	addEditBlogWindow = new AddEditBlog(listBlogs.value(blogToEdit->text(), -1), this);
+	addEditBlogWindow = new AddEditBlog(blogToEdit->blogId(), this);
     addEditBlogWindow->setAttribute(Qt::WA_DeleteOnClose);
     connect(addEditBlogWindow, SIGNAL(sigBlogEdited(BilboBlog&)), this, SLOT(sltBlogEdited(BilboBlog&)));
 	addEditBlogWindow->show();
@@ -94,7 +95,7 @@ void Toolbox::sltEditBlog()
 void Toolbox::sltRemoveBlog()
 {
 	kDebug();
-	__db->removeBlog(listBlogs.value(listBlogRadioButtons.checkedButton()->text()));
+    __db->removeBlog(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
     listBlogs.remove(listBlogRadioButtons.checkedButton()->text());
     listBlogRadioButtons.removeButton(listBlogRadioButtons.checkedButton());
 // 	delete currentBlog;
@@ -105,8 +106,9 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 {
 	kDebug();
 	listBlogs.insert(addedBlog.title(), addedBlog.id());
-	QRadioButton *a = new QRadioButton(addedBlog.title());
+    BlogRadioButton *a = new BlogRadioButton(addedBlog.title());
 	a->setToolTip(addedBlog.blogUrl());
+    a->setBlogId(addedBlog.id());
 	listBlogRadioButtons.addButton(a);
 	frameBlog->layout()->addWidget(a);
 // 	connect(a, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
@@ -123,7 +125,7 @@ void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 	blogToEdit->setToolTip(editedBlog.blogUrl());
     listBlogs.insert(editedBlog.title(), editedBlog.id());
 //     Q_EMIT sigCurrentBlogChanged(listBlogs.value(listBlogRadioButtons.checkedButton()->text(), -1));
-    sltCurrentBlogChanged(listBlogs.value(listBlogRadioButtons.checkedButton()->text(), -1));
+    sltCurrentBlogChanged(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
     sltReloadCategoryList();
     delete addEditBlogWindow;
 }
@@ -137,9 +139,11 @@ void Toolbox::reloadBlogList()
 		delete ab;
 	}
 	listBlogRadioButtons.buttons().clear();
-	QMap<QString, int>::iterator i;
-	for( i = listBlogs.begin(); i != listBlogs.end(); ++i ){
-		QRadioButton *rb = new QRadioButton(i.key());
+    QMap<QString, int>::const_iterator i = listBlogs.constBegin();
+    QMap<QString, int>::const_iterator endI = listBlogs.constEnd();
+	for( ; i != endI; ++i ){
+        BlogRadioButton *rb = new BlogRadioButton(i.key());
+        rb->setBlogId(i.value());
         BilboBlog *bb = __db->getBlogInfo(i.value());
 		rb->setToolTip(bb->blogUrl());
         delete bb;
@@ -159,7 +163,7 @@ void Toolbox::sltReloadCategoryList()
 	
 	int blog_id;
 	
-    blog_id = listBlogs.value(listBlogRadioButtons.checkedButton()->text());
+    blog_id = qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId();
 
 	Backend *b = new Backend(blog_id);
 	b->getCategoryListFromServer();
@@ -186,10 +190,11 @@ void Toolbox::sltReloadEntries()
 void Toolbox::sltSetCurrentBlog()
 {
     kDebug()<<"Current blog is: "<<listBlogRadioButtons.checkedButton()->text();
-    int id = listBlogs.value(listBlogRadioButtons.checkedButton()->text(), -1);
+//     int id = listBlogs.value(listBlogRadioButtons.checkedButton()->text(), -1);
+    int id = qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId();
     kDebug()<<"Current Blog Id: "<<id;
 // 	if(checked){
-// 		currentBlog = dynamic_cast<QRadioButton*>(sender());
+// 		currentBlog = dynamic_cast<BlogRadioButton*>(sender());
         emit sigCurrentBlogChanged(id);
 // 	}
 }
@@ -247,7 +252,7 @@ void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 void Toolbox::sltGetEntriesCount(int count)
 {
 	kDebug();
-    Backend *entryB = new Backend(listBlogs.value(listBlogRadioButtons.checkedButton()->text()));
+    Backend *entryB = new Backend(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
 	entryB->getEntriesListFromServer(count);
 	connect(entryB, SIGNAL(sigEntriesListFetched(int)), this, SLOT(sltLoadEntriesFromDB(int)));
     connect(entryB, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
@@ -398,7 +403,7 @@ int Toolbox::currentBlogId()
 {
     kDebug();
     if(listBlogRadioButtons.checkedButton()){
-        int id = listBlogs.value(listBlogRadioButtons.checkedButton()->text(), -1);
+        int id = qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId();
         kDebug()<<id;
         return id;
     }
@@ -465,6 +470,15 @@ void Toolbox::setButtonsIcon()
     btnEntriesCopyUrl->setIcon(KIcon("edit-copy"));
     btnCatReload->setIcon(KIcon("view-refresh"));
     btnCatAdd->setIcon(KIcon("list-add"));
+    ///TODO Add option for selecting only text or only Icon for Toolbox buttons!
+    btnBlogAdd->setText(QString());
+    btnBlogEdit->setText(QString());
+    btnBlogRemove->setText(QString());
+    btnEntriesReload->setText(QString());
+    btnEntriesUpdate->setText(QString());
+    btnEntriesCopyUrl->setText(QString());
+    btnCatReload->setText(QString());
+    btnCatAdd->setText(QString());
 }
 
 #include "toolbox.moc"

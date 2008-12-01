@@ -12,9 +12,5 @@
     <entry name="show_toolbox_on_start" hidden="true" type="Bool">
 	    <default>true</default>
     </entry>
-<!--    <entry name="val_time" type="Int">
-	    <label>size of a ball</label>
-	    <default>2</default>
-    </entry>-->
   </group>
 </kcfg>
