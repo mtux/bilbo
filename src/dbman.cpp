@@ -23,6 +23,9 @@
 #include "bilbopost.h"
 #include <kdebug.h>
 #include <KDE/KLocale>
+#include <kdatetime.h>
+#include <kurl.h>
+#include <kmessagebox.h>
 
 DBMan::DBMan()
 {
@@ -53,6 +56,7 @@ bool DBMan::connectDB()
 
 DBMan::~DBMan()
 {
+    db.close();
 }
 
 bool DBMan::createDB()
@@ -234,13 +238,13 @@ int DBMan::addPost(const BilboPost & post, int blog_id)
 	q.addBindValue(post.author());
 	q.addBindValue(post.title());
 	q.addBindValue(post.content());
-	q.addBindValue(post.cTime().toString(Qt::ISODate));
-	q.addBindValue(post.cTime().toString(Qt::ISODate));
+	q.addBindValue(post.creationDateTime().toString(KDateTime::ISODate));
+    q.addBindValue(post.creationDateTime().toString(KDateTime::ISODate));
 	q.addBindValue(post.isPrivate());
 	q.addBindValue(post.isCommentAllowed());
 	q.addBindValue(post.isTrackBackAllowed());
-	q.addBindValue(post.postLink().toString());
-	q.addBindValue(post.postPermaLink().toString());
+	q.addBindValue(post.link().url());
+	q.addBindValue(post.permaLink().url());
 	q.addBindValue(post.summary());
 	QString tags=QString("");
 	
@@ -352,13 +356,13 @@ bool DBMan::editPost(BilboPost & post, int blog_id)
 	q.addBindValue(post.author());
 	q.addBindValue(post.title());
 	q.addBindValue(post.content());
-	q.addBindValue(post.cTime().toString(Qt::ISODate));
-	q.addBindValue(post.mTime().toString(Qt::ISODate));
+	q.addBindValue(post.creationDateTime().toString(KDateTime::ISODate));
+    q.addBindValue(post.modificationDateTime().toString(KDateTime::ISODate));
 	q.addBindValue(post.isPrivate());
 	q.addBindValue(post.isCommentAllowed());
 	q.addBindValue(post.isTrackBackAllowed());
-	q.addBindValue(post.postLink().toString());
-	q.addBindValue(post.postPermaLink().toString());
+	q.addBindValue(post.link().url());
+	q.addBindValue(post.permaLink().url());
 	q.addBindValue(post.summary());
 	
 	QString tags="";
@@ -567,17 +571,13 @@ QList< BilboPost* > DBMan::listPosts(int blog_id)
 			tmp->setPostId(q.value(1).toString());
 			tmp->setTitle(q.value(3).toString());
 			tmp->setContent(q.value(4).toString());
-			QDateTime ct = QDateTime::fromString(q.value(5).toString(), Qt::ISODate);
-			tmp->setCTime(ct);
-			QDateTime mt = QDateTime::fromString(q.value(6).toString(), Qt::ISODate);
-			tmp->setMTime(mt);
+			tmp->setCreationDateTime(KDateTime::fromString(q.value(5).toString(), KDateTime::ISODate));
+			tmp->setModificationDateTime(KDateTime::fromString(q.value(6).toString(), KDateTime::ISODate));
 			tmp->setPrivate(q.value(7).toBool());
 			tmp->setCommentAllowed(q.value(8).toBool());
 			tmp->setTrackBackAllowed(q.value(9).toBool());
-			QUrl u(q.value(10).toString());
-			tmp->setPostLink(u);
-			QUrl pu(q.value(11).toString());
-			tmp->setPostPermaLink(pu);
+			tmp->setLink(KUrl(q.value(10).toString()));
+			tmp->setPermaLink(KUrl(q.value(11).toString()));
 			tmp->setSummary(q.value(12).toString());
 			tmp->setTags(q.value(13).toString().split(',', QString::SkipEmptyParts ));
 			
@@ -611,17 +611,15 @@ BilboPost * DBMan::getPostInfo(int post_id)
 			tmp->setPostId(q.value(1).toString());
 			tmp->setTitle(q.value(3).toString());
 			tmp->setContent(q.value(4).toString());
-			QDateTime ct = QDateTime::fromString(q.value(5).toString(), Qt::ISODate);
-			tmp->setCTime(ct);
-			QDateTime mt = QDateTime::fromString(q.value(6).toString(), Qt::ISODate);
-			tmp->setMTime(mt);
+			tmp->setCreationDateTime(KDateTime::fromString(q.value(5).toString(), KDateTime::ISODate));
+            tmp->setModificationDateTime(KDateTime::fromString(q.value(6).toString(), KDateTime::ISODate));
 			tmp->setPrivate(q.value(7).toBool());
 			tmp->setCommentAllowed(q.value(8).toBool());
 			tmp->setTrackBackAllowed(q.value(9).toBool());
 			QUrl u(q.value(10).toString());
-			tmp->setPostLink(u);
+			tmp->setLink(u);
 			QUrl pu(q.value(11).toString());
-			tmp->setPostPermaLink(pu);
+			tmp->setPermaLink(pu);
 			tmp->setSummary(q.value(12).toString());
 			tmp->setTags(q.value(13).toString().split(',', QString::SkipEmptyParts ));
 			
@@ -672,5 +670,3 @@ QMap< QString, int > DBMan::listCategories(int blog_id)
 	
 	return list;
 }
-
-

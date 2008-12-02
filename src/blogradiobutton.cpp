@@ -43,4 +43,4 @@ void BlogRadioButton::setBlogId(int blog_id)
     mBlogId = blog_id;
 }
 
-
+#include "blogradiobutton.moc"

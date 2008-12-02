@@ -23,6 +23,8 @@
 #include <kxmlguiwindow.h>
 #include <kmessagebox.h>
 #include <QButtonGroup>
+#include <kdatetime.h>
+#include <kurl.h>
 
 #include "toolbox.h"
 #include "entriescountdialog.h"
@@ -96,16 +98,14 @@ void Toolbox::sltRemoveBlog()
 {
 	kDebug();
     __db->removeBlog(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
-    listBlogs.remove(listBlogRadioButtons.checkedButton()->text());
+//     listBlogs.remove(listBlogRadioButtons.checkedButton()->text());
     listBlogRadioButtons.removeButton(listBlogRadioButtons.checkedButton());
-// 	delete currentBlog;
-// 	currentBlog=0;
 }
 
 void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 {
 	kDebug();
-	listBlogs.insert(addedBlog.title(), addedBlog.id());
+// 	listBlogs.insert(addedBlog.title(), addedBlog.id());
     BlogRadioButton *a = new BlogRadioButton(addedBlog.title());
 	a->setToolTip(addedBlog.blogUrl());
     a->setBlogId(addedBlog.id());
@@ -120,10 +120,10 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 {
 	kDebug();
-    listBlogs.remove(blogToEdit->text());
+//     listBlogs.remove(blogToEdit->text());
 	blogToEdit->setText(editedBlog.title());
 	blogToEdit->setToolTip(editedBlog.blogUrl());
-    listBlogs.insert(editedBlog.title(), editedBlog.id());
+//     listBlogs.insert(editedBlog.title(), editedBlog.id());
 //     Q_EMIT sigCurrentBlogChanged(listBlogs.value(listBlogRadioButtons.checkedButton()->text(), -1));
     sltCurrentBlogChanged(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
     sltReloadCategoryList();
@@ -133,7 +133,8 @@ void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 void Toolbox::reloadBlogList()
 {
 	kDebug();
-	listBlogs.clear();
+// 	listBlogs.clear();
+    QMap<QString, int> listBlogs;
     listBlogs = __db->listBlogsTitle();
     foreach( QAbstractButton *ab,listBlogRadioButtons.buttons()){
 		delete ab;
@@ -315,17 +316,17 @@ BilboPost * Toolbox::getFieldsValue()
 	currentPost->setTags(this->currentTags());
 	if(currentPost->status()==KBlog::BlogPost::Fetched || currentPost->status()==KBlog::BlogPost::Modified){
 		if(chkOptionsTime->isChecked())
-			currentPost->setMTime(datetimeOptionstimestamp->dateTime());
+			currentPost->setModificationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
 		else
-			currentPost->setMTime(QDateTime::currentDateTime());
+            currentPost->setModificationDateTime(KDateTime::currentLocalDateTime());
 	} else {
 		if(chkOptionsTime->isChecked()){
-			currentPost->setMTime(datetimeOptionstimestamp->dateTime());
-			currentPost->setCTime(datetimeOptionstimestamp->dateTime());
+            currentPost->setModificationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
+            currentPost->setCreationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
 		}
 		else {
-			currentPost->setMTime(QDateTime::currentDateTime());
-			currentPost->setCTime(QDateTime::currentDateTime());
+            currentPost->setModificationDateTime(KDateTime::currentLocalDateTime());
+			currentPost->setCreationDateTime(KDateTime::currentLocalDateTime());
 		}
 	}
 	
@@ -363,14 +364,15 @@ void Toolbox::setFieldsValue(BilboPost* post)
 	if (post != 0) {
 		currentPost = post;
 	}
+
 	setSelectedCategories(currentPost->categories());
 	txtCatTags->setText(currentPost->tags().join(", "));
 	comboOptionsStatus->setCurrentIndex(currentPost->position());
 	if(currentPost->position()!=BilboPost::Local && currentPost->isPrivate())
-		comboOptionsStatus->setCurrentIndex(1);
+        comboOptionsStatus->setCurrentIndex(1);
 	chkOptionsComments->setChecked(currentPost->isCommentAllowed());
 	chkOptionsTrackback->setChecked(currentPost->isTrackBackAllowed());
-	datetimeOptionstimestamp->setDateTime(currentPost->mTime());
+	datetimeOptionstimestamp->setDateTime(currentPost->modificationDateTime().dateTime());
 	txtSummary->setPlainText(currentPost->summary());
 //     txtOptionsTrackback->setText(post.);
 }
@@ -443,9 +445,9 @@ void Toolbox::sltEntrySelected(QListWidgetItem * item)
 void Toolbox::setCurrentBlog(int blog_id)
 {
     kDebug();
-    QString blogTitle = listBlogs.key(blog_id);
+//     QString blogTitle = listBlogs.key(blog_id);
     foreach( QAbstractButton *b, listBlogRadioButtons.buttons()){
-        if(b->text()==blogTitle){
+        if(qobject_cast<BlogRadioButton*>(b)->blogId()==blog_id){
             b->setChecked(true);
             break;
         }
@@ -466,7 +468,7 @@ void Toolbox::sltEntriesCopyUrl()
 {
     QClipboard *clip = QApplication::clipboard();
     BilboPost *p = __db->getPostInfo(listEntries.value(lstEntriesList->currentItem()->text()));
-    clip->setText(p->postLink().toString());
+    clip->setText(p->link().url());
 }
 
 Toolbox::~Toolbox()

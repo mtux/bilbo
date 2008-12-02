@@ -35,7 +35,6 @@ SysTray::SysTray(QWidget* parent): KSystemTrayIcon(parent)
 // 	connect(this,  SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(sltActivated(QSystemTrayIcon::ActivationReason)) );
 }
 
-
 SysTray::~SysTray()
 {
 //     delete trayMenu;
@@ -46,40 +45,24 @@ SysTray::~SysTray()
 //     delete bilbo;
 }
 
-void SysTray::createActions()
-{
-// 	this->actNewPost = bilbo->actNewPost;
-	
-// 	this->actAbout = bilbo->actAbout;
-	
-// 	this->actQuit = bilbo->actQuit;
-	
-// 	trayMenu->addAction(this->actNewPost);
-// 	trayMenu->addSeparator();
-// 	trayMenu->addAction(this->actAbout);
-// 	trayMenu->addSeparator();
-// 	trayMenu->addAction(this->actQuit);
-// 	
-// 	this->setContextMenu(trayMenu);
-}
-
-// void SysTray::sltHideShow()
+// void SysTray::createActions()
 // {
+// // actNewPost = actionCollection()->action("new_post");
 // }
 
-void SysTray::sltActivated(QSystemTrayIcon::ActivationReason reason)
-{
-// 	if(reason==2 || reason==3){
-// 		if(bilbo){
-// 			if(bilbo->isVisible())
-// 				bilbo->hide();
-// 			else
-// 				bilbo->show();
-// 		} else {
-// 			bilbo = new MainWindow;
-// 			bilbo->show();
-// 		}
-// 	}
-}
+// void SysTray::sltActivated(QSystemTrayIcon::ActivationReason reason)
+// {
+// // 	if(reason==2 || reason==3){
+// // 		if(bilbo){
+// // 			if(bilbo->isVisible())
+// // 				bilbo->hide();
+// // 			else
+// // 				bilbo->show();
+// // 		} else {
+// // 			bilbo = new MainWindow;
+// // 			bilbo->show();
+// // 		}
+// // 	}
+// }
 
 #include "systray.moc"

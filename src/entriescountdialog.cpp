@@ -34,3 +34,5 @@ void EntriesCountDialog::sltAccepted()
     kDebug()<<"Emiting sigAccepted...";
 	Q_EMIT sigAccepted(ui.spinCount->value());
 }
+
+#include "entriescountdialog.moc"

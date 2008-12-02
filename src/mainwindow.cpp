@@ -21,7 +21,6 @@
 #include <ktabwidget.h>
 #include <kstatusbar.h>
 #include <kaction.h>
-// #include <ktoggleaction.h>
 #include <kactioncollection.h>
 #include <kstandardaction.h>
 #include <kconfigdialog.h>
@@ -130,20 +129,20 @@ void MainWindow::setupActions()
     KStandardAction::preferences(this, SLOT(optionsPreferences()), actionCollection());
 
     // custom menu and menu item - the slot is in the class bilboView
-    actNewPost = new KAction(KIcon("document-new"), i18n("&New Post"), this);
+    actNewPost = new KAction(KIcon("document-new"), i18n("New Post"), this);
     actionCollection()->addAction( QLatin1String("new_post"), actNewPost );
     actNewPost->setShortcut(Qt::CTRL + Qt::Key_N);
     connect(actNewPost, SIGNAL(triggered(bool)), this, SLOT(sltCreateNewPost()));
     
-    actAddBlog=new KAction(KIcon("list-add"), i18n("Add &Blog"),this);
+    actAddBlog=new KAction(KIcon("list-add"), i18n("Add Blog"),this);
     actionCollection()->addAction(QLatin1String("add_blog"), actAddBlog);
     connect(actAddBlog, SIGNAL(triggered( bool )), toolbox, SLOT(sltAddBlog()));
 	
-    actUploadAll=new KAction(KIcon("arrow-up-double"), i18n("&Upload All Changes"),this);
+    actUploadAll=new KAction(KIcon("arrow-up-double"), i18n("Upload All Changes"),this);
     actionCollection()->addAction(QLatin1String("upload_all"), actUploadAll);
     connect(actUploadAll,SIGNAL(triggered( bool )),this,SLOT(sltUploadAllChanges()));
 	
-    actPublish=new KAction(KIcon("arrow-up"),i18n("&Publish"),this);
+    actPublish=new KAction(KIcon("arrow-up"),i18n("Publish"),this);
     actionCollection()->addAction(QLatin1String("publish_post"), actPublish);
     connect(actPublish,SIGNAL(triggered( bool )),this,SLOT(sltPublishPost()));
     
@@ -225,6 +224,7 @@ void MainWindow::setupSystemTray()
 {
     systemTray = new SysTray(this);
     systemTray->actionCollection()->addAction("new_post", this->actNewPost);
+	systemTray->contextMenu()->addAction(this->actNewPost);
     systemTray->show();
 }
 
@@ -306,7 +306,9 @@ void MainWindow::sltPublishPost()
 void MainWindow::sltPostPublished(int blog_id, int post_id, bool isPrivate)
 {
     kDebug()<<"Post Id: "<< post_id;
-    QString blog_name = toolbox->listBlogs.key(blog_id);
+    BilboBlog *b = __db->getBlogInfo(blog_id);
+    QString blog_name = b->title();
+    delete b;
     QString msg;
     if(isPrivate){
         msg = i18n("New Draft saved to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
@@ -368,6 +370,7 @@ void MainWindow::sltCurrentBlogChanged(int blog_id)
 //     delete tmp;
     BilboBlog *tmp = __db->getBlogInfo(blog_id);
     this->activePost->setDefaultLayoutDirection(tmp->direction());
+    this->actPublish->setText(i18n("Publish to \"%1\"", tmp->title()));
     delete tmp;
 }
 
@@ -406,7 +409,7 @@ void MainWindow::sltSaveAsDraft()
 void MainWindow::sltError(QString & errorMessage)
 {
     kDebug()<<"Error message: "<<errorMessage;
-    KMessageBox::detailedError(this, "An Error ocurred on latest transaction ", errorMessage);
+    KMessageBox::detailedError(this, i18n("An Error ocurred on latest transaction "), errorMessage);
 }
 
 void MainWindow::writeConfigs()
@@ -416,6 +419,32 @@ void MainWindow::writeConfigs()
         Settings::setShow_toolbox_on_start(true);
     else
         Settings::setShow_toolbox_on_start(false);
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent * event)
+{
+    if( event->modifiers() == Qt::ControlModifier){
+        switch( event->key() ){
+            case  Qt::Key_1:
+                toolbox->setCurrentPage(0);
+                break;
+            case Qt::Key_2:
+                toolbox->setCurrentPage(1);
+                break;
+            case Qt::Key_3:
+                toolbox->setCurrentPage(2);
+                break;
+            case Qt::Key_4:
+                toolbox->setCurrentPage(3);
+                break;
+            case Qt::Key_5:
+                toolbox->setCurrentPage(4);
+                break;
+            default:
+                QMainWindow::keyPressEvent(event);
+                break;
+        }
+    }
 }
 
 #include "mainwindow.moc"

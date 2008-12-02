@@ -51,7 +51,7 @@ public:
     void setCurrentPage( int index );
 	void setCurrentPost(BilboPost* post);
 	
-	QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
+	//QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
     QButtonGroup listBlogRadioButtons;
 	
 	QMap<QString, int> listCategories;///Contain Category name(QString) and Category id(int)

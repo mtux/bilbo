@@ -140,5 +140,3 @@ QString BilboBlog::blogUrl()
     }
     return url;
 }
-
-#include <bilboblog.moc>

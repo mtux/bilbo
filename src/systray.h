@@ -23,7 +23,6 @@
 #include <ksystemtrayicon.h>
 
 class QMenu;
-// class Action;
 /**
 System tray icon of app
 
@@ -40,15 +39,15 @@ public:
 	
 protected Q_SLOTS:
 // 	void sltHideShow();
-	void sltActivated(QSystemTrayIcon::ActivationReason);
+// 	void sltActivated(QSystemTrayIcon::ActivationReason);
 
 private:
-	void createActions();
+// 	void createActions();
 	
 // 	QMenu *trayMenu;
 	
 // 	QAction *actQuit;
-// 	QAction *actNewPost;
+	QAction *actNewPost;
 // 	QAction *actHideShow;
 // 	QAction *actAbout;
 	

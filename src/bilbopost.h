@@ -50,7 +50,7 @@ public:
     BilboPost( const BilboPost& );
     ~BilboPost();
 
-	QUrl postLink() const;
+/*	QUrl postLink() const;
 	void setPostLink(const QUrl&);
 	
 	QUrl postPermaLink() const;
@@ -60,7 +60,7 @@ public:
 	void setCTime(const QDateTime&);
 	
 	QDateTime mTime() const;
-	void setMTime(const QDateTime&);
+	void setMTime(const QDateTime&);*/
 	
 	QString author() const;
 	void setAuthor(const QString&);

@@ -22,9 +22,6 @@
     <Action name="save_locally" />
     <Action name="save_draft" />
     <Action name="publish_post" />
-</Toolbar>
-<Toolbar name="blogToolbar">
-    <text>Blog Toolbar</text>
     <Action name="add_blog" />
     <Action name="upload_all" />
 </Toolbar>
