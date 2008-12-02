@@ -23,43 +23,40 @@
 #include "addeditlink.h"
 
 AddEditLink::AddEditLink(QWidget *parent)
-    :QDialog(parent)
+	:KDialog(parent)
 {
-	setupUi(this);
-	this->kButtonbox->addButton(KGuiItem(i18n("Ok"), KIcon("dialog-ok-apply")), QDialogButtonBox::AcceptRole, this, SLOT(accept()));
-	this->kButtonbox->addButton(KGuiItem(i18n("Cancel"), KIcon("dialog-cancel")), QDialogButtonBox::RejectRole, this, SLOT(reject()));
-	this->label_2->hide();
-	this->txtTitle->hide();
-	this->comboTarget->hide();
-	this->label_3->hide();
-	this->resize(this->width(), this->height()/2);
+	//QWidget *dialog = new QWidget;
+	QDialog *dialog = new QDialog(0);
+	ui.setupUi(dialog);
+	dialog->setAttribute( Qt::WA_DeleteOnClose );
+	this->setMainWidget(dialog);
+
+	ui.label_2->hide();
+	ui.txtTitle->hide();
+	ui.comboTarget->hide();
+	ui.label_3->hide();
+	this->resize(dialog->width(), dialog->height()/2);
+	connect(this, SIGNAL(accepted()), this, SLOT(sltAccepted()));
 }
 
-void AddEditLink::accept()
+void AddEditLink::sltAccepted()
 {
-	if ( txtAddress->text().isEmpty()) return;
-	Q_EMIT addLink( txtAddress->text(), (comboTarget->currentIndex()==1 || comboTarget->currentIndex()==1)?"_self":"_blank", txtTitle->text() );
-	close();
-	QDialog::accept();
-// 	hide();
-}
-
-void AddEditLink::reject()
-{
-	close();
-	QDialog::reject();
-// 	hide();
+	if ( ui.txtAddress->text().isEmpty()) return;
+	Q_EMIT addLink( ui.txtAddress->text(), (ui.comboTarget->currentIndex()==1 || ui.comboTarget->currentIndex()==1)?"_self":"_blank", ui.txtTitle->text() );
+// 	close();
+// 	QDialog::accept();
+// // 	hide();
 }
 
 void AddEditLink::show(QString address, QString title)
 {
-	QDialog::show();
+	KDialog::show();
 	if(!address.isEmpty()){
-		txtAddress->setText(address);
+		ui.txtAddress->setText(address);
 		this->setWindowTitle(i18nc("verb, to edit link", "Edit Link"));
 	}
 	if(!title.isEmpty()){
-		txtTitle->setText(title);
+		ui.txtTitle->setText(title);
 	}
 }
 

@@ -31,11 +31,8 @@ Implements a dialog to get user input for link parameters; address, name and tar
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-// TODO use KDialog instead of QDialog.
-// now when using it default ok-cancel buttons appear on top right corner of the dialog window.
 
-//class AddEditLink: public QDialog, public Ui::AddEditLinkDialog {
-class AddEditLink: public QDialog, public Ui::AddEditLinkBase
+class AddEditLink: public KDialog
 {
 	Q_OBJECT
 	public:
@@ -44,9 +41,11 @@ class AddEditLink: public QDialog, public Ui::AddEditLinkBase
 		
 	Q_SIGNALS:
 		void addLink( const QString& address, const QString& target, const QString& title);
-	public Q_SLOTS:
-		virtual void accept(); // OK Button
-		virtual void reject(); // Cancel Button
+	protected Q_SLOTS:
+		void sltAccepted();
+		
+	private:
+		Ui::AddEditLinkBase ui;
 };
 
 #endif
