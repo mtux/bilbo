@@ -51,6 +51,7 @@ public:
     
     BilboPost* currentPost();
     void setCurrentPost( BilboPost post=BilboPost() );
+	void setCurrentPostProperties( BilboPost post=BilboPost() );
 	
 	Qt::LayoutDirection defaultLayoutDirection();
 	void setDefaultLayoutDirection(Qt::LayoutDirection direction);

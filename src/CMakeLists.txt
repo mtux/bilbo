@@ -1,6 +1,6 @@
 include (KDE4Defaults)
 include_directories( ${KDE4_INCLUDES})
-FIND_PACKAGE(Qt4) 
+FIND_PACKAGE(KDE4) 
 SET(QT_USE_QTSQL 1) 
 SET(QT_USE_QTWEBKIT 1)
 # INCLUDE(${QT_USE_FILE}) 

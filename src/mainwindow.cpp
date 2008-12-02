@@ -259,7 +259,7 @@ void MainWindow::sltActivePostChanged(int index)
 	
     if ((prevActivePost != 0) && (index != previousActivePostIndex)) {
 		//QString tempTitle = prevActivePost->postTitle();
-		prevActivePost->setCurrentPost((*toolbox->getFieldsValue()));
+		prevActivePost->setCurrentPostProperties((*toolbox->getFieldsValue()));
 		//prevActivePost->setPostTitle(tempTitle);
 		prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
 		//tabPosts->setTabText(previousActivePostIndex, prevActivePost->postTitle());
