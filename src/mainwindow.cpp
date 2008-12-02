@@ -183,9 +183,12 @@ void MainWindow::sltCreateNewPost()
     temp->setCurrentPostBlogId(toolbox->currentBlogId());
 	
 // 	// FIXME these lines added to set direction for new posts, but it generates Segmentation fault at run time!
-// // 	BilboBlog *tmp = __db->getBlogInfo(toolbox->currentBlogId());
-// // 	temp->setDefaultLayoutDirection(tmp->direction());
-// // 	delete tmp;
+	int tempId = toolbox->currentBlogId();
+	if (tempId != -1) {
+		BilboBlog *tmp = __db->getBlogInfo(tempId);
+		temp->setDefaultLayoutDirection(tmp->direction());
+		delete tmp;
+	}
 // 	
      connect(temp, SIGNAL(sigTitleChanged(const QString& )), this, SLOT(sltPostTitleChanged(const QString&)));
 // // 	activePost=temp;
@@ -340,8 +343,6 @@ void MainWindow::sltNewPostSelected(BilboPost * newPost)
     kDebug();
     PostEntry *temp=new PostEntry(this);
     tabPosts->addTab(temp,newPost->title());
-    connect(temp, SIGNAL(sigTitleChanged( const QString& )), this, SLOT(sltPostTitleChanged( const QString& )));
-    
 //     temp->setPostTitle(newPost->title());
 //     temp->setPostBody(newPost->content());
     temp->setCurrentPost(*newPost);
@@ -353,6 +354,7 @@ void MainWindow::sltNewPostSelected(BilboPost * newPost)
 
 //     activePost=temp;
     tabPosts->setCurrentWidget(temp);
+	connect(temp, SIGNAL(sigTitleChanged( const QString& )), this, SLOT(sltPostTitleChanged( const QString& )));
 }
 
 void MainWindow::sltCurrentBlogChanged(int blog_id)
