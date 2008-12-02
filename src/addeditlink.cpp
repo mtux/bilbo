@@ -18,17 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include <klocalizedstring.h>
+//#include <klocalizedstring.h>
+//#include <kdialogbuttonbox.h>
 #include "addeditlink.h"
 
 AddEditLink::AddEditLink(QWidget *parent)
     :QDialog(parent)
 {
 	setupUi(this);
-	label_2->hide();
-	txtTitle->hide();
-	comboTarget->hide();
-	label_3->hide();
+	this->kButtonbox->addButton(KGuiItem(i18n("Ok"), KIcon("dialog-ok-apply")), QDialogButtonBox::AcceptRole, this, SLOT(accept()));
+	this->kButtonbox->addButton(KGuiItem(i18n("Cancel"), KIcon("dialog-cancel")), QDialogButtonBox::RejectRole, this, SLOT(reject()));
+	this->label_2->hide();
+	this->txtTitle->hide();
+	this->comboTarget->hide();
+	this->label_3->hide();
 	this->resize(this->width(), this->height()/2);
 }
 

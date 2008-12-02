@@ -63,48 +63,28 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1" >
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="standardButtons" >
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
+   <item row="4" column="1" >
+    <widget class="KDialogButtonBox" name="kButtonbox" />
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KDialogButtonBox</class>
+   <extends>QDialogButtonBox</extends>
+   <header>kdialogbuttonbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KPushButton</class>
+   <extends>QPushButton</extends>
+   <header>kpushbutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>AddImageDialogBase</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>228</x>
-     <y>116</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>212</x>
-     <y>73</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>AddImageDialogBase</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>228</x>
-     <y>116</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>212</x>
-     <y>73</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

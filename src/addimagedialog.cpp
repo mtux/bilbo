@@ -27,6 +27,8 @@
 AddImageDialog::AddImageDialog(QWidget *parent) :QDialog(parent)
 {
 	setupUi(this);
+	this->kButtonbox->addButton(KGuiItem(i18n("Ok"), KIcon("dialog-ok-apply")), QDialogButtonBox::AcceptRole, this, SLOT(accept()));
+	this->kButtonbox->addButton(KGuiItem(i18n("Cancel"), KIcon("dialog-cancel")), QDialogButtonBox::RejectRole, this, SLOT(reject()));
 	connect(btnBrowse, SIGNAL(clicked()), this, SLOT(slotBrowseFiles()));
 	connect(txtRemoteUrl, SIGNAL(textEdited( const QString& )), this, SLOT(slotDisableLocalPath()));
 }

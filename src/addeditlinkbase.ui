@@ -6,23 +6,13 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>191</height>
+    <height>136</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string comment="verb, insert a link into the text" >Add Link</string>
   </property>
   <layout class="QGridLayout" name="gridLayout" >
-   <item row="0" column="0" >
-    <widget class="QLabel" name="label" >
-     <property name="text" >
-      <string comment="the web address of the link" >Link &amp;Address :</string>
-     </property>
-     <property name="buddy" >
-      <cstring>txtAddress</cstring>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="1" >
     <widget class="KLineEdit" name="txtAddress" >
      <property name="text" >
@@ -30,30 +20,10 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" >
-    <widget class="QLabel" name="label_2" >
-     <property name="text" >
-      <string comment="the word which is showed as a link" >Link &amp;Title :</string>
-     </property>
-     <property name="buddy" >
-      <cstring>txtTitle</cstring>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="1" >
     <widget class="KLineEdit" name="txtTitle" />
    </item>
-   <item row="2" column="0" >
-    <widget class="QLabel" name="label_3" >
-     <property name="text" >
-      <string>&amp;Target :</string>
-     </property>
-     <property name="buddy" >
-      <cstring>comboTarget</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1" >
+   <item row="4" column="1" >
     <widget class="QComboBox" name="comboTarget" >
      <item>
       <property name="text" >
@@ -72,51 +42,57 @@
      </item>
     </widget>
    </item>
-   <item row="3" column="0" colspan="2" >
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
-     </property>
+   <item row="5" column="1" >
+    <widget class="KDialogButtonBox" name="kButtonbox" >
      <property name="standardButtons" >
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::NoButton</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" >
+    <widget class="QLabel" name="label" >
+     <property name="text" >
+      <string comment="the web address of the link" >Link &amp;Address :</string>
+     </property>
+     <property name="buddy" >
+      <cstring>txtAddress</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QLabel" name="label_2" >
+     <property name="text" >
+      <string comment="the word which is showed as a link" >Link &amp;Title :</string>
+     </property>
+     <property name="buddy" >
+      <cstring>txtTitle</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" >
+    <widget class="QLabel" name="label_3" >
+     <property name="text" >
+      <string>&amp;Target :</string>
+     </property>
+     <property name="buddy" >
+      <cstring>comboTarget</cstring>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KDialogButtonBox</class>
+   <extends>QDialogButtonBox</extends>
+   <header>kdialogbuttonbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>AddEditLinkBase</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>227</x>
-     <y>158</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>157</x>
-     <y>190</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>AddEditLinkBase</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>295</x>
-     <y>164</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>286</x>
-     <y>190</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

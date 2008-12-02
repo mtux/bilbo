@@ -21,6 +21,7 @@
 //#include <QDebug>
 #include <QtGui>
 //#include <QTabWidget>
+#include <QTextCharFormat>
 #include <QWebView>
 #include <klocalizedstring.h>
 #include <ktoolbar.h>
@@ -953,7 +954,7 @@ void BilboEditor::sltNewParagraph()
 
 void BilboEditor::sltChangeLayoutDirection()
 {
-	qDebug("BilboEditor::changeLayoutDirection");
+	kDebug();
 	QTextCursor c = editor->textCursor();
 	QTextBlockFormat f = c.blockFormat();
 	

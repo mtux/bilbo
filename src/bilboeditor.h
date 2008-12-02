@@ -21,13 +21,13 @@
 #define BILBOEDITOR_H
 
 //#include <QTabWidget>
-#include <QTextCharFormat>
 #include <ktabwidget.h>
 //#include <QtGui>
 //#include <QWebView>
 //#include "multilinetextedit.h"
 
 //class QTabWidget;
+class QTextCharFormat;
 class QWebView;
 class QPlainTextEdit;
 class MultiLineTextEdit;

@@ -20,6 +20,7 @@
 #include <QtGui>
 #include <kdebug.h>
 #include <klocalizedstring.h>
+#include <klineedit.h>
 
 #include "postentry.h"
 #include "bilboeditor.h"
@@ -48,7 +49,7 @@ void PostEntry::createUi()
 	labelTitle->setText(i18nc("noun, the post title", "Title:"));
 	horizontalLayout->addWidget(labelTitle);
 
-	txtTitle = new QLineEdit(this);
+	txtTitle = new KLineEdit(this);
 	horizontalLayout->addWidget(txtTitle);
 	labelTitle->setBuddy(txtTitle);
     connect(txtTitle, SIGNAL(textChanged(const QString&)), this, SLOT( sltTitleChanged(const QString&) ));
@@ -130,6 +131,7 @@ PostEntry::~PostEntry()
     delete editPostWidget;
     delete gridLayout;
 //     delete horizontalLayout;
+	delete horizontalLayout;
     delete labelTitle;
     delete txtTitle;
     delete wPost;

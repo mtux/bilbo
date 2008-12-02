@@ -54,7 +54,7 @@ class BilboMedia
 		void setRemoteUrl(const QString &url);
 		
         QString mimeType() const;
-		void setMimeData(const QString &data);
+		void setMimeType(const QString &type);
 		
         QString name() const;
 		void setName(const QString &name);

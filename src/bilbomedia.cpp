@@ -83,7 +83,7 @@ QString BilboMedia::mimeType() const
 	return mMimeType;
 }
 
-void BilboMedia::setMimeData(const QString &type)
+void BilboMedia::setMimeType(const QString &type)
 {
 	mMimeType = type;
 }

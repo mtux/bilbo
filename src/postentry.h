@@ -28,7 +28,7 @@ class QWidget;
 class QGridLayout;
 class QLabel;
 class QHBoxLayout;
-class QLineEdit;
+class KLineEdit;
 /**
  * Post Entry Widget
  * contains Editor, and Title box.
@@ -73,7 +73,7 @@ private:
 	QGridLayout *gridLayout;
 	QHBoxLayout *horizontalLayout;
 	QLabel *labelTitle;
-	QLineEdit *txtTitle;
+	KLineEdit *txtTitle;
 	QWidget *wPost;
     BilboPost *mCurrentPost;
     int mCurrentPostBlogId;
