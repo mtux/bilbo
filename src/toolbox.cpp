@@ -49,7 +49,7 @@ Toolbox::Toolbox(QWidget *parent)
 	frameCat->layout()->setAlignment(Qt::AlignTop);
 	reloadBlogList();
 // 	currentBlog=0;
-	currentPost = new BilboPost();
+// 	currentPost = new BilboPost();
 	datetimeOptionstimestamp->setDateTime(QDateTime::currentDateTime());
 	
 	connect(btnBlogAdd, SIGNAL(clicked()), this, SLOT(sltAddBlog()));
@@ -264,9 +264,7 @@ void Toolbox::sltGetEntriesCount(int count)
 void Toolbox::resetFields()
 {
 	kDebug();
-	for(int i=0; i<listCategoryCheckBoxes.count(); ++i){
-		listCategoryCheckBoxes[i]->setChecked(false);
-	}
+	unCheckCatList();
 	txtCatTags->clear();
 	chkOptionsTime->setChecked(false);
 	datetimeOptionstimestamp->setDateTime(QDateTime::currentDateTime());
@@ -309,12 +307,13 @@ void Toolbox::sltCurrentBlogChanged(int blog_id)
 	lstEntriesList->setLayoutDirection(ll);
 }
 
-BilboPost * Toolbox::getFieldsValue()
+void Toolbox::getFieldsValue(BilboPost *currentPost)
 {
 	kDebug();
 	currentPost->setCategories(this->selectedCategoriesTitle());
 	currentPost->setTags(this->currentTags());
-	if(currentPost->status()==KBlog::BlogPost::Fetched || currentPost->status()==KBlog::BlogPost::Modified){
+	currentPost->setModifyTimeStamp(this->chkOptionsTime->isChecked());
+	if(currentPost->status()==KBlog::BlogPost::Fetched || currentPost->status()==KBlog::BlogPost::Modified){///FIXME there is a BUG here!
 		if(chkOptionsTime->isChecked())
 			currentPost->setModificationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
 		else
@@ -322,58 +321,41 @@ BilboPost * Toolbox::getFieldsValue()
 	} else {
 		if(chkOptionsTime->isChecked()){
             currentPost->setModificationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
-            currentPost->setCreationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
+//             currentPost->setCreationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
 		}
 		else {
             currentPost->setModificationDateTime(KDateTime::currentLocalDateTime());
-			currentPost->setCreationDateTime(KDateTime::currentLocalDateTime());
+// 			currentPost->setCreationDateTime(KDateTime::currentLocalDateTime());
 		}
 	}
-	
+
 	currentPost->setPrivate((comboOptionsStatus->currentIndex()==1)?true:false);
 	currentPost->setCommentAllowed(chkOptionsComments->isChecked());
 	currentPost->setTrackBackAllowed(chkOptionsTrackback->isChecked());
 	currentPost->setPosition((BilboPost::Position)comboOptionsStatus->currentIndex());
     currentPost->setSummary(txtSummary->toPlainText());
-	return currentPost;
 }
-
-// void Toolbox::setFieldsValue(const BilboPost & post)
-// {
-//     kDebug();
-// //     kDebug()<<"New Post is: "<<post.toString();
-//     delete currentPost;
-//     currentPost = new BilboPost(post);
-//     setSelectedCategories(post.categories());
-//     txtCatTags->setText(post.tags().join(", "));
-//     comboOptionsStatus->setCurrentIndex(post.position());
-//     if(post.position()!=BilboPost::Local && post.isPrivate())
-//         comboOptionsStatus->setCurrentIndex(1);
-//     chkOptionsComments->setChecked(post.isCommentAllowed());
-//     chkOptionsTrackback->setChecked(post.isTrackBackAllowed());
-//     datetimeOptionstimestamp->setDateTime(post.mTime());
-//     txtSummary->setPlainText(post.summary());
-// //     txtOptionsTrackback->setText(post.);
-// }
 
 void Toolbox::setFieldsValue(BilboPost* post)
 {
 	kDebug();
 //     kDebug()<<"New Post is: "<<post.toString();
 	//delete currentPost;
-	if (post != 0) {
-		currentPost = post;
+	if (post == 0) {
+		resetFields();
+// 		currentPost = post;
 	}
 
-	setSelectedCategories(currentPost->categories());
-	txtCatTags->setText(currentPost->tags().join(", "));
-	comboOptionsStatus->setCurrentIndex(currentPost->position());
-	if(currentPost->position()!=BilboPost::Local && currentPost->isPrivate())
+	setSelectedCategories(post->categories());
+	txtCatTags->setText(post->tags().join(", "));
+	comboOptionsStatus->setCurrentIndex(post->position());
+	if(post->position()!=BilboPost::Local && post->isPrivate())
         comboOptionsStatus->setCurrentIndex(1);
-	chkOptionsComments->setChecked(currentPost->isCommentAllowed());
-	chkOptionsTrackback->setChecked(currentPost->isTrackBackAllowed());
-	datetimeOptionstimestamp->setDateTime(currentPost->modificationDateTime().dateTime());
-	txtSummary->setPlainText(currentPost->summary());
+	chkOptionsComments->setChecked(post->isCommentAllowed());
+	chkOptionsTrackback->setChecked(post->isTrackBackAllowed());
+	chkOptionsTime->setChecked(post->isModifyTimeStamp());
+	datetimeOptionstimestamp->setDateTime(post->modificationDateTime().dateTime());
+	txtSummary->setPlainText(post->summary());
 //     txtOptionsTrackback->setText(post.);
 }
 
@@ -459,10 +441,10 @@ void Toolbox::setCurrentPage(int index)
     box->setCurrentIndex(index);
 }
 
-void Toolbox::setCurrentPost(BilboPost* post)
-{
-	currentPost = post;
-}
+// void Toolbox::setCurrentPost(BilboPost* post)
+// {
+// 	currentPost = post;
+// }
 
 void Toolbox::sltEntriesCopyUrl()
 {

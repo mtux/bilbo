@@ -43,13 +43,17 @@ public:
     ~Toolbox();
 	
 	void reloadBlogList();
-	BilboPost* getFieldsValue();
+	/**
+	 *    Will set current state of toolbox (Current post) properties on input pointer!
+	 * @param currentPost input and output of this Function.
+	 */
+	void getFieldsValue(BilboPost* currentPost);
 	//void setFieldsValue(const BilboPost& post);
 	void setFieldsValue(BilboPost* post = 0);
 	int currentBlogId();
     void setCurrentBlog(int blog_id);
     void setCurrentPage( int index );
-	void setCurrentPost(BilboPost* post);
+// 	void setCurrentPost(BilboPost* post);
 	
 	//QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
     QButtonGroup listBlogRadioButtons;
@@ -95,7 +99,7 @@ private:
 	
 	AddEditBlog *addEditBlogWindow;
 	BlogRadioButton *blogToEdit;
-	BilboPost *currentPost;
+// 	BilboPost *currentPost;
 	KStatusBar *statusbar;
 };
 

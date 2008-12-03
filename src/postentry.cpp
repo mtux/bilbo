@@ -76,7 +76,7 @@ QString PostEntry::postTitle() const
 QString * PostEntry::postBody()
 {
 	QString *str = this->editPostWidget->htmlContent();
-// 	mCurrentPost->setContent(*str);
+	mCurrentPost->setContent(*str);
 	return str;
 }
 

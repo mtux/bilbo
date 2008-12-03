@@ -46,7 +46,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     previousActivePostIndex = -1;
         
     // tell the KXmlGuiWindow that this is indeed the main widget
-    tabPosts->setElideMode(Qt::ElideRight);
+    tabPosts->setElideMode(Qt::ElideRight);///TODO make this Optional!
     setCentralWidget(tabPosts);
 
     toolbox=new Toolbox(this);
@@ -80,7 +80,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     sltCreateNewPost();
     activePost = qobject_cast<PostEntry*>(tabPosts->currentWidget());
     previousActivePostIndex = 0;
-	toolbox->setCurrentPost(activePost->currentPost());
+	toolbox->setFieldsValue(activePost->currentPost());
     
 //     this->setWindowIcon(KIcon(":/media/bilbo.png"));
 //     readConfig();
@@ -262,7 +262,8 @@ void MainWindow::sltActivePostChanged(int index)
 	
     if ((prevActivePost != 0) && (index != previousActivePostIndex)) {
 		//QString tempTitle = prevActivePost->postTitle();
-		prevActivePost->setCurrentPostProperties((*toolbox->getFieldsValue()));
+		toolbox->getFieldsValue(prevActivePost->currentPost());
+// 		prevActivePost->setCurrentPostProperties((*));
 		//prevActivePost->setPostTitle(tempTitle);
 		prevActivePost->setCurrentPostBlogId(toolbox->currentBlogId());
 		//tabPosts->setTabText(previousActivePostIndex, prevActivePost->postTitle());
@@ -291,7 +292,8 @@ void MainWindow::sltPublishPost()
     Backend *b = new Backend(blog_id);
     connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
     connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
-    BilboPost *post = toolbox->getFieldsValue();
+    BilboPost *post;
+	toolbox->getFieldsValue(post);
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
         if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
            ) == KMessageBox::Cancel)
@@ -393,7 +395,8 @@ void MainWindow::sltSaveAsDraft()
     Backend *b = new Backend(blog_id);
     connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
     connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
-    BilboPost *post = toolbox->getFieldsValue();
+    BilboPost *post;
+	toolbox->getFieldsValue(post);
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
         if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
                                              ) == KMessageBox::Cancel)

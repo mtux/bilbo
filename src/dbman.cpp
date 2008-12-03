@@ -257,7 +257,7 @@ int DBMan::addPost(const BilboPost & post, int blog_id)
 		tags.remove(tags.length()-1, 1);
 		q.addBindValue(tags);
 	} else 
-		q.addBindValue(QString("Untagged"));
+		q.addBindValue(QString());
 	q.addBindValue(post.position());
 	
 	int ret;
@@ -487,7 +487,7 @@ QList< BilboBlog *> DBMan::listBlogs()
 	QSqlQuery q;
 	q.exec("SELECT id, blogid, blog_url, username, password, style_url, api_type, title FROM blog");
 	while( q.next() ){
-		BilboBlog *tmp;
+		BilboBlog *tmp = new BilboBlog;
 		tmp->setId(q.value(0).toInt());
 		tmp->setBlogId( q.value(1).toString());
 		tmp->setUrl (QUrl(q.value(2).toString()));
@@ -565,7 +565,7 @@ QList< BilboPost* > DBMan::listPosts(int blog_id)
 	q.addBindValue(blog_id);
 	if(q.exec()){
 		while( q.next() ){
-			BilboPost *tmp;
+			BilboPost *tmp = new BilboPost;
 			tmp->setId( q.value(0).toInt());
 			tmp->setAuthor( q.value(2).toString());
 			tmp->setPostId(q.value(1).toString());
