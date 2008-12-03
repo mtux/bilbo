@@ -148,8 +148,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>384</width>
-          <height>407</height>
+          <width>348</width>
+          <height>390</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -269,7 +269,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>384</width>
+          <width>327</width>
           <height>407</height>
          </rect>
         </property>
@@ -396,7 +396,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>384</width>
+          <width>327</width>
           <height>407</height>
          </rect>
         </property>
@@ -409,8 +409,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>384</width>
-          <height>407</height>
+          <width>381</width>
+          <height>390</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -500,9 +500,6 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_3" />
-         </item>
-         <item>
           <widget class="KDateTimeWidget" name="datetimeOptionstimestamp" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
@@ -549,6 +546,14 @@ p, li { white-space: pre-wrap; }
           </spacer>
          </item>
         </layout>
+        <zorder>chkOptionsTime</zorder>
+        <zorder>datetimeOptionstimestamp</zorder>
+        <zorder>lblOptionsTrackBack</zorder>
+        <zorder>txtOptionsTrackback</zorder>
+        <zorder>label_2</zorder>
+        <zorder>txtSummary</zorder>
+        <zorder>comboOptionsStatus</zorder>
+        <zorder>label_3</zorder>
        </widget>
       </widget>
      </item>

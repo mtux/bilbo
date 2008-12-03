@@ -25,7 +25,7 @@
 #include "postentry.h"
 #include "bilboeditor.h"
 #include "bilbopost.h"
-
+///TODO Needs code cleaning!
 PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
@@ -75,7 +75,9 @@ QString PostEntry::postTitle() const
 
 QString * PostEntry::postBody()
 {
-	return this->editPostWidget->htmlContent();
+	QString *str = this->editPostWidget->htmlContent();
+	mCurrentPost->setContent(*str);
+	return str;
 }
 
 void PostEntry::setPostTitle(const QString & title)
@@ -86,6 +88,7 @@ void PostEntry::setPostTitle(const QString & title)
 
 void PostEntry::setPostBody(const QString & body)
 {
+	mCurrentPost->setContent(body);
     this->editPostWidget->setHtmlContent(body);
 }
 
@@ -131,11 +134,18 @@ PostEntry::~PostEntry()
     delete editPostWidget;
     delete gridLayout;
 //     delete horizontalLayout;
-	delete horizontalLayout;
+// 	delete horizontalLayout;
     delete labelTitle;
     delete txtTitle;
     delete wPost;
     delete mCurrentPost;
+}
+
+void PostEntry::setCurrentPostProperties(BilboPost post)
+{
+	post.setTitle(txtTitle->text());
+	post.setContent(*this->editPostWidget->htmlContent());
+	setCurrentPost(post);
 }
 
 #include "postentry.moc"

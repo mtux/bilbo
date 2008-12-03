@@ -74,10 +74,14 @@ public:
 	KBlog::BlogPost * toKBlogPost();
 	QString toString() const;
 	
+	bool isModifyTimeStamp();
+	bool setModifyTimeStamp(bool willModify);
+	
 private:
 	QString mAuthor;
 	int mId;///id in DB
 	Position mPosition;
+	bool mModifyTimeStamp;///Just for toolbox entry!
 };
 
 #endif

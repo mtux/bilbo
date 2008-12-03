@@ -180,9 +180,6 @@ QString BilboPost::toString() const
 	return ret;
 }
 
-
-
-
 BilboPost::BilboPost(const BilboPost &post)
     :KBlog::BlogPost()
 {
@@ -205,6 +202,16 @@ BilboPost::BilboPost(const BilboPost &post)
     this->setAuthor(post.author());
     this->setPosition(post.position());
     this->setId(post.id());
+}
+
+bool BilboPost::isModifyTimeStamp()
+{
+	return mModifyTimeStamp;
+}
+
+bool BilboPost::setModifyTimeStamp(bool willModify)
+{
+	mModifyTimeStamp = willModify;
 }
 
 #include "bilbopost.moc"
