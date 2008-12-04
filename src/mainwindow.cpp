@@ -292,7 +292,7 @@ void MainWindow::sltPublishPost()
     Backend *b = new Backend(blog_id);
     connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
     connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
-    BilboPost *post;
+    BilboPost *post = new BilboPost;
 	toolbox->getFieldsValue(post);
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
         if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
@@ -395,7 +395,7 @@ void MainWindow::sltSaveAsDraft()
     Backend *b = new Backend(blog_id);
     connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
     connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
-    BilboPost *post;
+    BilboPost *post = new BilboPost;
 	toolbox->getFieldsValue(post);
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
         if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")

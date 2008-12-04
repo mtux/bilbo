@@ -42,50 +42,9 @@ BilboPost::BilboPost()
     this->setId(-1);
 }
 
-
 BilboPost::~BilboPost()
 {
 }
-
-// QUrl BilboPost::postLink() const
-// {
-// 	return QUrl(this->link().url());
-// }
-// 
-// QUrl BilboPost::postPermaLink() const
-// {
-// 	return QUrl(this->permaLink().url());
-// }
-// 
-// void BilboPost::setPostLink(const QUrl &link)
-// {
-// 	this->setLink(KUrl(link));
-// }
-// 
-// void BilboPost::setPostPermaLink(const QUrl &link)
-// {
-// 	this->setPermaLink(KUrl(link));
-// }
-// 
-// QDateTime BilboPost::cTime() const
-// {
-// 	return QDateTime::fromString(this->creationDateTime().toString(KDateTime::ISODate), Qt::ISODate);
-// }
-// 
-// void BilboPost::setMTime(const QDateTime &t)
-// {
-// 	this->setModificationDateTime(KDateTime(t));
-// }
-// 
-// QDateTime BilboPost::mTime() const
-// {
-// 	return QDateTime::fromString(this->modificationDateTime().toString(KDateTime::ISODate), Qt::ISODate);
-// }
-// 
-// void BilboPost::setCTime(const QDateTime &t)
-// {
-// 	this->setCreationDateTime(KDateTime(t));
-// }
 
 QString BilboPost::author() const
 {
