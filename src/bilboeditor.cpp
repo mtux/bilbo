@@ -994,7 +994,7 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 		if (mMediaList->contains(media->localUrl())) {
 			//nedia is already added.
 		} else {
-			mediaList.insert(media->localUrl(), media);
+			mMediaList->insert(media->localUrl(), media);
 			url = media->localUrl();
 		}
 	}
