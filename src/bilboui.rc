@@ -1,10 +1,10 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
 <kpartgui name="bilbo" version="1">
 <MenuBar>
-  <Menu name="file"><text>&amp;File</text>
+  <Menu name="file"><text>File</text>
       <Action name="toggle_toolbox" />
   </Menu>
-  <Menu name="post"><text>&amp;Post</text>
+  <Menu name="post"><text>Post</text>
     <Action name="new_post" />
     <Separator />
     <Action name="publish_post" />
@@ -22,7 +22,7 @@
     <Action name="save_locally" />
     <Action name="save_draft" />
     <Action name="publish_post" />
-    <Action name="upload_all" />
+    <!--<Action name="upload_all" />-->
     <Action name="add_blog" />
 </Toolbar>
 </kpartgui>

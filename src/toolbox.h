@@ -61,7 +61,7 @@ public:
 	QMap<QString, int> listCategories;///Contain Category name(QString) and Category id(int)
 	QList<QCheckBox*> listCategoryCheckBoxes;
 	
-	QMap<QString, int> listEntries;///Contain Post title(QString) and Post id(int)
+//	QMap<QString, int> listEntries;///Contain Post title(QString) and Post id(int)
 	
 public slots:
 	void sltAddBlog();

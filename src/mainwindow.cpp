@@ -306,6 +306,7 @@ void MainWindow::sltPublishPost()
     b->publishPost(post);
     statusBar()->showMessage(i18n("publishing new post..."));
     this->setCursor(Qt::BusyCursor);
+	toolbox->setCursor(Qt::BusyCursor);
 }
 
 void MainWindow::sltPostPublished(int blog_id, int post_id, bool isPrivate)
@@ -327,6 +328,7 @@ void MainWindow::sltPostPublished(int blog_id, int post_id, bool isPrivate)
         sltRemoveCurrentPostEntry();
 	
     this->unsetCursor();
+	toolbox->unsetCursor();
 }
 
 void MainWindow::sltRemoveCurrentPostEntry()
@@ -409,6 +411,7 @@ void MainWindow::sltSaveAsDraft()
     b->publishPost(post);
     statusBar()->showMessage(i18n("Saving draft..."));
     this->setCursor(Qt::BusyCursor);
+	toolbox->setCursor(Qt::BusyCursor);
 }
 
 void MainWindow::sltError(QString & errorMessage)
