@@ -15,7 +15,7 @@
      <item row="0" column="0" >
       <widget class="QToolBox" name="box" >
        <property name="currentIndex" >
-        <number>4</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="pgBlogs" >
         <property name="geometry" >
@@ -410,7 +410,7 @@ p, li { white-space: pre-wrap; }
           <x>0</x>
           <y>0</y>
           <width>292</width>
-          <height>409</height>
+          <height>413</height>
          </rect>
         </property>
         <attribute name="label" >

@@ -34,6 +34,7 @@
 #include "bilbopost.h"
 #include "bilboblog.h"
 #include "blogradiobutton.h"
+#include "catcheckbox.h"
 
 Toolbox::Toolbox(QWidget *parent)
     :QWidget(parent)
@@ -250,12 +251,16 @@ void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 	parentWidget()->unsetCursor();
 	this->unsetCursor();
 	clearCatList();
+	QMap<QString, int> listCategories;
 	listCategories = __db->listCategories(blog_id);
 	
 	listCategoryCheckBoxes.clear();
-	QMap<QString, int>::iterator i;
-	for( i = listCategories.begin(); i != listCategories.end(); ++i ){
-		QCheckBox *cb = new QCheckBox(i.key());
+	QMap<QString, int>::const_iterator i;
+	QMap<QString, int>::const_iterator endIt= listCategories.constEnd();
+	for( i = listCategories.constBegin(); i != endIt; ++i ){
+		CatCheckBox *cb = new CatCheckBox(i.key(), this);
+		cb->setCatId(i.value());
+		cb->setCatTitle(i.key());
 		listCategoryCheckBoxes.append(cb);
 		frameCat->layout()->addWidget(cb);
 	}
@@ -291,10 +296,11 @@ void Toolbox::resetFields()
 void Toolbox::clearCatList()
 {
     kDebug();
-	listCategories.clear();
-	for(int j=0; j<listCategoryCheckBoxes.count(); ++j){
-		delete(listCategoryCheckBoxes[j]);
-	}
+// 	listCategories.clear();
+	qDeleteAll(listCategoryCheckBoxes.constBegin(), listCategoryCheckBoxes.constEnd());
+// 	for(int j=0; j<listCategoryCheckBoxes.count(); ++j){
+// 		delete(listCategoryCheckBoxes[j]);
+// 	}
 }
 
 void Toolbox::clearEntriesList()
@@ -377,9 +383,10 @@ QStringList Toolbox::selectedCategoriesTitle()
 {
 	kDebug();
 	QStringList list;
-	for( int i=0; i<listCategoryCheckBoxes.count(); ++i){
+	int count = listCategoryCheckBoxes.count();
+	for( int i=0; i<count; ++i){
 		if(listCategoryCheckBoxes[i]->isChecked())
-			list.append(listCategoryCheckBoxes[i]->text());
+			list.append(listCategoryCheckBoxes[i]->catTitle());
 	}
 	return list;
 }
@@ -394,8 +401,9 @@ QList< int > Toolbox::selectedCategoriesId()
 void Toolbox::setSelectedCategories(const QStringList &list)
 {
     unCheckCatList();
-	for( int i=0; i<listCategoryCheckBoxes.count(); ++i){
-		if(list.contains(listCategoryCheckBoxes[i]->text(), Qt::CaseInsensitive))
+	int count = listCategoryCheckBoxes.count();
+	for( int i=0; i<count; ++i){
+		if(list.contains(listCategoryCheckBoxes[i]->catTitle(), Qt::CaseInsensitive))
 			listCategoryCheckBoxes[i]->setChecked(true);
 	}
 }
@@ -477,7 +485,8 @@ Toolbox::~Toolbox()
 
 void Toolbox::unCheckCatList()
 {
-    for(int j=0; j<listCategoryCheckBoxes.count(); ++j){
+	int count = listCategoryCheckBoxes.count();
+    for(int j=0; j<count; ++j){
         listCategoryCheckBoxes[j]->setChecked(false);
     }
 }

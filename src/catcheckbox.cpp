@@ -17,85 +17,40 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "bilbomedia.h"
-//#include <QMimeData>
+#include "catcheckbox.h"
 
-BilboMedia::BilboMedia()
+CatCheckBox::CatCheckBox(QWidget* parent): QCheckBox(parent)
 {
 }
 
-BilboMedia::~BilboMedia()
+
+CatCheckBox::CatCheckBox(const QString& text, QWidget* parent): QCheckBox(text, parent)
 {
 }
 
-int BilboMedia::blogId() const
+
+CatCheckBox::~CatCheckBox()
 {
-	return mBlogId;
 }
 
-void BilboMedia::setBlogId(const int blog_id)
+int CatCheckBox::catId()
 {
-	mBlogId = blog_id;
+	return mCatId;
 }
 
-int BilboMedia::mediaId() const
+void CatCheckBox::setCatId(int id)
 {
-	return mMediaId;
+	mCatId = id;
 }
 
-void BilboMedia::setMediaId(const int media_id)
+void CatCheckBox::setCatTitle(const QString & title)
 {
-	mMediaId = media_id;
+	mCatTitle = title;
 }
 
-bool BilboMedia::isUploaded() const
+QString CatCheckBox::catTitle() const
 {
-	return mIsUploaded;
+	return mCatTitle;
 }
 
-void BilboMedia::setUploded(bool uploaded)
-{
-	mIsUploaded = uploaded;
-}
 
-QString BilboMedia::localUrl() const
-{
-	return mLocalUrl;
-}
-
-void BilboMedia::setLocalUrl(const QString& url)
-{
-	mLocalUrl = url;
-}
-
-QString BilboMedia::remoteUrl() const
-{
-	return mRemoteUrl;
-}
-
-void BilboMedia::setRemoteUrl(const QString& url)
-{
-	mRemoteUrl = url;
-}
-
-QString BilboMedia::mimeType() const
-{
-	return mMimeType;
-}
-
-void BilboMedia::setMimeType(const QString &type)
-{
-	mMimeType = type;
-}
-
-QString BilboMedia::name() const
-{
-	return mName;
-}
-
-void BilboMedia::setName(const QString &name)
-{
-	mName = name;
-}
-
-// #include <bilbomedia.moc>

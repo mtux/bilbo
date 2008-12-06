@@ -112,7 +112,6 @@ BilboPost* PostEntry::currentPost()
 
 void PostEntry::setCurrentPost(BilboPost post)
 {
-    ///TODO: Set post Body and title with new values.
     mCurrentPost = new BilboPost(post);
     this->setPostBody(mCurrentPost->content());
     this->setPostTitle(mCurrentPost->title());

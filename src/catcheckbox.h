@@ -17,85 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "bilbomedia.h"
-//#include <QMimeData>
+#ifndef CATCHECKBOX_H
+#define CATCHECKBOX_H
 
-BilboMedia::BilboMedia()
+#include <QCheckBox>
+
+/**
+Extend QCheckBox to add property needed for Category checkboxes.
+
+	@author 
+*/
+class Q_GUI_EXPORT CatCheckBox : public QCheckBox
 {
-}
+	Q_OBJECT
+public:
+    CatCheckBox(QWidget* parent=0);
+    
+    CatCheckBox(const QString& text, QWidget* parent=0);
 
-BilboMedia::~BilboMedia()
-{
-}
+    ~CatCheckBox();
+	
+	int catId();
+	void setCatId(int id);
+	
+	QString catTitle() const;
+	void setCatTitle(const QString& title);
+	
+private:
+	int mCatId;
+	QString mCatTitle;
 
-int BilboMedia::blogId() const
-{
-	return mBlogId;
-}
+};
 
-void BilboMedia::setBlogId(const int blog_id)
-{
-	mBlogId = blog_id;
-}
-
-int BilboMedia::mediaId() const
-{
-	return mMediaId;
-}
-
-void BilboMedia::setMediaId(const int media_id)
-{
-	mMediaId = media_id;
-}
-
-bool BilboMedia::isUploaded() const
-{
-	return mIsUploaded;
-}
-
-void BilboMedia::setUploded(bool uploaded)
-{
-	mIsUploaded = uploaded;
-}
-
-QString BilboMedia::localUrl() const
-{
-	return mLocalUrl;
-}
-
-void BilboMedia::setLocalUrl(const QString& url)
-{
-	mLocalUrl = url;
-}
-
-QString BilboMedia::remoteUrl() const
-{
-	return mRemoteUrl;
-}
-
-void BilboMedia::setRemoteUrl(const QString& url)
-{
-	mRemoteUrl = url;
-}
-
-QString BilboMedia::mimeType() const
-{
-	return mMimeType;
-}
-
-void BilboMedia::setMimeType(const QString &type)
-{
-	mMimeType = type;
-}
-
-QString BilboMedia::name() const
-{
-	return mName;
-}
-
-void BilboMedia::setName(const QString &name)
-{
-	mName = name;
-}
-
-// #include <bilbomedia.moc>
+#endif

@@ -136,7 +136,7 @@ void Backend::publishPost(BilboPost * post)
     kDebug()<<"Blog Id: "<< bBlog->id();
 	
 	KBlog::BlogPost *bp = post->toKBlogPost();
-// 	qDebug(post->toString().toLatin1().data());
+// 	kDebug()<<post->toString();
 	
 	int api = bBlog->api();
 	if(api==0 || api==1 || api==2){
@@ -254,7 +254,7 @@ void Backend::mediaUploaded(KBlog::BlogMedia * media)
     BilboMedia * m = new BilboMedia();
     m->setUploded(true);
     m->setLocalUrl(mediaLocalUrl);
-    m->setBlogId(bBlog->id());//TODO un comment this.
+    m->setBlogId(bBlog->id());
     m->setRemoteUrl(QUrl(media->url().url()).toString());
 //     m->setMimeData(new QMimeData(media->mimetype()));
     m->setName(media->name());

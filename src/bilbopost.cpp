@@ -173,4 +173,4 @@ bool BilboPost::setModifyTimeStamp(bool willModify)
 	mModifyTimeStamp = willModify;
 }
 
-#include "bilbopost.moc"
+// #include "bilbopost.moc"
