@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "bilbomedia.h"
-#include <QMimeData>
+//#include <QMimeData>
 
 BilboMedia::BilboMedia()
 {
@@ -84,7 +84,7 @@ QString BilboMedia::mimeType() const
 	return mMimeType;
 }
 
-void BilboMedia::setMimeData(const QString &type)
+void BilboMedia::setMimeType(const QString &type)
 {
 	mMimeType = type;
 }
@@ -98,3 +98,5 @@ void BilboMedia::setName(const QString &name)
 {
 	mName = name;
 }
+
+// #include <bilbomedia.moc>

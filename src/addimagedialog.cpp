@@ -17,81 +17,75 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <QFileDialog>
-#include <QFileSystemModel>
-#include <QDebug>
+//#include <QFileDialog>
+//#include <kfiledialog.h>
+#include <kmessagebox.h>
+#include <kmimetype.h>
+#include <kdebug.h>
+#include <kio/job.h>
 
 #include "addimagedialog.h"
 #include "bilbomedia.h"
 #include "constants.h"
 
-AddImageDialog::AddImageDialog(QWidget *parent) :QDialog(parent)
+AddImageDialog::AddImageDialog(QWidget *parent) :KDialog(parent)
 {
-	setupUi(this);
-	connect(btnBrowse, SIGNAL(clicked()), this, SLOT(slotBrowseFiles()));
-	connect(txtRemoteUrl, SIGNAL(textEdited( const QString& )), this, SLOT(slotDisableLocalPath()));
+	QDialog *dialog = new QDialog(0);
+	ui.setupUi(dialog);
+	dialog->setAttribute( Qt::WA_DeleteOnClose );
+	this->setMainWidget(dialog);
+	this->resize(dialog->width(), dialog->height());
+	connect(this, SIGNAL(okClicked()), this, SLOT(sltOkClicked()));
 }
 
 AddImageDialog::~AddImageDialog()
 {
 }
 
-void AddImageDialog::accept()
+void AddImageDialog::sltOkClicked()
 {
-	BilboMedia *media = new BilboMedia();
+	KUrl tempUrl = ui.kurlreqLocalUrl->url();
 	
-	QStringList list1 = selectedImageUrl().split("/", QString::SkipEmptyParts);
-	QString name = list1.last();
-// 	QFileSystemModel *fs = new QFileSystemModel();
-// 	QString type = fs->type(fs->index(selectedImageUrl()));
+	if (!tempUrl.isEmpty()) {
+		if (tempUrl.isValid()) {
+			media = new BilboMedia();
+			QString name = tempUrl.fileName();
 // 	qDebug() << type;
-	media->setName(name);
-	
-	if (txtRemoteUrl->isEnabled()) {
-		media->setRemoteUrl(mSelectedImageUrl);
-		media->setUploded(true);
-	} else {
-		QFile::copy(mSelectedImageUrl, TEMP_MEDIA_DIR + name);
-		media->setLocalUrl(TEMP_MEDIA_DIR + name);
-		media->setUploded(false);
+			media->setName(name);
+			
+			if (!tempUrl.isLocalFile()) {
+				media->setRemoteUrl(tempUrl.url());
+				media->setUploded(true);
+				
+				KIO::MimetypeJob* typeJob = KIO::mimetype(tempUrl);
+				//KIO::TransferJob* tempJob = typeJob;
+				//KIO::TransferJob* tempJob = KIO::mimetype(tempUrl,false);
+				
+				connect(typeJob, SIGNAL(mimetype(KIO::Job*, const QString&)), this, SLOT(sltRemoteFileTypeFound(KIO::Job*, const QString&)));
+			} else {
+				QFile::copy(tempUrl.toLocalFile(), TEMP_MEDIA_DIR + "/" + name);
+				media->setLocalUrl(TEMP_MEDIA_DIR + "/" + name);
+				media->setUploded(false);
+				
+				KMimeType::Ptr typePtr;
+				typePtr = KMimeType::findByUrl(tempUrl, 0, true, false);
+				name = typePtr.data()->name();
+				kDebug() << name ;
+				media->setMimeType(name);
+				
+				Q_EMIT signalAddImage(media);
+			}
+		} else {
+			KMessageBox::error(this,i18n("The selected media address is an invalid url."));
+		}
 	}
+}
+
+void AddImageDialog::sltRemoteFileTypeFound(KIO::Job *job, const QString &type)
+{
+	kDebug() << type ;
+	media->setMimeType(type);
 	Q_EMIT signalAddImage(media);
-	QDialog::accept();
 }
 
-void AddImageDialog::reject()
-{
-	QDialog::reject();
-}
-
-void AddImageDialog::slotBrowseFiles()
-{
-	QFileDialog *fileDialog = new QFileDialog(this);
-	fileDialog->setFileMode(QFileDialog::ExistingFiles);
-
-	if (fileDialog->exec())
-	{
-		mSelectedImageUrl = fileDialog->selectedFiles().at(0);
-		txtLocalUrl->setText(mSelectedImageUrl);
-		txtRemoteUrl->setDisabled(true);
-	}
-}
-
-void AddImageDialog::slotDisableLocalPath()
-{
-	if (txtRemoteUrl->text() == "")
-	{
-		txtLocalUrl->setDisabled(false);
-		btnBrowse->setDisabled(false);
-	} else {
-		txtLocalUrl->setDisabled(true);
-		btnBrowse->setDisabled(true);
-	}
-}
-
-QString AddImageDialog::selectedImageUrl()
-{
-	if (txtRemoteUrl->isEnabled())
-		mSelectedImageUrl = txtRemoteUrl->text();
-	return mSelectedImageUrl;
-}
+#include "addimagedialog.moc"

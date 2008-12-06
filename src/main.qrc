@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/" >
-        <file>media/bilbo.png</file>
-        <file>media/gplv3-88x31.png</file>
-        <file>media/gplv3-127x51.png</file>
-    </qresource>
-</RCC>

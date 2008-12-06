@@ -20,9 +20,12 @@
 #ifndef ADDIMAGEDIALOG_H
 #define ADDIMAGEDIALOG_H
 
-#include <QDialog>
+//#include <QDialog>
+#include <KDialog>
+//#include <KIO>
+#include <kio/jobclasses.h>
 
-#include "ui_addimagedialog.h"
+#include "ui_addimagedialogbase.h"
 
 class BilboMedia;
 /**
@@ -32,8 +35,10 @@ Implements a dialog to enter address of a local or remote image file.
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 // TODO change the class to support more than one type of media.
+// TODO use KDialog instead of QDialog.
+// now when using it default ok-cancel buttons appear on top right corner of the dialog window.
 
-class AddImageDialog: public QDialog, public Ui::AddImageDialog
+class AddImageDialog: public KDialog
 {
 	Q_OBJECT
 	public:
@@ -47,13 +52,6 @@ class AddImageDialog: public QDialog, public Ui::AddImageDialog
 		/// AddImageDialog destructor.
 		~AddImageDialog();
 		
-		
-		/**
-		 * Returns the selected image path as an http url or a path in local filesystem.
-		 * @return a QString which contains the image path
-		 */
-		QString selectedImageUrl();
-		
 	Q_SIGNALS:
 		/**
 		 * when the dialog is accepted, sends the selected image url to the caller function.
@@ -61,16 +59,13 @@ class AddImageDialog: public QDialog, public Ui::AddImageDialog
 		 */
 		void signalAddImage(BilboMedia *media);
 		
-	public Q_SLOTS:
-		void accept();
-		void reject();
-		
 	private:
-		QString mSelectedImageUrl;
+		Ui::AddImageDialogBase ui;
+		BilboMedia *media;
 		
 	private Q_SLOTS:
-		void slotBrowseFiles();
-		void slotDisableLocalPath();
+		void sltOkClicked();
+		void sltRemoteFileTypeFound(KIO::Job *job, const QString &type);
 };
 
 #endif

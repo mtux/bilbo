@@ -17,15 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "addcategory.h"
+#ifndef CATCHECKBOX_H
+#define CATCHECKBOX_H
 
-AddCategory::AddCategory(QWidget *parent)
-    :KDialog(parent)
+#include <QCheckBox>
+
+/**
+Extend QCheckBox to add property needed for Category checkboxes.
+
+	@author 
+*/
+class Q_GUI_EXPORT CatCheckBox : public QCheckBox
 {
-    QWidget *dialog = new QWidget;
-    ui.setupUi(dialog);
-    dialog->setAttribute( Qt::WA_DeleteOnClose );
-    this->setMainWidget(dialog);
-}
+	Q_OBJECT
+public:
+    CatCheckBox(QWidget* parent=0);
+    
+    CatCheckBox(const QString& text, QWidget* parent=0);
 
-#include "addcategory.moc"
+    ~CatCheckBox();
+	
+	int catId();
+	void setCatId(int id);
+	
+	QString catTitle() const;
+	void setCatTitle(const QString& title);
+	
+private:
+	int mCatId;
+	QString mCatTitle;
+
+};
+
+#endif

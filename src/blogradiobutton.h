@@ -17,44 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "settings.h"
-// #include <QDebug>
-#include <QSettings>
+#ifndef BLOGRADIOBUTTON_H
+#define BLOGRADIOBUTTON_H
 
-Settings::Settings()
+#include <QRadioButton>
+
+/**
+Bilbo radio button for Blog entries! extend QRadioButton to add more functionality.
+
+	@author 
+*/
+class Q_GUI_EXPORT BlogRadioButton : public QRadioButton
 {
-	load();
-}
-
-
-Settings::~Settings()
-{
-	save();
-}
-
-void Settings::save()
-{
-	qDebug("Settings::save");
-	QSettings *set = new QSettings(CONF_PATH, QSettings::NativeFormat);
-// 	qDebug(QString(CONF_PATH).toLatin1().data());
-	
-	set->setValue("show_main_on_start", showMainOnStart);
-	set->setValue("toolbox_visible", isToolboxVisibleByDefault);
-	set->sync();
+    Q_OBJECT
+public:
+    BlogRadioButton(const QString& text, QWidget* parent=0);
     
-    delete set;
-}
+    BlogRadioButton(QWidget* parent=0);
 
-void Settings::load()
-{
-	qDebug("Settings::load");
-	
-	QSettings *set = new QSettings(CONF_PATH, QSettings::NativeFormat);
-	
-	showMainOnStart = set->value("show_main_on_start", true).toBool();
-	isToolboxVisibleByDefault = set->value ( "toolbox_visible", true ).toBool();
+    ~BlogRadioButton();
     
-    delete set;
-}
+    int blogId() const;
+    void setBlogId(int blog_id);
+    
+protected:
+    int mBlogId;
 
+};
 
+#endif

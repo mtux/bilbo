@@ -17,12 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <QtGui> 
+#include <QtGui>
+#include <kdebug.h>
+#include <klocalizedstring.h>
+#include <klineedit.h>
 
 #include "postentry.h"
 #include "bilboeditor.h"
 #include "bilbopost.h"
-
+///TODO Needs code cleaning!
 PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
@@ -45,13 +48,13 @@ void PostEntry::createUi()
 	horizontalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
 	
 	labelTitle = new QLabel(this);
-	labelTitle->setText("&Title :");
+	labelTitle->setText(i18nc("noun, the post title", "Title:"));
 	horizontalLayout->addWidget(labelTitle);
 
-	txtTitle = new QLineEdit(this);
+	txtTitle = new KLineEdit(this);
 	horizontalLayout->addWidget(txtTitle);
 	labelTitle->setBuddy(txtTitle);
-    connect(txtTitle, SIGNAL(textChanged(const QString&)), this, SIGNAL( sigTitleChanged(const QString&) ));
+    connect(txtTitle, SIGNAL(textChanged(const QString&)), this, SLOT( sltTitleChanged(const QString&) ));
 	
 	gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
 	
@@ -60,23 +63,34 @@ void PostEntry::createUi()
 	
 }
 
+void PostEntry::sltTitleChanged(const QString& title)
+{
+	mCurrentPost->setTitle(title);
+	Q_EMIT sigTitleChanged(title);
+}
+
 QString PostEntry::postTitle() const
 {
-	return QString(this->txtTitle->text());
+	//return QString(this->txtTitle->text());
+	return mCurrentPost->title();
 }
 
 QString * PostEntry::postBody()
 {
-	return this->editPostWidget->htmlContent();
+	QString *str = this->editPostWidget->htmlContent();
+	mCurrentPost->setContent(*str);
+	return str;
 }
 
 void PostEntry::setPostTitle(const QString & title)
 {
-    this->txtTitle->setText(title);
+	this->txtTitle->setText(title);
+	mCurrentPost->setTitle(title);
 }
 
 void PostEntry::setPostBody(const QString & body)
 {
+	mCurrentPost->setContent(body);
     this->editPostWidget->setHtmlContent(body);
 }
 
@@ -90,16 +104,16 @@ void PostEntry::setCurrentPostBlogId(int blog_id)
     mCurrentPostBlogId = blog_id;
 }
 
-BilboPost PostEntry::currentPost()
+BilboPost* PostEntry::currentPost()
 {
     mCurrentPost->setContent(*postBody());
-    mCurrentPost->setTitle(postTitle());
-    return (*mCurrentPost);
+    //mCurrentPost->setTitle(postTitle());
+    //return (*mCurrentPost);
+	return (mCurrentPost);
 }
 
 void PostEntry::setCurrentPost(BilboPost post)
 {
-    ///TODO: Set post Body and title with new values.
     mCurrentPost = new BilboPost(post);
     this->setPostBody(mCurrentPost->content());
     this->setPostTitle(mCurrentPost->title());
@@ -124,10 +138,20 @@ PostEntry::~PostEntry()
 {
     delete editPostWidget;
     delete gridLayout;
-    delete horizontalLayout;
+//     delete horizontalLayout;
+// 	delete horizontalLayout;
     delete labelTitle;
     delete txtTitle;
     delete wPost;
     delete mCurrentPost;
 	delete mediaList;
 }
+
+void PostEntry::setCurrentPostProperties(BilboPost post)
+{
+	post.setTitle(txtTitle->text());
+	post.setContent(*this->editPostWidget->htmlContent());
+	setCurrentPost(post);
+}
+
+#include "postentry.moc"

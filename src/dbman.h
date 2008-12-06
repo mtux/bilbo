@@ -50,7 +50,7 @@ public:
 	BilboBlog *getBlogInfo(int blog_id);
 	
 	QList<BilboPost*> listPosts(int blog_id);
-	QMap<QString, int> listPostsTitle(int blog_id);///QString as Title, and int as post_id
+	QMap< int, QString > listPostsTitle(int blog_id);///QString as Title, and int as post_id
 	BilboPost *getPostInfo(int post_id);
 	
 	QMap<QString, int> listCategories(int blog_id);

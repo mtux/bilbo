@@ -19,22 +19,22 @@
  ***************************************************************************/
 
 #include "global.h"
-
-Settings *__conf;
+#include <kdebug.h>
+// Settings *__conf;
 DBMan *__db;
 int __currentBlogId;
 
 void global_init()
 {
-	qDebug("global_init");
-	__conf = new Settings;
+	kDebug();
+// // 	__conf = new Settings;
 	__db = new DBMan;
     __currentBlogId = -1;
 }
 
 void global_end()
 {
-	qDebug("global_end");
-	delete __conf;
+	kDebug();
+// 	delete __conf;
 	delete __db;
 }

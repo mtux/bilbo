@@ -28,7 +28,7 @@ class QWidget;
 class QGridLayout;
 class QLabel;
 class QHBoxLayout;
-class QLineEdit;
+class KLineEdit;
 class BilboMedia;
 /**
  * Post Entry Widget
@@ -50,8 +50,9 @@ public:
     int currentPostBlogId();
     void setCurrentPostBlogId( int blog_id );
     
-    BilboPost currentPost();
+    BilboPost* currentPost();
     void setCurrentPost( BilboPost post=BilboPost() );
+	void setCurrentPostProperties( BilboPost post=BilboPost() );
 	
 	Qt::LayoutDirection defaultLayoutDirection();
 	void setDefaultLayoutDirection(Qt::LayoutDirection direction);
@@ -65,6 +66,8 @@ Q_SIGNALS:
      */
     void sigTitleChanged(const QString &title);
 
+private Q_SLOTS:
+	void sltTitleChanged(const QString& title);
 	
 private:
     void createUi();
@@ -74,7 +77,7 @@ private:
 	QGridLayout *gridLayout;
 	QHBoxLayout *horizontalLayout;
 	QLabel *labelTitle;
-	QLineEdit *txtTitle;
+	KLineEdit *txtTitle;
 	QWidget *wPost;
     BilboPost *mCurrentPost;
     int mCurrentPostBlogId;

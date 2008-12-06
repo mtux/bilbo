@@ -17,30 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#include "blogradiobutton.h"
 
-#include "constants.h"
+BlogRadioButton::BlogRadioButton(const QString& text, QWidget* parent): QRadioButton(text, parent)
+{
+}
 
-/**
-settings low level implementation is placed here.
 
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
-*/
-class Settings{
-public:
-    Settings();
+BlogRadioButton::BlogRadioButton(QWidget* parent): QRadioButton(parent)
+{
+}
 
-    ~Settings();
-	
-	void save();
-	void load();
 
-	bool showMainOnStart;
-	bool isToolboxVisibleByDefault;
-private:
-// 	QString ini_path;
-};
+BlogRadioButton::~BlogRadioButton()
+{
+}
 
-#endif
+int BlogRadioButton::blogId() const
+{
+    return mBlogId;
+}
+
+void BlogRadioButton::setBlogId(int blog_id)
+{
+    mBlogId = blog_id;
+}
+
+#include "blogradiobutton.moc"
