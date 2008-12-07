@@ -31,7 +31,7 @@ class BilboPost;
 class AddEditBlog;
 class BilboBlog;
 class BlogRadioButton;
-
+class CatCheckBox;
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
@@ -58,10 +58,10 @@ public:
 	//QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
     QButtonGroup listBlogRadioButtons;
 	
-	QMap<QString, int> listCategories;///Contain Category name(QString) and Category id(int)
-	QList<QCheckBox*> listCategoryCheckBoxes;
+//	QMap<QString, int> listCategories;///Contain Category name(QString) and Category id(int)
+	QList<CatCheckBox*> listCategoryCheckBoxes;
 	
-	QMap<QString, int> listEntries;///Contain Post title(QString) and Post id(int)
+//	QMap<QString, int> listEntries;///Contain Post title(QString) and Post id(int)
 	
 public slots:
 	void sltAddBlog();

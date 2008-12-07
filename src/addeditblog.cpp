@@ -178,6 +178,7 @@ void AddEditBlog::handleFetchIDTimeout()
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
+	delete mBlog;
 // 	delete mFetchProfileIdTimer;
 // 	delete mFetchBlogIdTimer;
 }
@@ -189,6 +190,7 @@ void AddEditBlog::handleFetchAPITimeout()
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
+	delete mBlog;
 // 	delete mFetchAPITimer;
 }
 
@@ -199,6 +201,7 @@ void AddEditBlog::handleFetchError(KBlog::Blog::ErrorType type, const QString & 
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
+	delete mBlog;
 }
 
 void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list)
@@ -302,8 +305,8 @@ void AddEditBlog::sltRejected()
 
 AddEditBlog::~AddEditBlog()
 {
+	kDebug();
     delete bBlog;
-    delete mBlog;
 //     delete mFetchProfileIdTimer;
 //     delete mFetchBlogIdTimer;
 //     delete mFetchAPITimer;

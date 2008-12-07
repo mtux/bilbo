@@ -34,6 +34,7 @@
 #include "bilbopost.h"
 #include "bilboblog.h"
 #include "blogradiobutton.h"
+#include "catcheckbox.h"
 
 Toolbox::Toolbox(QWidget *parent)
     :QWidget(parent)
@@ -50,8 +51,8 @@ Toolbox::Toolbox(QWidget *parent)
 	reloadBlogList();
 // 	currentBlog=0;
 // 	currentPost = new BilboPost();
-	datetimeOptionstimestamp->setDateTime(QDateTime::currentDateTime());
-	
+	optionsDate->setDate(QDateTime::currentDateTime().date());
+	optionsTime->setTime(QDateTime::currentDateTime().time());
 	connect(btnBlogAdd, SIGNAL(clicked()), this, SLOT(sltAddBlog()));
 	connect(btnBlogEdit, SIGNAL(clicked()), this, SLOT(sltEditBlog()));
 	connect(btnBlogRemove, SIGNAL(clicked()), this, SLOT(sltRemoveBlog()));
@@ -158,7 +159,7 @@ void Toolbox::sltReloadCategoryList()
 {
 	kDebug();
     if(!listBlogRadioButtons.checkedButton()){
-		KMessageBox::sorry(this, i18n("There isn't any selected blog, you have to select a blog from Blogs page befor ask for Category list"));
+		KMessageBox::sorry(this, i18n("There isn't any selected blog, you have to select a blog from Blogs page before asking for Category list"));
 		return;
 	}
 	
@@ -172,13 +173,14 @@ void Toolbox::sltReloadCategoryList()
     connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
 	statusbar->showMessage(i18n("Requesting category list..."));
     this->setCursor(Qt::BusyCursor);
+	parentWidget()->setCursor(Qt::BusyCursor);
 }
 
 void Toolbox::sltReloadEntries()
 {
 	kDebug();
     if(!listBlogRadioButtons.checkedButton()){
-		KMessageBox::sorry(this, i18n("There isn't any selected blog, you have to select a blog from Blogs page befor ask for Entries list"));
+		KMessageBox::sorry(this, i18n("There isn't any selected blog, you have to select a blog from Blogs page before asking for Entries list"));
 		kDebug()<<"There isn't any selected blog.";
 		return;
 	}
@@ -225,8 +227,17 @@ void Toolbox::sltLoadEntriesFromDB(int blog_id)
 	clearEntriesList();
 	statusbar->showMessage(i18n("Entries list received."), STATUSTIMEOUT);
     this->unsetCursor();
+	parentWidget()->unsetCursor();
+	QMap<int, QString> listEntries;
 	listEntries = __db->listPostsTitle(blog_id);
-	lstEntriesList->addItems(listEntries.keys());
+	QMap<int, QString>::const_iterator endIt = listEntries.constEnd();
+	QMap<int, QString>::const_iterator it = listEntries.constBegin();
+	for(; it!=endIt; ++it){
+		QListWidgetItem *lstItem = new QListWidgetItem(it.value());
+		lstItem->setData(32, it.key());
+		lstEntriesList->addItem(lstItem);
+	}
+// 	lstEntriesList->addItems(listEntries.keys());
 }
 
 void Toolbox::sltLoadCategoryListFromDB(int blog_id)
@@ -237,14 +248,19 @@ void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 		return;
 	}
 	statusbar->showMessage(i18n("Category list received."), STATUSTIMEOUT);
+	parentWidget()->unsetCursor();
 	this->unsetCursor();
 	clearCatList();
+	QMap<QString, int> listCategories;
 	listCategories = __db->listCategories(blog_id);
 	
 	listCategoryCheckBoxes.clear();
-	QMap<QString, int>::iterator i;
-	for( i = listCategories.begin(); i != listCategories.end(); ++i ){
-		QCheckBox *cb = new QCheckBox(i.key());
+	QMap<QString, int>::const_iterator i;
+	QMap<QString, int>::const_iterator endIt= listCategories.constEnd();
+	for( i = listCategories.constBegin(); i != endIt; ++i ){
+		CatCheckBox *cb = new CatCheckBox(i.key(), this);
+		cb->setCatId(i.value());
+		cb->setCatTitle(i.key());
 		listCategoryCheckBoxes.append(cb);
 		frameCat->layout()->addWidget(cb);
 	}
@@ -259,6 +275,7 @@ void Toolbox::sltGetEntriesCount(int count)
     connect(entryB, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
 	statusbar->showMessage(i18n("Requesting Entry list..."));
     this->setCursor(Qt::BusyCursor);
+	parentWidget()->setCursor(Qt::BusyCursor);
 }
 
 void Toolbox::resetFields()
@@ -267,7 +284,8 @@ void Toolbox::resetFields()
 	unCheckCatList();
 	txtCatTags->clear();
 	chkOptionsTime->setChecked(false);
-	datetimeOptionstimestamp->setDateTime(QDateTime::currentDateTime());
+	optionsDate->setDate(QDateTime::currentDateTime().date());
+	optionsTime->setTime(QDateTime::currentDateTime().time());
 	txtOptionsTrackback->clear();
     txtSummary->setPlainText(QString());
     chkOptionsComments->setChecked(true);
@@ -278,17 +296,18 @@ void Toolbox::resetFields()
 void Toolbox::clearCatList()
 {
     kDebug();
-	listCategories.clear();
-	for(int j=0; j<listCategoryCheckBoxes.count(); ++j){
-		delete(listCategoryCheckBoxes[j]);
-	}
+// 	listCategories.clear();
+	qDeleteAll(listCategoryCheckBoxes.constBegin(), listCategoryCheckBoxes.constEnd());
+// 	for(int j=0; j<listCategoryCheckBoxes.count(); ++j){
+// 		delete(listCategoryCheckBoxes[j]);
+// 	}
 }
 
 void Toolbox::clearEntriesList()
 {
     kDebug();
 	lstEntriesList->clear();
-	listEntries.clear();
+// 	listEntries.clear();
 }
 
 void Toolbox::sltCurrentBlogChanged(int blog_id)
@@ -315,12 +334,12 @@ void Toolbox::getFieldsValue(BilboPost *currentPost)
 	currentPost->setModifyTimeStamp(this->chkOptionsTime->isChecked());
 	if(currentPost->status()==KBlog::BlogPost::Fetched || currentPost->status()==KBlog::BlogPost::Modified){///FIXME there is a BUG here!
 		if(chkOptionsTime->isChecked())
-			currentPost->setModificationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
+			currentPost->setModificationDateTime(KDateTime(optionsDate->date(), optionsTime->time()));
 		else
             currentPost->setModificationDateTime(KDateTime::currentLocalDateTime());
 	} else {
 		if(chkOptionsTime->isChecked()){
-            currentPost->setModificationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
+			currentPost->setModificationDateTime(KDateTime(optionsDate->date(), optionsTime->time()));
 //             currentPost->setCreationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
 		}
 		else {
@@ -354,7 +373,8 @@ void Toolbox::setFieldsValue(BilboPost* post)
 	chkOptionsComments->setChecked(post->isCommentAllowed());
 	chkOptionsTrackback->setChecked(post->isTrackBackAllowed());
 	chkOptionsTime->setChecked(post->isModifyTimeStamp());
-	datetimeOptionstimestamp->setDateTime(post->modificationDateTime().dateTime());
+	optionsTime->setTime(post->modificationDateTime().time());
+	optionsDate->setDate(post->modificationDateTime().date());
 	txtSummary->setPlainText(post->summary());
 //     txtOptionsTrackback->setText(post.);
 }
@@ -363,9 +383,10 @@ QStringList Toolbox::selectedCategoriesTitle()
 {
 	kDebug();
 	QStringList list;
-	for( int i=0; i<listCategoryCheckBoxes.count(); ++i){
+	int count = listCategoryCheckBoxes.count();
+	for( int i=0; i<count; ++i){
 		if(listCategoryCheckBoxes[i]->isChecked())
-			list.append(listCategoryCheckBoxes[i]->text());
+			list.append(listCategoryCheckBoxes[i]->catTitle());
 	}
 	return list;
 }
@@ -380,8 +401,9 @@ QList< int > Toolbox::selectedCategoriesId()
 void Toolbox::setSelectedCategories(const QStringList &list)
 {
     unCheckCatList();
-	for( int i=0; i<listCategoryCheckBoxes.count(); ++i){
-		if(list.contains(listCategoryCheckBoxes[i]->text(), Qt::CaseInsensitive))
+	int count = listCategoryCheckBoxes.count();
+	for( int i=0; i<count; ++i){
+		if(list.contains(listCategoryCheckBoxes[i]->catTitle(), Qt::CaseInsensitive))
 			listCategoryCheckBoxes[i]->setChecked(true);
 	}
 }
@@ -418,7 +440,7 @@ int Toolbox::currentBlogId()
 void Toolbox::sltEntrySelected(QListWidgetItem * item)
 {
     kDebug();
-    BilboPost *post = __db->getPostInfo(listEntries.value(item->text()));
+	BilboPost *post = __db->getPostInfo(lstEntriesList->currentItem()->data(32).toInt());
 //     setFieldsValue(*post);
     kDebug()<<"Emiting sigEntrySelected...";
 	Q_EMIT sigEntrySelected(post);
@@ -441,15 +463,14 @@ void Toolbox::setCurrentPage(int index)
     box->setCurrentIndex(index);
 }
 
-// void Toolbox::setCurrentPost(BilboPost* post)
-// {
-// 	currentPost = post;
-// }
-
 void Toolbox::sltEntriesCopyUrl()
 {
-    QClipboard *clip = QApplication::clipboard();
-    BilboPost *p = __db->getPostInfo(listEntries.value(lstEntriesList->currentItem()->text()));
+	if(lstEntriesList->currentItem()==0){
+		KMessageBox::sorry(this, i18n("There isn't any selected entry!\nIn order to use this function you have to select an entry first."));
+		return;
+	}
+	QClipboard *clip = QApplication::clipboard();
+	BilboPost *p = __db->getPostInfo(lstEntriesList->currentItem()->data(32).toInt());
     clip->setText(p->link().url());
 }
 
@@ -464,7 +485,8 @@ Toolbox::~Toolbox()
 
 void Toolbox::unCheckCatList()
 {
-    for(int j=0; j<listCategoryCheckBoxes.count(); ++j){
+	int count = listCategoryCheckBoxes.count();
+    for(int j=0; j<count; ++j){
         listCategoryCheckBoxes[j]->setChecked(false);
     }
 }

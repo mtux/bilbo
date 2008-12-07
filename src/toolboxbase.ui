@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>347</width>
+    <width>329</width>
     <height>562</height>
    </rect>
   </property>
@@ -22,7 +22,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>327</width>
+          <width>309</width>
           <height>407</height>
          </rect>
         </property>
@@ -269,7 +269,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>327</width>
+          <width>309</width>
           <height>407</height>
          </rect>
         </property>
@@ -396,7 +396,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>327</width>
+          <width>309</width>
           <height>407</height>
          </rect>
         </property>
@@ -409,8 +409,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>381</width>
-          <height>390</height>
+          <width>292</width>
+          <height>413</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -421,6 +421,12 @@ p, li { white-space: pre-wrap; }
           <layout class="QHBoxLayout" name="horizontalLayout_7" >
            <item>
             <widget class="QLabel" name="label_3" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text" >
               <string comment="Status of the current post" >Status :</string>
              </property>
@@ -428,6 +434,12 @@ p, li { white-space: pre-wrap; }
            </item>
            <item>
             <widget class="KComboBox" name="comboOptionsStatus" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <item>
               <property name="text" >
                <string>Published</string>
@@ -445,12 +457,31 @@ p, li { white-space: pre-wrap; }
              </item>
             </widget>
            </item>
+           <item>
+            <spacer name="horizontalSpacer_7" >
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
           </layout>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_6" >
            <item>
             <widget class="QLabel" name="label" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text" >
               <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
@@ -500,12 +531,34 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item>
-          <widget class="KDateTimeWidget" name="datetimeOptionstimestamp" >
+          <widget class="KDateWidget" name="optionsDate" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTimeEdit" name="optionsTime" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
            <property name="sizePolicy" >
-            <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="buttonSymbols" >
+            <enum>QAbstractSpinBox::UpDownArrows</enum>
+           </property>
+           <property name="correctionMode" >
+            <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+           </property>
+           <property name="calendarPopup" >
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -530,7 +583,14 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item>
-          <widget class="QPlainTextEdit" name="txtSummary" />
+          <widget class="QPlainTextEdit" name="txtSummary" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Maximum" hsizetype="Expanding" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
          </item>
          <item>
           <spacer name="verticalSpacer" >
@@ -546,14 +606,6 @@ p, li { white-space: pre-wrap; }
           </spacer>
          </item>
         </layout>
-        <zorder>chkOptionsTime</zorder>
-        <zorder>datetimeOptionstimestamp</zorder>
-        <zorder>lblOptionsTrackBack</zorder>
-        <zorder>txtOptionsTrackback</zorder>
-        <zorder>label_2</zorder>
-        <zorder>txtSummary</zorder>
-        <zorder>comboOptionsStatus</zorder>
-        <zorder>label_3</zorder>
        </widget>
       </widget>
      </item>
@@ -568,9 +620,9 @@ p, li { white-space: pre-wrap; }
    <header>kcombobox.h</header>
   </customwidget>
   <customwidget>
-   <class>KDateTimeWidget</class>
+   <class>KDateWidget</class>
    <extends>QWidget</extends>
-   <header>kdatetimewidget.h</header>
+   <header>kdatewidget.h</header>
   </customwidget>
   <customwidget>
    <class>KLineEdit</class>
@@ -595,7 +647,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>btnCatAdd</tabstop>
   <tabstop>txtCatTags</tabstop>
   <tabstop>chkOptionsTime</tabstop>
-  <tabstop>datetimeOptionstimestamp</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -606,12 +657,44 @@ p, li { white-space: pre-wrap; }
    <slot>repaint()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>64</x>
-     <y>447</y>
+     <x>97</x>
+     <y>433</y>
     </hint>
     <hint type="destinationlabel" >
      <x>161</x>
      <y>290</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chkOptionsTime</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>optionsDate</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>130</x>
+     <y>258</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>130</x>
+     <y>283</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chkOptionsTime</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>optionsTime</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>77</x>
+     <y>261</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>75</x>
+     <y>332</y>
     </hint>
    </hints>
   </connection>

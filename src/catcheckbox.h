@@ -17,71 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef POSTENTRIY_H
-#define POSTENTRIY_H
+#ifndef CATCHECKBOX_H
+#define CATCHECKBOX_H
 
-#include <QFrame>
-#include "bilbopost.h"
-class BilboPost;
-class BilboEditor;
-class QWidget;
-class QGridLayout;
-class QLabel;
-class QHBoxLayout;
-class KLineEdit;
-class BilboMedia;
+#include <QCheckBox>
+
 /**
- * Post Entry Widget
- * contains Editor, and Title box.
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
- */
-class PostEntry: public QFrame {
-Q_OBJECT
+Extend QCheckBox to add property needed for Category checkboxes.
+
+	@author 
+*/
+class Q_GUI_EXPORT CatCheckBox : public QCheckBox
+{
+	Q_OBJECT
 public:
-    PostEntry(QWidget *parent);
-    ~PostEntry();
-	QString postTitle() const;
-	QString * postBody();
+    CatCheckBox(QWidget* parent=0);
     
-    void setPostTitle(const QString &title);
-    void setPostBody(const QString &body);
-	
-    int currentPostBlogId();
-    void setCurrentPostBlogId( int blog_id );
-    
-    BilboPost* currentPost();
-    void setCurrentPost( BilboPost post=BilboPost() );
-	void setCurrentPostProperties( BilboPost post=BilboPost() );
-	
-	Qt::LayoutDirection defaultLayoutDirection();
-	void setDefaultLayoutDirection(Qt::LayoutDirection direction);
-	
-	void addMedia(const QString &url);
+    CatCheckBox(const QString& text, QWidget* parent=0);
 
-Q_SIGNALS:
-    /**
-     * emitted when title of this entry changed.
-     * @param  
-     */
-    void sigTitleChanged(const QString &title);
-
-private Q_SLOTS:
-	void sltTitleChanged(const QString& title);
+    ~CatCheckBox();
+	
+	int catId();
+	void setCatId(int id);
+	
+	QString catTitle() const;
+	void setCatTitle(const QString& title);
 	
 private:
-    void createUi();
-    
-    
-	BilboEditor *editPostWidget;
-	QGridLayout *gridLayout;
-	QHBoxLayout *horizontalLayout;
-	QLabel *labelTitle;
-	KLineEdit *txtTitle;
-	QWidget *wPost;
-    BilboPost *mCurrentPost;
-    int mCurrentPostBlogId;
-	QMap <QString, BilboMedia*> *mediaList;
+	int mCatId;
+	QString mCatTitle;
+
 };
 
 #endif

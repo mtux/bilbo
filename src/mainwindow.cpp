@@ -292,7 +292,7 @@ void MainWindow::sltPublishPost()
     Backend *b = new Backend(blog_id);
     connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
     connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
-    BilboPost *post;
+    BilboPost *post = new BilboPost;
 	toolbox->getFieldsValue(post);
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
         if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
@@ -306,6 +306,7 @@ void MainWindow::sltPublishPost()
     b->publishPost(post);
     statusBar()->showMessage(i18n("publishing new post..."));
     this->setCursor(Qt::BusyCursor);
+	toolbox->setCursor(Qt::BusyCursor);
 }
 
 void MainWindow::sltPostPublished(int blog_id, int post_id, bool isPrivate)
@@ -327,6 +328,7 @@ void MainWindow::sltPostPublished(int blog_id, int post_id, bool isPrivate)
         sltRemoveCurrentPostEntry();
 	
     this->unsetCursor();
+	toolbox->unsetCursor();
 }
 
 void MainWindow::sltRemoveCurrentPostEntry()
@@ -395,7 +397,7 @@ void MainWindow::sltSaveAsDraft()
     Backend *b = new Backend(blog_id);
     connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
     connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
-    BilboPost *post;
+    BilboPost *post = new BilboPost;
 	toolbox->getFieldsValue(post);
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
         if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
@@ -409,6 +411,7 @@ void MainWindow::sltSaveAsDraft()
     b->publishPost(post);
     statusBar()->showMessage(i18n("Saving draft..."));
     this->setCursor(Qt::BusyCursor);
+	toolbox->setCursor(Qt::BusyCursor);
 }
 
 void MainWindow::sltError(QString & errorMessage)

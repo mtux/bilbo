@@ -39,6 +39,7 @@ set(bilbo_SRCS
  bilbomedia.cpp
  addcategory.cpp
  blogradiobutton.cpp
+ catcheckbox.cpp
 )
 
 kde4_add_ui_files(

@@ -639,15 +639,15 @@ BilboPost * DBMan::getPostInfo(int post_id)
 	return tmp;
 }
 
-QMap< QString, int > DBMan::listPostsTitle(int blog_id)
+QMap< int, QString > DBMan::listPostsTitle(int blog_id)
 {
-	QMap< QString, int > list;
+	QMap< int, QString >list;
 	QSqlQuery q;
 	q.prepare("SELECT title, id FROM post WHERE blog_id = ? ORDER BY m_time DESC");
 	q.addBindValue(blog_id);
 	if(q.exec()){
 		while( q.next() ){
-			list.insert(q.value(0).toString(), q.value(1).toInt());
+			list.insert(q.value(1).toInt(), q.value(0).toString());
 		}
 	} else
 		kDebug()<<"Cannot get list of posts for blog with id "<< blog_id;

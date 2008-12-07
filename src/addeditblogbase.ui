@@ -85,6 +85,9 @@ p, li { white-space: pre-wrap; }
          <property name="text" >
           <string>http://</string>
          </property>
+         <property name="showClearButton" stdset="0" >
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item row="3" column="0" >
@@ -113,7 +116,16 @@ p, li { white-space: pre-wrap; }
        <item row="4" column="1" colspan="2" >
         <widget class="KLineEdit" name="txtPass" >
          <property name="echoMode" >
-          <enum>QLineEdit::Normal</enum>
+          <enum>QLineEdit::Password</enum>
+         </property>
+         <property name="urlDropsEnabled" >
+          <bool>false</bool>
+         </property>
+         <property name="showClearButton" stdset="0" >
+          <bool>true</bool>
+         </property>
+         <property name="passwordMode" >
+          <bool>true</bool>
          </property>
         </widget>
        </item>
