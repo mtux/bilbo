@@ -42,7 +42,8 @@ AddEditLink::AddEditLink(QWidget *parent)
 void AddEditLink::sltAccepted()
 {
 	if ( ui.txtAddress->text().isEmpty()) return;
-	Q_EMIT addLink( ui.txtAddress->text(), (ui.comboTarget->currentIndex()==1 || ui.comboTarget->currentIndex()==1)?"_self":"_blank", ui.txtTitle->text() );
+// 	Q_EMIT addLink( ui.txtAddress->text(), (ui.comboTarget->currentIndex()==1 || ui.comboTarget->currentIndex()==1)?"_self":"_blank", ui.txtTitle->text() );
+	Q_EMIT addLink( ui.txtAddress->text() );
 // 	close();
 // 	QDialog::accept();
 // // 	hide();
