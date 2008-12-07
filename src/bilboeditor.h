@@ -20,21 +20,26 @@
 #ifndef BILBOEDITOR_H
 #define BILBOEDITOR_H
 
-#include <QTabWidget>
-#include <QTextCharFormat>
+//#include <QTabWidget>
+#include <ktabwidget.h>
 //#include <QtGui>
 //#include <QWebView>
 //#include "multilinetextedit.h"
 
 //class QTabWidget;
+class QTextCharFormat;
 class QWebView;
 class QPlainTextEdit;
 class MultiLineTextEdit;
-class QAction;
-class QToolBar;
+//class QAction;
+class KAction;
+//class QToolBar;
+class KToolBar;
 class AddEditLink;
 class AddImageDialog;
 class BilboMedia;
+
+//class KRichTextEdit;
 
 //!Class BilboEditor represents the editor part of BilboBlogger
 /*!
@@ -42,7 +47,7 @@ class BilboMedia;
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 
-class BilboEditor : public QTabWidget
+class BilboEditor : public KTabWidget
 {
 	Q_OBJECT
 	public:
@@ -95,22 +100,22 @@ class BilboEditor : public QTabWidget
 		/*! 
 		Changes Italic style of current format.
 		 */
-		void sltToggleItalic();
+// 		void sltToggleItalic();
 		
 		/*!
 		Changes Bold style of current text.
 		 */
-		void sltToggleBold();
+// 		void sltToggleBold();
 		
 		/*!
 		Changes Underline style of current text.
 		*/
-		void sltToggleUnderline();
+// 		void sltToggleUnderline();
 		
 		/*!
 		Changes Strikeout style of current text.
 		*/
-		void sltToggleStrikeout();
+// 		void sltToggleStrikeout();
 		
 		/*!
 		Changes the current text font into Courier fontfamily, to represent code style.
@@ -137,19 +142,19 @@ class BilboEditor : public QTabWidget
 		/*!
 		Changes Alignment of current paragraph into Right Alignment.
 		 */
-		void sltAlignRight();
+// 		void sltAlignRight();
 		
 		/*!
 		Changes Alignment of current paragraph into Left Alignment.
 		 */
-		void sltAlignLeft();
+// 		void sltAlignLeft();
 		
 		/*!
 		Changes Alignment of current paragraph into Center Alignment.
 		 */
-		void sltAlignCenter();
-		void sltAlignJustify();
-		
+// 		void sltAlignCenter();
+// 		void sltAlignJustify();
+// 		
 		/*!
 		Switches Layout Direction of current paragraph between RightToLeft and LeftToRight Directions.
 		 */
@@ -161,9 +166,10 @@ class BilboEditor : public QTabWidget
 		void sltAddEditLink();
 		
 		/*!
-		Sets the link address given in the Caller link dialog as AnchorHref of the current text. if link title is set in the link dialog, current text will change into that.
+		Sets the link address given in the link dialog as AnchorHref of the current text. if link title is set in the link dialog, current text will change into that.
 		 */
-		void sltSetLink(QString address, QString target, QString title);
+// 		void sltSetLink(QString address, QString target, QString title);
+		void sltSetLink(QString address);
 		
 		/*!
 		Removes link from current text by assigning false to the Anchor property of text format.
@@ -221,31 +227,35 @@ class BilboEditor : public QTabWidget
 		
 		//QTextEdit *editor;
 		MultiLineTextEdit *editor;
+		//KRichTextEdit *editor;
 		QPlainTextEdit *htmlEditor;
 		QWebView *preview;
 		
-		QToolBar *barVisual;
-		QToolBar *barHtml;
-		QToolBar *barPreview;
+		//QToolBar *barVisual;
+		//QToolBar *barHtml;
+		//QToolBar *barPreview;
+		KToolBar *barVisual;
+		//KToolBar *barHtml;
+		//KToolBar *barPreview;
 		
-		QAction *actBold;
-		QAction *actItalic;
-		QAction *actUnderline;
-		QAction *actStrikeout;
-		QAction *actCode;
-		QAction *actFontIncrease;
-		QAction *actFontDecrease;
-		QAction *actNewParagraph;
-		QAction *actAlignRight;
-		QAction *actAlignLeft;
-		QAction *actAlignCenter;
-		QAction *actJustify;
-		QAction *actRightToLeft;
-		QAction *actAddLink;
-		QAction *actRemoveLink;
-		QAction *actRemoveFormatting;
-		QAction *actColorSelect;
-		QAction *actAddImage;
+		KAction *actBold;
+		KAction *actItalic;
+		KAction *actUnderline;
+		KAction *actStrikeout;
+		KAction *actCode;
+		KAction *actFontIncrease;
+		KAction *actFontDecrease;
+		KAction *actNewParagraph;
+		KAction *actAlignRight;
+		KAction *actAlignLeft;
+		KAction *actAlignCenter;
+		KAction *actJustify;
+		KAction *actRightToLeft;
+		KAction *actAddLink;
+		KAction *actRemoveLink;
+		KAction *actRemoveFormatting;
+		KAction *actColorSelect;
+		KAction *actAddImage;
 		
 		QString *mHtmlContent;
 		

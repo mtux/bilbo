@@ -22,23 +22,16 @@
 
 #include <QDialog>
 
+#include "ui_addeditblogbase.h"
 #include <kblog/blog.h>
-#include <kblog/gdata.h>
-#include <kblog/blogger1.h>
-#include <kblog/metaweblog.h>
-#include <kblog/movabletype.h>
-#include <kblog/wordpressbuggy.h>
-#include <kurl.h>
+class BilboBlog;
 
-#include "ui_addeditblog.h"
-
-#include "bilboblog.h"
 
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-class AddEditBlog: public QDialog, public Ui::AddEditBlogDialog {
+class AddEditBlog: public QDialog, public Ui::AddEditBlogBase {
 Q_OBJECT
 public:
     /**

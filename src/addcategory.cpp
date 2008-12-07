@@ -20,7 +20,12 @@
 #include "addcategory.h"
 
 AddCategory::AddCategory(QWidget *parent)
-    :QDialog(parent)
+    :KDialog(parent)
 {
-    setupUi(this);
+    QWidget *dialog = new QWidget;
+    ui.setupUi(dialog);
+    dialog->setAttribute( Qt::WA_DeleteOnClose );
+    this->setMainWidget(dialog);
 }
+
+#include "addcategory.moc"

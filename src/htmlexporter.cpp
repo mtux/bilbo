@@ -33,7 +33,7 @@
 #include <QTextTable>
 #include <QTextFormat>
 #include <QVarLengthArray>
-#include <QDebug>
+#include <kdebug.h>
 
 htmlExporter::htmlExporter()
 {
@@ -53,7 +53,7 @@ QString htmlExporter::toHtml(const QTextDocument* document )
 	}
     doc = document;
 
-	qDebug()<<doc->blockCount()<<endl;
+	kDebug() << doc->blockCount() << endl;
 	
     //const QFont defaultFont = doc->defaultFont();
     //defaultCharFormat.setFont(defaultFont);
@@ -595,7 +595,7 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
 // 		html += QLatin1String(">");
 // 		closeAnchor = true;
 // 	}
-	qDebug() << "tags count" << tags.count() << endl;
+	kDebug() << "tags count" << tags.count() << endl;
     for ( int i = 0; i < tags.count(); ++i ) {
         switch ( tags.at(i) ) {
         case span:
@@ -692,7 +692,7 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
         }
     }
 	
-	qDebug() << html ;
+	kDebug() << html ;
 
     //Close Tags
     //if (!closeAnchor)
@@ -1008,7 +1008,7 @@ void htmlExporter::sanitizeHtml()
 {
 //     kDebug() << "BEFORE" << html;
 
-    int length;
+    int length = 0;
     while ( html.count() != length ) {
         length = html.count();
         html.remove( QRegExp("</[^<]+><[^<|/]+[^/]>"));

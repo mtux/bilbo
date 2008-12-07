@@ -19,15 +19,14 @@
  ***************************************************************************/
 #include "bilbopost.h"
 #include <QStringList>
-#include <QDateTime>
 #include <kdatetime.h>
 BilboPost::BilboPost()
  : KBlog::BlogPost()
 {
-    this->setCTime(QDateTime::currentDateTime());
-    this->setMTime(QDateTime::currentDateTime());
-    this->setPostLink(QUrl());
-    this->setPostPermaLink(QUrl());
+    this->setCreationDateTime(KDateTime::currentLocalDateTime());
+    this->setModificationDateTime(KDateTime::currentLocalDateTime());
+    this->setLink(KUrl());
+    this->setPermaLink(KUrl());
     this->setCategories(QStringList());
     this->setCommentAllowed(true);
     this->setContent("");
@@ -48,45 +47,45 @@ BilboPost::~BilboPost()
 {
 }
 
-QUrl BilboPost::postLink() const
-{
-	return QUrl(this->link().url());
-}
-
-QUrl BilboPost::postPermaLink() const
-{
-	return QUrl(this->permaLink().url());
-}
-
-void BilboPost::setPostLink(const QUrl &link)
-{
-	this->setLink(KUrl(link));
-}
-
-void BilboPost::setPostPermaLink(const QUrl &link)
-{
-	this->setPermaLink(KUrl(link));
-}
-
-QDateTime BilboPost::cTime() const
-{
-	return QDateTime::fromString(this->creationDateTime().toString(KDateTime::ISODate), Qt::ISODate);
-}
-
-void BilboPost::setMTime(const QDateTime &t)
-{
-	this->setModificationDateTime(KDateTime(t));
-}
-
-QDateTime BilboPost::mTime() const
-{
-	return QDateTime::fromString(this->modificationDateTime().toString(KDateTime::ISODate), Qt::ISODate);
-}
-
-void BilboPost::setCTime(const QDateTime &t)
-{
-	this->setCreationDateTime(KDateTime(t));
-}
+// QUrl BilboPost::postLink() const
+// {
+// 	return QUrl(this->link().url());
+// }
+// 
+// QUrl BilboPost::postPermaLink() const
+// {
+// 	return QUrl(this->permaLink().url());
+// }
+// 
+// void BilboPost::setPostLink(const QUrl &link)
+// {
+// 	this->setLink(KUrl(link));
+// }
+// 
+// void BilboPost::setPostPermaLink(const QUrl &link)
+// {
+// 	this->setPermaLink(KUrl(link));
+// }
+// 
+// QDateTime BilboPost::cTime() const
+// {
+// 	return QDateTime::fromString(this->creationDateTime().toString(KDateTime::ISODate), Qt::ISODate);
+// }
+// 
+// void BilboPost::setMTime(const QDateTime &t)
+// {
+// 	this->setModificationDateTime(KDateTime(t));
+// }
+// 
+// QDateTime BilboPost::mTime() const
+// {
+// 	return QDateTime::fromString(this->modificationDateTime().toString(KDateTime::ISODate), Qt::ISODate);
+// }
+// 
+// void BilboPost::setCTime(const QDateTime &t)
+// {
+// 	this->setCreationDateTime(KDateTime(t));
+// }
 
 QString BilboPost::author() const
 {
@@ -175,22 +174,19 @@ QString BilboPost::toString() const
 	ret+=QString("\nContent: ") + content();
 	ret+="\nTags: " + tags().join(",");
 	ret+="\nCategories: " + categories().join(",");
-	ret+="\nCreation Date Time: "+cTime().toString();
+	ret+="\nCreation Date Time: "+creationDateTime().toString();
 	
 	ret+="\n******* End Post Info ********\n";
 	return ret;
 }
 
-
-
-
 BilboPost::BilboPost(const BilboPost &post)
     :KBlog::BlogPost()
 {
-    this->setCTime(post.cTime());
-    this->setMTime(post.mTime());
-    this->setPostLink(post.postLink());
-    this->setPostPermaLink(post.postPermaLink());
+    this->setCreationDateTime(post.creationDateTime());
+    this->setModificationDateTime(post.modificationDateTime());
+    this->setLink(post.link());
+    this->setPermaLink(post.permaLink());
     this->setCategories(post.categories());
     this->setCommentAllowed(post.isCommentAllowed());
     this->setError(post.error());
@@ -207,3 +203,15 @@ BilboPost::BilboPost(const BilboPost &post)
     this->setPosition(post.position());
     this->setId(post.id());
 }
+
+bool BilboPost::isModifyTimeStamp()
+{
+	return mModifyTimeStamp;
+}
+
+bool BilboPost::setModifyTimeStamp(bool willModify)
+{
+	mModifyTimeStamp = willModify;
+}
+
+#include "bilbopost.moc"

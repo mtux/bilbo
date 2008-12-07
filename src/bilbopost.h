@@ -50,7 +50,7 @@ public:
     BilboPost( const BilboPost& );
     ~BilboPost();
 
-	QUrl postLink() const;
+/*	QUrl postLink() const;
 	void setPostLink(const QUrl&);
 	
 	QUrl postPermaLink() const;
@@ -60,7 +60,7 @@ public:
 	void setCTime(const QDateTime&);
 	
 	QDateTime mTime() const;
-	void setMTime(const QDateTime&);
+	void setMTime(const QDateTime&);*/
 	
 	QString author() const;
 	void setAuthor(const QString&);
@@ -74,10 +74,14 @@ public:
 	KBlog::BlogPost * toKBlogPost();
 	QString toString() const;
 	
+	bool isModifyTimeStamp();
+	bool setModifyTimeStamp(bool willModify);
+	
 private:
 	QString mAuthor;
 	int mId;///id in DB
 	Position mPosition;
+	bool mModifyTimeStamp;///Just for toolbox entry!
 };
 
 #endif

@@ -17,9 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "bilboblog.h"
 
-BilboBlog::BilboBlog(QUrl &server)
+BilboBlog::BilboBlog(KUrl &server)
 {
 	this->setUrl( server);
 }
@@ -32,12 +33,12 @@ BilboBlog::~BilboBlog()
 {
 }
 
-QUrl BilboBlog::url() const
+KUrl BilboBlog::url() const
 {
 	return mUrl;
 }
 
-void BilboBlog::setUrl(const QUrl &url)
+void BilboBlog::setUrl(const KUrl &url)
 {
 	mUrl = url;
 }
@@ -124,7 +125,8 @@ void BilboBlog::setDirection(const Qt::LayoutDirection dir)
 
 QString BilboBlog::blogUrl()
 {
-    QString url=this->url().toString();
+    //QString url=this->url().toString();
+	QString url=this->url().url();
     switch( this->api() ){
     case BLOGGER1_API:
         break;
@@ -138,7 +140,3 @@ QString BilboBlog::blogUrl()
     }
     return url;
 }
-
-
-
-

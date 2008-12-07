@@ -20,68 +20,52 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include "bilbopost.h"
+#include "ui_settingsbase.h"
+#include <kxmlguiwindow.h>
 
-
-class QTabWidget;
+class KTabWidget;
+class KAction;
+// class KToggleAction;
 class QToolButton;
-class BilboPost;
+// class BilboPost;
 class Toolbox;
-class AddEditBlog;
+// class AddEditBlog;
 class PostEntry;
-class Backend;
-class BilboMedia;
+class SysTray;
+// class Backend;
+// class BilboMedia;
 /**
 Main window of bilbo blogger implementation...
 
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
-*/
-class MainWindow : public QMainWindow
+ */
+class MainWindow : public KXmlGuiWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-    MainWindow(QWidget* parent=0);
+    MainWindow();
 
     ~MainWindow();
-	
-	QAction *actAddBlog;
-	QAction *actUploadAll;
-	QAction *actNewPost;
-	QAction *actPublish;
-	QAction *actSaveLocally;
-	QAction *actSaveDraft;
-	QAction *actDeletePost;
-	QAction *actDeleteLocally;
-	QAction *actAbout;
-	QAction *actQuit;
-	QAction *actToggleToolboxVisible;
-    QAction *actSave;
-	
-protected Q_SLOTS:
-    /**
-     * Function/Slot for testing a thing!
-     */
-    void test();
-    void test2(BilboMedia*);
-    void test3(QString&);
-	void sltCreateNewPost();
-	void sltUploadAllChanges();
-	void sltPostTitleChanged(const QString& title);
-	void sltBilboAbout();
-	void sltQuit();
-	void sltToggleToolboxVisible();
-	void sltActivePostChanged( int tabIndex );
+    
+protected slots:
+    void sltCreateNewPost();
+    void settingsChanged();
+    
+    void sltUploadAllChanges();
+    void sltPostTitleChanged(const QString& title);
+    void sltToggleToolboxVisible();
+    void sltActivePostChanged( int tabIndex );
     
     void sltNewPostSelected( BilboPost *newPost );
 	
-	void sltPublishPost();
+    void sltPublishPost();
     void sltPostPublished( int blog_id, int post_id, bool isPrivate );
 	/**
-	 *    Slot to remove current Post entry from main tab wigdet!
-	 */
-	void sltRemoveCurrentPostEntry();
+     *    Slot to remove current Post entry from main tab wigdet!
+     */
+    void sltRemoveCurrentPostEntry();
 
     void sltCurrentBlogChanged( int blog_id );
     
@@ -89,35 +73,41 @@ protected Q_SLOTS:
     void sltSaveAsDraft();
     
     void sltError( QString &errorMessage );
-
+    
+private slots:
+    void optionsPreferences();
+    
 protected:
     void keyReleaseEvent ( QKeyEvent * event );
     
 private:
-	void createUi();
-	void createActions();
-	void addCreatedActions();
-	void readConfig();
-	void writeConfig();
-
-	
-	Toolbox *toolbox;
-	PostEntry *activePost;
-	AddEditBlog *addBlogPage;
-	
-	QTabWidget *tabPosts;
-	QToolBar *toolbarPost;
-	QToolBar *toolbarBlogger;
-	QToolBar *toolbarAction;
-	QMenuBar *menubar;
-	QMenu *menuBilbo;
-	QMenu *menuPost;
-	QMenu *menuAbout;
-    QMenu *menuSave;
-	QStatusBar *statusbar;
-	QToolButton *btnRemovePost;
-	
+    void setupActions();
+    void setupSystemTray();
+    void writeConfigs();
+    
+    Ui::SettingsBase ui_prefs_base;
+    
+    Toolbox *toolbox;
+    QDockWidget *toolboxDock;
+    PostEntry *activePost;
+	SysTray *systemTray;
+    KTabWidget *tabPosts;
+    
+    KAction *actAddBlog;
+    KAction *actUploadAll;
+    KAction *actNewPost;
+    KAction *actPublish;
+    KAction *actSaveLocally;
+    KAction *actSaveDraft;
+    KAction *actDeletePost;
+    KAction *actDeleteLocally;
+//     KAction *actAbout;
+//     KAction *actQuit;
+    KAction *actToggleToolboxVisible;
+    KAction *actSave;
+    
+    QToolButton *btnRemovePost;
+    
     int previousActivePostIndex;
 };
-
 #endif

@@ -21,8 +21,9 @@
 #define ADDEDITLINK_H
 
 #include <QDialog>
+//#include <KDialog>
 
-#include "ui_addeditlink.h"
+#include "ui_addeditlinkbase.h"
 
 /**
 Implements a dialog to get user input for link parameters; address, name and target.
@@ -31,17 +32,22 @@ Implements a dialog to get user input for link parameters; address, name and tar
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 
-class AddEditLink: public QDialog, public Ui::AddEditLinkDialog {
+class AddEditLink: public KDialog
+{
 	Q_OBJECT
 	public:
 		AddEditLink(QWidget *parent = 0);
 		void show(QString address="", QString title="");
 		
 	Q_SIGNALS:
-		void addLink( const QString& address, const QString& target, const QString& title);
-	public Q_SLOTS:
-		virtual void accept(); // OK Button
-		virtual void reject(); // Cancel Button
+// 		void addLink( const QString& address, const QString& target, const QString& title);
+		void addLink( const QString& address );
+		
+	private Q_SLOTS:
+		void sltAccepted();
+		
+	private:
+		Ui::AddEditLinkBase ui;
 };
 
 #endif

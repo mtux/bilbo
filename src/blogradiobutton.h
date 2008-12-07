@@ -17,30 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#ifndef BLOGRADIOBUTTON_H
+#define BLOGRADIOBUTTON_H
 
-#include "constants.h"
+#include <QRadioButton>
 
 /**
-settings low level implementation is placed here.
+Bilbo radio button for Blog entries! extend QRadioButton to add more functionality.
 
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+	@author 
 */
-class Settings{
+class Q_GUI_EXPORT BlogRadioButton : public QRadioButton
+{
+    Q_OBJECT
 public:
-    Settings();
+    BlogRadioButton(const QString& text, QWidget* parent=0);
+    
+    BlogRadioButton(QWidget* parent=0);
 
-    ~Settings();
-	
-	void save();
-	void load();
+    ~BlogRadioButton();
+    
+    int blogId() const;
+    void setBlogId(int blog_id);
+    
+protected:
+    int mBlogId;
 
-	bool showMainOnStart;
-	bool isToolboxVisibleByDefault;
-private:
-// 	QString ini_path;
 };
 
 #endif

@@ -22,19 +22,18 @@
 #define GLOBAL_H
 
 #include <QSettings>
-#include "settings.h"
 #include "dbman.h"
 
 /**
-Global variables like settings stored here.
+Global variables.
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 
-class QSettings;
-class Settings;
+// class QSettings;
+// class Settings;
 
-extern Settings *__conf;
+// extern Settings *__conf;
 
 extern DBMan *__db;
 

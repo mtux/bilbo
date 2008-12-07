@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDebug>
+//#include <QDebug>
 #include <QtGui>
 #include "multilinetextedit.h"
 
-MultiLineTextEdit::MultiLineTextEdit(QWidget *parent) : QTextEdit(parent)
+MultiLineTextEdit::MultiLineTextEdit(QWidget *parent) : KRichTextEdit(parent)
 {
 }
 
@@ -42,7 +42,9 @@ void MultiLineTextEdit::keyPressEvent(QKeyEvent *event)
 	} else {
 		//dynamic_cast <QTextEdit*>(this) ->keyPressEvent(event);
 		//dynamic_cast <QWidget*>(this) ->keyPressEvent(event);
-		QTextEdit::keyPressEvent(event);
+		KRichTextEdit::keyPressEvent(event);
 
 	}
 }
+
+#include <multilinetextedit.moc>

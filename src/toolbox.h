@@ -23,44 +23,53 @@
 #include <QDockWidget>
 #include <QtGui>
 
-#include "ui_toolbox.h"
-
+#include "ui_toolboxbase.h"
+class KStatusBar;
 class QRadioButton;
+class QButtonGroup;
 class BilboPost;
 class AddEditBlog;
 class BilboBlog;
+class BlogRadioButton;
+
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-class Toolbox: public QDockWidget, public Ui::ToolboxWidget {
+class Toolbox: public QWidget, public Ui::ToolboxBase {
 Q_OBJECT
 public:
-	Toolbox(QStatusBar *mainStatusbar, QWidget *parent = 0);
+	Toolbox(QWidget *parent);
     ~Toolbox();
 	
 	void reloadBlogList();
-	BilboPost* getFieldsValue();
-	void setFieldsValue(const BilboPost& post);
+	/**
+	 *    Will set current state of toolbox (Current post) properties on input pointer!
+	 * @param currentPost input and output of this Function.
+	 */
+	void getFieldsValue(BilboPost* currentPost);
+	//void setFieldsValue(const BilboPost& post);
+	void setFieldsValue(BilboPost* post = 0);
 	int currentBlogId();
     void setCurrentBlog(int blog_id);
     void setCurrentPage( int index );
+// 	void setCurrentPost(BilboPost* post);
 	
-	QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
-	QList<QRadioButton*> listBlogRadioButtons;
+	//QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
+    QButtonGroup listBlogRadioButtons;
 	
 	QMap<QString, int> listCategories;///Contain Category name(QString) and Category id(int)
 	QList<QCheckBox*> listCategoryCheckBoxes;
 	
 	QMap<QString, int> listEntries;///Contain Post title(QString) and Post id(int)
 	
-public Q_SLOTS:
+public slots:
 	void sltAddBlog();
 	void sltBlogAdded(BilboBlog&);
 	void sltEditBlog();
 	void sltBlogEdited(BilboBlog&);
 	void sltRemoveBlog();
-	void sltSetCurrentBlog( bool );
+	void sltSetCurrentBlog();
 	void sltReloadCategoryList();
 	void sltLoadCategoryListFromDB( int blog_id );
 	void sltReloadEntries();
@@ -71,8 +80,9 @@ public Q_SLOTS:
 	void resetFields();
     void sltEntrySelected( QListWidgetItem *item );
     void sltEntriesCopyUrl();
+	//void sltSetCurrentPost(BilboPost* post);
 	
-Q_SIGNALS:
+signals:
 	void sigCurrentBlogChanged( int blog_id );
     void sigEntrySelected( BilboPost *post );
 	
@@ -85,12 +95,12 @@ private:
 	void clearCatList();
 	void clearEntriesList();
     void unCheckCatList();
+    void setButtonsIcon();
 	
 	AddEditBlog *addEditBlogWindow;
-	QRadioButton *blogToEdit;
-	QRadioButton *currentBlog;
-	BilboPost *currentPost;
-	QStatusBar *statusbar;
+	BlogRadioButton *blogToEdit;
+// 	BilboPost *currentPost;
+	KStatusBar *statusbar;
 };
 
 #endif

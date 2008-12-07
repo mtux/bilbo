@@ -17,44 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "settings.h"
-// #include <QDebug>
-#include <QSettings>
+#include "blogradiobutton.h"
 
-Settings::Settings()
+BlogRadioButton::BlogRadioButton(const QString& text, QWidget* parent): QRadioButton(text, parent)
 {
-	load();
 }
 
 
-Settings::~Settings()
+BlogRadioButton::BlogRadioButton(QWidget* parent): QRadioButton(parent)
 {
-	save();
-}
-
-void Settings::save()
-{
-	qDebug("Settings::save");
-	QSettings *set = new QSettings(CONF_PATH, QSettings::NativeFormat);
-// 	qDebug(QString(CONF_PATH).toLatin1().data());
-	
-	set->setValue("show_main_on_start", showMainOnStart);
-	set->setValue("toolbox_visible", isToolboxVisibleByDefault);
-	set->sync();
-    
-    delete set;
-}
-
-void Settings::load()
-{
-	qDebug("Settings::load");
-	
-	QSettings *set = new QSettings(CONF_PATH, QSettings::NativeFormat);
-	
-	showMainOnStart = set->value("show_main_on_start", true).toBool();
-	isToolboxVisibleByDefault = set->value ( "toolbox_visible", true ).toBool();
-    
-    delete set;
 }
 
 
+BlogRadioButton::~BlogRadioButton()
+{
+}
+
+int BlogRadioButton::blogId() const
+{
+    return mBlogId;
+}
+
+void BlogRadioButton::setBlogId(int blog_id)
+{
+    mBlogId = blog_id;
+}
+
+#include "blogradiobutton.moc"
