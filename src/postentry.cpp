@@ -36,7 +36,7 @@ PostEntry::PostEntry(QWidget *parent)
 	this->layout()->addWidget(editPostWidget);
     mCurrentPost = 0;
 	
-// 	mCurrentPostBlogId = 0;
+	mCurrentPostBlogId = -1;
 }
 
 void PostEntry::createUi()
