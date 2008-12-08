@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 //#include <QFileDialog>
-//#include <kfiledialog.h>
+#include <kfiledialog.h>
 #include <kmessagebox.h>
 #include <kmimetype.h>
 #include <kdebug.h>
@@ -32,6 +32,9 @@ AddImageDialog::AddImageDialog(QWidget *parent) :KDialog(parent)
 {
 	QDialog *dialog = new QDialog(0);
 	ui.setupUi(dialog);
+	QStringList mimeFilter;
+	mimeFilter << "image/gif" << "image/jpeg" << "image/png" ;
+	ui.kurlreqLocalUrl->fileDialog()->setMimeFilter(mimeFilter);
 	dialog->setAttribute( Qt::WA_DeleteOnClose );
 	this->setMainWidget(dialog);
 	this->resize(dialog->width(), dialog->height());
@@ -63,7 +66,11 @@ void AddImageDialog::sltOkClicked()
 				
 				connect(typeJob, SIGNAL(mimetype(KIO::Job*, const QString&)), this, SLOT(sltRemoteFileTypeFound(KIO::Job*, const QString&)));
 			} else {
-				QFile::copy(tempUrl.toLocalFile(), TEMP_MEDIA_DIR + "/" + name);
+				bool copyResult = QFile::copy(tempUrl.toLocalFile(), TEMP_MEDIA_DIR + "/" + name);
+				if (!copyResult) {
+					int ret = KMessageBox::questionYesNo(this,i18n("This file is already  added to Bilbo temp directory, and won't be copied again.\nyou can save the file with different name and try again.\ndo you want to continue using the existing file?"), i18n("File already exists"));
+					if (ret == KMessageBox::No) return;
+				}
 				media->setLocalUrl(TEMP_MEDIA_DIR + "/" + name);
 				media->setUploded(false);
 				

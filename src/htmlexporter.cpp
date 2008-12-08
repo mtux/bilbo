@@ -572,22 +572,32 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
     const QTextCharFormat format = fragment.charFormat();
 
     bool closeAnchor = false;
+	bool anchorIsOpen = false;
 
     if (format.isAnchor()) {
-        const QString name = format.anchorName();
-        if (!name.isEmpty()) {
-            html += QLatin1String("<a name=\"");
-            html += name;
-            html += QLatin1String("\"></a>");
+        const QStringList names = format.anchorNames();
+        if (!names.isEmpty()) {
+            html += QLatin1String("<a title=\"");
+            html += names.at(0);
+            html += QLatin1String("\" ");
+			anchorIsOpen = true;
         }
         const QString href = format.anchorHref();
         if (!href.isEmpty()) {
-            html += QLatin1String("<a href=\"");
+			if (!anchorIsOpen) {
+				html += QLatin1String("<a ");
+				anchorIsOpen = true;
+			}
+            html += QLatin1String("href=\"");
             html += href;
-            html += QLatin1String("\">");
-            closeAnchor = true;
+            html += QLatin1String("\"");
+//             closeAnchor = true;
 // 			html += QLatin1String("\"");
         }
+		if (anchorIsOpen) {
+			html += QLatin1String(">");
+			closeAnchor = true;
+		}
     }
 
     QList<tag> tags = emitCharFormatStyle(format);
@@ -650,6 +660,7 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
             html.chop(qstrlen(styleTag.latin1()));
     */
     QString txt = fragment.text();
+	kDebug() << txt ;
     if (txt.count() == 1 && txt.at(0) == QChar::ObjectReplacementCharacter) {
         if (format.isImageFormat()) {
             QTextImageFormat imgFmt = format.toImageFormat();

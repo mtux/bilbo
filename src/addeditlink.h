@@ -40,8 +40,8 @@ class AddEditLink: public KDialog
 		void show(QString address="", QString title="");
 		
 	Q_SIGNALS:
-// 		void addLink( const QString& address, const QString& target, const QString& title);
-		void addLink( const QString& address );
+ 		void addLink( const QString& address, const QString& target, const QString& title);
+// 		void addLink( const QString& address );
 		
 	private Q_SLOTS:
 		void sltAccepted();

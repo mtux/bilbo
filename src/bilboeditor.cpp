@@ -844,23 +844,27 @@ void BilboEditor::sltFontSizeDecrease()
 void BilboEditor::sltAddEditLink()
 {
 	linkDialog = new AddEditLink(this);
-// 	connect(linkDialog, SIGNAL(addLink(const QString&, const QString, const QString&)), this, SLOT(sltSetLink(QString, QString, QString)));
-	connect(linkDialog, SIGNAL(addLink(const QString&)), this, SLOT(sltSetLink(QString)));
-	QTextCharFormat f = editor->currentCharFormat();
+ 	connect(linkDialog, SIGNAL(addLink(const QString&, const QString, const QString&)), this, SLOT(sltSetLink(QString, QString, QString)));
+// 	connect(linkDialog, SIGNAL(addLink(const QString&)), this, SLOT(sltSetLink(QString)));
+ 	QTextCharFormat f = editor->currentCharFormat();
 	if (!f.isAnchor()) {
 		linkDialog->show();
 	} else {
-		linkDialog->show(f.anchorHref(), f.anchorName());
+		linkDialog->show(f.anchorHref(), f.anchorNames().at(0));
 	}
 }
 
-//void BilboEditor::sltSetLink(QString address, QString target, QString title)
-void BilboEditor::sltSetLink(QString address)
+void BilboEditor::sltSetLink(QString address, QString target, QString title)
+//void BilboEditor::sltSetLink(QString address)
 {
 	QTextCharFormat f = editor->currentCharFormat();
 	f.setAnchor(true);
 	f.setAnchorHref(address);
-	//f.setAnchorName(title);
+// 	f.setAnchorName(title);
+	
+	QStringList anchorNames;
+	anchorNames.append(title);
+	f.setAnchorNames(anchorNames);
 	
 	//f.setUnderlineStyle(QTextCharFormat::SingleUnderline);
 	//const QBrush br(Qt::blue);
@@ -1003,11 +1007,12 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 		url = media->remoteUrl();
 	} else {
 		if (mMediaList->contains(media->localUrl())) {
-			//nedia is already added.
+			//media is already added.
 		} else {
 			mMediaList->insert(media->localUrl(), media);
-			url = media->localUrl();
+			//url = media->localUrl();
 		}
+		url = media->localUrl();
 	}
 	QTextImageFormat imageFormat;
 	imageFormat.setName(url);
@@ -1051,9 +1056,10 @@ void BilboEditor::sltSyncEditors(int index)
 		
 		editor->setTextOrHtml(htmlToRichtext(htmlEditor->toPlainText()));
 		//qDebug()<<htmlEditor->toPlainText()<<endl;
-		qDebug()<<editor->document()->toHtml()<<endl;
+		kDebug() << editor->document()->toHtml() << "index=0" << endl;
 		//editor->setTextOrHtml(htmlEditor->toPlainText());
 	} else if (index == 1) {
+		kDebug() << editor->document()->toHtml() << "index=1" << endl;
 		//kDebug() << editor->toHtml() << endl;
 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 	} else {

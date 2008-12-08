@@ -31,19 +31,19 @@ AddEditLink::AddEditLink(QWidget *parent)
 	dialog->setAttribute( Qt::WA_DeleteOnClose );
 	this->setMainWidget(dialog);
 
-	ui.label_2->hide();
-	ui.txtTitle->hide();
-	ui.comboTarget->hide();
-	ui.label_3->hide();
-	this->resize(dialog->width(), dialog->height()/2);
+	//ui.label_2->hide();
+	//ui.txtTitle->hide();
+	//ui.comboTarget->hide();
+	//ui.label_3->hide();
+	this->resize(dialog->width(), dialog->height());
 	connect(this, SIGNAL(accepted()), this, SLOT(sltAccepted()));
 }
 
 void AddEditLink::sltAccepted()
 {
 	if ( ui.txtAddress->text().isEmpty()) return;
-// 	Q_EMIT addLink( ui.txtAddress->text(), (ui.comboTarget->currentIndex()==1 || ui.comboTarget->currentIndex()==1)?"_self":"_blank", ui.txtTitle->text() );
-	Q_EMIT addLink( ui.txtAddress->text() );
+ 	Q_EMIT addLink( ui.txtAddress->text(), (ui.comboTarget->currentIndex()==1 || ui.comboTarget->currentIndex()==1)?"_self":"_blank", ui.txtTitle->text() );
+// 	Q_EMIT addLink( ui.txtAddress->text() );
 // 	close();
 // 	QDialog::accept();
 // // 	hide();
