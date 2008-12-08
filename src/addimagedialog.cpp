@@ -45,7 +45,7 @@ AddImageDialog::~AddImageDialog()
 void AddImageDialog::sltOkClicked()
 {
 	KUrl tempUrl = ui.kurlreqLocalUrl->url();
-	
+
 	if (!tempUrl.isEmpty()) {
 		if (tempUrl.isValid()) {
 			media = new BilboMedia();

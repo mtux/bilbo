@@ -166,9 +166,10 @@ class BilboEditor : public KTabWidget
 		void sltAddEditLink();
 		
 		/*!
-		Sets the link address given in the Caller link dialog as AnchorHref of the current text. if link title is set in the link dialog, current text will change into that.
+		Sets the link address given in the link dialog as AnchorHref of the current text. if link title is set in the link dialog, current text will change into that.
 		 */
-		void sltSetLink(QString address, QString target, QString title);
+// 		void sltSetLink(QString address, QString target, QString title);
+		void sltSetLink(QString address);
 		
 		/*!
 		Removes link from current text by assigning false to the Anchor property of text format.

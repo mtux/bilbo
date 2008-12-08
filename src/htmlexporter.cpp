@@ -1008,7 +1008,7 @@ void htmlExporter::sanitizeHtml()
 {
 //     kDebug() << "BEFORE" << html;
 
-    int length;
+    int length = 0;
     while ( html.count() != length ) {
         length = html.count();
         html.remove( QRegExp("</[^<]+><[^<|/]+[^/]>"));

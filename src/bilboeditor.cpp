@@ -624,7 +624,14 @@ void BilboEditor::createUi()
 	QGridLayout *hLayout = new QGridLayout();
 	hLayout->addWidget(htmlEditor);
 	tabHtml->setLayout(hLayout);
+	//this->setCurrentIndex(1);
+	//sltSyncEditors(1);
 // 	htmlEditor->set
+// 	htmlExporter* htmlExp = new htmlExporter();
+// 	htmlExp->setDefaultCharFormat(this->defaultCharFormat);
+// 	htmlExp->setDefaultBlockFormat(this->defaultBlockFormat);
+// 	htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+// 	delete htmlExp;
 	
 	///preview:
 	preview = new QWebView(0);
@@ -632,6 +639,7 @@ void BilboEditor::createUi()
 	QVBoxLayout *pLayout = new QVBoxLayout();
 	pLayout->addWidget(preview);
 	tabPreview->setLayout(pLayout);
+	this->setCurrentIndex(0);
 	
 	///defaultCharFormat
 	defaultCharFormat = editor->currentCharFormat();
@@ -836,22 +844,24 @@ void BilboEditor::sltFontSizeDecrease()
 void BilboEditor::sltAddEditLink()
 {
 	linkDialog = new AddEditLink(this);
-	connect(linkDialog, SIGNAL(addLink(const QString&, const QString, const QString&)), this, SLOT(sltSetLink(QString, QString, QString)));
+// 	connect(linkDialog, SIGNAL(addLink(const QString&, const QString, const QString&)), this, SLOT(sltSetLink(QString, QString, QString)));
+	connect(linkDialog, SIGNAL(addLink(const QString&)), this, SLOT(sltSetLink(QString)));
 	QTextCharFormat f = editor->currentCharFormat();
 	if (!f.isAnchor()) {
 		linkDialog->show();
-	}
-	else {
+	} else {
 		linkDialog->show(f.anchorHref(), f.anchorName());
 	}
 }
 
-void BilboEditor::sltSetLink(QString address, QString target, QString title)
+//void BilboEditor::sltSetLink(QString address, QString target, QString title)
+void BilboEditor::sltSetLink(QString address)
 {
 	QTextCharFormat f = editor->currentCharFormat();
 	f.setAnchor(true);
 	f.setAnchorHref(address);
-	f.setAnchorName(title);
+	//f.setAnchorName(title);
+	
 	//f.setUnderlineStyle(QTextCharFormat::SingleUnderline);
 	//const QBrush br(Qt::blue);
 	//f.setForeground(br);
@@ -881,8 +891,9 @@ void BilboEditor::sltSelectColor()
 // 	editor->setTextForegroundColor(c);
 	QColor c;
 	int result = KColorDialog::getColor(c, QColor("black"), this);
-	if (result == KColorDialog::Accepted)
+	if (result == KColorDialog::Accepted) {
 		editor->setTextForegroundColor(c);
+	}
 // 	const QBrush br(c, Qt::SolidPattern);
 // 	//QTextCharFormat ch = editor->currentCharFormat();
 // 	QTextCharFormat ch;
@@ -1030,7 +1041,7 @@ void BilboEditor::sltSyncEditors(int index)
 {
 // 	editor->document();
 	// TODO move htmlExp definiton to BilboEditor constructor.
-	
+	kDebug();
 	htmlExporter* htmlExp = new htmlExporter();
 	htmlExp->setDefaultCharFormat(this->defaultCharFormat);
 	htmlExp->setDefaultBlockFormat(this->defaultBlockFormat);
@@ -1038,12 +1049,12 @@ void BilboEditor::sltSyncEditors(int index)
 	if(index == 0) {
 		///Qt QTextEdit::setHtml() or QTextDocument::toHtml() convert <h1-5> tags to <span> tags
 		
-		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
+		editor->setTextOrHtml(htmlToRichtext(htmlEditor->toPlainText()));
 		//qDebug()<<htmlEditor->toPlainText()<<endl;
-		//qDebug()<<editor->document()->toHtml()<<endl;
-		editor->setTextOrHtml(htmlEditor->toPlainText());
+		qDebug()<<editor->document()->toHtml()<<endl;
+		//editor->setTextOrHtml(htmlEditor->toPlainText());
 	} else if (index == 1) {
-		kDebug() << editor->toHtml() << endl;
+		//kDebug() << editor->toHtml() << endl;
 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 	} else {
 		if (prev_index == 1) {
@@ -1116,7 +1127,17 @@ QString* BilboEditor::htmlContent()
 
 void BilboEditor::setHtmlContent(const QString & content)
 {
-	this->editor->setHtml(content);
+	htmlExporter* htmlExp = new htmlExporter();
+	//this->editor->setHtml(content);
+	editor->setTextOrHtml(htmlToRichtext(content));
+	//this->htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+	//this->editor->setHtml(content);
+	this->htmlEditor->setPlainText(content);
+	
+	delete htmlExp;
+	
+	//this->htmlEditor->setPlainText(content);
+	//editor->setTextOrHtml(htmlToRichtext(htmlEditor->toPlainText()));
 	
 	// FIXME at the end of the document, a new block should be inserted so that editor doesn't change old text direction, and new direction be applied only to newly inserted text.
 	
@@ -1150,7 +1171,7 @@ void BilboEditor::setMediaList(QMap <QString, BilboMedia*> *list)
 // }
 void BilboEditor::setLayoutDirection(Qt::LayoutDirection direction)
 {
-	QTextBlockFormat f;
+	QTextBlockFormat f = editor->textCursor().blockFormat();
 	f.setLayoutDirection(direction);
 	editor->textCursor().mergeBlockFormat(f);
 	if (direction == Qt::LeftToRight)
