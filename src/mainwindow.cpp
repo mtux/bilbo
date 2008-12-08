@@ -259,8 +259,11 @@ void MainWindow::sltActivePostChanged(int index)
     
 	activePost = qobject_cast<PostEntry*>( tabPosts->widget(index) );
     PostEntry *prevActivePost = qobject_cast<PostEntry*>( tabPosts->widget( previousActivePostIndex ) );
+	int activePostBlogId = -1;
+	int prevPostBlogId = -1;
 	
     if ((prevActivePost != 0) && (index != previousActivePostIndex)) {
+		prevPostBlogId = prevActivePost->currentPostBlogId();
 		//QString tempTitle = prevActivePost->postTitle();
 		toolbox->getFieldsValue(prevActivePost->currentPost());
 // 		prevActivePost->setCurrentPostProperties((*));
@@ -270,8 +273,15 @@ void MainWindow::sltActivePostChanged(int index)
     }
 	
     if (activePost != 0) {
+		activePostBlogId = activePost->currentPostBlogId();
+		if(activePostBlogId != -1){
+			if(activePostBlogId != prevPostBlogId){
+				toolbox->setCurrentBlog(activePostBlogId);
+				toolbox->sltLoadCategoryListFromDB(activePostBlogId);
+				toolbox->sltLoadEntriesFromDB(activePostBlogId);
+			}
+		}
         toolbox->setFieldsValue(activePost->currentPost());
-        toolbox->setCurrentBlog(activePost->currentPostBlogId());
         previousActivePostIndex = index;
         //sltPostTitleChanged( activePost->postTitle() );
 		//tabPosts->setTabText(tabPosts->currentIndex(),activePost->postTitle());
@@ -339,7 +349,7 @@ void MainWindow::sltRemoveCurrentPostEntry()
         previousActivePostIndex = 0;
     }
     tabPosts->removeTab(tabPosts->currentIndex());
-    tabPosts->setCurrentIndex(previousActivePostIndex);
+//     tabPosts->setCurrentIndex(previousActivePostIndex);
 }
 
 void MainWindow::sltNewPostSelected(BilboPost * newPost)
