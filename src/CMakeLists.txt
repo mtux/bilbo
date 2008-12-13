@@ -19,6 +19,8 @@ SET(QT_USE_QTWEBKIT 1)
 # configure_file(config-kpa-kipi.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-kpa-kipi.h)
 
 set(bilbo_SRCS
+ bilbohtmlparser.cpp
+ bilbotexthtmlimporter.cpp
  main.cpp
  mainwindow.cpp
  toolbox.cpp
@@ -40,6 +42,7 @@ set(bilbo_SRCS
  addcategory.cpp
  blogradiobutton.cpp
  catcheckbox.cpp
+#bilborichtextedit.cpp
 )
 
 kde4_add_ui_files(

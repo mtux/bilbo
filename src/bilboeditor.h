@@ -39,7 +39,10 @@ class AddEditLink;
 class AddImageDialog;
 class BilboMedia;
 
+//class BilboRichTextEdit;
 //class KRichTextEdit;
+//class BilboTextCharFormat;
+//#include "bilbotextcharformat.h"
 
 //!Class BilboEditor represents the editor part of BilboBlogger
 /*!
@@ -227,6 +230,7 @@ class BilboEditor : public KTabWidget
 		
 		//QTextEdit *editor;
 		MultiLineTextEdit *editor;
+		//BilboRichTextEdit *editor;
 		//KRichTextEdit *editor;
 		QPlainTextEdit *htmlEditor;
 		QWebView *preview;
@@ -261,6 +265,7 @@ class BilboEditor : public KTabWidget
 		
 		AddEditLink *linkDialog;
 		QTextCharFormat defaultCharFormat;
+		//BilboTextCharFormat defaultCharFormat;
 		QTextBlockFormat defaultBlockFormat;
 		QMap <QString, BilboMedia*> *mMediaList;
 		int prev_index;

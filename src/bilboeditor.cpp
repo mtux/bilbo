@@ -42,6 +42,9 @@
 // #include "ktoolbar.h"
 // #include "kaction.h"
 // #include "kicon.h"
+//#include "bilborichtextedit.h"
+//#include "bilbotextcharformat.h"
+#include "bilbotexthtmlimporter.h"
 
 BilboEditor::BilboEditor()
 {
@@ -609,6 +612,7 @@ void BilboEditor::createUi()
 	///editor:
 	//editor = new QTextEdit(0);
 	editor = new MultiLineTextEdit(0);
+	//editor = new BilboRichTextEdit(0);
 	//barVisual = new QToolBar(0);
 	barVisual = new KToolBar(0);
 	barVisual->setIconSize(QSize(22, 22));
@@ -643,6 +647,7 @@ void BilboEditor::createUi()
 	
 	///defaultCharFormat
 	defaultCharFormat = editor->currentCharFormat();
+	//defaultCharFormat = editor->textCursor().charFormat();
 // 	defaultCharFormat.setFontFamily(editor->fontFamily());
 // 	defaultCharFormat.setFontWeight(editor->fontWeight());
 // 	defaultCharFormat.setFontUnderline(editor->fontUnderline());
@@ -814,12 +819,14 @@ void BilboEditor::sltFontSizeIncrease()
 // 		editor->textCursor().mergeCharFormat(format2);
 // 	}
 	QTextCharFormat format;
+	//BilboTextCharFormat format;
 	int idx = editor->currentCharFormat().intProperty(QTextFormat::FontSizeAdjustment);
 	if ( idx < 3 ) {
 		format.setProperty(QTextFormat::FontSizeAdjustment, QVariant( ++idx ));
 		editor->textCursor().mergeCharFormat(format);
 	}
 	editor->setFocus(Qt::OtherFocusReason);
+	kDebug() << editor->textCursor().charFormat().stringProperty(0x100010);
 }
 
 void BilboEditor::sltFontSizeDecrease()
@@ -833,6 +840,7 @@ void BilboEditor::sltFontSizeDecrease()
 // 		editor->textCursor().mergeCharFormat(format);
 // 	}
 	QTextCharFormat format;
+	//BilboTextCharFormat format;
 	int idx = editor->currentCharFormat().intProperty(QTextFormat::FontSizeAdjustment);
 	if ( idx > -1 ) {
 		format.setProperty(QTextFormat::FontSizeAdjustment, QVariant( --idx ));
@@ -858,13 +866,16 @@ void BilboEditor::sltSetLink(QString address, QString target, QString title)
 //void BilboEditor::sltSetLink(QString address)
 {
 	QTextCharFormat f = editor->currentCharFormat();
+	//BilboTextCharFormat f = editor->textCursor().charFormat();
 	f.setAnchor(true);
 	f.setAnchorHref(address);
+	f.setProperty(0x100010, QVariant(title));
 // 	f.setAnchorName(title);
 	
-	QStringList anchorNames;
-	anchorNames.append(title);
-	f.setAnchorNames(anchorNames);
+// 	QStringList anchorNames;
+// 	anchorNames.append(title);
+// 	f.setAnchorNames(anchorNames);
+//	qobject_cast<QObject *>(&f)->setProperty("AnChorTitle",title);
 	
 	//f.setUnderlineStyle(QTextCharFormat::SingleUnderline);
 	//const QBrush br(Qt::blue);
@@ -879,6 +890,7 @@ void BilboEditor::sltSetLink(QString address, QString target, QString title)
 void BilboEditor::sltRemoveLink()
 {
 	QTextCharFormat f = editor->textCursor().charFormat();
+	//BilboTextCharFormat f = editor->textCursor().charFormat();
 	f.setAnchor(false);
 	f.setUnderlineStyle(this->defaultCharFormat.underlineStyle());
 	f.setForeground(this->defaultCharFormat.foreground());
@@ -971,6 +983,7 @@ void BilboEditor::sltChangeLayoutDirection()
 {
 	kDebug();
 	QTextCursor c = editor->textCursor();
+	//BilboTextCursor c = editor->textCursor();
 	QTextBlockFormat f = c.blockFormat();
 	
 	if (f.layoutDirection() != Qt::RightToLeft) {
@@ -1051,15 +1064,23 @@ void BilboEditor::sltSyncEditors(int index)
 	htmlExp->setDefaultCharFormat(this->defaultCharFormat);
 	htmlExp->setDefaultBlockFormat(this->defaultBlockFormat);
 	
+	
 	if(index == 0) {
 		///Qt QTextEdit::setHtml() or QTextDocument::toHtml() convert <h1-5> tags to <span> tags
+		delete editor->document();
+		QTextDocument *doc = new QTextDocument(editor);
 		
-		editor->setTextOrHtml(htmlToRichtext(htmlEditor->toPlainText()));
+		BilboTextHtmlImporter(doc, htmlEditor->toPlainText()).import();
+		editor->setTextCursor( QTextCursor(doc));
+		
+		//editor->setTextOrHtml(htmlToRichtext(htmlEditor->toPlainText()));
 		//qDebug()<<htmlEditor->toPlainText()<<endl;
 		kDebug() << editor->document()->toHtml() << "index=0" << endl;
+		kDebug() << editor->toCleanHtml() << "index=0" << endl;
 		//editor->setTextOrHtml(htmlEditor->toPlainText());
 	} else if (index == 1) {
 		kDebug() << editor->document()->toHtml() << "index=1" << endl;
+		kDebug() << editor->toCleanHtml() << "index=0" << endl;
 		//kDebug() << editor->toHtml() << endl;
 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 	} else {
