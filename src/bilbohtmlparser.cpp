@@ -19,6 +19,8 @@
  ***************************************************************************/
 #include "bilbohtmlparser.h"
 #include "kdebug.h" 
+#include "bilbocssparser.h"
+#include <QUrl>
 
 #define MAX_ENTITY 258
 static const struct BilboTextHtmlEntity { const char *name; quint16 code; } entities[MAX_ENTITY]= {
@@ -686,142 +688,149 @@ void BilboTextHtmlParserNode::initializeProperties(const BilboTextHtmlParserNode
 }
 
 
-// void BilboTextHtmlParserNode::applyCssDeclarations(const QVector<QCss::Declaration> &declarations, const QTextDocument *resourceProvider)
-// {
-// 	QCss::ValueExtractor extractor(declarations);
-// 	int ignoredBorders[4];
-// 	extractor.extractBox(margin, ignoredBorders);
-// 
-// 	for (int i = 0; i < declarations.count(); ++i) {
-// 		const QCss::Declaration &decl = declarations.at(i);
-// 		if (decl.values.isEmpty()) continue;
-// 		switch (decl.propertyId) {
-// 			case QCss::Color: foreground = decl.colorValue(); break;
-// 			case QCss::Float:
-// 				cssFloat = QTextFrameFormat::InFlow;
-// 				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
-// 					switch (decl.values.first().variant.toInt()) {
-// 						case QCss::Value_Left: cssFloat = QTextFrameFormat::FloatLeft; break;
-// 						case QCss::Value_Right: cssFloat = QTextFrameFormat::FloatRight; break;
-// 						default: break;
-// 					}
-// 				}
-// 				break;
-// 			case QCss::QtBlockIndent:
-// 				hasCssBlockIndent = true;
-// 				cssBlockIndent = decl.values.first().variant.toInt();
-// 				break;
-// 				case QCss::TextIndent: decl.realValue(&text_indent, "px"); break;
-// 			case QCss::QtListIndent:
-// 				if (decl.intValue(&cssListIndent))
-// 					hasCssListIndent = true;
-// 				break;
-// 			case QCss::QtParagraphType:
-// 				if (decl.values.first().variant.toString().compare(QLatin1String("empty"), Qt::CaseInsensitive) == 0)
-// 					isEmptyParagraph = true;
-// 				break;
-// 			case QCss::QtTableType:
-// 				if (decl.values.first().variant.toString().compare(QLatin1String("frame"), Qt::CaseInsensitive) == 0)
-// 					isTextFrame = true;
-// 				break;
-// 			case QCss::Whitespace:
-// 				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
-// 					switch (decl.values.first().variant.toInt()) {
-// 						case QCss::Value_Normal: wsm = BilboTextHtmlParserNode::WhiteSpaceNormal; break;
-// 						case QCss::Value_Pre: wsm = BilboTextHtmlParserNode::WhiteSpacePre; break;
-// 						case QCss::Value_NoWrap: wsm = BilboTextHtmlParserNode::WhiteSpaceNoWrap; break;
-// 						case QCss::Value_PreWrap: wsm = BilboTextHtmlParserNode::WhiteSpacePreWrap; break;
-// 						default: break;
-// 					}
-// 				}
-// 			case QCss::VerticalAlignment:
-// 				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
-// 					switch (decl.values.first().variant.toInt()) {
-// 						case QCss::Value_Sub: verticalAlignment = QTextCharFormat::AlignSubScript; break;
-// 						case QCss::Value_Super: verticalAlignment = QTextCharFormat::AlignSuperScript; break;
-// 						default: verticalAlignment = QTextCharFormat::AlignNormal; break;
-// 					}
-// 				}
-// 				break;
-// 			case QCss::PageBreakBefore:
-// 				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
-// 					switch (decl.values.first().variant.toInt()) {
-// 						case QCss::Value_Always: pageBreakPolicy |= QTextFormat::PageBreak_AlwaysBefore; break;
-// 						case QCss::Value_Auto: pageBreakPolicy &= ~QTextFormat::PageBreak_AlwaysBefore; break;
-// 					}
-// 				}
-// 				break;
-// 			case QCss::PageBreakAfter:
-// 				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
-// 					switch (decl.values.first().variant.toInt()) {
-// 						case QCss::Value_Always: pageBreakPolicy |= QTextFormat::PageBreak_AlwaysAfter; break;
-// 						case QCss::Value_Auto: pageBreakPolicy &= ~QTextFormat::PageBreak_AlwaysAfter; break;
-// 					}
-// 				}
-// 				break;
-// 				default: break;
-// 		}
-// 	}
-// 
-// 	QFont f;
-// 	int adjustment = -255;
-// 	extractor.extractFont(&f, &adjustment);
-// 	if (f.resolve() & QFontPrivate::Size) {
-// 		if (f.pointSize() > 0) {
-// 			fontPointSize = f.pointSize();
-// 			hasFontPointSize = true;
-// 		} else if (f.pixelSize() > 0) {
-// 			fontPixelSize = f.pixelSize();
-// 			hasFontPixelSize = true;
-// 		}
-// 	}
-// 	if (f.resolve() & QFontPrivate::Style)
-// 		fontItalic = (f.style() == QFont::StyleNormal) ? Off : On;
-// 
-// 	if (f.resolve() & QFontPrivate::Weight)
-// 		fontWeight = f.weight();
-// 
-// 	if (f.resolve() & QFontPrivate::Family)
-// 		fontFamily = f.family();
-// 
-// 	if (f.resolve() & QFontPrivate::Underline)
-// 		fontUnderline = f.underline() ? On : Off;
-// 
-// 	if (f.resolve() & QFontPrivate::Overline)
-// 		fontOverline = f.overline() ? On : Off;
-// 
-// 	if (f.resolve() & QFontPrivate::StrikeOut)
-// 		fontStrikeOut = f.strikeOut() ? On : Off;
-// 
-// 	if (adjustment >= -1) {
-// 		hasFontSizeAdjustment = true;
-// 		fontSizeAdjustment = adjustment;
-// 	}
-// 
-// 	{
-// 		Qt::Alignment ignoredAlignment;
-// 		QCss::Repeat ignoredRepeat;
-// 		QString bgImage;
-// 		QBrush bgBrush;
-// 		QCss::Origin ignoredOrigin;
-// 		extractor.extractBackground(&bgBrush, &bgImage, &ignoredRepeat, &ignoredAlignment,
-// 									 &ignoredOrigin);
-// 
-// 		if (!bgImage.isEmpty() && resourceProvider) {
-// 			QVariant val = resourceProvider->resource(QTextDocument::ImageResource, bgImage);
-// 			if (val.type() == QVariant::Image || val.type() == QVariant::Pixmap) {
-// 				background = qvariant_cast<QPixmap>(val);
-// 			} else if (val.type() == QVariant::ByteArray) {
-// 				QPixmap pm;
-// 				if (pm.loadFromData(val.toByteArray()))
-// 					background = pm;
-// 			}
-// 		} else if (bgBrush.style() != Qt::NoBrush) {
-// 			background = bgBrush;
-// 		}
-// 	}
-// }
+void BilboTextHtmlParserNode::applyCssDeclarations(const QVector<QCss::Declaration> &declarations, const QTextDocument *resourceProvider)
+{
+	QCss::ValueExtractor extractor(declarations);
+	int ignoredBorders[4];
+	extractor.extractBox(margin, ignoredBorders);
 
+	for (int i = 0; i < declarations.count(); ++i) {
+		const QCss::Declaration &decl = declarations.at(i);
+		if (decl.values.isEmpty()) continue;
+		switch (decl.propertyId) {
+			case QCss::Color: foreground = decl.colorValue(); break;
+			case QCss::Float:
+				cssFloat = QTextFrameFormat::InFlow;
+				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
+					switch (decl.values.first().variant.toInt()) {
+						case QCss::Value_Left: cssFloat = QTextFrameFormat::FloatLeft; break;
+						case QCss::Value_Right: cssFloat = QTextFrameFormat::FloatRight; break;
+						default: break;
+					}
+				}
+				break;
+			case QCss::QtBlockIndent:
+				hasCssBlockIndent = true;
+				cssBlockIndent = decl.values.first().variant.toInt();
+				break;
+				case QCss::TextIndent: decl.realValue(&text_indent, "px"); break;
+			case QCss::QtListIndent:
+				if (decl.intValue(&cssListIndent))
+					hasCssListIndent = true;
+				break;
+			case QCss::QtParagraphType:
+				if (decl.values.first().variant.toString().compare(QLatin1String("empty"), Qt::CaseInsensitive) == 0)
+					isEmptyParagraph = true;
+				break;
+			case QCss::QtTableType:
+				if (decl.values.first().variant.toString().compare(QLatin1String("frame"), Qt::CaseInsensitive) == 0)
+					isTextFrame = true;
+				break;
+			case QCss::Whitespace:
+				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
+					switch (decl.values.first().variant.toInt()) {
+						case QCss::Value_Normal: wsm = BilboTextHtmlParserNode::WhiteSpaceNormal; break;
+						case QCss::Value_Pre: wsm = BilboTextHtmlParserNode::WhiteSpacePre; break;
+						case QCss::Value_NoWrap: wsm = BilboTextHtmlParserNode::WhiteSpaceNoWrap; break;
+						case QCss::Value_PreWrap: wsm = BilboTextHtmlParserNode::WhiteSpacePreWrap; break;
+						default: break;
+					}
+				}
+			case QCss::VerticalAlignment:
+				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
+					switch (decl.values.first().variant.toInt()) {
+						case QCss::Value_Sub: verticalAlignment = QTextCharFormat::AlignSubScript; break;
+						case QCss::Value_Super: verticalAlignment = QTextCharFormat::AlignSuperScript; break;
+						default: verticalAlignment = QTextCharFormat::AlignNormal; break;
+					}
+				}
+				break;
+			case QCss::PageBreakBefore:
+				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
+					switch (decl.values.first().variant.toInt()) {
+						case QCss::Value_Always: pageBreakPolicy |= QTextFormat::PageBreak_AlwaysBefore; break;
+						case QCss::Value_Auto: pageBreakPolicy &= ~QTextFormat::PageBreak_AlwaysBefore; break;
+					}
+				}
+				break;
+			case QCss::PageBreakAfter:
+				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
+					switch (decl.values.first().variant.toInt()) {
+						case QCss::Value_Always: pageBreakPolicy |= QTextFormat::PageBreak_AlwaysAfter; break;
+						case QCss::Value_Auto: pageBreakPolicy &= ~QTextFormat::PageBreak_AlwaysAfter; break;
+					}
+				}
+				break;
+				default: break;
+		}
+	}
+
+	QFont f;
+	int adjustment = -255;
+	extractor.extractFont(&f, &adjustment);
+	//if (f.resolve() & QFontPrivate::Size) {
+	if (f.resolve() & Size) {
+		if (f.pointSize() > 0) {
+			fontPointSize = f.pointSize();
+			hasFontPointSize = true;
+		} else if (f.pixelSize() > 0) {
+			fontPixelSize = f.pixelSize();
+			hasFontPixelSize = true;
+		}
+	}
+	//if (f.resolve() & QFontPrivate::Style)
+	if (f.resolve() & Style)
+		fontItalic = (f.style() == QFont::StyleNormal) ? Off : On;
+
+	//if (f.resolve() & QFontPrivate::Weight)
+	if (f.resolve() & Weight)
+		fontWeight = f.weight();
+
+	//if (f.resolve() & QFontPrivate::Family)
+	if (f.resolve() & Family)
+		fontFamily = f.family();
+
+	//if (f.resolve() & QFontPrivate::Underline)
+	if (f.resolve() & Underline)
+		fontUnderline = f.underline() ? On : Off;
+
+	//if (f.resolve() & QFontPrivate::Overline)
+	if (f.resolve() & Overline)
+		fontOverline = f.overline() ? On : Off;
+
+	//if (f.resolve() & QFontPrivate::StrikeOut)
+	if (f.resolve() & StrikeOut)
+		fontStrikeOut = f.strikeOut() ? On : Off;
+
+	if (adjustment >= -1) {
+		hasFontSizeAdjustment = true;
+		fontSizeAdjustment = adjustment;
+	}
+
+	{
+		Qt::Alignment ignoredAlignment;
+		QCss::Repeat ignoredRepeat;
+		QString bgImage;
+		QBrush bgBrush;
+		QCss::Origin ignoredOrigin;
+		extractor.extractBackground(&bgBrush, &bgImage, &ignoredRepeat, &ignoredAlignment,
+									 &ignoredOrigin);
+
+		if (!bgImage.isEmpty() && resourceProvider) {
+			//QVariant val = resourceProvider->resource(QTextDocument::ImageResource, bgImage);
+			QVariant val = resourceProvider->resource(QTextDocument::ImageResource, QUrl(bgImage));
+			if (val.type() == QVariant::Image || val.type() == QVariant::Pixmap) {
+				background = qvariant_cast<QPixmap>(val);
+			} else if (val.type() == QVariant::ByteArray) {
+				QPixmap pm;
+				if (pm.loadFromData(val.toByteArray()))
+					background = pm;
+			}
+		} else if (bgBrush.style() != Qt::NoBrush) {
+			background = bgBrush;
+		}
+	}
+}
 
 
 BilboTextHtmlParserNode *BilboTextHtmlParser::newNode(int parent)
@@ -1006,11 +1015,11 @@ void BilboTextHtmlParser::parseTag()
     // if close tag just close
 	if (hasPrefix(QLatin1Char('/'))) {
 		if (nodes.last().id == Html_style) {
-/// me 			QCss::Parser parser(nodes.last().text);
-/// me 			QCss::StyleSheet sheet;
-/// me 			parser.parse(&sheet);
-/// me 			inlineStyleSheets.append(sheet);
-/// me 			resolveStyleSheetImports(sheet);
+ 			QCss::Parser parser(nodes.last().text);
+ 			QCss::StyleSheet sheet;
+			parser.parse(&sheet);
+			inlineStyleSheets.append(sheet);
+ 			resolveStyleSheetImports(sheet);
 		}
 		parseCloseTag();
 		return;
@@ -1047,7 +1056,7 @@ void BilboTextHtmlParser::parseTag()
 	resolveParent();
 	resolveNode();
 
-/// me 	node->applyCssDeclarations(declarationsForNode(nodeIndex), resourceProvider);
+ 	node->applyCssDeclarations(declarationsForNode(nodeIndex), resourceProvider);
 	applyAttributes(node->attributes);
 
     // finish tag
@@ -1341,6 +1350,20 @@ void BilboTextHtmlParser::resolveParent()
 		  nodes[p].children.append(nodes.count() - 1);
 }
 
+static void parseStyleAttribute(BilboTextHtmlParserNode *node, const QString &value, const QTextDocument *resourceProvider)
+{
+	QString css = value;
+	css.prepend(QLatin1String("dummy {"));
+	css.append(QLatin1Char('}'));
+	QCss::Parser parser(css);
+	QCss::StyleSheet sheet;
+	parser.parse(&sheet);
+	if (sheet.styleRules.count() != 1) {
+		return;
+	} else {
+		node->applyCssDeclarations(sheet.styleRules.at(0).declarations, resourceProvider);
+	}
+}
 
 void BilboTextHtmlParser::applyAttributes(const QStringList &attributes)
 {
@@ -1475,7 +1498,7 @@ void BilboTextHtmlParser::applyAttributes(const QStringList &attributes)
 		}
 
 		if (key == QLatin1String("style")) {
-/// me 			parseStyleAttribute(node, value, resourceProvider);
+			parseStyleAttribute(node, value, resourceProvider);
 		} else if (key == QLatin1String("align")) {
 			value = value.toLower();
 			if (value == QLatin1String("left"))
@@ -1507,7 +1530,6 @@ void BilboTextHtmlParser::applyAttributes(const QStringList &attributes)
 /// me		importStyleSheet(linkHref);
 }
 
-
 void BilboTextHtmlParser::resolveNode()
 {
 	BilboTextHtmlParserNode *node = &nodes.last();
@@ -1527,6 +1549,152 @@ bool BilboTextHtmlParserNode::isNestedList(const BilboTextHtmlParser *parser) co
 		p = parser->at(p).parent;
 	}
 	return false;
+}
+
+class QTextHtmlStyleSelector : public QCss::StyleSelector
+{
+	public:
+		inline QTextHtmlStyleSelector(const BilboTextHtmlParser *parser)
+	: parser(parser) {}
+
+		virtual bool nodeNameEquals(NodePtr node, const QString& name) const;
+		virtual QString attribute(NodePtr node, const QString &name) const;
+		virtual bool hasAttribute(NodePtr node, const QString &name) const;
+		virtual bool hasAttributes(NodePtr node) const;
+		virtual bool isNullNode(NodePtr node) const;
+		virtual NodePtr parentNode(NodePtr node);
+		virtual NodePtr previousSiblingNode(NodePtr node);
+		virtual NodePtr duplicateNode(NodePtr node);
+		virtual void freeNode(NodePtr node);
+
+	private:
+		const BilboTextHtmlParser *parser;
+};
+
+bool QTextHtmlStyleSelector::nodeNameEquals(NodePtr node, const QString& name) const
+{
+	return parser->at(node.id).tag == name;
+}
+
+static inline int findAttribute(const QStringList &attributes, const QString &name)
+{
+	int idx = -1;
+	do {
+		idx = attributes.indexOf(name, idx + 1);
+	} while (idx != -1 && (idx % 2 == 1));
+	return idx;
+}
+
+QString QTextHtmlStyleSelector::attribute(NodePtr node, const QString &name) const
+{
+	const QStringList &attributes = parser->at(node.id).attributes;
+	const int idx = findAttribute(attributes, name);
+	if (idx == -1)
+		return QString();
+	return attributes.at(idx + 1);
+}
+
+bool QTextHtmlStyleSelector::hasAttribute(NodePtr node, const QString &name) const
+{
+	const QStringList &attributes = parser->at(node.id).attributes;
+	return findAttribute(attributes, name) != -1;
+}
+
+bool QTextHtmlStyleSelector::hasAttributes(NodePtr node) const
+{
+	const QStringList &attributes = parser->at(node.id).attributes;
+	return !attributes.isEmpty();
+}
+
+bool QTextHtmlStyleSelector::isNullNode(NodePtr node) const
+{
+	return node.id == 0;
+}
+
+QCss::StyleSelector::NodePtr QTextHtmlStyleSelector::parentNode(NodePtr node)
+{
+	NodePtr parent;
+	parent.id = 0;
+	if (node.id) {
+		parent.id = parser->at(node.id).parent;
+	}
+	return parent;
+}
+
+QCss::StyleSelector::NodePtr QTextHtmlStyleSelector::duplicateNode(NodePtr node)
+{
+	return node;
+}
+
+QCss::StyleSelector::NodePtr QTextHtmlStyleSelector::previousSiblingNode(NodePtr node)
+{
+	NodePtr sibling;
+	sibling.id = 0;
+	if (!node.id)
+		return sibling;
+	int parent = parser->at(node.id).parent;
+	if (!parent)
+		return sibling;
+	const int childIdx = parser->at(parent).children.indexOf(node.id);
+	if (childIdx <= 0)
+		return sibling;
+	sibling.id = parser->at(parent).children.at(childIdx - 1);
+	return sibling;
+}
+
+void QTextHtmlStyleSelector::freeNode(NodePtr)
+{
+}
+
+void BilboTextHtmlParser::resolveStyleSheetImports(const QCss::StyleSheet &sheet)
+{
+	for (int i = 0; i < sheet.importRules.count(); ++i) {
+		const QCss::ImportRule &rule = sheet.importRules.at(i);
+		if (rule.media.isEmpty()
+				  || rule.media.contains(QLatin1String("screen"), Qt::CaseInsensitive))
+			importStyleSheet(rule.href);
+	}
+}
+
+void BilboTextHtmlParser::importStyleSheet(const QString &href)
+{
+	if (externalStyleSheets.contains(href) || !resourceProvider)
+		return;
+
+	QVariant res = resourceProvider->resource(QTextDocument::StyleSheetResource, href);
+	QString css;
+	if (res.type() == QVariant::String) {
+		css = res.toString();
+	} else if (res.type() == QVariant::ByteArray) {
+        // #### detect @charset
+		css = QString::fromUtf8(res.toByteArray());
+	}
+	if (!css.isEmpty()) {
+		QCss::Parser parser(css);
+		QCss::StyleSheet sheet;
+		parser.parse(&sheet);
+		externalStyleSheets.insert(href, sheet);
+		resolveStyleSheetImports(sheet);
+	}
+}
+
+
+QVector<QCss::Declaration> BilboTextHtmlParser::declarationsForNode(int node) const
+{
+	QVector<QCss::Declaration> decls;
+
+	QTextHtmlStyleSelector selector(this);
+/// me 	if (resourceProvider)
+/// me 		selector.styleSheets += resourceProvider->docHandle()->parsedDefaultStyleSheet;
+	selector.styleSheets += externalStyleSheets.values();
+	selector.styleSheets += inlineStyleSheets;
+	selector.medium = QLatin1String("screen");
+
+	QCss::StyleSelector::NodePtr n;
+	n.id = node;
+	decls = selector.declarationsForNode(n);
+
+	return decls;
 }
 
 // BilboHtmlParser::BilboHtmlParser()

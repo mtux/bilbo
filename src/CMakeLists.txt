@@ -19,6 +19,8 @@ SET(QT_USE_QTWEBKIT 1)
 # configure_file(config-kpa-kipi.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-kpa-kipi.h)
 
 set(bilbo_SRCS
+ qcssscanner.cpp
+ bilbocssparser.cpp
  bilbohtmlparser.cpp
  bilbotexthtmlimporter.cpp
  main.cpp

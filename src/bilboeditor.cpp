@@ -1060,6 +1060,8 @@ void BilboEditor::sltSyncEditors(int index)
 // 	editor->document();
 	// TODO move htmlExp definiton to BilboEditor constructor.
 	kDebug();
+	QTextDocument *doc;
+	
 	htmlExporter* htmlExp = new htmlExporter();
 	htmlExp->setDefaultCharFormat(this->defaultCharFormat);
 	htmlExp->setDefaultBlockFormat(this->defaultBlockFormat);
@@ -1067,11 +1069,12 @@ void BilboEditor::sltSyncEditors(int index)
 	
 	if(index == 0) {
 		///Qt QTextEdit::setHtml() or QTextDocument::toHtml() convert <h1-5> tags to <span> tags
-		delete editor->document();
-		QTextDocument *doc = new QTextDocument(editor);
-		
+		//delete editor->document();
+		//QTextDocument *doc = new QTextDocument(editor);
+		doc = editor->document();
+		doc->clear();
 		BilboTextHtmlImporter(doc, htmlEditor->toPlainText()).import();
-		editor->setTextCursor( QTextCursor(doc));
+		//editor->setTextCursor( QTextCursor(doc));
 		
 		//editor->setTextOrHtml(htmlToRichtext(htmlEditor->toPlainText()));
 		//qDebug()<<htmlEditor->toPlainText()<<endl;
@@ -1085,7 +1088,10 @@ void BilboEditor::sltSyncEditors(int index)
 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 	} else {
 		if (prev_index == 1) {
-			editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
+			//editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
+			doc = editor->document();
+			doc->clear();
+			BilboTextHtmlImporter(doc, htmlEditor->toPlainText()).import();
 		} else {
 			htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 		}

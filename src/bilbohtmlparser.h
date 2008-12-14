@@ -23,8 +23,10 @@
 #include "QtCore/qvector.h"
 #include "QtGui/qcolor.h"
 #include "QtGui/qfont.h"
+#include <QHash>
 #include "QtGui/qtextdocument.h"
 #include "QtGui/qtextcursor.h"
+#include "bilbocssparser.h"
 
 //#include "private/qtexthtmlparser_p.h"
 
@@ -32,7 +34,7 @@
 	@author 
 */
 
-class QCss;
+//using namespace QCss;
 
 enum BilboTextHTMLElements {
 	Html_qt,
@@ -218,10 +220,27 @@ struct BilboTextHtmlParserNode
 	void initializeProperties(const BilboTextHtmlParserNode *parent, const BilboTextHtmlParser *parser);
 	inline int uncollapsedMargin(int mar) const { return margin[mar]; } 
  	bool isNestedList(const BilboTextHtmlParser *parser) const; 
-// 	void applyCssDeclarations(const QVector<QCss::Declaration> &declarations, const QTextDocument *resrouceProvider); 
+	void applyCssDeclarations(const QVector<QCss::Declaration> &declarations, const QTextDocument *resrouceProvider); 
 	int margin[4];
 	
-	//friend class QTextHtmlParser;
+	enum FontAttributes{
+		Family        = 0x0001,
+  Size          = 0x0002,
+  StyleHint     = 0x0004,
+  StyleStrategy = 0x0008,
+  Weight        = 0x0010,
+  Style         = 0x0020,
+  Underline     = 0x0040,
+  Overline      = 0x0080,
+  StrikeOut     = 0x0100,
+  FixedPitch    = 0x0200,
+  Stretch       = 0x0400,
+  Kerning       = 0x0800,
+  Complete      = 0x0fff
+	};
+
+	
+	friend class BilboTextHtmlParser;
 };
 Q_DECLARE_TYPEINFO(BilboTextHtmlParserNode, Q_MOVABLE_TYPE);
 // 
@@ -270,12 +289,12 @@ class BilboTextHtmlParser
 		{return pos + lookahead < len && txt.at(pos) == c; }
 		int margin(int i, int mar) const;
 
-// 		QVector<QCss::Declaration> declarationsForNode(int node) const;
-// 		void resolveStyleSheetImports(const QCss::StyleSheet &sheet);
-// 		void importStyleSheet(const QString &href);
-// 
-// 		QHash<QString, QCss::StyleSheet> externalStyleSheets;
-// 		QList<QCss::StyleSheet> inlineStyleSheets;
+		QVector<QCss::Declaration> declarationsForNode(int node) const;
+		void resolveStyleSheetImports(const QCss::StyleSheet &sheet);
+		void importStyleSheet(const QString &href);
+
+		QHash<QString, QCss::StyleSheet> externalStyleSheets;
+		QList<QCss::StyleSheet> inlineStyleSheets;
 		const QTextDocument *resourceProvider;
 };
 
