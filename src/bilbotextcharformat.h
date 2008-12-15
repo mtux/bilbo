@@ -17,37 +17,55 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef ADDEDITLINK_H
-#define ADDEDITLINK_H
+#ifndef BILBOTEXTCHARFORMAT_H
+#define BILBOTEXTCHARFORMAT_H
 
-#include <QDialog>
-//#include <KDialog>
-
-#include "ui_addeditlinkbase.h"
+#include <qtextformat.h>
 
 /**
-Implements a dialog to get user input for link parameters; address, name and target.
-
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
- */
-
-class AddEditLink: public KDialog
+*/
+// class BilboTextCharFormat : public QTextCharFormat
+class BilboTextCharFormat
 {
-	Q_OBJECT
-	public:
-		AddEditLink(QWidget *parent = 0);
-		void show(const QString& address = "", const QString& title = "", const QString& target = "");
+	//Q_OBJECT
+   public:
+// 		BilboTextCharFormat();
+// 	
+// 		~BilboTextCharFormat();
 		
-	Q_SIGNALS:
- 		void addLink( const QString& address, const QString& target, const QString& title);
-// 		void addLink( const QString& address );
+		//BilboTextCharFormat& operator =(const BilboTextCharFormat& other);
 		
-	private Q_SLOTS:
-		void sltAccepted();
+		enum Property {
+			/// Anchor properties
+			AnchorTitle = 0x100010,
+   			AnchorTarget = 0x100011
+		};
+// 		enum TargetStyle {
+// 			OpenInCurrentWindow = 1,
+//    			OpenInNewWindow = 2
+// 		};
 		
-	private:
-		Ui::AddEditLinkBase ui;
+// 		bool isValid() const;
+// 		
+// 		inline void setAnchorTitle(const QString &title) {
+// 			setProperty(AnchorTitle, title);
+// 		}
+// 		inline QString anchorTitle() const {
+// 			return stringProperty(AnchorTitle);
+// 		}
+// 		inline void setAnchorTarget(TargetStyles style) {
+// 			setProperty(AnchorTarget, style);
+// 		}
+// 		inline TargetStyles anchorTarget() const {
+// 			return static_cast<TargetStyles>(intProperty(AnchorTitle));
+// 		}
+// 		
+// 	protected:
+// 		explicit BilboTextCharFormat(const QTextFormat &format);
+// 		
+// 		friend class QTextFormat;
 };
 
 #endif

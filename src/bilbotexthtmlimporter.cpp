@@ -20,6 +20,7 @@
 #include "bilbotexthtmlimporter.h"
 #include "qtextlist.h"
 #include "kdebug.h"
+#include "bilbotextcharformat.h"
 
 BilboTextHtmlImporter::BilboTextHtmlImporter(QTextDocument *_doc, const QString &_html, const QTextDocument *resourceProvider)
 	: indent(0), setNamedAnchorInNextOutput(false), doc(_doc), containsCompleteDoc(false)
@@ -164,8 +165,10 @@ void BilboTextHtmlImporter::import()
 			if (nodeFmt.hasProperty(QTextFormat::AnchorName))
 				fmt.setAnchorName(nodeFmt.anchorName());
 			/// my code
-			if (nodeFmt.hasProperty(0x100010))
-				fmt.setProperty(0x100010, QVariant(nodeFmt.stringProperty(0x100010)));
+			if (nodeFmt.hasProperty(BilboTextCharFormat::AnchorTitle))
+				fmt.setProperty(BilboTextCharFormat::AnchorTitle, nodeFmt.property(BilboTextCharFormat::AnchorTitle));
+			if (nodeFmt.hasProperty(BilboTextCharFormat::AnchorTarget))
+				fmt.setProperty(BilboTextCharFormat::AnchorTarget, nodeFmt.property(BilboTextCharFormat::AnchorTarget));
 
 			if (node->imageWidth >= 0)
 				fmt.setWidth(node->imageWidth);

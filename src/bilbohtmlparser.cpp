@@ -18,9 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "bilbohtmlparser.h"
-#include "kdebug.h" 
 #include "bilbocssparser.h"
 #include <QUrl>
+#include "kdebug.h" 
+#include "bilbotextcharformat.h"
 
 #define MAX_ENTITY 258
 static const struct BilboTextHtmlEntity { const char *name; quint16 code; } entities[MAX_ENTITY]= {
@@ -460,6 +461,8 @@ QTextCharFormat BilboTextHtmlParserNode::charFormat() const
 		format.setAnchor(true);
 		format.setAnchorHref(anchorHref);
 		format.setAnchorName(anchorName);
+		format.setProperty(BilboTextCharFormat::AnchorTitle, QVariant(anchorTitle)); ///my code
+		format.setProperty(BilboTextCharFormat::AnchorTarget, QVariant(anchorTarget)); ///my code
 	}
 
 	return format;
@@ -519,6 +522,8 @@ void BilboTextHtmlParserNode::initializeProperties(const BilboTextHtmlParserNode
 
 	listStyle = parent->listStyle;
 	anchorHref = parent->anchorHref;
+	anchorTitle = parent->anchorTitle;  ///my code
+	anchorTarget = parent->anchorTarget;  ///my code
     // makes no sense to inherit that property, a named anchor is a single point
     // in the document, which is set by the DocumentFragment
     //anchorName = parent->anchorName;
@@ -1424,6 +1429,10 @@ void BilboTextHtmlParser::applyAttributes(const QStringList &attributes)
 					node->anchorHref = value;
 				else if (key == QLatin1String("name"))
 					node->anchorName = value;
+				else if (key == QLatin1String("title"))  ///my code
+					node->anchorTitle = value;  ///my code
+				else if (key == QLatin1String("target"))  ///my code
+					node->anchorTarget = value;  ///my code
 				break;
 			case Html_img:
 				if (key == QLatin1String("src") || key == QLatin1String("source")) {
@@ -1696,23 +1705,3 @@ QVector<QCss::Declaration> BilboTextHtmlParser::declarationsForNode(int node) co
 
 	return decls;
 }
-
-// BilboHtmlParser::BilboHtmlParser()
-// {
-// }
-// 
-// 
-// BilboHtmlParser::~BilboHtmlParser()
-// {
-// }
-// 
-// BilboTextHtmlParserNode::BilboTextHtmlParserNode()
-// 	: parent(0), id(Html_unknown), cssFloat(QTextFrameFormat::InFlow), hasOwnListStyle(false), hasCssListIndent(false), isEmptyParagraph(false), isTextFrame(false), isRootFrame(false), displayMode(BilboTextHtmlElement::DisplayInline), hasHref(false), listStyle(QTextListFormat::ListStyleUndefined), imageWidth(-1), imageHeight(-1), tableBorder(0), tableCellRowSpan(1), tableCellColSpan(1), tableCellSpacing(2), tableCellPadding(0), borderBrush(Qt::darkGray), borderStyle(QTextFrameFormat::BorderStyle_Outset), userState(-1), cssListIndent(0), wsm(WhiteSpaceModeUndefined)
-// {
-// 	margin[BilboTextHtmlParser::MarginLeft] = 0;
-// 	margin[BilboTextHtmlParser::MarginRight] = 0;
-// 	margin[BilboTextHtmlParser::MarginTop] = 0;
-// 	margin[BilboTextHtmlParser::MarginBottom] = 0;
-// }
-// 
-

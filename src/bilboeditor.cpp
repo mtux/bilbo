@@ -43,7 +43,7 @@
 // #include "kaction.h"
 // #include "kicon.h"
 //#include "bilborichtextedit.h"
-//#include "bilbotextcharformat.h"
+#include "bilbotextcharformat.h"
 #include "bilbotexthtmlimporter.h"
 
 BilboEditor::BilboEditor()
@@ -858,7 +858,7 @@ void BilboEditor::sltAddEditLink()
 	if (!f.isAnchor()) {
 		linkDialog->show();
 	} else {
-		linkDialog->show(f.anchorHref(), f.anchorNames().at(0));
+		linkDialog->show(f.anchorHref(), f.stringProperty(BilboTextCharFormat::AnchorTitle), f.stringProperty(BilboTextCharFormat::AnchorTarget));
 	}
 }
 
@@ -869,7 +869,8 @@ void BilboEditor::sltSetLink(QString address, QString target, QString title)
 	//BilboTextCharFormat f = editor->textCursor().charFormat();
 	f.setAnchor(true);
 	f.setAnchorHref(address);
-	f.setProperty(0x100010, QVariant(title));
+	f.setProperty(BilboTextCharFormat::AnchorTitle, QVariant(title));
+	f.setProperty(BilboTextCharFormat::AnchorTarget, QVariant(target));
 // 	f.setAnchorName(title);
 	
 // 	QStringList anchorNames;
@@ -982,17 +983,25 @@ void BilboEditor::sltNewParagraph()
 void BilboEditor::sltChangeLayoutDirection()
 {
 	kDebug();
-	QTextCursor c = editor->textCursor();
-	//BilboTextCursor c = editor->textCursor();
-	QTextBlockFormat f = c.blockFormat();
-	
+// 	QTextCursor c = editor->textCursor();
+// 	//BilboTextCursor c = editor->textCursor();
+// 	QTextBlockFormat f = c.blockFormat();
+// 	
+// 	if (f.layoutDirection() != Qt::RightToLeft) {
+// 		f.setLayoutDirection(Qt::RightToLeft);	
+// 	} else {
+// 		f.setLayoutDirection(Qt::LeftToRight);
+// 	}
+// 	c.setBlockFormat(f);
+// 	editor->setTextCursor(c);
+	QTextBlockFormat f = editor->textCursor().blockFormat();
 	if (f.layoutDirection() != Qt::RightToLeft) {
-		f.setLayoutDirection(Qt::RightToLeft);	
+		f.setLayoutDirection(Qt::RightToLeft);
 	} else {
 		f.setLayoutDirection(Qt::LeftToRight);
 	}
-	c.setBlockFormat(f);
-	editor->setTextCursor(c);
+	editor->textCursor().mergeBlockFormat(f);
+	
 	editor->setFocus(Qt::OtherFocusReason);
 }
 

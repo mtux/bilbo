@@ -172,6 +172,7 @@ struct BilboTextHtmlParserNode
 	QString anchorName;
 	
 	QString anchorTitle;  ///my code
+	QString anchorTarget;  ///my code
 	
 	QString imageName;
 	qreal imageWidth;

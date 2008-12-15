@@ -34,6 +34,7 @@
 #include <QTextFormat>
 #include <QVarLengthArray>
 #include <kdebug.h>
+#include "bilbotextcharformat.h"
 
 htmlExporter::htmlExporter()
 {
@@ -575,25 +576,46 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
 	bool anchorIsOpen = false;
 
     if (format.isAnchor()) {
-        const QStringList names = format.anchorNames();
-        if (!names.isEmpty()) {
-            html += QLatin1String("<a title=\"");
-            html += names.at(0);
-            html += QLatin1String("\" ");
-			anchorIsOpen = true;
-        }
+//         const QStringList names = format.anchorNames();
+//         if (!names.isEmpty()) {
+//             html += QLatin1String("<a name=\"");
+//             html += names.at(0);
+//             html += QLatin1String("\" ");
+// 			anchorIsOpen = true;
+//         }
         const QString href = format.anchorHref();
         if (!href.isEmpty()) {
-			if (!anchorIsOpen) {
-				html += QLatin1String("<a ");
-				anchorIsOpen = true;
-			}
-            html += QLatin1String("href=\"");
+// 			if (!anchorIsOpen) {
+// 				html += QLatin1String("<a ");
+// 				anchorIsOpen = true;
+// 			}
+            html += QLatin1String("<a href=\"");
             html += href;
             html += QLatin1String("\"");
+			anchorIsOpen = true;
 //             closeAnchor = true;
 // 			html += QLatin1String("\"");
         }
+		if (format.hasProperty(BilboTextCharFormat::AnchorTitle))
+		{
+			const QString title = format.stringProperty(BilboTextCharFormat::AnchorTitle);
+			if (!title.isEmpty())
+			{
+				html += QLatin1String(" title=\"");
+				html += title;
+				html += QLatin1String("\"");
+			}
+		}
+		if (format.hasProperty(BilboTextCharFormat::AnchorTarget))
+		{
+			const QString target = format.stringProperty(BilboTextCharFormat::AnchorTarget);
+			if (!target.isEmpty())
+			{
+				html += QLatin1String(" target=\"");
+				html += target;
+				html += QLatin1String("\"");
+			}
+		}
 		if (anchorIsOpen) {
 			html += QLatin1String(">");
 			closeAnchor = true;
