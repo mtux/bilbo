@@ -16,6 +16,10 @@
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *                                                                         *
+ *	 This file is a modified version of qtexthtmlparser.cpp, which is part *
+ *   of the QtGui module of the Qt Toolkit. It has been costomized for     *
+ *   use in Bilbo Blogger project.                                         *
  ***************************************************************************/
 #include "bilbohtmlparser.h"
 #include "bilbocssparser.h"

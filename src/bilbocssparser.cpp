@@ -16,11 +16,15 @@
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *                                                                         *
+ *	 This file is a modified version of qcssparser.cpp, which is part      *
+ *   of the QtGui module of the Qt Toolkit. It has been costomized for     *
+ *   use in Bilbo Blogger project.                                         *
  ***************************************************************************/
 #include "bilbocssparser.h"
 
 //#include "qcssparser_p.h"
-#include "bilbocssparser.h"
+//#include "bilbocssparser.h"
 
 #include <QDebug>
 #include <QColor>
@@ -29,7 +33,7 @@
 #include <QFontMetrics>
 #include <QBrush>
 
-#include "qcssscanner.cpp"
+//#include "qcssscanner.cpp"
 
 using namespace QCss;
 

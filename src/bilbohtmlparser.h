@@ -16,6 +16,10 @@
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *                                                                         *
+ *	 This file is a modified version of qtexthtmlparser_p.h, which is part *
+ *   of the QtGui module of the Qt Toolkit. It has been costomized for     *
+ *   use in Bilbo Blogger project.                                         *
  ***************************************************************************/
 #ifndef BILBOHTMLPARSER_H
 #define BILBOHTMLPARSER_H
@@ -31,7 +35,8 @@
 //#include "private/qtexthtmlparser_p.h"
 
 /**
-	@author 
+	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+	@author Golnaz Nilieh <g382nilieh@gmail.com> 
 */
 
 //using namespace QCss;
@@ -121,6 +126,9 @@ class BilboTextHtmlParser;
 
 enum BilboTriState { Off = 0, On = 1, Unspecified = 2 };
 
+/**
+	this structure stores attributes of a document fragment, which are derived from the parsed html text.
+ */
 struct BilboTextHtmlParserNode
 {
 	enum WhiteSpaceMode { WhiteSpaceNormal, WhiteSpacePre, WhiteSpaceNoWrap, WhiteSpacePreWrap, WhiteSpaceModeUndefined = -1 };
@@ -245,6 +253,10 @@ struct BilboTextHtmlParserNode
 };
 Q_DECLARE_TYPEINFO(BilboTextHtmlParserNode, Q_MOVABLE_TYPE);
 // 
+
+/**
+	This class parses a given html text, and creates a list of nodes with certain attributes. Type of the nodes is BilboTextHtmlParserNode structure.
+ */
 class BilboTextHtmlParser
 {
 	public:

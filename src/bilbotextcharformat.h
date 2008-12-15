@@ -23,6 +23,9 @@
 #include <qtextformat.h>
 
 /**
+ * Adds some charformat attributes which don't exist in QTextCharFormat class.
+ * this class may be removed in future, if all editor related staff be ordered as a lib.
+ * 
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */

@@ -28,8 +28,12 @@
 #include "QtCore/qpointer.h"
 
 #include "bilbohtmlparser.h"
+
 /**
-	@author 
+ *  Parses html text via BilboTextHtmlParser functions, then organizes returned node list as a QTextDocument object.
+ * 
+	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 class BilboTextHtmlImporter : public BilboTextHtmlParser
 {
