@@ -1081,8 +1081,9 @@ void BilboTextHtmlParser::parseTag()
 
 	if (node->wsm != BilboTextHtmlParserNode::WhiteSpacePre
 		   && node->wsm != BilboTextHtmlParserNode::WhiteSpacePreWrap
-		   && !textEditMode)
+		   && tagClosed && !textEditMode) {
 		eatSpace();
+		   }
 
 	if (node->mayNotHaveChildren() || tagClosed) {
 		newNode(node->parent);

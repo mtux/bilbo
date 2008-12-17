@@ -171,7 +171,7 @@ class BilboEditor : public KTabWidget
 		/*!
 		Sets the link address given in the link dialog as AnchorHref of the current text. if link title is set in the link dialog, current text will change into that.
 		 */
-		void sltSetLink(QString address, QString target, QString title);
+		void sltSetLink(const QString& address, const QString& target, const QString& title);
 // 		void sltSetLink(QString address);
 		
 		/*!
@@ -200,6 +200,8 @@ class BilboEditor : public KTabWidget
 		 * @param url is the image url, it may be a path in local file system, or the image url on the web.
 		 */
 		void sltSetImage(BilboMedia *media);
+		
+		void sltSyncToolbar(const QTextCharFormat& f);
 		
 		/*!
 		Sets the content of the current tab  as other tabs' contents, to apply recent changes. this function executes each time the user switches between tabs. 

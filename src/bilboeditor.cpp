@@ -611,23 +611,24 @@ void BilboEditor::createUi()
 	
 	///editor:
 	//editor = new QTextEdit(0);
-	editor = new MultiLineTextEdit(0);
+	editor = new MultiLineTextEdit(tabVisual);
 	//editor = new BilboRichTextEdit(0);
 	//barVisual = new QToolBar(0);
-	barVisual = new KToolBar(0);
+	barVisual = new KToolBar(tabVisual);
 	barVisual->setIconSize(QSize(22, 22));
 	barVisual->setToolButtonStyle(Qt::ToolButtonIconOnly);
-	QVBoxLayout *vLayout = new QVBoxLayout();
+	QVBoxLayout *vLayout = new QVBoxLayout(tabVisual);
 // 	barVisual->show();
 	vLayout->addWidget(barVisual);
 	vLayout->addWidget(editor);
-	tabVisual->setLayout(vLayout);
+// 	tabVisual->setLayout(vLayout);
+	connect(editor, SIGNAL(currentCharFormatChanged(const QTextCharFormat &)), this, SLOT(sltSyncToolbar(const QTextCharFormat &)));
 	
 	///htmlEditor:
-	htmlEditor = new QPlainTextEdit(0);
-	QGridLayout *hLayout = new QGridLayout();
+	htmlEditor = new QPlainTextEdit(tabHtml);
+	QGridLayout *hLayout = new QGridLayout(tabHtml);
 	hLayout->addWidget(htmlEditor);
-	tabHtml->setLayout(hLayout);
+// 	tabHtml->setLayout(hLayout);
 	//this->setCurrentIndex(1);
 	//sltSyncEditors(1);
 // 	htmlEditor->set
@@ -638,11 +639,11 @@ void BilboEditor::createUi()
 // 	delete htmlExp;
 	
 	///preview:
-	preview = new QWebView(0);
+	preview = new QWebView(tabPreview);
 // 	barPreview = new QToolBar(0);
-	QVBoxLayout *pLayout = new QVBoxLayout();
+	QVBoxLayout *pLayout = new QVBoxLayout(tabPreview);
 	pLayout->addWidget(preview);
-	tabPreview->setLayout(pLayout);
+// 	tabPreview->setLayout(pLayout);
 	this->setCurrentIndex(0);
 	
 	///defaultCharFormat
@@ -726,18 +727,22 @@ void BilboEditor::createActions()
 	barVisual->addAction(actNewParagraph);
 	
 	actAlignLeft = new KAction(KIcon("format-justify-left"), i18nc("verb, to align text from left", "Align left"), this);
+	actAlignLeft->setCheckable(true);
 	connect(actAlignLeft, SIGNAL(triggered(bool)), editor, SLOT(alignLeft()));
 	barVisual->addAction(actAlignLeft);
 	
 	actAlignCenter = new KAction(KIcon("format-justify-center"), i18nc("verb, to align text from center", "Align center"), this);
+	actAlignCenter->setCheckable(true);
 	connect(actAlignCenter, SIGNAL(triggered(bool)), editor, SLOT(alignCenter()));
 	barVisual->addAction(actAlignCenter);
 	
 	actAlignRight = new KAction(KIcon("format-justify-right"), i18nc("verb, to align text from right", "Align right"), this);
+	actAlignRight->setCheckable(true);
 	connect(actAlignRight, SIGNAL(triggered(bool)), editor, SLOT(alignRight()));
 	barVisual->addAction(actAlignRight);
 	
 	actJustify = new KAction(KIcon("format-justify-fill"), i18nc("verb, to justify text", "Justify"), this);
+	actJustify->setCheckable(true);
 	connect(actJustify, SIGNAL(triggered(bool)), editor, SLOT(alignJustify()));
 	barVisual->addAction(actJustify);
 	
@@ -852,7 +857,7 @@ void BilboEditor::sltFontSizeDecrease()
 void BilboEditor::sltAddEditLink()
 {
 	linkDialog = new AddEditLink(this);
- 	connect(linkDialog, SIGNAL(addLink(const QString&, const QString, const QString&)), this, SLOT(sltSetLink(QString, QString, QString)));
+	connect(linkDialog, SIGNAL(addLink(const QString&, const QString&, const QString&)), this, SLOT(sltSetLink(const QString&, const QString&, const QString&)));
 // 	connect(linkDialog, SIGNAL(addLink(const QString&)), this, SLOT(sltSetLink(QString)));
  	QTextCharFormat f = editor->currentCharFormat();
 	if (!f.isAnchor()) {
@@ -862,7 +867,7 @@ void BilboEditor::sltAddEditLink()
 	}
 }
 
-void BilboEditor::sltSetLink(QString address, QString target, QString title)
+void BilboEditor::sltSetLink(const QString& address, const QString& target, const QString& title)
 //void BilboEditor::sltSetLink(QString address)
 {
 	QTextCharFormat f = editor->currentCharFormat();
@@ -996,9 +1001,16 @@ void BilboEditor::sltChangeLayoutDirection()
 // 	editor->setTextCursor(c);
 	QTextBlockFormat f = editor->textCursor().blockFormat();
 	if (f.layoutDirection() != Qt::RightToLeft) {
+		//f.setAlignment(Qt::AlignRight);
+		//editor->alignRight();
 		f.setLayoutDirection(Qt::RightToLeft);
+		f.setAlignment(Qt::AlignLeft);
+		//defaultBlockFormat.setAlignment(Qt::AlignRight);
 	} else {
+		//f.setAlignment(Qt::AlignLeft);
+		//editor->alignLeft();
 		f.setLayoutDirection(Qt::LeftToRight);
+		//defaultBlockFormat.setAlignment(Qt::AlignLeft);
 	}
 	editor->textCursor().mergeBlockFormat(f);
 	
@@ -1064,6 +1076,23 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 // 	}
 // }
 
+void BilboEditor::sltSyncToolbar(const QTextCharFormat& f)
+{
+	if (f.fontWeight() == QFont::Bold) {
+		this->actBold->setChecked(true);
+	} else {
+		this->actBold->setChecked(false);
+	}
+	this->actItalic->setChecked(f.fontItalic());
+	this->actUnderline->setChecked(f.fontUnderline());
+	this->actStrikeout->setChecked(f.fontStrikeOut());
+	if (f.fontFamily() == QString::fromLatin1("Courier New,courier")) {
+		this->actCode->setChecked(true);
+	} else {
+		this->actCode->setChecked(false);
+	}
+}
+
 void BilboEditor::sltSyncEditors(int index)
 {
 // 	editor->document();
@@ -1081,9 +1110,11 @@ void BilboEditor::sltSyncEditors(int index)
 		//delete editor->document();
 		//QTextDocument *doc = new QTextDocument(editor);
 		doc = editor->document();
+		doc->setUndoRedoEnabled(false);
 		doc->clear();
 		BilboTextHtmlImporter(doc, htmlEditor->toPlainText()).import();
-		//editor->setTextCursor( QTextCursor(doc));
+		doc->setUndoRedoEnabled(true);
+		editor->setTextCursor( QTextCursor(doc));
 		
 		//editor->setTextOrHtml(htmlToRichtext(htmlEditor->toPlainText()));
 		//qDebug()<<htmlEditor->toPlainText()<<endl;

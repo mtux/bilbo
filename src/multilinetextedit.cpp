@@ -30,6 +30,24 @@ MultiLineTextEdit::~MultiLineTextEdit()
 {
 }
 
+// void MultiLineTextEdit::alignRight()
+// {
+// 	if (this->textCursor().blockFormat().layoutDirection() == Qt::RightToLeft) {
+// 		KRichTextEdit::alignLeft();
+// 	} else {
+// 		KRichTextEdit::alignRight();
+// 	}
+// }
+// 
+// void MultiLineTextEdit::alignLeft()
+// {
+// 	if (this->textCursor().blockFormat().layoutDirection() == Qt::RightToLeft) {
+// 		KRichTextEdit::alignRight();
+// 	} else {
+// 		KRichTextEdit::alignLeft();
+// 	}
+// }
+
 void MultiLineTextEdit::keyPressEvent(QKeyEvent *event)
 {
 	//qDebug("MultiLineTextEdit::keyPressEvent");

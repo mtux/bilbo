@@ -787,7 +787,6 @@ void htmlExporter::emitBlockAttributes(const QTextBlock &block)
 //     kDebug() << "html" << html;
 	qDebug("htmlExporter::emitBlockAttributes");
 	QTextBlockFormat format = block.blockFormat();
-    emitAlignment(format.alignment());
 
     if (format.layoutDirection() != mDefaultBlockFormat.layoutDirection())
 	{
@@ -795,12 +794,16 @@ void htmlExporter::emitBlockAttributes(const QTextBlock &block)
 		Qt::LayoutDirection dir = format.layoutDirection();
 
 		if (dir == Qt::LeftToRight) {
-	        html += QLatin1String(" dir='ltr'");
+	        html += QLatin1String(" dir=\"ltr\"");
+			mDefaultBlockFormat.setAlignment(Qt::AlignLeft);
 	    } else {
-	        html += QLatin1String(" dir='rtl'");
+	        html += QLatin1String(" dir=\"rtl\"");
+			mDefaultBlockFormat.setAlignment(Qt::AlignRight);
 	    }
 	}
-
+	
+	emitAlignment(format.alignment());
+	
 	bool attributesEmitted = false;
     QLatin1String style(" style=\"");
     //html += style;
