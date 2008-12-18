@@ -17,52 +17,58 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef BILBOTEXTCHARFORMAT_H
+#define BILBOTEXTCHARFORMAT_H
 
-//#include <QDebug>
-#include <QtGui>
-#include "multilinetextedit.h"
+#include <qtextformat.h>
 
-MultiLineTextEdit::MultiLineTextEdit(QWidget *parent) : KRichTextEdit(parent)
+/**
+ * Adds some charformat attributes which don't exist in QTextCharFormat class.
+ * this class may be removed in future, if all editor related staff be ordered as a lib.
+ * 
+	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+	@author Golnaz Nilieh <g382nilieh@gmail.com>
+*/
+// class BilboTextCharFormat : public QTextCharFormat
+class BilboTextCharFormat
 {
-}
+	//Q_OBJECT
+   public:
+// 		BilboTextCharFormat();
+// 	
+// 		~BilboTextCharFormat();
+		
+		//BilboTextCharFormat& operator =(const BilboTextCharFormat& other);
+		
+		enum Property {
+			/// Anchor properties
+			AnchorTitle = 0x100010,
+   			AnchorTarget = 0x100011
+		};
+// 		enum TargetStyle {
+// 			OpenInCurrentWindow = 1,
+//    			OpenInNewWindow = 2
+// 		};
+		
+// 		bool isValid() const;
+// 		
+// 		inline void setAnchorTitle(const QString &title) {
+// 			setProperty(AnchorTitle, title);
+// 		}
+// 		inline QString anchorTitle() const {
+// 			return stringProperty(AnchorTitle);
+// 		}
+// 		inline void setAnchorTarget(TargetStyles style) {
+// 			setProperty(AnchorTarget, style);
+// 		}
+// 		inline TargetStyles anchorTarget() const {
+// 			return static_cast<TargetStyles>(intProperty(AnchorTitle));
+// 		}
+// 		
+// 	protected:
+// 		explicit BilboTextCharFormat(const QTextFormat &format);
+// 		
+// 		friend class QTextFormat;
+};
 
-MultiLineTextEdit::~MultiLineTextEdit()
-{
-}
-
-// void MultiLineTextEdit::alignRight()
-// {
-// 	if (this->textCursor().blockFormat().layoutDirection() == Qt::RightToLeft) {
-// 		KRichTextEdit::alignLeft();
-// 	} else {
-// 		KRichTextEdit::alignRight();
-// 	}
-// }
-// 
-// void MultiLineTextEdit::alignLeft()
-// {
-// 	if (this->textCursor().blockFormat().layoutDirection() == Qt::RightToLeft) {
-// 		KRichTextEdit::alignRight();
-// 	} else {
-// 		KRichTextEdit::alignLeft();
-// 	}
-// }
-
-void MultiLineTextEdit::keyPressEvent(QKeyEvent *event)
-{
-	//qDebug("MultiLineTextEdit::keyPressEvent");
-	int tempKey = event->key();
-	if (tempKey == Qt::Key_Return)
-	{
-		this->textCursor().insertText(QString(QChar::LineSeparator));
-		//qDebug() << "Enter Pressed" ;
-
-	} else {
-		//dynamic_cast <QTextEdit*>(this) ->keyPressEvent(event);
-		//dynamic_cast <QWidget*>(this) ->keyPressEvent(event);
-		KRichTextEdit::keyPressEvent(event);
-
-	}
-}
-
-#include <multilinetextedit.moc>
+#endif

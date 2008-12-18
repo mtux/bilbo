@@ -33,6 +33,14 @@ IF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 ENDIF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
+  FILE(INSTALL DESTINATION "/home/mtux/root/share/icons/hicolor/16x16/actions/." TYPE FILE RENAME "new-paragraph.png" FILES "/home/mtux/Projects/bilbo/icons/hi16-action-new-paragraph.png")
+ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
+
+IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
+  FILE(INSTALL DESTINATION "/home/mtux/root/share/icons/hicolor/16x16/actions/." TYPE FILE RENAME "remove-link.png" FILES "/home/mtux/Projects/bilbo/icons/hi16-action-remove-link.png")
+ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
+
+IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
   FILE(INSTALL DESTINATION "/home/mtux/root/share/icons/hicolor/16x16/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/mtux/Projects/bilbo/icons/hi16-app-bilbo.png")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
@@ -41,11 +49,19 @@ IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspec
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
+  FILE(INSTALL DESTINATION "/home/mtux/root/share/icons/hicolor/22x22/actions/." TYPE FILE RENAME "new-paragraph.png" FILES "/home/mtux/Projects/bilbo/icons/hi22-action-new-paragraph.png")
+ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
+
+IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
   FILE(INSTALL DESTINATION "/home/mtux/root/share/icons/hicolor/128x128/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/mtux/Projects/bilbo/icons/hi128-app-bilbo.png")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
   FILE(INSTALL DESTINATION "/home/mtux/root/share/icons/hicolor/48x48/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/mtux/Projects/bilbo/icons/hi48-app-bilbo.png")
+ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
+
+IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
+  FILE(INSTALL DESTINATION "/home/mtux/root/share/icons/hicolor/22x22/actions/." TYPE FILE RENAME "remove-link.png" FILES "/home/mtux/Projects/bilbo/icons/hi22-action-remove-link.png")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")

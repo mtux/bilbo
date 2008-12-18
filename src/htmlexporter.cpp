@@ -34,6 +34,7 @@
 #include <QTextFormat>
 #include <QVarLengthArray>
 #include <kdebug.h>
+#include "bilbotextcharformat.h"
 
 htmlExporter::htmlExporter()
 {
@@ -572,22 +573,53 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
     const QTextCharFormat format = fragment.charFormat();
 
     bool closeAnchor = false;
+	bool anchorIsOpen = false;
 
     if (format.isAnchor()) {
-        const QString name = format.anchorName();
-        if (!name.isEmpty()) {
-            html += QLatin1String("<a name=\"");
-            html += name;
-            html += QLatin1String("\"></a>");
-        }
+//         const QStringList names = format.anchorNames();
+//         if (!names.isEmpty()) {
+//             html += QLatin1String("<a name=\"");
+//             html += names.at(0);
+//             html += QLatin1String("\" ");
+// 			anchorIsOpen = true;
+//         }
         const QString href = format.anchorHref();
         if (!href.isEmpty()) {
+// 			if (!anchorIsOpen) {
+// 				html += QLatin1String("<a ");
+// 				anchorIsOpen = true;
+// 			}
             html += QLatin1String("<a href=\"");
             html += href;
-            html += QLatin1String("\">");
-            closeAnchor = true;
+            html += QLatin1String("\"");
+			anchorIsOpen = true;
+//             closeAnchor = true;
 // 			html += QLatin1String("\"");
         }
+		if (format.hasProperty(BilboTextCharFormat::AnchorTitle))
+		{
+			const QString title = format.stringProperty(BilboTextCharFormat::AnchorTitle);
+			if (!title.isEmpty())
+			{
+				html += QLatin1String(" title=\"");
+				html += title;
+				html += QLatin1String("\"");
+			}
+		}
+		if (format.hasProperty(BilboTextCharFormat::AnchorTarget))
+		{
+			const QString target = format.stringProperty(BilboTextCharFormat::AnchorTarget);
+			if (!target.isEmpty())
+			{
+				html += QLatin1String(" target=\"");
+				html += target;
+				html += QLatin1String("\"");
+			}
+		}
+		if (anchorIsOpen) {
+			html += QLatin1String(">");
+			closeAnchor = true;
+		}
     }
 
     QList<tag> tags = emitCharFormatStyle(format);
@@ -650,6 +682,7 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
             html.chop(qstrlen(styleTag.latin1()));
     */
     QString txt = fragment.text();
+	kDebug() << txt ;
     if (txt.count() == 1 && txt.at(0) == QChar::ObjectReplacementCharacter) {
         if (format.isImageFormat()) {
             QTextImageFormat imgFmt = format.toImageFormat();
@@ -754,7 +787,6 @@ void htmlExporter::emitBlockAttributes(const QTextBlock &block)
 //     kDebug() << "html" << html;
 	qDebug("htmlExporter::emitBlockAttributes");
 	QTextBlockFormat format = block.blockFormat();
-    emitAlignment(format.alignment());
 
     if (format.layoutDirection() != mDefaultBlockFormat.layoutDirection())
 	{
@@ -762,12 +794,16 @@ void htmlExporter::emitBlockAttributes(const QTextBlock &block)
 		Qt::LayoutDirection dir = format.layoutDirection();
 
 		if (dir == Qt::LeftToRight) {
-	        html += QLatin1String(" dir='ltr'");
+	        html += QLatin1String(" dir=\"ltr\"");
+			mDefaultBlockFormat.setAlignment(Qt::AlignLeft);
 	    } else {
-	        html += QLatin1String(" dir='rtl'");
+	        html += QLatin1String(" dir=\"rtl\"");
+			mDefaultBlockFormat.setAlignment(Qt::AlignRight);
 	    }
 	}
-
+	
+	emitAlignment(format.alignment());
+	
 	bool attributesEmitted = false;
     QLatin1String style(" style=\"");
     //html += style;

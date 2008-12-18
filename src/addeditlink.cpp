@@ -26,30 +26,38 @@ AddEditLink::AddEditLink(QWidget *parent)
 	:KDialog(parent)
 {
 	//QWidget *dialog = new QWidget;
-	QDialog *dialog = new QDialog(0);
+	QDialog *dialog = new QDialog(parent);
 	ui.setupUi(dialog);
 	dialog->setAttribute( Qt::WA_DeleteOnClose );
 	this->setMainWidget(dialog);
 
-	ui.label_2->hide();
-	ui.txtTitle->hide();
-	ui.comboTarget->hide();
-	ui.label_3->hide();
-	this->resize(dialog->width(), dialog->height()/2);
+	//ui.label_2->hide();
+	//ui.txtTitle->hide();
+	//ui.comboTarget->hide();
+	//ui.label_3->hide();
+	this->resize(dialog->width(), dialog->height());
 	connect(this, SIGNAL(accepted()), this, SLOT(sltAccepted()));
 }
 
 void AddEditLink::sltAccepted()
 {
 	if ( ui.txtAddress->text().isEmpty()) return;
-// 	Q_EMIT addLink( ui.txtAddress->text(), (ui.comboTarget->currentIndex()==1 || ui.comboTarget->currentIndex()==1)?"_self":"_blank", ui.txtTitle->text() );
-	Q_EMIT addLink( ui.txtAddress->text() );
+	QString linkTarget;
+	if (ui.comboTarget->currentIndex() == 1) {
+		linkTarget = "_self";
+	} else if (ui.comboTarget->currentIndex() == 2) {
+		linkTarget = "_blank";
+	}
+	const QString target = linkTarget;
+	
+ 	Q_EMIT addLink( ui.txtAddress->text(), target, ui.txtTitle->text() );
+// 	Q_EMIT addLink( ui.txtAddress->text() );
 // 	close();
 // 	QDialog::accept();
 // // 	hide();
 }
 
-void AddEditLink::show(QString address, QString title)
+void AddEditLink::show(const QString& address, const QString& title, const QString& target)
 {
 	KDialog::show();
 	if(!address.isEmpty()){
@@ -58,6 +66,13 @@ void AddEditLink::show(QString address, QString title)
 	}
 	if(!title.isEmpty()){
 		ui.txtTitle->setText(title);
+	}
+	if(!target.isEmpty()){
+		if (target == "_self") {
+			ui.comboTarget->setCurrentIndex(1);
+		} else if (target == "_blank") {
+			ui.comboTarget->setCurrentIndex(2);
+		}
 	}
 }
 

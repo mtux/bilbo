@@ -44,6 +44,10 @@ class MultiLineTextEdit : public KRichTextEdit
 		//!Implements the class destructor.
 		~MultiLineTextEdit();
 		
+// 	public Q_SLOTS:
+// 		void alignRight();
+// 		void alignLeft();
+		
 	protected:
 		
 		/*!
