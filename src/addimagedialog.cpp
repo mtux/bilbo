@@ -30,7 +30,7 @@
 
 AddImageDialog::AddImageDialog(QWidget *parent) :KDialog(parent)
 {
-	QDialog *dialog = new QDialog(0);
+	QDialog *dialog = new QDialog(parent);
 	ui.setupUi(dialog);
 	QStringList mimeFilter;
 	mimeFilter << "image/gif" << "image/jpeg" << "image/png" ;

@@ -696,7 +696,7 @@ void BilboEditor::createActions()
 	barVisual->addAction(actUnderline);
 	
 	actStrikeout = new KAction(KIcon("format-text-strikethrough"), i18nc("Makes text overlined", "Strikeout"), this);
-	actStrikeout->setShortcut(Qt::CTRL + Qt::Key_L);
+	//actStrikeout->setShortcut(Qt::CTRL + Qt::Key_L);
 	actStrikeout->setCheckable(true);
 	connect(actStrikeout, SIGNAL(triggered(bool)), editor, SLOT(setTextStrikeOut( bool )));
 	barVisual->addAction(actStrikeout);
@@ -721,7 +721,7 @@ void BilboEditor::createActions()
 	
 	barVisual->addSeparator();
 	
-	actNewParagraph = new KAction(KIcon(":/media/new-paragraph.png"), i18nc("Inserts a new paragraph", "New Paragraph"), this);
+	actNewParagraph = new KAction(KIcon("new-paragraph"), i18nc("Inserts a new paragraph", "New Paragraph"), this);
 	actNewParagraph->setShortcut(Qt::CTRL + Qt::Key_P);
 	connect(actNewParagraph, SIGNAL(triggered(bool)), this, SLOT(sltNewParagraph()));
 	barVisual->addAction(actNewParagraph);
@@ -756,7 +756,7 @@ void BilboEditor::createActions()
 	connect(actAddLink, SIGNAL(triggered(bool)), this, SLOT(sltAddEditLink()));
 	barVisual->addAction(actAddLink);
 	
-	actRemoveLink = new KAction(KIcon(":/media/remove-link.png"), i18nc("verb, to remove an existing link", "Remove Link"), this);
+	actRemoveLink = new KAction(KIcon("remove-link"), i18nc("verb, to remove an existing link", "Remove Link"), this);
 	connect(actRemoveLink, SIGNAL(triggered(bool)), this, SLOT(sltRemoveLink()));
 	barVisual->addAction(actRemoveLink);
 	
@@ -912,7 +912,9 @@ void BilboEditor::sltSelectColor()
 // 	QColor c = QColorDialog::getColor(QColor("black"), this);
 // 	editor->setTextForegroundColor(c);
 	QColor c;
-	int result = KColorDialog::getColor(c, QColor("black"), this);
+	
+	//int result = KColorDialog::getColor(c, QColor("black"), this);
+	int result = KColorDialog::getColor(c, editor->textCursor().charFormat().foreground().color(), this);
 	if (result == KColorDialog::Accepted) {
 		editor->setTextForegroundColor(c);
 	}
@@ -985,6 +987,7 @@ void BilboEditor::sltNewParagraph()
 // // 		editor->setAlignment();
 // }
 
+/// FIXME when textDirection is rtl, editor moves the text to the right side, but its alignment remains AlignLeft.
 void BilboEditor::sltChangeLayoutDirection()
 {
 	kDebug();
@@ -1004,7 +1007,6 @@ void BilboEditor::sltChangeLayoutDirection()
 		//f.setAlignment(Qt::AlignRight);
 		//editor->alignRight();
 		f.setLayoutDirection(Qt::RightToLeft);
-		f.setAlignment(Qt::AlignLeft);
 		//defaultBlockFormat.setAlignment(Qt::AlignRight);
 	} else {
 		//f.setAlignment(Qt::AlignLeft);

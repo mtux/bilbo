@@ -26,7 +26,7 @@ AddEditLink::AddEditLink(QWidget *parent)
 	:KDialog(parent)
 {
 	//QWidget *dialog = new QWidget;
-	QDialog *dialog = new QDialog(0);
+	QDialog *dialog = new QDialog(parent);
 	ui.setupUi(dialog);
 	dialog->setAttribute( Qt::WA_DeleteOnClose );
 	this->setMainWidget(dialog);
