@@ -3,20 +3,7 @@ include_directories( ${KDE4_INCLUDES})
 FIND_PACKAGE(KDE4) 
 SET(QT_USE_QTSQL 1) 
 SET(QT_USE_QTWEBKIT 1)
-# INCLUDE(${QT_USE_FILE}) 
-# macro_optional_find_package(Kipi)${QT_INCLUDES} 
 
-# if(KIPI_FOUND)
-#  set(plugins_SRCS
-#     ${CMAKE_CURRENT_SOURCE_DIR}/plugins/setupplugins.cpp
-#     ${CMAKE_CURRENT_SOURCE_DIR}/plugins/interface.cpp
-#     ${CMAKE_CURRENT_SOURCE_DIR}/plugins/imagecollection.cpp
-#     )
-#  set(KIPI_LIBS kipi)
-# endif(KIPI_FOUND)
-
-# macro_bool_to_01(KIPI_FOUND HASKIPI)
-# configure_file(config-kpa-kipi.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-kpa-kipi.h)
 
 set(bilbo_SRCS
  bilbocssparser.cpp

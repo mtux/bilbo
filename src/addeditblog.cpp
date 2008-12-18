@@ -57,7 +57,7 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 		comboApi->setCurrentIndex(bBlog->api());
 		comboDir->setCurrentIndex(bBlog->direction());
 	} else {
-        bBlog = new BilboBlog();
+        bBlog = new BilboBlog(this);
         bBlog->setBlogId(0);
     }
 	connect(txtId, SIGNAL(textChanged( const QString& )), this, SLOT(enableOkButton(const QString&)));
@@ -138,7 +138,7 @@ void AddEditBlog::fetchBlogId()
 		case 1:
 		case 2:
 		case 3:
-			mBlog = new KBlog::Blogger1(KUrl(txtUrl->text()));
+			mBlog = new KBlog::Blogger1(KUrl(txtUrl->text()), this);
 			dynamic_cast<KBlog::Blogger1*>(mBlog)->setUsername(txtUser->text());
 			dynamic_cast<KBlog::Blogger1*>(mBlog)->setPassword(txtPass->text());
 			connect( dynamic_cast<KBlog::Blogger1*>(mBlog) , SIGNAL(listedBlogs( const QList<QMap<QString, QString> >&)), this, SLOT(fetchedBlogId( const QList<QMap<QString, QString> >&)));
@@ -152,7 +152,7 @@ void AddEditBlog::fetchBlogId()
 			break;
 			
 		case 4:
-			mBlog = new KBlog::GData( txtUrl->text() );
+			mBlog = new KBlog::GData( txtUrl->text() , this );
 			dynamic_cast<KBlog::GData*>(mBlog)->setUsername( txtUser->text() );
 			dynamic_cast<KBlog::GData*>(mBlog)->setPassword( txtPass->text() );
 			connect( dynamic_cast<KBlog::GData*>(mBlog), SIGNAL(fetchedProfileId( const QString& ) ),
@@ -178,7 +178,7 @@ void AddEditBlog::handleFetchIDTimeout()
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
-	delete mBlog;
+// 	delete mBlog;
 // 	delete mFetchProfileIdTimer;
 // 	delete mFetchBlogIdTimer;
 }
@@ -190,7 +190,7 @@ void AddEditBlog::handleFetchAPITimeout()
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
-	delete mBlog;
+// 	delete mBlog;
 // 	delete mFetchAPITimer;
 }
 
@@ -201,13 +201,13 @@ void AddEditBlog::handleFetchError(KBlog::Blog::ErrorType type, const QString & 
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
-	delete mBlog;
+// 	delete mBlog;
 }
 
 void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list)
 {
 	kDebug();
-	delete mFetchBlogIdTimer;
+// 	delete mFetchBlogIdTimer;
 	if(list.count()>1){
 		///TODO: handle more than one blog!
 		kDebug()<<"User has more than ONE blog!";
@@ -229,7 +229,7 @@ void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list
 void AddEditBlog::fetchedProfileId(const QString &id)
 {
 	kDebug();
-	delete mFetchProfileIdTimer;
+// 	delete mFetchProfileIdTimer;
 	connect( dynamic_cast<KBlog::GData*>(mBlog), SIGNAL(listedBlogs( const QList<QMap<QString, QString> >&)),
 			 this, SLOT(fetchedBlogId( const QList<QMap<QString, QString> >&)));
 	connect( dynamic_cast<KBlog::GData*>(mBlog), SIGNAL(error( KBlog::Blog::ErrorType, const QString& ) ),
@@ -279,7 +279,7 @@ void AddEditBlog::enableOkButton( const QString & txt)
 void AddEditBlog::sltReturnPressed()
 {
     if(btnOk->isEnabled()){
-		Q_EMIT accepted();
+		btnOk->setFocus(Qt::OtherFocusReason);
     } else {
         if(tabs->currentIndex()==0){
             if(btnAutoConf->isEnabled()){
@@ -306,7 +306,7 @@ void AddEditBlog::sltRejected()
 AddEditBlog::~AddEditBlog()
 {
 	kDebug();
-    delete bBlog;
+//     delete bBlog;
 //     delete mFetchProfileIdTimer;
 //     delete mFetchBlogIdTimer;
 //     delete mFetchAPITimer;
