@@ -89,6 +89,9 @@ void Backend::getCategoryListFromServer()
 		tmp->listCategories();
     } else {
 		kDebug()<<"Blog API doesn't support getting Category list.";
+		QString tmp = i18n("Blog API doesn't support getting Category list.");
+		error(KBlog::Blog::NotSupported, tmp);
+// 		emit sigError(tmp);
     }
 }
 
