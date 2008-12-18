@@ -66,13 +66,13 @@ void AddImageDialog::sltOkClicked()
 				
 				connect(typeJob, SIGNAL(mimetype(KIO::Job*, const QString&)), this, SLOT(sltRemoteFileTypeFound(KIO::Job*, const QString&)));
 			} else {
-				bool copyResult = QFile::copy(tempUrl.toLocalFile(), TEMP_MEDIA_DIR + "/" 
+				bool copyResult = QFile::copy(tempUrl.toLocalFile(), TEMP_MEDIA_DIR  
 						+ name);
 				if (!copyResult) {
 					int ret = KMessageBox::questionYesNo(this,i18n("This file is already  added to Bilbo temp directory, and won't be copied again.\nyou can save the file with different name and try again.\ndo you want to continue using the existing file?"), i18n("File already exists"));
 					if (ret == KMessageBox::No) return;
 				}
-				media->setLocalUrl(TEMP_MEDIA_DIR + "/" + name);
+				media->setLocalUrl("file://" + TEMP_MEDIA_DIR + name);
 				media->setUploded(false);
 				
 				KMimeType::Ptr typePtr;
