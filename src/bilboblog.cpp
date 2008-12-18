@@ -20,12 +20,8 @@
 
 #include "bilboblog.h"
 
-BilboBlog::BilboBlog(KUrl &server)
-{
-	this->setUrl( server);
-}
-
-BilboBlog::BilboBlog()
+BilboBlog::BilboBlog(QObject *parent)
+	:QObject(parent)
 {
 }
 

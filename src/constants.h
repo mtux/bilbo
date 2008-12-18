@@ -30,7 +30,7 @@ Constants.
  */
 
 #define VERSION "0.1"
-#define DATA_DIR KStandardDirs::locateLocal("data", "bilbo")
+#define DATA_DIR KStandardDirs::locateLocal("data", "bilbo/")
 // #define CONF_PATH QString(CONF_DIR)+QString("/bilbo.conf")
 #define CONF_DB QString(DATA_DIR)+QString("/bilbo.db")
 #define TEMP_MEDIA_DIR KStandardDirs::locateLocal("data", "bilbo/tempmedia/", true)

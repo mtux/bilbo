@@ -21,8 +21,7 @@
 #define BILBOBLOG_H
 
 #include "constants.h"
-// #include <kblog/blog.h>
-//#include <QUrl> 
+#include <QObject>
 #include <kurl.h>
 
 /**
@@ -31,15 +30,15 @@ Blog definition class!
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
-class BilboBlog
+class BilboBlog : public QObject
 {
 public:
 	enum ApiType {
 		BLOGGER1_API=0, METAWEBLOG_API, MOVABLETYPE_API, WORDPRESSBUGGY_API, GDATA_API
 	};
 
-    BilboBlog(KUrl& server);
-	BilboBlog();
+//     BilboBlog(KUrl& server, QObject *parent=0);
+	BilboBlog(QObject *parent=0);
     ~BilboBlog();
 	
 	/**

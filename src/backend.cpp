@@ -63,13 +63,13 @@ Backend::Backend(int blog_id, QObject* parent): QObject(parent)
     mediaLocalUrl= "";
     
     connect( mBlog, SIGNAL( error( KBlog::Blog::ErrorType, const QString& ) ),
-            this, SLOT( void error( KBlog::Blog::ErrorType, const QString& ) ) );
+            this, SLOT( error( KBlog::Blog::ErrorType, const QString& ) ) );
     connect( mBlog, SIGNAL( errorPost( KBlog::Blog::ErrorType, const QString &, KBlog::BlogPost* ) ),
-            this, SLOT( void error( KBlog::Blog::ErrorType, const QString& ) ) );
+            this, SLOT( error( KBlog::Blog::ErrorType, const QString& ) ) );
     connect( mBlog, SIGNAL( errorComment( KBlog::Blog::ErrorType, const QString &, KBlog::BlogPost*, KBlog::BlogComment* ) ),
-            this, SLOT( void error( KBlog::Blog::ErrorType, const QString& ) ) );
+            this, SLOT( error( KBlog::Blog::ErrorType, const QString& ) ) );
     connect( mBlog, SIGNAL( errorMedia( KBlog::Blog::ErrorType, const QString &, KBlog::BlogMedia* ) ),
-             this, SLOT( void error( KBlog::Blog::ErrorType, const QString& ) ) );
+             this, SLOT( error( KBlog::Blog::ErrorType, const QString& ) ) );
 }
 
 Backend::~Backend()
@@ -89,6 +89,9 @@ void Backend::getCategoryListFromServer()
 		tmp->listCategories();
     } else {
 		kDebug()<<"Blog API doesn't support getting Category list.";
+		QString tmp = i18n("Blog API doesn't support getting Category list.");
+		error(KBlog::Blog::NotSupported, tmp);
+// 		emit sigError(tmp);
     }
 }
 

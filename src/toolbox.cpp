@@ -100,7 +100,12 @@ void Toolbox::sltRemoveBlog()
 	kDebug();
     __db->removeBlog(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
 //     listBlogs.remove(listBlogRadioButtons.checkedButton()->text());
+	QAbstractButton *tmp = listBlogRadioButtons.checkedButton();
     listBlogRadioButtons.removeButton(listBlogRadioButtons.checkedButton());
+	delete tmp;
+	clearEntriesList();
+	clearCatList();
+	txtCatTags->clear();
 }
 
 void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
@@ -170,7 +175,7 @@ void Toolbox::sltReloadCategoryList()
 	Backend *b = new Backend(blog_id);
 	b->getCategoryListFromServer();
 	connect(b, SIGNAL(sigCategoryListFetched(int)), this, SLOT(sltLoadCategoryListFromDB(int)));
-    connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
+    connect(b, SIGNAL(sigError(QString&)), this, SIGNAL(sigError(QString&)));
 	statusbar->showMessage(i18n("Requesting category list..."));
     this->setCursor(Qt::BusyCursor);
 	parentWidget()->setCursor(Qt::BusyCursor);
@@ -272,7 +277,7 @@ void Toolbox::sltGetEntriesCount(int count)
     Backend *entryB = new Backend(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
 	entryB->getEntriesListFromServer(count);
 	connect(entryB, SIGNAL(sigEntriesListFetched(int)), this, SLOT(sltLoadEntriesFromDB(int)));
-    connect(entryB, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
+    connect(entryB, SIGNAL(sigError(QString&)), this, SIGNAL(sigError(QString&)));
 	statusbar->showMessage(i18n("Requesting Entry list..."));
     this->setCursor(Qt::BusyCursor);
 	parentWidget()->setCursor(Qt::BusyCursor);
@@ -307,7 +312,6 @@ void Toolbox::clearEntriesList()
 {
     kDebug();
 	lstEntriesList->clear();
-// 	listEntries.clear();
 }
 
 void Toolbox::sltCurrentBlogChanged(int blog_id)

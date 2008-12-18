@@ -95,6 +95,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     connect(tabPosts, SIGNAL(currentChanged( int )), this, SLOT(sltActivePostChanged(int)));
     connect(toolbox, SIGNAL(sigEntrySelected(BilboPost *)), this, SLOT(sltNewPostSelected(BilboPost*)));
     connect(toolbox, SIGNAL(sigCurrentBlogChanged(int)), this, SLOT(sltCurrentBlogChanged(int)));
+	connect(toolbox, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
     
 //     if(Settings::show_main_on_start())
 //         this->show();
@@ -428,6 +429,7 @@ void MainWindow::sltError(QString & errorMessage)
 {
     kDebug()<<"Error message: "<<errorMessage;
     KMessageBox::detailedError(this, i18n("An Error ocurred on latest transaction "), errorMessage);
+	statusBar()->clearMessage();
 }
 
 void MainWindow::writeConfigs()
