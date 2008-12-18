@@ -37,7 +37,8 @@ class MultiLineTextEdit : public KRichTextEdit
 	public:
 		//!Implements the class constructor.
 		/*!
-		 * \param *parent is needed for KRichTextEdit constructor, which MultiLineTextEdit inherits from.
+		 * \param *parent is needed for KRichTextEdit constructor, which MultiLineTextEdit 
+		 * inherits from.
 		 */
 		MultiLineTextEdit(QWidget *parent = 0);
 		
@@ -51,7 +52,8 @@ class MultiLineTextEdit : public KRichTextEdit
 	protected:
 		
 		/*!
-		 * When MultiLineTextEdit is focused on, checks each presssed key; then replaces "Return" characters with QChar::LineSeparator special character.
+		 * When MultiLineTextEdit is focused on, checks each presssed key; then replaces 
+		 * "Return" characters with QChar::LineSeparator special character.
 		 * this function is defined virtual in parent class: KRichTextEdit.
 		 */
 		void keyPressEvent(QKeyEvent *event);

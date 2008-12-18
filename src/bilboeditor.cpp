@@ -622,7 +622,8 @@ void BilboEditor::createUi()
 	vLayout->addWidget(barVisual);
 	vLayout->addWidget(editor);
 // 	tabVisual->setLayout(vLayout);
-	connect(editor, SIGNAL(currentCharFormatChanged(const QTextCharFormat &)), this, SLOT(sltSyncToolbar(const QTextCharFormat &)));
+	connect(editor, SIGNAL(currentCharFormatChanged(const QTextCharFormat &)), this, 
+	SLOT(sltSyncToolbar(const QTextCharFormat &)));
 	
 	///htmlEditor:
 	htmlEditor = new QPlainTextEdit(tabHtml);
@@ -677,13 +678,15 @@ void BilboEditor::createUi()
 
 void BilboEditor::createActions()
 {
-	actBold = new KAction(KIcon("format-text-bold"), i18nc("Makes text bold", "Bold"), this);
+	actBold = new KAction(KIcon("format-text-bold"), i18nc("Makes text bold", "Bold"), 
+						  this);
 	actBold->setShortcut(Qt::CTRL + Qt::Key_B);
 	actBold->setCheckable(true);
 	connect(actBold, SIGNAL(triggered(bool)), editor, SLOT(setTextBold( bool )));
 	barVisual->addAction(actBold);
 	
-	actItalic = new KAction(KIcon("format-text-italic"), i18nc("Makes text italic", "Italic"), this);
+	actItalic = new KAction(KIcon("format-text-italic"), i18nc("Makes text italic", 
+							"Italic"), this);
 	actItalic->setShortcut(Qt::CTRL + Qt::Key_I);
 	actItalic->setCheckable(true);
 	connect(actItalic, SIGNAL(triggered(bool)), editor, SLOT(setTextItalic( bool )));
@@ -701,10 +704,13 @@ void BilboEditor::createActions()
 	connect(actStrikeout, SIGNAL(triggered(bool)), editor, SLOT(setTextStrikeOut( bool )));
 	barVisual->addAction(actStrikeout);
 	
-	actCode = new KAction(KIcon("format-text-code"), i18nc("Sets text font to code style", "Code"), this);
+	actCode = new KAction(KIcon("format-text-code"), i18nc("Sets text font to code style", 
+						  "Code"), this);
 	actCode->setCheckable(true);
 	connect(actCode, SIGNAL(triggered(bool)), this, SLOT(sltToggleCode()));
 	barVisual->addAction(actCode);
+	
+	barVisual->addSeparator();
 	
 	actFontIncrease = new KAction(KIcon("format-font-size-more"), i18n("Increase font size"), this);
 	connect(actFontIncrease, SIGNAL(triggered(bool)), this, SLOT(sltFontSizeIncrease()));
@@ -713,6 +719,10 @@ void BilboEditor::createActions()
 	actFontDecrease = new KAction(KIcon("format-font-size-less"), i18n("Decrease font size"), this);
 	connect(actFontDecrease, SIGNAL(triggered(bool)), this, SLOT(sltFontSizeDecrease()));
 	barVisual->addAction(actFontDecrease);
+	
+	actColorSelect = new KAction(KIcon("format-text-color"), i18nc("verb, to select text color", "Select Color"), this);
+	connect(actColorSelect, SIGNAL(triggered(bool)), this, SLOT(sltSelectColor()));
+	barVisual->addAction(actColorSelect);
 	
 	actRemoveFormatting= new KAction(KIcon("draw-eraser"), i18n("Remove formatting"), this);
 	actRemoveFormatting->setShortcut(Qt::CTRL + Qt::Key_R);
@@ -741,7 +751,8 @@ void BilboEditor::createActions()
 	connect(actAlignRight, SIGNAL(triggered(bool)), editor, SLOT(alignRight()));
 	barVisual->addAction(actAlignRight);
 	
-	actJustify = new KAction(KIcon("format-justify-fill"), i18nc("verb, to justify text", "Justify"), this);
+	actJustify = new KAction(KIcon("format-justify-fill"), i18nc("verb, to justify text", 
+							 "Justify"), this);
 	actJustify->setCheckable(true);
 	connect(actJustify, SIGNAL(triggered(bool)), editor, SLOT(alignJustify()));
 	barVisual->addAction(actJustify);
@@ -750,6 +761,8 @@ void BilboEditor::createActions()
 	actRightToLeft->setCheckable(true);
 	connect(actRightToLeft, SIGNAL(triggered(bool)), this, SLOT(sltChangeLayoutDirection()));
 	barVisual->addAction(actRightToLeft);
+	
+	barVisual->addSeparator();
 	
 	actAddLink = new KAction(KIcon("insert-link"), i18nc("verb, to add a new link or edit an existing one", "Add/Edit Link"), this);
 	actAddLink->setShortcut(Qt::CTRL + Qt::Key_L);
@@ -762,11 +775,8 @@ void BilboEditor::createActions()
 	
 	barVisual->addSeparator();
 	
-	actColorSelect = new KAction(KIcon("format-text-color"), i18nc("verb, to select text color", "Select Color"), this);
-	connect(actColorSelect, SIGNAL(triggered(bool)), this, SLOT(sltSelectColor()));
-	barVisual->addAction(actColorSelect);
-	
-	actAddImage = new KAction(KIcon("insert-image"), i18nc("verb, to insert an image", "Add Image"), this);
+	actAddImage = new KAction(KIcon("insert-image"), i18nc("verb, to insert an image", 
+							  "Add Image"), this);
 	connect(actAddImage, SIGNAL(triggered(bool)), this, SLOT(sltAddImage()));
 	barVisual->addAction(actAddImage);
 }
@@ -857,17 +867,20 @@ void BilboEditor::sltFontSizeDecrease()
 void BilboEditor::sltAddEditLink()
 {
 	linkDialog = new AddEditLink(this);
-	connect(linkDialog, SIGNAL(addLink(const QString&, const QString&, const QString&)), this, SLOT(sltSetLink(const QString&, const QString&, const QString&)));
+	connect(linkDialog, SIGNAL(addLink(const QString&, const QString&, const QString&)), 
+			this, SLOT(sltSetLink(const QString&, const QString&, const QString&)));
 // 	connect(linkDialog, SIGNAL(addLink(const QString&)), this, SLOT(sltSetLink(QString)));
  	QTextCharFormat f = editor->currentCharFormat();
 	if (!f.isAnchor()) {
 		linkDialog->show();
 	} else {
-		linkDialog->show(f.anchorHref(), f.stringProperty(BilboTextCharFormat::AnchorTitle), f.stringProperty(BilboTextCharFormat::AnchorTarget));
+		linkDialog->show(f.anchorHref(), f.stringProperty(BilboTextCharFormat::AnchorTitle)
+				, f.stringProperty(BilboTextCharFormat::AnchorTarget));
 	}
 }
 
-void BilboEditor::sltSetLink(const QString& address, const QString& target, const QString& title)
+void BilboEditor::sltSetLink(const QString& address, const QString& target, 
+							 const QString& title)
 //void BilboEditor::sltSetLink(QString address)
 {
 	QTextCharFormat f = editor->currentCharFormat();

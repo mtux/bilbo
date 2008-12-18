@@ -45,7 +45,8 @@ class AddImageDialog: public KDialog
 		/// AddImageDialog constructor.
 		/**
 		 * Creates a new AddImageDialog instance, and opens it.
-		 * @param parent is needed for QDialog constructor, which is the parent class of AddImageDialog.
+		 * @param parent is needed for QDialog constructor, which is the parent class of 
+		 * AddImageDialog.
 		 */
 		AddImageDialog(QWidget *parent = 0);
 		

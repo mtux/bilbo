@@ -2,7 +2,7 @@
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  SET(CMAKE_INSTALL_PREFIX "/home/freedom/root")
+  SET(CMAKE_INSTALL_PREFIX "/usr")
 ENDIF(NOT DEFINED CMAKE_INSTALL_PREFIX)
 STRING(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -33,47 +33,47 @@ IF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 ENDIF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
-  FILE(INSTALL DESTINATION "/home/freedom/root/share/icons/hicolor/16x16/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/freedom/bilbo/icons/hi16-app-bilbo.png")
+  FILE(INSTALL DESTINATION "/usr/share/icons/hicolor/22x22/actions/." TYPE FILE RENAME "new-paragraph.png" FILES "/home/freedom/bilbo/icons/hi22-action-new-paragraph.png")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
-  FILE(INSTALL DESTINATION "/home/freedom/root/share/icons/hicolor/16x16/actions/." TYPE FILE RENAME "new-paragraph.png" FILES "/home/freedom/bilbo/icons/hi16-action-new-paragraph.png")
+  FILE(INSTALL DESTINATION "/usr/share/icons/hicolor/16x16/actions/." TYPE FILE RENAME "new-paragraph.png" FILES "/home/freedom/bilbo/icons/hi16-action-new-paragraph.png")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
-  FILE(INSTALL DESTINATION "/home/freedom/root/share/icons/hicolor/16x16/actions/." TYPE FILE RENAME "remove-link.png" FILES "/home/freedom/bilbo/icons/hi16-action-remove-link.png")
+  FILE(INSTALL DESTINATION "/usr/share/icons/hicolor/16x16/actions/." TYPE FILE RENAME "remove-link.png" FILES "/home/freedom/bilbo/icons/hi16-action-remove-link.png")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
-  FILE(INSTALL DESTINATION "/home/freedom/root/share/icons/hicolor/22x22/actions/." TYPE FILE RENAME "new-paragraph.png" FILES "/home/freedom/bilbo/icons/hi22-action-new-paragraph.png")
+  FILE(INSTALL DESTINATION "/usr/share/icons/hicolor/16x16/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/freedom/bilbo/icons/hi16-app-bilbo.png")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
-  FILE(INSTALL DESTINATION "/home/freedom/root/share/icons/hicolor/22x22/actions/." TYPE FILE RENAME "remove-link.png" FILES "/home/freedom/bilbo/icons/hi22-action-remove-link.png")
+  FILE(INSTALL DESTINATION "/usr/share/icons/hicolor/32x32/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/freedom/bilbo/icons/hi32-app-bilbo.png")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
-  FILE(INSTALL DESTINATION "/home/freedom/root/share/icons/hicolor/32x32/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/freedom/bilbo/icons/hi32-app-bilbo.png")
+  FILE(INSTALL DESTINATION "/usr/share/icons/hicolor/64x64/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/freedom/bilbo/icons/hi64-app-bilbo.png")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
-  FILE(INSTALL DESTINATION "/home/freedom/root/share/icons/hicolor/64x64/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/freedom/bilbo/icons/hi64-app-bilbo.png")
+  FILE(INSTALL DESTINATION "/usr/share/icons/hicolor/128x128/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/freedom/bilbo/icons/hi128-app-bilbo.png")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
-  FILE(INSTALL DESTINATION "/home/freedom/root/share/icons/hicolor/128x128/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/freedom/bilbo/icons/hi128-app-bilbo.png")
+  FILE(INSTALL DESTINATION "/usr/share/icons/hicolor/22x22/actions/." TYPE FILE RENAME "remove-link.png" FILES "/home/freedom/bilbo/icons/hi22-action-remove-link.png")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
-  FILE(INSTALL DESTINATION "/home/freedom/root/share/icons/hicolor/48x48/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/freedom/bilbo/icons/hi48-app-bilbo.png")
+  FILE(INSTALL DESTINATION "/usr/share/icons/hicolor/48x48/apps/." TYPE FILE RENAME "bilbo.png" FILES "/home/freedom/bilbo/icons/hi48-app-bilbo.png")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")
   
     set(DESTDIR_VALUE "$ENV{DESTDIR}")
     if (NOT DESTDIR_VALUE)
-        file(WRITE "/home/freedom/root/share/icons/hicolor/temp.txt" "update")
-        file(REMOVE "/home/freedom/root/share/icons/hicolor/temp.txt")
+        file(WRITE "/usr/share/icons/hicolor/temp.txt" "update")
+        file(REMOVE "/usr/share/icons/hicolor/temp.txt")
     endif (NOT DESTDIR_VALUE)
     
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" MATCHES "^(Unspecified)$")

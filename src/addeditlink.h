@@ -37,7 +37,8 @@ class AddEditLink: public KDialog
 	Q_OBJECT
 	public:
 		AddEditLink(QWidget *parent = 0);
-		void show(const QString& address = "", const QString& title = "", const QString& target = "");
+		void show(const QString& address = "", const QString& title = "", 
+				  const QString& target = "");
 		
 	Q_SIGNALS:
  		void addLink( const QString& address, const QString& target, const QString& title);

@@ -415,7 +415,19 @@ void BilboTextHtmlParser::eatSpace()
 }
 
 BilboTextHtmlParserNode::BilboTextHtmlParserNode()
-	: parent(0), id(-1), isBlock(false), isListItem(false), isListStart(false), isTableCell(false), isAnchor(false), fontItalic(Unspecified), fontUnderline(Unspecified), fontOverline(Unspecified), fontStrikeOut(Unspecified), fontFixedPitch(Unspecified), cssFloat(QTextFrameFormat::InFlow), hasOwnListStyle(false), hasFontPointSize(false), hasFontPixelSize(false), hasFontSizeAdjustment(false), hasCssBlockIndent(false), hasCssListIndent(false), isEmptyParagraph(false), isTextFrame(false), direction(3), displayMode(BilboTextHtmlElement::DisplayInline), fontPointSize(-1), fontPixelSize(-1), fontSizeAdjustment(0), fontWeight(-1), alignment(0), verticalAlignment(QTextCharFormat::AlignNormal), listStyle(QTextListFormat::ListStyleUndefined), imageWidth(-1), imageHeight(-1), tableBorder(0), tableCellRowSpan(1), tableCellColSpan(1), tableCellSpacing(2), tableCellPadding(0), cssBlockIndent(0),cssListIndent(0), text_indent(0), wsm(WhiteSpaceModeUndefined)
+	: parent(0), id(-1), isBlock(false), isListItem(false), isListStart(false), 
+	isTableCell(false), isAnchor(false), fontItalic(Unspecified),  
+	fontUnderline(Unspecified), fontOverline(Unspecified), fontStrikeOut(Unspecified), 
+	fontFixedPitch(Unspecified), cssFloat(QTextFrameFormat::InFlow), hasOwnListStyle(false) 
+	,hasFontPointSize(false), hasFontPixelSize(false), hasFontSizeAdjustment(false), 
+	hasCssBlockIndent(false), hasCssListIndent(false), isEmptyParagraph(false), 
+	isTextFrame(false), direction(3), displayMode(BilboTextHtmlElement::DisplayInline), 
+	fontPointSize(-1), fontPixelSize(-1), fontSizeAdjustment(0), fontWeight(-1), 
+	alignment(0), verticalAlignment(QTextCharFormat::AlignNormal), 
+	listStyle(QTextListFormat::ListStyleUndefined), imageWidth(-1), imageHeight(-1), 
+	tableBorder(0), tableCellRowSpan(1), tableCellColSpan(1), tableCellSpacing(2), 
+	tableCellPadding(0), cssBlockIndent(0),cssListIndent(0), text_indent(0), 
+	wsm(WhiteSpaceModeUndefined)
 {
 	margin[BilboTextHtmlParser::MarginLeft] = 0;
 	margin[BilboTextHtmlParser::MarginRight] = 0;
@@ -712,8 +724,10 @@ void BilboTextHtmlParserNode::applyCssDeclarations(const QVector<QCss::Declarati
 				cssFloat = QTextFrameFormat::InFlow;
 				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
 					switch (decl.values.first().variant.toInt()) {
-						case QCss::Value_Left: cssFloat = QTextFrameFormat::FloatLeft; break;
-						case QCss::Value_Right: cssFloat = QTextFrameFormat::FloatRight; break;
+						case QCss::Value_Left: cssFloat = QTextFrameFormat::FloatLeft;
+						break;
+						case QCss::Value_Right: cssFloat = QTextFrameFormat::FloatRight;
+						break;
 						default: break;
 					}
 				}
@@ -722,7 +736,9 @@ void BilboTextHtmlParserNode::applyCssDeclarations(const QVector<QCss::Declarati
 				hasCssBlockIndent = true;
 				cssBlockIndent = decl.values.first().variant.toInt();
 				break;
-				case QCss::TextIndent: decl.realValue(&text_indent, "px"); break;
+			case QCss::TextIndent:
+				decl.realValue(&text_indent, "px");
+				break;
 			case QCss::QtListIndent:
 				if (decl.intValue(&cssListIndent))
 					hasCssListIndent = true;
@@ -738,39 +754,62 @@ void BilboTextHtmlParserNode::applyCssDeclarations(const QVector<QCss::Declarati
 			case QCss::Whitespace:
 				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
 					switch (decl.values.first().variant.toInt()) {
-						case QCss::Value_Normal: wsm = BilboTextHtmlParserNode::WhiteSpaceNormal; break;
-						case QCss::Value_Pre: wsm = BilboTextHtmlParserNode::WhiteSpacePre; break;
-						case QCss::Value_NoWrap: wsm = BilboTextHtmlParserNode::WhiteSpaceNoWrap; break;
-						case QCss::Value_PreWrap: wsm = BilboTextHtmlParserNode::WhiteSpacePreWrap; break;
-						default: break;
+						case QCss::Value_Normal: 
+							wsm = BilboTextHtmlParserNode::WhiteSpaceNormal;
+							break;
+						case QCss::Value_Pre:
+							wsm = BilboTextHtmlParserNode::WhiteSpacePre;
+							break;
+						case QCss::Value_NoWrap:
+							wsm = BilboTextHtmlParserNode::WhiteSpaceNoWrap;
+							break;
+						case QCss::Value_PreWrap:
+							wsm = BilboTextHtmlParserNode::WhiteSpacePreWrap;
+							break;
+						default:
+							break;
 					}
 				}
 			case QCss::VerticalAlignment:
 				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
 					switch (decl.values.first().variant.toInt()) {
-						case QCss::Value_Sub: verticalAlignment = QTextCharFormat::AlignSubScript; break;
-						case QCss::Value_Super: verticalAlignment = QTextCharFormat::AlignSuperScript; break;
-						default: verticalAlignment = QTextCharFormat::AlignNormal; break;
+						case QCss::Value_Sub:
+							verticalAlignment = QTextCharFormat::AlignSubScript; break;
+						case QCss::Value_Super:
+							verticalAlignment = QTextCharFormat::AlignSuperScript;
+							break;
+						default:
+							verticalAlignment = QTextCharFormat::AlignNormal;
+							break;
 					}
 				}
 				break;
 			case QCss::PageBreakBefore:
 				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
 					switch (decl.values.first().variant.toInt()) {
-						case QCss::Value_Always: pageBreakPolicy |= QTextFormat::PageBreak_AlwaysBefore; break;
-						case QCss::Value_Auto: pageBreakPolicy &= ~QTextFormat::PageBreak_AlwaysBefore; break;
+						case QCss::Value_Always:
+							pageBreakPolicy |= QTextFormat::PageBreak_AlwaysBefore;
+							break;
+						case QCss::Value_Auto:
+							pageBreakPolicy &= ~QTextFormat::PageBreak_AlwaysBefore;
+							break;
 					}
 				}
 				break;
 			case QCss::PageBreakAfter:
 				if (decl.values.first().type == QCss::Value::KnownIdentifier) {
 					switch (decl.values.first().variant.toInt()) {
-						case QCss::Value_Always: pageBreakPolicy |= QTextFormat::PageBreak_AlwaysAfter; break;
-						case QCss::Value_Auto: pageBreakPolicy &= ~QTextFormat::PageBreak_AlwaysAfter; break;
+						case QCss::Value_Always:
+							pageBreakPolicy |= QTextFormat::PageBreak_AlwaysAfter;
+							break;
+						case QCss::Value_Auto:
+							pageBreakPolicy &= ~QTextFormat::PageBreak_AlwaysAfter;
+							break;
 					}
 				}
 				break;
-				default: break;
+				default:
+					break;
 		}
 	}
 
@@ -827,7 +866,8 @@ void BilboTextHtmlParserNode::applyCssDeclarations(const QVector<QCss::Declarati
 
 		if (!bgImage.isEmpty() && resourceProvider) {
 			//QVariant val = resourceProvider->resource(QTextDocument::ImageResource, bgImage);
-			QVariant val = resourceProvider->resource(QTextDocument::ImageResource, QUrl(bgImage));
+			QVariant val = resourceProvider->resource(QTextDocument::ImageResource, 
+					QUrl(bgImage));
 			if (val.type() == QVariant::Image || val.type() == QVariant::Pixmap) {
 				background = qvariant_cast<QPixmap>(val);
 			} else if (val.type() == QVariant::ByteArray) {
@@ -861,7 +901,9 @@ BilboTextHtmlParserNode *BilboTextHtmlParser::newNode(int parent)
 			if (lastNode->text == QLatin1String(" ")) {
 
 				int lastSibling = count() - 2;
-				while (lastSibling && at(lastSibling).parent != lastNode->parent && at(lastSibling).displayMode == BilboTextHtmlElement::DisplayInline) {
+				while (lastSibling && at(lastSibling).parent != lastNode->parent && 
+						at(lastSibling).displayMode == BilboTextHtmlElement::DisplayInline)
+				{
 					lastSibling = at(lastSibling).parent;
 				}
 
@@ -989,7 +1031,8 @@ void BilboTextHtmlParser::parse() {
 						continue;
 					}
 				} else if (wsm != BilboTextHtmlParserNode::WhiteSpacePreWrap) { // non-pre mode: collapse whitespace except nbsp
-					while (pos < len && txt.at(pos).isSpace() && txt.at(pos) != QChar::Nbsp) {
+					while (pos < len && txt.at(pos).isSpace() && txt.at(pos) != QChar::Nbsp)
+					{
 						pos++;
 					}
 					if (wsm == BilboTextHtmlParserNode::WhiteSpaceNoWrap) {
@@ -1039,7 +1082,8 @@ void BilboTextHtmlParser::parseTag()
 		p = at(p).parent;
 
 	BilboTextHtmlParserNode *node = newNode(p);
-	const int nodeIndex = int(QVector<BilboTextHtmlParserNode>::const_iterator(node) - nodes.constBegin());
+	const int nodeIndex = int(QVector<BilboTextHtmlParserNode>::const_iterator(node) - 
+			nodes.constBegin());
 
     // parse tag name
 	node->tag = parseWord().toLower();
