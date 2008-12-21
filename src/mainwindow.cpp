@@ -214,7 +214,10 @@ void MainWindow::optionsPreferences()
     KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self());
     QWidget *generalSettingsDlg = new QWidget;
     ui_prefs_base.setupUi(generalSettingsDlg);
+	QWidget *editorSettingsDlg = new QWidget;
+	ui_editorsettings_base.setupUi(editorSettingsDlg);
     dialog->addPage(generalSettingsDlg, i18n("General"), "package_setting");
+	dialog->addPage(editorSettingsDlg, i18n("Editor"), "package_setting");
     connect(dialog, SIGNAL(settingsChanged(QString)), this, SLOT(settingsChanged()));
     dialog->setAttribute( Qt::WA_DeleteOnClose );
     dialog->show();

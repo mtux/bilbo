@@ -29,6 +29,7 @@ Contains needed properties of each media object, like images and videos.
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 class QMimeData;
+class KIcon;
 class BilboMedia
 {
 	public:
@@ -58,6 +59,8 @@ class BilboMedia
 		
         QString name() const;
 		void setName(const QString &name);
+		
+		KIcon icon() const;
 		
 	private:
 		int mBlogId;

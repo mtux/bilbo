@@ -38,6 +38,7 @@ class KToolBar;
 class AddEditLink;
 class AddImageDialog;
 class BilboMedia;
+class KListWidget;
 
 //class BilboRichTextEdit;
 //class KRichTextEdit;
@@ -253,6 +254,7 @@ class BilboEditor : public KTabWidget
 		KToolBar *barVisual;
 		//KToolBar *barHtml;
 		//KToolBar *barPreview;
+		KListWidget *lstMediaFiles;
 		
 		KAction *actBold;
 		KAction *actItalic;

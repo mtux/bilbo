@@ -15,7 +15,7 @@
      <item row="0" column="0" >
       <widget class="QToolBox" name="box" >
        <property name="currentIndex" >
-        <number>0</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="pgBlogs" >
         <property name="geometry" >
@@ -23,7 +23,7 @@
           <x>0</x>
           <y>0</y>
           <width>309</width>
-          <height>407</height>
+          <height>412</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -148,8 +148,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>348</width>
-          <height>390</height>
+          <width>309</width>
+          <height>412</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -270,7 +270,7 @@ p, li { white-space: pre-wrap; }
           <x>0</x>
           <y>0</y>
           <width>309</width>
-          <height>407</height>
+          <height>412</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -397,20 +397,45 @@ p, li { white-space: pre-wrap; }
           <x>0</x>
           <y>0</y>
           <width>309</width>
-          <height>407</height>
+          <height>412</height>
          </rect>
         </property>
         <attribute name="label" >
          <string>&amp;Media files</string>
         </attribute>
+        <widget class="KListWidget" name="lstMediaList" >
+         <property name="geometry" >
+          <rect>
+           <x>4</x>
+           <y>4</y>
+           <width>301</width>
+           <height>369</height>
+          </rect>
+         </property>
+         <property name="editTriggers" >
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="showDropIndicator" stdset="0" >
+          <bool>false</bool>
+         </property>
+         <property name="alternatingRowColors" >
+          <bool>true</bool>
+         </property>
+         <property name="selectionBehavior" >
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="wordWrap" >
+          <bool>true</bool>
+         </property>
+        </widget>
        </widget>
        <widget class="QWidget" name="pgOptions" >
         <property name="geometry" >
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>292</width>
-          <height>413</height>
+          <width>309</width>
+          <height>412</height>
          </rect>
         </property>
         <attribute name="label" >

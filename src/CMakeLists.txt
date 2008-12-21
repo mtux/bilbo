@@ -42,6 +42,7 @@ kde4_add_ui_files(
   addimagedialogbase.ui
   addcategorybase.ui
   settingsbase.ui
+  editorsettingsbase.ui
 )
 
 kde4_add_kcfg_files( bilbo_SRCS settings.kcfgc)

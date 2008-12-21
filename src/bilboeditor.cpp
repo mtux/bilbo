@@ -28,6 +28,7 @@
 #include <kaction.h>
 #include <kicon.h>
 #include <kcolordialog.h>
+#include <klistwidget.h>
 #include <kdebug.h>
 
 #include "bilboeditor.h"
@@ -617,10 +618,21 @@ void BilboEditor::createUi()
 	barVisual = new KToolBar(tabVisual);
 	barVisual->setIconSize(QSize(22, 22));
 	barVisual->setToolButtonStyle(Qt::ToolButtonIconOnly);
+	
+	QLabel *label = new QLabel(i18n("Added Media:"), tabVisual);
+	label->setMaximumHeight(30);
+	
+	lstMediaFiles = new KListWidget(tabVisual);
+	//lstMediaFiles->setFlow(QListView::LeftToRight);
+	lstMediaFiles->setViewMode(QListView::IconMode);
+	lstMediaFiles->setMaximumHeight(60);
+	
 	QVBoxLayout *vLayout = new QVBoxLayout(tabVisual);
 // 	barVisual->show();
 	vLayout->addWidget(barVisual);
 	vLayout->addWidget(editor);
+	vLayout->addWidget(label);
+	vLayout->addWidget(lstMediaFiles);
 // 	tabVisual->setLayout(vLayout);
 	connect(editor, SIGNAL(currentCharFormatChanged(const QTextCharFormat &)), this, 
 	SLOT(sltSyncToolbar(const QTextCharFormat &)));
@@ -737,23 +749,23 @@ void BilboEditor::createActions()
 	barVisual->addAction(actNewParagraph);
 	
 	actAlignLeft = new KAction(KIcon("format-justify-left"), i18nc("verb, to align text from left", "Align left"), this);
-	actAlignLeft->setCheckable(true);
+	//actAlignLeft->setCheckable(true);
 	connect(actAlignLeft, SIGNAL(triggered(bool)), editor, SLOT(alignLeft()));
 	barVisual->addAction(actAlignLeft);
 	
 	actAlignCenter = new KAction(KIcon("format-justify-center"), i18nc("verb, to align text from center", "Align center"), this);
-	actAlignCenter->setCheckable(true);
+	//actAlignCenter->setCheckable(true);
 	connect(actAlignCenter, SIGNAL(triggered(bool)), editor, SLOT(alignCenter()));
 	barVisual->addAction(actAlignCenter);
 	
 	actAlignRight = new KAction(KIcon("format-justify-right"), i18nc("verb, to align text from right", "Align right"), this);
-	actAlignRight->setCheckable(true);
+	//actAlignRight->setCheckable(true);
 	connect(actAlignRight, SIGNAL(triggered(bool)), editor, SLOT(alignRight()));
 	barVisual->addAction(actAlignRight);
 	
 	actJustify = new KAction(KIcon("format-justify-fill"), i18nc("verb, to justify text", 
 							 "Justify"), this);
-	actJustify->setCheckable(true);
+	//actJustify->setCheckable(true);
 	connect(actJustify, SIGNAL(triggered(bool)), editor, SLOT(alignJustify()));
 	barVisual->addAction(actJustify);
 	
@@ -1059,6 +1071,8 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 			//media is already added.
 		} else {
 			mMediaList->insert(media->localUrl(), media);
+			new QListWidgetItem(media->icon(),media->name(),lstMediaFiles);
+			//lstMediaFiles->addItem("salam");
 			//url = media->localUrl();
 		}
 		url = media->localUrl();
