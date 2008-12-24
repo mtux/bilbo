@@ -48,7 +48,8 @@
 #include "bilbotexthtmlimporter.h"
 #include "medialistwidget.h"
 
-BilboEditor::BilboEditor()
+BilboEditor::BilboEditor(QWidget *parent)
+	:KTabWidget(parent)
 {
 	createUi();
 	editor->setFocus();

@@ -40,19 +40,19 @@ Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 	bBlog = __db->getBlogInfo(blog_id);
 	switch( bBlog->api() ){
 	case BilboBlog::BLOGGER1_API:
-		mBlog = new KBlog::Blogger1(KUrl());
+		mBlog = new KBlog::Blogger1(KUrl(), this);
 		break;
 	case BilboBlog::GDATA_API:
-		mBlog = new KBlog::GData(KUrl());
+		mBlog = new KBlog::GData(KUrl(), this);
 		break;
 	case BilboBlog::METAWEBLOG_API:
-		mBlog = new KBlog::MetaWeblog(KUrl());
+		mBlog = new KBlog::MetaWeblog(KUrl(), this);
 		break;
 	case BilboBlog::MOVABLETYPE_API:
-        mBlog = new KBlog::MovableType(KUrl());
+		mBlog = new KBlog::MovableType(KUrl(), this);
         break;
     case BilboBlog::WORDPRESSBUGGY_API:
-        mBlog = new KBlog::WordpressBuggy(KUrl());
+		mBlog = new KBlog::WordpressBuggy(KUrl(), this);
 	}
 	
 	mBlog->setUsername(bBlog->username());
@@ -75,7 +75,6 @@ Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 Backend::~Backend()
 {
     kDebug();
-    delete mBlog;
     delete bBlog;
 }
 
