@@ -28,7 +28,7 @@
 #include <kaction.h>
 #include <kicon.h>
 #include <kcolordialog.h>
-#include <klistwidget.h>
+//#include <klistwidget.h>
 #include <kdebug.h>
 
 #include "bilboeditor.h"
@@ -46,6 +46,7 @@
 //#include "bilborichtextedit.h"
 #include "bilbotextcharformat.h"
 #include "bilbotexthtmlimporter.h"
+#include "medialistwidget.h"
 
 BilboEditor::BilboEditor()
 {
@@ -622,10 +623,11 @@ void BilboEditor::createUi()
 	QLabel *label = new QLabel(i18n("Added Media:"), tabVisual);
 	label->setMaximumHeight(30);
 	
-	lstMediaFiles = new KListWidget(tabVisual);
+	lstMediaFiles = new MediaListWidget(tabVisual);
 	//lstMediaFiles->setFlow(QListView::LeftToRight);
 	lstMediaFiles->setViewMode(QListView::IconMode);
 	lstMediaFiles->setMaximumHeight(60);
+	connect(lstMediaFiles, SIGNAL(sigRemoveMedia(const int)), this, SLOT(sltRemoveMedia(const int)));
 	
 	QVBoxLayout *vLayout = new QVBoxLayout(tabVisual);
 // 	barVisual->show();
@@ -1061,6 +1063,7 @@ void BilboEditor::sltAddImage()
 void BilboEditor::sltSetImage(BilboMedia *media)
 {
 	QString url;
+	QListWidgetItem *item;
 //	qDebug() << url;
 // 	QImage *image = new QImage();
 // 	editor->document()->addResource(QTextDocument::ImageResource,QUrl(url), QVariant(image));
@@ -1071,9 +1074,14 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 			//media is already added.
 		} else {
 			mMediaList->insert(media->localUrl(), media);
-			new QListWidgetItem(media->icon(),media->name(),lstMediaFiles);
-			//lstMediaFiles->addItem("salam");
+			if (media->mimeType().contains("image")) {
+				item = new QListWidgetItem(media->icon(),media->name(),lstMediaFiles,MediaListWidget::ImageType);
+				
+			} else {
+				item = new QListWidgetItem(media->icon(),media->name(),lstMediaFiles,MediaListWidget::OtherType);
+			}
 			//url = media->localUrl();
+			item->setData(Qt::UserRole, QVariant(media->localUrl()));
 		}
 		url = media->localUrl();
 	}
@@ -1104,6 +1112,24 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 // 		cursor.insertImage(target);
 // 	}
 // }
+
+void BilboEditor::sltRemoveMedia(const int index)
+{
+	QString path = lstMediaFiles->item(index)->data(Qt::UserRole).toString();
+	kDebug() << path;
+	BilboMedia *media = mMediaList->value(path);
+	QString removeString = "<";
+	if (media->mimeType().contains("image")) {
+		removeString += "image src=\"";
+	} else {
+		removeString += "a href=\"";
+	}	
+	int count = mMediaList->remove(path);
+	kDebug() << count;
+	QString text = this->editor->document()->toHtml();
+	text.remove(path, Qt::CaseSensitive);
+	this->editor->document()->setHtml(text);
+}
 
 void BilboEditor::sltSyncToolbar(const QTextCharFormat& f)
 {

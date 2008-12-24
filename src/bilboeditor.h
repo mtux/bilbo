@@ -208,6 +208,8 @@ class BilboEditor : public KTabWidget
 		 */
 		void sltSetImage(BilboMedia *media);
 		
+		void sltRemoveMedia(const int index);
+		
 		void sltSyncToolbar(const QTextCharFormat& f);
 		
 		/*!

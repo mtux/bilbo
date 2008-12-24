@@ -9,6 +9,7 @@ set(bilbo_SRCS
  bilbocssparser.cpp
  bilbohtmlparser.cpp
  bilbotexthtmlimporter.cpp
+ medialistwidget.cpp
  main.cpp
  mainwindow.cpp
  toolbox.cpp

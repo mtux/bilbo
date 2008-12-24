@@ -31,6 +31,8 @@
     </spacer>
    </item>
   </layout>
+  <zorder>kcfg_show_main_on_start</zorder>
+  <zorder>verticalSpacer</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
