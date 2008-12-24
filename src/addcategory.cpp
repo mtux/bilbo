@@ -22,7 +22,7 @@
 AddCategory::AddCategory(QWidget *parent)
     :KDialog(parent)
 {
-    QWidget *dialog = new QWidget;
+    QWidget *dialog = new QWidget(this);
     ui.setupUi(dialog);
     dialog->setAttribute( Qt::WA_DeleteOnClose );
     this->setMainWidget(dialog);

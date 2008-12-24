@@ -30,9 +30,9 @@ PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
 	createUi();
-	mediaList = new QMap<QString, BilboMedia*>();
-	editPostWidget = new BilboEditor();
-	editPostWidget->setMediaList(mediaList);
+// 	mMediaList = new QMap<QString, BilboMedia*>();
+	editPostWidget = new BilboEditor(this);
+	editPostWidget->setMediaList(&mMediaList);
 	this->layout()->addWidget(editPostWidget);
     mCurrentPost = 0;
 	
@@ -44,7 +44,7 @@ void PostEntry::createUi()
 	this->resize(626, 307);
 	gridLayout = new QGridLayout(this);
 	
-	horizontalLayout = new QHBoxLayout();
+	horizontalLayout = new QHBoxLayout(this);
 	horizontalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
 	
 	labelTitle = new QLabel(this);
@@ -136,15 +136,15 @@ void PostEntry::addMedia(const QString &url)
 
 PostEntry::~PostEntry()
 {
-    delete editPostWidget;
-    delete gridLayout;
+//     delete editPostWidget;
+//     delete gridLayout;
 //     delete horizontalLayout;
 // 	delete horizontalLayout;
-    delete labelTitle;
-    delete txtTitle;
-    delete wPost;
+//     delete labelTitle;
+//     delete txtTitle;
+//     delete wPost;
     delete mCurrentPost;
-	delete mediaList;
+// 	delete mMediaList;
 }
 
 void PostEntry::setCurrentPostProperties(BilboPost post)
@@ -152,6 +152,11 @@ void PostEntry::setCurrentPostProperties(BilboPost post)
 	post.setTitle(txtTitle->text());
 	post.setContent(*this->editPostWidget->htmlContent());
 	setCurrentPost(post);
+}
+
+QMap< QString, BilboMedia * > * PostEntry::mediaList()
+{
+	return mMediaList;
 }
 
 #include "postentry.moc"

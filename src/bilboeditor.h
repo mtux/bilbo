@@ -58,7 +58,7 @@ class BilboEditor : public KTabWidget
 		/*!
 		Creates a new instance of BilboEditor, and calls createUi() function to initialize its widgets.
 		*/
-    	BilboEditor();
+    	BilboEditor(QWidget *parent=0);
 
 		//!BilboEditor destructor
     	~BilboEditor();

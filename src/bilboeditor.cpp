@@ -46,7 +46,8 @@
 #include "bilbotextcharformat.h"
 #include "bilbotexthtmlimporter.h"
 
-BilboEditor::BilboEditor()
+BilboEditor::BilboEditor(QWidget *parent)
+	:KTabWidget(parent)
 {
 	createUi();
 	editor->setFocus();
