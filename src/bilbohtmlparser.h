@@ -131,7 +131,8 @@ enum BilboTriState { Off = 0, On = 1, Unspecified = 2 };
  */
 struct BilboTextHtmlParserNode
 {
-	enum WhiteSpaceMode { WhiteSpaceNormal, WhiteSpacePre, WhiteSpaceNoWrap, WhiteSpacePreWrap, WhiteSpaceModeUndefined = -1 };
+	enum WhiteSpaceMode { WhiteSpaceNormal, WhiteSpacePre, WhiteSpaceNoWrap, 
+		WhiteSpacePreWrap, WhiteSpaceModeUndefined = -1 };
 
 	BilboTextHtmlParserNode();
 	QString tag;

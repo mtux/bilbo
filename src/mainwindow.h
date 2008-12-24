@@ -22,6 +22,7 @@
 
 #include "bilbopost.h"
 #include "ui_settingsbase.h"
+#include "ui_editorsettingsbase.h"
 #include <kxmlguiwindow.h>
 
 class KTabWidget;
@@ -86,6 +87,7 @@ private:
     void writeConfigs();
     
     Ui::SettingsBase ui_prefs_base;
+	Ui::EditorSettingsBase ui_editorsettings_base;
     
     Toolbox *toolbox;
     QDockWidget *toolboxDock;

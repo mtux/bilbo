@@ -38,6 +38,7 @@ class KToolBar;
 class AddEditLink;
 class AddImageDialog;
 class BilboMedia;
+class KListWidget;
 
 //class BilboRichTextEdit;
 //class KRichTextEdit;
@@ -66,7 +67,8 @@ class BilboEditor : public KTabWidget
 		//!Returns the editor current text in html format
 		
 		/**
-		 * Synchronizes htmlEditor and editor tabs, by sending content of the current one to another. then copies the content of htmlEditor into the variable mHtmlContent, and returns it.
+		 * Synchronizes htmlEditor and editor tabs, by sending content of the current one to another.
+		 * then copies the content of htmlEditor into the variable mHtmlContent, and returns it.
 		 * @return a pointer to an String which contains html text
 		 */
 		QString *htmlContent();
@@ -128,13 +130,15 @@ class BilboEditor : public KTabWidget
 		
 		/*!
 		Increments font size by one degree.
-		there are five predefined values for font size: "small", "medium", "large", "x-large", "xx-large". Bilboeditor uses "medium" as default font size.
+		there are five predefined values for font size: "small", "medium", "large", 
+		 * "x-large", "xx-large". Bilboeditor uses "medium" as default font size.
 		 */
 		void sltFontSizeIncrease();
 		
 		/*!
 		Decrements font size by one degree.
-		there are five predefined values for font size: "small", "medium", "large", "x-large", "xx-large". Bilboeditor uses "medium" as default font size.
+		there are five predefined values for font size: "small", "medium", "large", 
+		 * "x-large", "xx-large". Bilboeditor uses "medium" as default font size.
 		 */
 		void sltFontSizeDecrease();
 		
@@ -164,12 +168,14 @@ class BilboEditor : public KTabWidget
 		void sltChangeLayoutDirection();
 		
 		/*!
-		Opens a dialog to set link address. if cursor has selection and it is a link itself, the link address is shown in the dialog to edit.
+		Opens a dialog to set link address. if cursor has selection and it is a link 
+		 * itself, the link address is shown in the dialog to edit.
 		 */
 		void sltAddEditLink();
 		
 		/*!
-		Sets the link address given in the link dialog as AnchorHref of the current text. if link title is set in the link dialog, current text will change into that.
+		Sets the link address given in the link dialog as AnchorHref of the current text.
+		 * if link title is set in the link dialog, current text will change into that.
 		 */
 		void sltSetLink(const QString& address, const QString& target, const QString& title);
 // 		void sltSetLink(QString address);
@@ -185,7 +191,8 @@ class BilboEditor : public KTabWidget
 		void sltSelectColor();
 		
 		/*!
-		Changes all properties of current text format into default, except Anchor, AnchorName and AnchorHref properties.
+		Changes all properties of current text format into default, except Anchor, 
+		 * AnchorName and AnchorHref properties.
 		\sa defaultCharFormat
 		 */
 		void sltRemoveFormatting();
@@ -204,19 +211,23 @@ class BilboEditor : public KTabWidget
 		void sltSyncToolbar(const QTextCharFormat& f);
 		
 		/*!
-		Sets the content of the current tab  as other tabs' contents, to apply recent changes. this function executes each time the user switches between tabs. 
+		Sets the content of the current tab  as other tabs' contents, to apply recent 
+		 * changes. this function executes each time the user switches between tabs. 
 		 */
 		void sltSyncEditors(int index);
 		
 	private:
 		/*!
-		Creates actions of Bilbo editor, and assigns each one to a button, then adds each button to barVisual, on the editor tab.
+		Creates actions of Bilbo editor, and assigns each one to a button, then adds each 
+		 * button to barVisual, on the editor tab.
 		 */
 		void createActions();
 		
 		/*!
 		Creates Widget of BilboEditor.
-		then assigns default charachter format of the editor tab to defaultCharFormat variable, to be used in remove formatting operation. then calls createActions function.
+		then assigns default charachter format of the editor tab to defaultCharFormat 
+		 * variable, to be used in remove formatting operation. then calls createActions 
+		 * function.
 		\sa sltRemoveFormatting(), createActions()
 		 */
 		void createUi();
@@ -243,6 +254,7 @@ class BilboEditor : public KTabWidget
 		KToolBar *barVisual;
 		//KToolBar *barHtml;
 		//KToolBar *barPreview;
+		KListWidget *lstMediaFiles;
 		
 		KAction *actBold;
 		KAction *actItalic;

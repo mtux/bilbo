@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "bilbomedia.h"
+#include <kicon.h>
 //#include <QMimeData>
 
 BilboMedia::BilboMedia()
@@ -99,4 +100,11 @@ void BilboMedia::setName(const QString &name)
 	mName = name;
 }
 
+KIcon BilboMedia::icon() const
+{
+	QString iconName;
+	iconName = this->mimeType();
+	iconName.replace(QChar('/'), QChar('-'));
+	return KIcon(iconName);
+}
 // #include <bilbomedia.moc>

@@ -54,7 +54,8 @@ void PostEntry::createUi()
 	txtTitle = new KLineEdit(this);
 	horizontalLayout->addWidget(txtTitle);
 	labelTitle->setBuddy(txtTitle);
-    connect(txtTitle, SIGNAL(textChanged(const QString&)), this, SLOT( sltTitleChanged(const QString&) ));
+    connect(txtTitle, SIGNAL(textChanged(const QString&)), this, 
+			SLOT( sltTitleChanged(const QString&) ));
 	
 	gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
 	
