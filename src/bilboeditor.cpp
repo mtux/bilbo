@@ -621,7 +621,7 @@ void BilboEditor::createUi()
 	barVisual->setIconSize(QSize(22, 22));
 	barVisual->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	
-	QLabel *label = new QLabel(i18n("Added Media:"), tabVisual);
+	QLabel *label = new QLabel(i18n("Post media:"), tabVisual);
 	label->setMaximumHeight(30);
 	
 	lstMediaFiles = new MediaListWidget(tabVisual);
@@ -1117,18 +1117,26 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 void BilboEditor::sltRemoveMedia(const int index)
 {
 	QString path = lstMediaFiles->item(index)->data(Qt::UserRole).toString();
+	//lstMediaFiles->removeItemWidget(lstMediaFiles->item(index));
+	delete lstMediaFiles->item(index);
+	
 	kDebug() << path;
 	BilboMedia *media = mMediaList->value(path);
 	QString removeString = "<";
 	if (media->mimeType().contains("image")) {
-		removeString += "image src=\"";
+		removeString += "img([^(src=)]*)src=\"";
+		removeString += path;
+		removeString += "([^(/>)]*)/>";
 	} else {
-		removeString += "a href=\"";
+		removeString += "a([^(href=)]*)href=\"";
+		removeString += path;
+		removeString += "([^(</a>)]*)</a>";
 	}	
 	int count = mMediaList->remove(path);
 	kDebug() << count;
+	//QRegExp removeExp(removeString);
 	QString text = this->editor->document()->toHtml();
-	text.remove(path, Qt::CaseSensitive);
+	text.remove(QRegExp(removeString));
 	this->editor->document()->setHtml(text);
 }
 
