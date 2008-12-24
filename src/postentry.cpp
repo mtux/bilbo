@@ -157,7 +157,7 @@ void PostEntry::setCurrentPostProperties(BilboPost post)
 
 QMap< QString, BilboMedia * > * PostEntry::mediaList()
 {
-	return mMediaList;
+	return &mMediaList;
 }
 
 #include "postentry.moc"
