@@ -63,7 +63,7 @@ public:
 Q_SIGNALS:
     /**
      * emitted when title of this entry changed.
-     * @param  
+     * @param title is a QString which contains new title.
      */
     void sigTitleChanged(const QString &title);
 
@@ -82,7 +82,7 @@ private:
 	QWidget *wPost;
     BilboPost *mCurrentPost;
     int mCurrentPostBlogId;
-	QMap <QString, BilboMedia*> mMediaList;
+	QMap <QString, BilboMedia*> *mMediaList;
 };
 
 #endif

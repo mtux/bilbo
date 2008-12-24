@@ -30,9 +30,10 @@ PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
 	createUi();
-// 	mMediaList = new QMap<QString, BilboMedia*>();
+	mMediaList = new QMap<QString, BilboMedia*>();
 	editPostWidget = new BilboEditor(this);
-	editPostWidget->setMediaList(&mMediaList);
+// 	editPostWidget->setMediaList(&mMediaList);
+	editPostWidget->setMediaList(mMediaList);
 	this->layout()->addWidget(editPostWidget);
     mCurrentPost = 0;
 	
@@ -145,7 +146,7 @@ PostEntry::~PostEntry()
 //     delete txtTitle;
 //     delete wPost;
     delete mCurrentPost;
-// 	delete mMediaList;
+ 	delete mMediaList;
 }
 
 void PostEntry::setCurrentPostProperties(BilboPost post)
