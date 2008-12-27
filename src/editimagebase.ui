@@ -1,0 +1,91 @@
+<ui version="4.0" >
+ <class>EditImageBase</class>
+ <widget class="QDialog" name="EditImageBase" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>357</width>
+    <height>135</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string comment="verb, to modify selected image attributes." >Edit image properties</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" >
+   <item row="0" column="0" >
+    <widget class="QLabel" name="labelWidth" >
+     <property name="text" >
+      <string comment="noun, with of the image in pixels." >Image width:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" >
+    <widget class="KLineEdit" name="txtWidth" >
+     <property name="showClearButton" stdset="0" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" >
+    <widget class="QLabel" name="label1" >
+     <property name="text" >
+      <string>Pixels </string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QLabel" name="labelHeight" >
+     <property name="text" >
+      <string comment="noun, height of the image in pixels." >Image height:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" >
+    <widget class="KLineEdit" name="txtHeight" >
+     <property name="showClearButton" stdset="0" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2" >
+    <widget class="QLabel" name="label2" >
+     <property name="text" >
+      <string>Pixels </string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" >
+    <widget class="QLabel" name="labelAltText" >
+     <property name="text" >
+      <string comment="the alternative text which is displayed to the user, if the image can not be loaded." >Alternative text:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="2" >
+    <widget class="KLineEdit" name="txtAltText" >
+     <property name="showClearButton" stdset="0" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" >
+    <widget class="KDialogButtonBox" name="kdialogbuttonbox" />
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KDialogButtonBox</class>
+   <extends>QDialogButtonBox</extends>
+   <header>kdialogbuttonbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

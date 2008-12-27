@@ -35,8 +35,10 @@ AddImageDialog::AddImageDialog(QWidget *parent) :KDialog(parent)
 	QStringList mimeFilter;
 	mimeFilter << "image/gif" << "image/jpeg" << "image/png" ;
 	ui.kurlreqLocalUrl->fileDialog()->setMimeFilter(mimeFilter);
+	ui.kurlreqLocalUrl->fileDialog()->setWindowTitle(i18n("Choose a file"));
 	dialog->setAttribute( Qt::WA_DeleteOnClose );
 	this->setMainWidget(dialog);
+	this->setWindowTitle(dialog->windowTitle());
 	this->resize(dialog->width(), dialog->height());
 	connect(this, SIGNAL(okClicked()), this, SLOT(sltOkClicked()));
 }

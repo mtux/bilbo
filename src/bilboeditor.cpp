@@ -628,6 +628,9 @@ void BilboEditor::createUi()
 	//lstMediaFiles->setFlow(QListView::LeftToRight);
 	lstMediaFiles->setViewMode(QListView::IconMode);
 	lstMediaFiles->setMaximumHeight(60);
+	connect(lstMediaFiles, SIGNAL(sigSetProperties(const int, const double, 
+			const double, const QString)), this, SLOT(sltSetImageProperties(const int, 
+			const double, const double, const QString)));
 	connect(lstMediaFiles, SIGNAL(sigRemoveMedia(const int)), this, SLOT(sltRemoveMedia(const int)));
 	
 	QVBoxLayout *vLayout = new QVBoxLayout(tabVisual);
@@ -1113,6 +1116,45 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 // 		cursor.insertImage(target);
 // 	}
 // }
+
+void BilboEditor::sltSetImageProperties(const int index, const double width, 
+										const double height, const QString Alt_text)
+{
+	this->editor->setFocus(Qt::OtherFocusReason);
+	QString path = lstMediaFiles->item(index)->data(Qt::UserRole).toString();
+	
+	QTextCharFormat f;
+	QTextCursor cursor;
+	QTextBlock block = this->editor->document()->firstBlock();
+	QTextBlock::iterator i;
+	do {
+		for (i = block.begin(); !(i.atEnd()); ++i) {
+			kDebug() << "start iterating";
+			f = i.fragment().charFormat();
+			if (f.isImageFormat()) {
+				kDebug() << "is image format";
+				QTextImageFormat imgFormat = f.toImageFormat();
+				if (imgFormat.name() == path) {
+					kDebug() << "image exists";
+					imgFormat.setWidth(width);
+					imgFormat.setHeight(height);
+
+					cursor = this->editor->textCursor();
+					cursor.setPosition(i.fragment().position());
+					cursor.movePosition(QTextCursor::NextCharacter, 
+										QTextCursor::KeepAnchor, i.fragment().length());
+					if (cursor.hasSelection()) {
+						kDebug() << " mine hasSelection";
+						cursor.mergeCharFormat(imgFormat);
+						this->editor->setTextCursor(cursor);
+					}
+				}
+			}
+		}
+		block = block.next();
+	} while (block.isValid());
+	this->editor->setFocus(Qt::OtherFocusReason);
+}
 
 void BilboEditor::sltRemoveMedia(const int index)
 {
