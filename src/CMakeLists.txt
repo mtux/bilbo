@@ -41,6 +41,7 @@ kde4_add_ui_files(
   addeditlinkbase.ui
   entriescountdialogbase.ui
   addimagedialogbase.ui
+  editimagebase.ui
   addcategorybase.ui
   settingsbase.ui
   editorsettingsbase.ui

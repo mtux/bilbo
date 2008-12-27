@@ -21,6 +21,7 @@
 #define MEDIALISTWIDGET_H
 
 #include <klistwidget.h>
+#include <ui_editimagebase.h>
 
 /**
 	@author 
@@ -43,14 +44,19 @@ class MediaListWidget : public KListWidget
 		
 	Q_SIGNALS:
 		void sigRemoveMedia(const int index);
+		void sigSetProperties(const int index, const double width, const double height, 
+							  const QString Alt_text);
 		
 	protected Q_SLOTS:
-		void sltEditImageSize();
+		void sltEditProperties();
+		void sltSetProperties();
 		void sltRemoveMedia();
 		
 	private:
-		KAction *actEditSize;
+		KAction *actEdit;
 		KAction *actRemove;
+		
+		Ui::EditImageBase ui;
 
 };
 

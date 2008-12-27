@@ -22,12 +22,13 @@
 #include <kmenu.h>
 #include <kaction.h>
 #include <klocalizedstring.h>
+#include <kdialog.h>
 #include <kdebug.h>
 
 MediaListWidget::MediaListWidget(QWidget *parent): KListWidget(parent)
 {
-	actEditSize = new KAction(i18n("Edit size"),this);
-	connect(actEditSize, SIGNAL(triggered( bool )), this, SLOT(sltEditImageSize()));
+	actEdit = new KAction(i18n("Edit properties"),this);
+	connect(actEdit, SIGNAL(triggered( bool )), this, SLOT(sltEditProperties()));
 	actRemove = new KAction(i18n("Remove media"),this);
 	connect(actRemove, SIGNAL(triggered( bool )), this, SLOT(sltRemoveMedia()));
 }
@@ -43,15 +44,31 @@ void MediaListWidget::contextMenuEvent(QContextMenuEvent *event)
 		KMenu menu(this);
 		if (this->itemAt(event->pos())->type() == ImageType)
 		{
-			menu.addAction(actEditSize);
+			menu.addAction(actEdit);
 		}
 		menu.addAction(actRemove);
 		menu.exec(event->globalPos());
 	}
 }
 
-void MediaListWidget::sltEditImageSize()
+void MediaListWidget::sltEditProperties()
 {
+	QDialog *temp = new QDialog(this);
+	KDialog *dialog = new KDialog(this);
+	//ui.setupUi(dialog);
+	ui.setupUi(temp);
+	dialog->setMainWidget(temp);
+	dialog->resize(temp->width(), temp->height());
+	dialog->setWindowModality(Qt::WindowModal);
+	dialog->setAttribute( Qt::WA_DeleteOnClose );
+	connect(dialog, SIGNAL(okClicked()), this, SLOT(sltSetProperties()));
+	dialog->exec();
+}
+void MediaListWidget::sltSetProperties()
+{
+	Q_EMIT(sigSetProperties(this->currentRow(), ui.txtWidth->text().toDouble(), 
+		   ui.txtHeight->text().toDouble(), ui.txtAltText->text()));
+	kDebug() << "signal emmited" ;
 }
 
 void MediaListWidget::sltRemoveMedia()
