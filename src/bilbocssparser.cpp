@@ -2656,13 +2656,13 @@ bool Parser::parse(StyleSheet *styleSheet)
 		if (!next(SEMICOLON)) return false;
 	}
 
-	while (test(S) || test(CDO) || test(CDC));
+	while (test(S) || test(CDO) || test(CDC)) {};
 
 	while (testImport()) {
 		ImportRule rule;
 		if (!parseImport(&rule)) return false;
 		styleSheet->importRules.append(rule);
-		while (test(S) || test(CDO) || test(CDC));
+		while (test(S) || test(CDO) || test(CDC)) {};
 	}
 
 	do {
@@ -2683,7 +2683,7 @@ bool Parser::parse(StyleSheet *styleSheet)
 		} else if (hasNext()) {
 			return false;
 		}
-		while (test(S) || test(CDO) || test(CDC));
+		while (test(S) || test(CDO) || test(CDC)) {};
 	} while (hasNext());
 	return true;
 }

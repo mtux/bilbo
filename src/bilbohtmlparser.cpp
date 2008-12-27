@@ -1391,7 +1391,7 @@ void BilboTextHtmlParser::resolveParent()
 		p = at(p).parent;
 
     // some elements are not allowed in certain contexts
-	while (p && !node->allowedInContext(at(p).id)
+	while ((p && (!node->allowedInContext(at(p).id)))
            // ### make new styles aware of empty tags
 			  || at(p).mayNotHaveChildren()
 		  ) {

@@ -75,7 +75,7 @@ public:
 	QString toString() const;
 	
 	bool isModifyTimeStamp();
-	bool setModifyTimeStamp(bool willModify);
+	void setModifyTimeStamp(bool willModify);
 	
 private:
 	QString mAuthor;
