@@ -58,6 +58,7 @@ void MediaListWidget::sltEditProperties()
 	//ui.setupUi(dialog);
 	ui.setupUi(temp);
 	dialog->setMainWidget(temp);
+	dialog->setWindowTitle(temp->windowTitle());
 	dialog->resize(temp->width(), temp->height());
 	dialog->setWindowModality(Qt::WindowModal);
 	dialog->setAttribute( Qt::WA_DeleteOnClose );

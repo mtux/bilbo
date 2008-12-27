@@ -52,12 +52,12 @@ QCssScanner_Generated::~QCssScanner_Generated()
 int QCssScanner_Generated::handleCommentStart()
 {
 	while (pos < input.size() - 1) {
-		if (input.at(pos) == QLatin1Char('*')
+		if (input.at(pos) == QLatin1Char('*') 
 				  && input.at(pos + 1) == QLatin1Char('/')) {
 			pos += 2;
 			break;
-				  }
-				  ++pos;
+			}
+		++pos;
 	}
 	return QCss::S;
 }
@@ -72,9 +72,9 @@ int QCssScanner_Generated::lex()
     
     // initial state
 	ch = next();
-	if (ch.unicode() >= 9 && ch.unicode() <= 10)
+	if ((ch.unicode() >= 9) && (ch.unicode() <= 10))
 		goto state_1;
-	if (ch.unicode() >= 12 && ch.unicode() <= 13)
+	if ((ch.unicode() >= 12) && (ch.unicode() <= 13))
 		goto state_1;
 	if (ch.unicode() == 32)
 		goto state_1;
@@ -110,7 +110,7 @@ int QCssScanner_Generated::lex()
 		goto state_12;
 	if (ch.unicode() == 47)
 		goto state_13;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_14;
 	if (ch.unicode() == 58) {
 		token = QCss::COLON;
@@ -142,7 +142,7 @@ int QCssScanner_Generated::lex()
 	}
 	if (ch.unicode() == 95)
 		goto state_24;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_24;
 	if (ch.unicode() == 123)
 		goto state_25;
@@ -159,9 +159,9 @@ int QCssScanner_Generated::lex()
 			lastAcceptingPos = pos;
 	token = QCss::S;
 	ch = next();
-	if (ch.unicode() >= 9 && ch.unicode() <= 10)
+	if ((ch.unicode() >= 9) && (ch.unicode() <= 10))
 		goto state_29;
-	if (ch.unicode() >= 12 && ch.unicode() <= 13)
+	if ((ch.unicode() >= 12) && (ch.unicode() <= 13))
 		goto state_29;
 	if (ch.unicode() == 32)
 		goto state_29;
@@ -178,19 +178,19 @@ int QCssScanner_Generated::lex()
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_30;
 	if (ch.unicode() == 11)
 		goto state_30;
-	if (ch.unicode() >= 14 && ch.unicode() <= 33)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 33))
 		goto state_30;
 	if (ch.unicode() == 34)
 		goto state_31;
-	if (ch.unicode() >= 35 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 35) && (ch.unicode() <= 91))
 		goto state_30;
 	if (ch.unicode() == 92)
 		goto state_32;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_30;
 	if (ch.unicode() >= 123)
 		goto state_30;
@@ -199,32 +199,32 @@ int QCssScanner_Generated::lex()
 			ch = next();
 	if (ch.unicode() == 45)
 		goto state_33;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_33;
 	if (ch.unicode() == 92)
 		goto state_34;
 	if (ch.unicode() == 95)
 		goto state_33;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_33;
 	goto out;
     state_5:
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_35;
 	if (ch.unicode() == 11)
 		goto state_35;
-	if (ch.unicode() >= 14 && ch.unicode() <= 38)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 38))
 		goto state_35;
 	if (ch.unicode() == 39)
 		goto state_36;
-	if (ch.unicode() >= 40 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 40) && (ch.unicode() <= 91))
 		goto state_35;
 	if (ch.unicode() == 92)
 		goto state_37;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_35;
 	if (ch.unicode() >= 123)
 		goto state_35;
@@ -247,14 +247,14 @@ int QCssScanner_Generated::lex()
 		goto state_22;
 	if (ch.unicode() == 95)
 		goto state_24;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_24;
 	goto out;
     state_12:
 			lastAcceptingPos = pos;
 	token = QCss::DOT;
 	ch = next();
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_39;
 	goto out;
     state_13:
@@ -276,13 +276,13 @@ int QCssScanner_Generated::lex()
 		goto state_42;
 	if (ch.unicode() == 46)
 		goto state_43;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_44;
 	if (ch.unicode() == 92)
 		goto state_45;
 	if (ch.unicode() == 95)
 		goto state_46;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_46;
 	goto out;
     state_17:
@@ -302,18 +302,18 @@ int QCssScanner_Generated::lex()
 		goto state_49;
 	if (ch.unicode() == 95)
 		goto state_50;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_50;
 	goto out;
     state_22:
 			ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_51;
 	if (ch.unicode() == 11)
 		goto state_51;
-	if (ch.unicode() >= 14 && ch.unicode() <= 47)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 47))
 		goto state_51;
-	if (ch.unicode() >= 58 && ch.unicode() <= 96)
+	if ((ch.unicode() >= 58) && (ch.unicode() <= 96))
 		goto state_51;
 	if (ch.unicode() >= 103)
 		goto state_51;
@@ -326,13 +326,13 @@ int QCssScanner_Generated::lex()
 		goto state_52;
 	if (ch.unicode() == 45)
 		goto state_53;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_53;
 	if (ch.unicode() == 92)
 		goto state_54;
 	if (ch.unicode() == 95)
 		goto state_53;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_53;
 	goto out;
     state_25:
@@ -359,9 +359,9 @@ int QCssScanner_Generated::lex()
 			lastAcceptingPos = pos;
 	token = QCss::S;
 	ch = next();
-	if (ch.unicode() >= 9 && ch.unicode() <= 10)
+	if ((ch.unicode() >= 9) && (ch.unicode() <= 10))
 		goto state_29;
-	if (ch.unicode() >= 12 && ch.unicode() <= 13)
+	if ((ch.unicode() >= 12) && (ch.unicode() <= 13))
 		goto state_29;
 	if (ch.unicode() == 32)
 		goto state_29;
@@ -378,19 +378,19 @@ int QCssScanner_Generated::lex()
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_30;
 	if (ch.unicode() == 11)
 		goto state_30;
-	if (ch.unicode() >= 14 && ch.unicode() <= 33)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 33))
 		goto state_30;
 	if (ch.unicode() == 34)
 		goto state_31;
-	if (ch.unicode() >= 35 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 35) && (ch.unicode() <= 91))
 		goto state_30;
 	if (ch.unicode() == 92)
 		goto state_32;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_30;
 	if (ch.unicode() >= 123)
 		goto state_30;
@@ -401,7 +401,7 @@ int QCssScanner_Generated::lex()
 	goto out;
     state_32:
 			ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_57;
 	if (ch.unicode() == 10)
 		goto state_58;
@@ -411,9 +411,9 @@ int QCssScanner_Generated::lex()
 		goto state_59;
 	if (ch.unicode() == 13)
 		goto state_60;
-	if (ch.unicode() >= 14 && ch.unicode() <= 47)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 47))
 		goto state_57;
-	if (ch.unicode() >= 58 && ch.unicode() <= 96)
+	if ((ch.unicode() >= 58) && (ch.unicode() <= 96))
 		goto state_57;
 	if (ch.unicode() >= 103)
 		goto state_57;
@@ -424,24 +424,24 @@ int QCssScanner_Generated::lex()
 	ch = next();
 	if (ch.unicode() == 45)
 		goto state_61;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_61;
 	if (ch.unicode() == 92)
 		goto state_62;
 	if (ch.unicode() == 95)
 		goto state_61;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_61;
 	goto out;
     state_34:
 			ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_63;
 	if (ch.unicode() == 11)
 		goto state_63;
-	if (ch.unicode() >= 14 && ch.unicode() <= 47)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 47))
 		goto state_63;
-	if (ch.unicode() >= 58 && ch.unicode() <= 96)
+	if ((ch.unicode() >= 58) && (ch.unicode() <= 96))
 		goto state_63;
 	if (ch.unicode() >= 103)
 		goto state_63;
@@ -450,19 +450,19 @@ int QCssScanner_Generated::lex()
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_35;
 	if (ch.unicode() == 11)
 		goto state_35;
-	if (ch.unicode() >= 14 && ch.unicode() <= 38)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 38))
 		goto state_35;
 	if (ch.unicode() == 39)
 		goto state_36;
-	if (ch.unicode() >= 40 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 40) && (ch.unicode() <= 91))
 		goto state_35;
 	if (ch.unicode() == 92)
 		goto state_37;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_35;
 	if (ch.unicode() >= 123)
 		goto state_35;
@@ -473,7 +473,7 @@ int QCssScanner_Generated::lex()
 	goto out;
     state_37:
 			ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_64;
 	if (ch.unicode() == 10)
 		goto state_65;
@@ -483,9 +483,9 @@ int QCssScanner_Generated::lex()
 		goto state_66;
 	if (ch.unicode() == 13)
 		goto state_67;
-	if (ch.unicode() >= 14 && ch.unicode() <= 47)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 47))
 		goto state_64;
-	if (ch.unicode() >= 58 && ch.unicode() <= 96)
+	if ((ch.unicode() >= 58) && (ch.unicode() <= 96))
 		goto state_64;
 	if (ch.unicode() >= 103)
 		goto state_64;
@@ -505,13 +505,13 @@ int QCssScanner_Generated::lex()
 		goto state_41;
 	if (ch.unicode() == 45)
 		goto state_42;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_69;
 	if (ch.unicode() == 92)
 		goto state_45;
 	if (ch.unicode() == 95)
 		goto state_46;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_46;
 	goto out;
     state_41:
@@ -524,12 +524,12 @@ int QCssScanner_Generated::lex()
 		goto state_45;
 	if (ch.unicode() == 95)
 		goto state_46;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_46;
 	goto out;
     state_43:
 			ch = next();
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_39;
 	goto out;
     state_44:
@@ -542,24 +542,24 @@ int QCssScanner_Generated::lex()
 		goto state_42;
 	if (ch.unicode() == 46)
 		goto state_43;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_44;
 	if (ch.unicode() == 92)
 		goto state_45;
 	if (ch.unicode() == 95)
 		goto state_46;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_46;
 	goto out;
     state_45:
 			ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_70;
 	if (ch.unicode() == 11)
 		goto state_70;
-	if (ch.unicode() >= 14 && ch.unicode() <= 47)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 47))
 		goto state_70;
-	if (ch.unicode() >= 58 && ch.unicode() <= 96)
+	if ((ch.unicode() >= 58) && (ch.unicode() <= 96))
 		goto state_70;
 	if (ch.unicode() >= 103)
 		goto state_70;
@@ -570,13 +570,13 @@ int QCssScanner_Generated::lex()
 	ch = next();
 	if (ch.unicode() == 45)
 		goto state_71;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_71;
 	if (ch.unicode() == 92)
 		goto state_72;
 	if (ch.unicode() == 95)
 		goto state_71;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_71;
 	goto out;
     state_47:
@@ -590,18 +590,18 @@ int QCssScanner_Generated::lex()
 		goto state_49;
 	if (ch.unicode() == 95)
 		goto state_50;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_50;
 	goto out;
     state_49:
 			ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_74;
 	if (ch.unicode() == 11)
 		goto state_74;
-	if (ch.unicode() >= 14 && ch.unicode() <= 47)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 47))
 		goto state_74;
-	if (ch.unicode() >= 58 && ch.unicode() <= 96)
+	if ((ch.unicode() >= 58) && (ch.unicode() <= 96))
 		goto state_74;
 	if (ch.unicode() >= 103)
 		goto state_74;
@@ -612,13 +612,13 @@ int QCssScanner_Generated::lex()
 	ch = next();
 	if (ch.unicode() == 45)
 		goto state_75;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_75;
 	if (ch.unicode() == 92)
 		goto state_76;
 	if (ch.unicode() == 95)
 		goto state_75;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_75;
 	goto out;
     state_51:
@@ -629,13 +629,13 @@ int QCssScanner_Generated::lex()
 		goto state_52;
 	if (ch.unicode() == 45)
 		goto state_53;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_53;
 	if (ch.unicode() == 92)
 		goto state_54;
 	if (ch.unicode() == 95)
 		goto state_53;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_53;
 	goto out;
     state_52:
@@ -650,24 +650,24 @@ int QCssScanner_Generated::lex()
 		goto state_52;
 	if (ch.unicode() == 45)
 		goto state_53;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_53;
 	if (ch.unicode() == 92)
 		goto state_54;
 	if (ch.unicode() == 95)
 		goto state_53;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_53;
 	goto out;
     state_54:
 			ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_77;
 	if (ch.unicode() == 11)
 		goto state_77;
-	if (ch.unicode() >= 14 && ch.unicode() <= 47)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 47))
 		goto state_77;
-	if (ch.unicode() >= 58 && ch.unicode() <= 96)
+	if ((ch.unicode() >= 58) && (ch.unicode() <= 96))
 		goto state_77;
 	if (ch.unicode() >= 103)
 		goto state_77;
@@ -676,19 +676,19 @@ int QCssScanner_Generated::lex()
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_30;
 	if (ch.unicode() == 11)
 		goto state_30;
-	if (ch.unicode() >= 14 && ch.unicode() <= 33)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 33))
 		goto state_30;
 	if (ch.unicode() == 34)
 		goto state_31;
-	if (ch.unicode() >= 35 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 35) && (ch.unicode() <= 91))
 		goto state_30;
 	if (ch.unicode() == 92)
 		goto state_32;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_30;
 	if (ch.unicode() >= 123)
 		goto state_30;
@@ -697,19 +697,19 @@ int QCssScanner_Generated::lex()
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_30;
 	if (ch.unicode() == 11)
 		goto state_30;
-	if (ch.unicode() >= 14 && ch.unicode() <= 33)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 33))
 		goto state_30;
 	if (ch.unicode() == 34)
 		goto state_31;
-	if (ch.unicode() >= 35 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 35) && (ch.unicode() <= 91))
 		goto state_30;
 	if (ch.unicode() == 92)
 		goto state_32;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_30;
 	if (ch.unicode() >= 123)
 		goto state_30;
@@ -718,19 +718,19 @@ int QCssScanner_Generated::lex()
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_30;
 	if (ch.unicode() == 11)
 		goto state_30;
-	if (ch.unicode() >= 14 && ch.unicode() <= 33)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 33))
 		goto state_30;
 	if (ch.unicode() == 34)
 		goto state_31;
-	if (ch.unicode() >= 35 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 35) && (ch.unicode() <= 91))
 		goto state_30;
 	if (ch.unicode() == 92)
 		goto state_32;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_30;
 	if (ch.unicode() >= 123)
 		goto state_30;
@@ -739,21 +739,21 @@ int QCssScanner_Generated::lex()
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_30;
 	if (ch.unicode() == 10)
 		goto state_78;
 	if (ch.unicode() == 11)
 		goto state_30;
-	if (ch.unicode() >= 14 && ch.unicode() <= 33)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 33))
 		goto state_30;
 	if (ch.unicode() == 34)
 		goto state_31;
-	if (ch.unicode() >= 35 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 35) && (ch.unicode() <= 91))
 		goto state_30;
 	if (ch.unicode() == 92)
 		goto state_32;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_30;
 	if (ch.unicode() >= 123)
 		goto state_30;
@@ -764,24 +764,24 @@ int QCssScanner_Generated::lex()
 	ch = next();
 	if (ch.unicode() == 45)
 		goto state_61;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_61;
 	if (ch.unicode() == 92)
 		goto state_62;
 	if (ch.unicode() == 95)
 		goto state_61;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_61;
 	goto out;
     state_62:
 			ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_79;
 	if (ch.unicode() == 11)
 		goto state_79;
-	if (ch.unicode() >= 14 && ch.unicode() <= 47)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 47))
 		goto state_79;
-	if (ch.unicode() >= 58 && ch.unicode() <= 96)
+	if ((ch.unicode() >= 58) && (ch.unicode() <= 96))
 		goto state_79;
 	if (ch.unicode() >= 103)
 		goto state_79;
@@ -792,32 +792,32 @@ int QCssScanner_Generated::lex()
 	ch = next();
 	if (ch.unicode() == 45)
 		goto state_61;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_61;
 	if (ch.unicode() == 92)
 		goto state_62;
 	if (ch.unicode() == 95)
 		goto state_61;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_61;
 	goto out;
     state_64:
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_35;
 	if (ch.unicode() == 11)
 		goto state_35;
-	if (ch.unicode() >= 14 && ch.unicode() <= 38)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 38))
 		goto state_35;
 	if (ch.unicode() == 39)
 		goto state_36;
-	if (ch.unicode() >= 40 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 40) && (ch.unicode() <= 91))
 		goto state_35;
 	if (ch.unicode() == 92)
 		goto state_37;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_35;
 	if (ch.unicode() >= 123)
 		goto state_35;
@@ -826,19 +826,19 @@ int QCssScanner_Generated::lex()
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_35;
 	if (ch.unicode() == 11)
 		goto state_35;
-	if (ch.unicode() >= 14 && ch.unicode() <= 38)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 38))
 		goto state_35;
 	if (ch.unicode() == 39)
 		goto state_36;
-	if (ch.unicode() >= 40 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 40) && (ch.unicode() <= 91))
 		goto state_35;
 	if (ch.unicode() == 92)
 		goto state_37;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_35;
 	if (ch.unicode() >= 123)
 		goto state_35;
@@ -847,19 +847,19 @@ int QCssScanner_Generated::lex()
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_35;
 	if (ch.unicode() == 11)
 		goto state_35;
-	if (ch.unicode() >= 14 && ch.unicode() <= 38)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 38))
 		goto state_35;
 	if (ch.unicode() == 39)
 		goto state_36;
-	if (ch.unicode() >= 40 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 40) && (ch.unicode() <= 91))
 		goto state_35;
 	if (ch.unicode() == 92)
 		goto state_37;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_35;
 	if (ch.unicode() >= 123)
 		goto state_35;
@@ -868,21 +868,21 @@ int QCssScanner_Generated::lex()
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_35;
 	if (ch.unicode() == 10)
 		goto state_80;
 	if (ch.unicode() == 11)
 		goto state_35;
-	if (ch.unicode() >= 14 && ch.unicode() <= 38)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 38))
 		goto state_35;
 	if (ch.unicode() == 39)
 		goto state_36;
-	if (ch.unicode() >= 40 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 40) && (ch.unicode() <= 91))
 		goto state_35;
 	if (ch.unicode() == 92)
 		goto state_37;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_35;
 	if (ch.unicode() >= 123)
 		goto state_35;
@@ -895,13 +895,13 @@ int QCssScanner_Generated::lex()
 		goto state_41;
 	if (ch.unicode() == 45)
 		goto state_42;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_69;
 	if (ch.unicode() == 92)
 		goto state_45;
 	if (ch.unicode() == 95)
 		goto state_46;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_46;
 	goto out;
     state_70:
@@ -910,13 +910,13 @@ int QCssScanner_Generated::lex()
 	ch = next();
 	if (ch.unicode() == 45)
 		goto state_71;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_71;
 	if (ch.unicode() == 92)
 		goto state_72;
 	if (ch.unicode() == 95)
 		goto state_71;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_71;
 	goto out;
     state_71:
@@ -925,24 +925,24 @@ int QCssScanner_Generated::lex()
 	ch = next();
 	if (ch.unicode() == 45)
 		goto state_71;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_71;
 	if (ch.unicode() == 92)
 		goto state_72;
 	if (ch.unicode() == 95)
 		goto state_71;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_71;
 	goto out;
     state_72:
 			ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_81;
 	if (ch.unicode() == 11)
 		goto state_81;
-	if (ch.unicode() >= 14 && ch.unicode() <= 47)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 47))
 		goto state_81;
-	if (ch.unicode() >= 58 && ch.unicode() <= 96)
+	if ((ch.unicode() >= 58) && (ch.unicode() <= 96))
 		goto state_81;
 	if (ch.unicode() >= 103)
 		goto state_81;
@@ -960,13 +960,13 @@ int QCssScanner_Generated::lex()
 	ch = next();
 	if (ch.unicode() == 45)
 		goto state_75;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_75;
 	if (ch.unicode() == 92)
 		goto state_76;
 	if (ch.unicode() == 95)
 		goto state_75;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_75;
 	goto out;
     state_75:
@@ -975,24 +975,24 @@ int QCssScanner_Generated::lex()
 	ch = next();
 	if (ch.unicode() == 45)
 		goto state_75;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_75;
 	if (ch.unicode() == 92)
 		goto state_76;
 	if (ch.unicode() == 95)
 		goto state_75;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_75;
 	goto out;
     state_76:
 			ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_83;
 	if (ch.unicode() == 11)
 		goto state_83;
-	if (ch.unicode() >= 14 && ch.unicode() <= 47)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 47))
 		goto state_83;
-	if (ch.unicode() >= 58 && ch.unicode() <= 96)
+	if ((ch.unicode() >= 58) && (ch.unicode() <= 96))
 		goto state_83;
 	if (ch.unicode() >= 103)
 		goto state_83;
@@ -1005,32 +1005,32 @@ int QCssScanner_Generated::lex()
 		goto state_52;
 	if (ch.unicode() == 45)
 		goto state_53;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_53;
 	if (ch.unicode() == 92)
 		goto state_54;
 	if (ch.unicode() == 95)
 		goto state_53;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_53;
 	goto out;
     state_78:
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_30;
 	if (ch.unicode() == 11)
 		goto state_30;
-	if (ch.unicode() >= 14 && ch.unicode() <= 33)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 33))
 		goto state_30;
 	if (ch.unicode() == 34)
 		goto state_31;
-	if (ch.unicode() >= 35 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 35) && (ch.unicode() <= 91))
 		goto state_30;
 	if (ch.unicode() == 92)
 		goto state_32;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_30;
 	if (ch.unicode() >= 123)
 		goto state_30;
@@ -1041,32 +1041,32 @@ int QCssScanner_Generated::lex()
 	ch = next();
 	if (ch.unicode() == 45)
 		goto state_61;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_61;
 	if (ch.unicode() == 92)
 		goto state_62;
 	if (ch.unicode() == 95)
 		goto state_61;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_61;
 	goto out;
     state_80:
 			lastAcceptingPos = pos;
 	token = QCss::INVALID;
 	ch = next();
-	if (ch.unicode() >= 1 && ch.unicode() <= 9)
+	if ((ch.unicode() >= 1) && (ch.unicode() <= 9))
 		goto state_35;
 	if (ch.unicode() == 11)
 		goto state_35;
-	if (ch.unicode() >= 14 && ch.unicode() <= 38)
+	if ((ch.unicode() >= 14) && (ch.unicode() <= 38))
 		goto state_35;
 	if (ch.unicode() == 39)
 		goto state_36;
-	if (ch.unicode() >= 40 && ch.unicode() <= 91)
+	if ((ch.unicode() >= 40) && (ch.unicode() <= 91))
 		goto state_35;
 	if (ch.unicode() == 92)
 		goto state_37;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_35;
 	if (ch.unicode() >= 123)
 		goto state_35;
@@ -1077,13 +1077,13 @@ int QCssScanner_Generated::lex()
 	ch = next();
 	if (ch.unicode() == 45)
 		goto state_71;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_71;
 	if (ch.unicode() == 92)
 		goto state_72;
 	if (ch.unicode() == 95)
 		goto state_71;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_71;
 	goto out;
     state_83:
@@ -1092,24 +1092,24 @@ int QCssScanner_Generated::lex()
 	ch = next();
 	if (ch.unicode() == 45)
 		goto state_75;
-	if (ch.unicode() >= 48 && ch.unicode() <= 57)
+	if ((ch.unicode() >= 48) && (ch.unicode() <= 57))
 		goto state_75;
 	if (ch.unicode() == 92)
 		goto state_76;
 	if (ch.unicode() == 95)
 		goto state_75;
-	if ((ch.unicode() >= 'a' && ch.unicode() <= 'z') || ch.unicode() >= 256)
+	if (((ch.unicode() >= 'a') && (ch.unicode() <= 'z')) || (ch.unicode() >= 256))
 		goto state_75;
 	goto out;
     found:
 			lastAcceptingPos = pos;
-    
-    out:
-			if (lastAcceptingPos != -1) {
-		lexemLength = lastAcceptingPos - lexemStart;
-		pos = lastAcceptingPos;
-			}
-			return token;
+
+	out:
+		if (lastAcceptingPos != -1) {
+			lexemLength = lastAcceptingPos - lexemStart;
+			pos = lastAcceptingPos;
+		}
+		return token;
 }
 
 
@@ -1384,10 +1384,15 @@ void ValueExtractor::lengthValues(const Declaration &decl, int *m)
 	for (i = 0; i < qMin(decl.values.count(), 4); i++)
 		m[i] = lengthValue(decl.values[i]);
 
-	if (i == 0) m[0] = m[1] = m[2] = m[3] = 0;
-	else if (i == 1) m[3] = m[2] = m[1] = m[0];
-	else if (i == 2) m[2] = m[0], m[3] = m[1];
-	else if (i == 3) m[3] = m[1];
+	if (i == 0){
+		m[0] = m[1] = m[2] = m[3] = 0;
+	} else if (i == 1) {
+		m[3] = m[2] = m[1] = m[0];
+	} else if (i == 2) {
+		m[2] = m[0], m[3] = m[1];
+	} else if (i == 3) {
+		m[3] = m[1];
+	}
 }
 
 bool ValueExtractor::extractGeometry(int *w, int *h, int *mw, int *mh)
@@ -1397,11 +1402,20 @@ bool ValueExtractor::extractGeometry(int *w, int *h, int *mw, int *mh)
 	for (int i = 0; i < declarations.count(); i++) {
 		const Declaration &decl = declarations.at(i);
 		switch (decl.propertyId) {
-			case Width: *w = lengthValue(decl); break;
-			case Height: *h = lengthValue(decl); break;
-			case MinimumWidth: *mw = lengthValue(decl); break;
-			case MinimumHeight: *mh = lengthValue(decl); break;
-			default: continue;
+			case Width: 
+				*w = lengthValue(decl);
+				break;
+			case Height:
+				*h = lengthValue(decl);
+				break;
+			case MinimumWidth:
+				*mw = lengthValue(decl);
+				break;
+			case MinimumHeight:
+				*mh = lengthValue(decl);
+				break;
+			default:
+				continue;
 		}
 		hit = true;
 	}
@@ -1409,22 +1423,37 @@ bool ValueExtractor::extractGeometry(int *w, int *h, int *mw, int *mh)
 	return hit;
 }
 
-bool ValueExtractor::extractPosition(int *left, int *top, int *right, int *bottom, QCss::Origin *origin,
-									 Qt::Alignment *position, QCss::PositionMode *mode)
+bool ValueExtractor::extractPosition(int *left, int *top, int *right, int *bottom,
+						QCss::Origin *origin, Qt::Alignment *position, QCss::PositionMode *mode)
 {
 	extractFont();
 	bool hit = false;
 	for (int i = 0; i < declarations.count(); i++) {
 		const Declaration &decl = declarations.at(i);
 		switch (decl.propertyId) {
-			case Left: *left = lengthValue(decl); break;
-			case Top: *top = lengthValue(decl); break;
-			case Right: *right = lengthValue(decl); break;
-			case Bottom: *bottom = lengthValue(decl); break;
-			case QtOrigin: *origin = decl.originValue(); break;
-			case QtPosition: *position = decl.alignmentValue(); break;
-			case Position: *mode = decl.positionValue(); break;
-			default: continue;
+			case Left:
+				*left = lengthValue(decl);
+				break;
+			case Top:
+				*top = lengthValue(decl);
+				break;
+			case Right:
+				*right = lengthValue(decl);
+				break;
+			case Bottom:
+				*bottom = lengthValue(decl);
+				break;
+			case QtOrigin:
+				*origin = decl.originValue();
+				break;
+			case QtPosition:
+				*position = decl.alignmentValue();
+				break;
+			case Position:
+				*mode = decl.positionValue();
+				break;
+			default:
+				continue;
 		}
 		hit = true;
 	}
@@ -1439,20 +1468,43 @@ bool ValueExtractor::extractBox(int *margins, int *paddings, int *spacing)
 	for (int i = 0; i < declarations.count(); i++) {
 		const Declaration &decl = declarations.at(i);
 		switch (decl.propertyId) {
-			case PaddingLeft: paddings[LeftEdge] = lengthValue(decl); break;
-			case PaddingRight: paddings[RightEdge] = lengthValue(decl); break;
-			case PaddingTop: paddings[TopEdge] = lengthValue(decl); break;
-			case PaddingBottom: paddings[BottomEdge] = lengthValue(decl); break;
-			case Padding: lengthValues(decl, paddings); break;
-
-			case MarginLeft: margins[LeftEdge] = lengthValue(decl); break;
-			case MarginRight: margins[RightEdge] = lengthValue(decl); break;
-			case MarginTop: margins[TopEdge] = lengthValue(decl); break;
-			case MarginBottom: margins[BottomEdge] = lengthValue(decl); break;
-			case Margin: lengthValues(decl, margins); break;
-			case QtSpacing: if (spacing) *spacing = lengthValue(decl); break;
-
-			default: continue;
+			case PaddingLeft:
+				paddings[LeftEdge] = lengthValue(decl);
+				break;
+			case PaddingRight:
+				paddings[RightEdge] = lengthValue(decl);
+				break;
+			case PaddingTop:
+				paddings[TopEdge] = lengthValue(decl);
+				break;
+			case PaddingBottom:
+				paddings[BottomEdge] = lengthValue(decl);
+				break;
+			case Padding:
+				lengthValues(decl, paddings);
+				break;
+			case MarginLeft:
+				margins[LeftEdge] = lengthValue(decl);
+				break;
+			case MarginRight:
+				margins[RightEdge] = lengthValue(decl);
+				break;
+			case MarginTop:
+				margins[TopEdge] = lengthValue(decl);
+				break;
+			case MarginBottom:
+				margins[BottomEdge] = lengthValue(decl);
+				break;
+			case Margin:
+				lengthValues(decl, margins);
+				break;
+			case QtSpacing:
+				if (spacing) {
+					*spacing = lengthValue(decl);
+				}
+				break;
+			default:
+				continue;
 		}
 		hit = true;
 	}
@@ -1463,12 +1515,14 @@ bool ValueExtractor::extractBox(int *margins, int *paddings, int *spacing)
 QSize ValueExtractor::sizeValue(const Declaration &decl)
 {
 	int x[2] = { 0, 0 };
-	if (decl.values.count() > 0)
+	if (decl.values.count() > 0) {
 		x[0] = lengthValue(decl.values.at(0));
-	if (decl.values.count() > 1)
+	}
+	if (decl.values.count() > 1) {
 		x[1] = lengthValue(decl.values.at(1));
-	else
+	} else {
 		x[1] = x[0];
+	}
 	return QSize(x[0], x[1]);
 }
 
@@ -1479,7 +1533,7 @@ void ValueExtractor::sizeValues(const Declaration &decl, QSize *radii)
 		radii[i] = radii[0];
 }
 
-bool ValueExtractor::extractBorder(int *borders, QColor *colors, BorderStyle *styles,
+bool ValueExtractor::extractBorder(int *borders, QColor *colors, BorderStyle *styles, 
 								   QSize *radii)
 {
 	extractFont();
@@ -1487,30 +1541,68 @@ bool ValueExtractor::extractBorder(int *borders, QColor *colors, BorderStyle *st
 	for (int i = 0; i < declarations.count(); i++) {
 		const Declaration &decl = declarations.at(i);
 		switch (decl.propertyId) {
-			case BorderLeftWidth: borders[LeftEdge] = lengthValue(decl); break;
-			case BorderRightWidth: borders[RightEdge] = lengthValue(decl); break;
-			case BorderTopWidth: borders[TopEdge] = lengthValue(decl); break;
-			case BorderBottomWidth: borders[BottomEdge] = lengthValue(decl); break;
-			case BorderWidth: lengthValues(decl, borders); break;
-
-			case BorderLeftColor: colors[LeftEdge] = decl.colorValue(); break;
-			case BorderRightColor: colors[RightEdge] = decl.colorValue(); break;
-			case BorderTopColor: colors[TopEdge] = decl.colorValue(); break;
-			case BorderBottomColor: colors[BottomEdge] = decl.colorValue(); break;
-			case BorderColor: decl.colorValues(colors); break;
-
-			case BorderTopStyle: styles[TopEdge] = decl.styleValue(); break;
-			case BorderBottomStyle: styles[BottomEdge] = decl.styleValue(); break;
-			case BorderLeftStyle: styles[LeftEdge] = decl.styleValue(); break;
-			case BorderRightStyle: styles[RightEdge] = decl.styleValue(); break;
-			case BorderStyles:  decl.styleValues(styles); break;
-
-			case BorderTopLeftRadius: radii[0] = sizeValue(decl); break;
-			case BorderTopRightRadius: radii[1] = sizeValue(decl); break;
-			case BorderBottomLeftRadius: radii[2] = sizeValue(decl); break;
-			case BorderBottomRightRadius: radii[3] = sizeValue(decl); break;
-			case BorderRadius: sizeValues(decl, radii); break;
-
+			case BorderLeftWidth:
+				borders[LeftEdge] = lengthValue(decl);
+				break;
+			case BorderRightWidth:
+				borders[RightEdge] = lengthValue(decl);
+				break;
+			case BorderTopWidth:
+				borders[TopEdge] = lengthValue(decl);
+				break;
+			case BorderBottomWidth:
+				borders[BottomEdge] = lengthValue(decl);
+				break;
+			case BorderWidth:
+				lengthValues(decl, borders);
+				break;
+			case BorderLeftColor:
+				colors[LeftEdge] = decl.colorValue();
+				break;
+			case BorderRightColor:
+				colors[RightEdge] = decl.colorValue();
+				break;
+			case BorderTopColor:
+				colors[TopEdge] = decl.colorValue();
+				break;
+			case BorderBottomColor:
+				colors[BottomEdge] = decl.colorValue();
+				break;
+			case BorderColor:
+				decl.colorValues(colors);
+				break;
+			case BorderTopStyle:
+				styles[TopEdge] = decl.styleValue();
+				break;
+			case BorderBottomStyle:
+				styles[BottomEdge] = decl.styleValue();
+				break;
+			case BorderLeftStyle:
+				styles[LeftEdge] = decl.styleValue();
+				break;
+			case BorderRightStyle:
+				styles[RightEdge] = decl.styleValue();
+				break;
+			case BorderStyles:
+				decl.styleValues(styles);
+				break;
+				
+			case BorderTopLeftRadius:
+				radii[0] = sizeValue(decl);
+				break;
+			case BorderTopRightRadius:
+				radii[1] = sizeValue(decl);
+				break;
+			case BorderBottomLeftRadius:
+				radii[2] = sizeValue(decl);
+				break;
+			case BorderBottomRightRadius:
+				radii[3] = sizeValue(decl);
+				break;
+			case BorderRadius:
+				sizeValues(decl, radii);
+				break;
+				
 			case BorderLeft: 
 				borderValue(decl, &borders[LeftEdge], &styles[LeftEdge], &colors[LeftEdge]); 
 				break;
@@ -1529,8 +1621,9 @@ bool ValueExtractor::extractBorder(int *borders, QColor *colors, BorderStyle *st
 				styles[TopEdge] = styles[RightEdge] = styles[BottomEdge] = styles[LeftEdge];
 				colors[TopEdge] = colors[RightEdge] = colors[BottomEdge] = colors[LeftEdge];
 				break;
-
-				default: continue;
+				
+				default:
+					continue;
 		}
 		hit = true;
 	}
@@ -1545,25 +1638,38 @@ static Qt::Alignment parseAlignment(const Value *values, int count)
 		if (values[i].type != Value::KnownIdentifier)
 			break;
 		switch (values[i].variant.toInt()) {
-			case Value_Left: a[i] = Qt::AlignLeft; break;
-			case Value_Right: a[i] = Qt::AlignRight; break;
-			case Value_Top: a[i] = Qt::AlignTop; break;
-			case Value_Bottom: a[i] = Qt::AlignBottom; break;
-			case Value_Center: a[i] = Qt::AlignCenter; break;
-			default: break;
+			case Value_Left:
+				a[i] = Qt::AlignLeft;
+				break;
+			case Value_Right:
+				a[i] = Qt::AlignRight;
+				break;
+			case Value_Top:
+				a[i] = Qt::AlignTop;
+				break;
+			case Value_Bottom:
+				a[i] = Qt::AlignBottom;
+				break;
+			case Value_Center:
+				a[i] = Qt::AlignCenter;
+				break;
+			default:
+				break;
 		}
 	}
 
-	if (a[0] == Qt::AlignCenter && a[1] != 0 && a[1] != Qt::AlignCenter)
-		a[0] = (a[1] == Qt::AlignLeft || a[1] == Qt::AlignRight) ? Qt::AlignVCenter : Qt::AlignHCenter;
-	if ((a[1] == 0 || a[1] == Qt::AlignCenter) && a[0] != Qt::AlignCenter)
-		a[1] = (a[0] == Qt::AlignLeft || a[0] == Qt::AlignRight) ? Qt::AlignVCenter : Qt::AlignHCenter;
-	return a[0] | a[1];
+	if ((a[0] == Qt::AlignCenter) && (a[1] != 0) && (a[1] != Qt::AlignCenter))
+		a[0] = ((a[1] == Qt::AlignLeft) || (a[1] == Qt::AlignRight)) ? Qt::AlignVCenter : 
+				Qt::AlignHCenter;
+	if (((a[1] == 0) || (a[1] == Qt::AlignCenter)) && (a[0] != Qt::AlignCenter))
+		a[1] = ((a[0] == Qt::AlignLeft) || (a[0] == Qt::AlignRight)) ? Qt::AlignVCenter : 
+				Qt::AlignHCenter;
+	return (a[0] | a[1]);
 }
 
 static QColor parseColorValue(Value v)
 {
-	if (v.type == Value::Identifier || v.type == Value::String) {
+	if ((v.type == Value::Identifier) || (v.type == Value::String)) {
 		if (v.variant.toString().compare("transparent", Qt::CaseInsensitive) != 0) {
 			v.variant.convert(QVariant::Color);
 		} else {
@@ -1576,26 +1682,26 @@ static QColor parseColorValue(Value v)
 
 	if (v.type != Value::Function)
 		return QColor();
-
+	
 	QStringList lst = v.variant.toStringList();
 	if (lst.count() != 2)
 		return QColor();
-
+	
     // function name
 	if (lst.at(0).compare(QLatin1String("rgb"), Qt::CaseInsensitive) != 0)
 		return QColor();
-
+	
 	Parser p(lst.at(1));
 	if (!p.testExpr())
 		return QColor();
-
+	
 	QVector<Value> colorDigits;
 	if (!p.parseExpr(&colorDigits))
 		return QColor();
-
-	if (colorDigits.count() != 5
-		   || colorDigits.at(1).type != Value::TermOperatorComma
-		   || colorDigits.at(3).type != Value::TermOperatorComma)
+	
+	if ((colorDigits.count() != 5) 
+		   || (colorDigits.at(1).type != Value::TermOperatorComma) 
+		   || (colorDigits.at(3).type != Value::TermOperatorComma))
 		return QColor();
 
 	for (int i = 0; i < 5; i += 2) {
@@ -1605,9 +1711,8 @@ static QColor parseColorValue(Value v)
 		}
 	}
 
-	return QColor(colorDigits.at(0).variant.toInt(),
-				  colorDigits.at(2).variant.toInt(),
-								 colorDigits.at(4).variant.toInt());
+	return QColor(colorDigits.at(0).variant.toInt(), colorDigits.at(2).variant.toInt(), 
+				  colorDigits.at(4).variant.toInt());
 }
 
 static QBrush parseBrushValue(Value v)
@@ -1615,20 +1720,20 @@ static QBrush parseBrushValue(Value v)
 	QColor c = parseColorValue(v);
 	if (c.isValid())
 		return QBrush(c);
-
+	
 	if (v.type != Value::Function)
 		return QBrush();
-
+	
 	QStringList lst = v.variant.toStringList();
 	if (lst.count() != 2)
 		return QBrush();
-
+	
 	QStringList gradFuncs;
 	gradFuncs << "qlineargradient" << "qradialgradient" << "qconicalgradient" << "qgradient";
 	int gradType = -1;
-
-	if (lst.at(0).compare(QLatin1String("gradient"), Qt::CaseInsensitive) != 0
-		   && (gradType = gradFuncs.indexOf(lst.at(0).toLower())) == -1)
+	
+	if ((lst.at(0).compare(QLatin1String("gradient"), Qt::CaseInsensitive) != 0)
+		   && ((gradType = gradFuncs.indexOf(lst.at(0).toLower())) == -1))
 		return QBrush();
 
 	QStringList gradientTypes;
@@ -1658,7 +1763,7 @@ static QBrush parseBrushValue(Value v)
 	}
 
 	if (gradType == 0) {
-		QLinearGradient lg(vars.value(QLatin1String("x1")), vars.value(QLatin1String("y1")),
+		QLinearGradient lg(vars.value(QLatin1String("x1")), vars.value(QLatin1String("y1")), 
 						   vars.value(QLatin1String("x2")), vars.value(QLatin1String("y2")));
 		lg.setStops(stops);
 		if (spread != -1)
@@ -1667,8 +1772,8 @@ static QBrush parseBrushValue(Value v)
 	}
 
 	if (gradType == 1) {
-		QRadialGradient rg(vars.value(QLatin1String("cx")), vars.value(QLatin1String("cy")),
-						   vars.value(QLatin1String("radius")), vars.value(QLatin1String("fx")),
+		QRadialGradient rg(vars.value(QLatin1String("cx")), vars.value(QLatin1String("cy")), 
+						   vars.value(QLatin1String("radius")), vars.value(QLatin1String("fx")), 
 									  vars.value(QLatin1String("fy")));
 		rg.setStops(stops);
 		if (spread != -1)
@@ -1677,14 +1782,14 @@ static QBrush parseBrushValue(Value v)
 	}
 
 	if (gradType == 2) {
-		QConicalGradient cg(vars.value(QLatin1String("cx")), vars.value(QLatin1String("cy")),
+		QConicalGradient cg(vars.value(QLatin1String("cx")), vars.value(QLatin1String("cy")), 
 							vars.value(QLatin1String("angle")));
 		cg.setStops(stops);
 		if (spread != -1)
 			cg.setSpread(QGradient::Spread(spread));
 		return QBrush(cg);
 	}
-
+	
 	return QBrush();
 }
 
@@ -1696,7 +1801,7 @@ static BorderStyle parseStyleValue(Value v)
 		return BorderStyle_Unknown;
 	}
 
-	return static_cast<BorderStyle>(findKnownValue(v.variant.toString(),
+	return static_cast<BorderStyle>(findKnownValue(v.variant.toString(), 
 									borderStyles, NumKnownBorderStyles));
 }
 
@@ -1710,7 +1815,7 @@ void ValueExtractor::borderValue(const Declaration &decl, int *width, QCss::Bord
 		return;
 
 	int i = 0;
-	if (decl.values.at(i).type == Value::Length || decl.values.at(i).type == Value::Number) {
+	if ((decl.values.at(i).type == Value::Length) || (decl.values.at(i).type == Value::Number)) {
 		*width = lengthValue(decl.values.at(i));
 		if (++i >= decl.values.count())
 			return;
@@ -1727,25 +1832,26 @@ void ValueExtractor::borderValue(const Declaration &decl, int *width, QCss::Bord
 	*color = parseColorValue(decl.values.at(i));
 }
 
-static void parseShorthandBackgroundProperty(const QVector<Value> &values, QBrush *brush, QString *image, Repeat *repeat, Qt::Alignment *alignment)
+static void parseShorthandBackgroundProperty(const QVector<Value> &values, QBrush *brush, 
+											 QString *image, Repeat *repeat, Qt::Alignment *alignment)
 {
 	*brush = QBrush();
 	*image = QString();
 	*repeat = Repeat_XY;
-	*alignment = Qt::AlignTop | Qt::AlignLeft;
+	*alignment = (Qt::AlignTop | Qt::AlignLeft);
 
 	for (int i = 0; i < values.count(); ++i) {
 		const Value v = values.at(i);
 		if (v.type == Value::Uri) {
 			*image = v.variant.toString();
 			continue;
-		} else if (v.type == Value::KnownIdentifier && v.variant.toInt() == Value_None) {
+		} else if ((v.type == Value::KnownIdentifier) && (v.variant.toInt() == Value_None)) {
 			*image = QString();
 			continue;
 		}
 
-		Repeat repeatAttempt = static_cast<Repeat>(findKnownValue(v.variant.toString(),
-				repeats, NumKnownRepeats));
+		Repeat repeatAttempt = static_cast<Repeat>(findKnownValue(v.variant.toString(), repeats, 
+				NumKnownRepeats));
 		if (repeatAttempt != Repeat_Unknown) {
 			*repeat = repeatAttempt;
 			continue;
@@ -1754,24 +1860,23 @@ static void parseShorthandBackgroundProperty(const QVector<Value> &values, QBrus
 		if (v.type == Value::KnownIdentifier) {
 			const int start = i;
 			int count = 1;
-			if (i < values.count() - 1
-						 && values.at(i + 1).type == Value::KnownIdentifier) {
+			if ((i < values.count() - 1) && (values.at(i + 1).type == Value::KnownIdentifier)) {
 				++i;
 				++count;
-						 }
-						 Qt::Alignment a = parseAlignment(values.constData() + start, count);
-						 if (int(a) != 0) {
-							 *alignment = a;
-							 continue;
-						 }
-						 i -= count - 1;
+			}
+			Qt::Alignment a = parseAlignment(values.constData() + start, count);
+			if (int(a) != 0) {
+				*alignment = a;
+				continue;
+			}
+			i -= count - 1;
 		}
 
 		*brush = parseBrushValue(v);
 	}
 }
 
-bool ValueExtractor::extractBackground(QBrush *brush, QString *image, Repeat *repeat,
+bool ValueExtractor::extractBackground(QBrush *brush, QString *image, Repeat *repeat, 
 									   Qt::Alignment *alignment, Origin *origin)
 {
 	bool hit = false;
@@ -1787,8 +1892,8 @@ bool ValueExtractor::extractBackground(QBrush *brush, QString *image, Repeat *re
 					*image = val.variant.toString();
 				break;
 			case BackgroundRepeat:
-				*repeat = static_cast<Repeat>(findKnownValue(val.variant.toString(),
-											  repeats, NumKnownRepeats));
+				*repeat = static_cast<Repeat>(findKnownValue(val.variant.toString(), repeats, 
+											  NumKnownRepeats));
 				break;
 			case BackgroundPosition:
 				*alignment = decl.alignmentValue();
@@ -1811,12 +1916,24 @@ static bool setFontSizeFromValue(Value value, QFont *font, int *fontSizeAdjustme
 	if (value.type == Value::KnownIdentifier) {
 		bool valid = true;
 		switch (value.variant.toInt()) {
-			case Value_Small: *fontSizeAdjustment = -1; break;
-			case Value_Medium: *fontSizeAdjustment = 0; break;
-			case Value_Large: *fontSizeAdjustment = 1; break;
-			case Value_XLarge: *fontSizeAdjustment = 2; break;
-			case Value_XXLarge: *fontSizeAdjustment = 3; break;
-			default: valid = false; break;
+			case Value_Small:
+				*fontSizeAdjustment = -1;
+				break;
+			case Value_Medium:
+				*fontSizeAdjustment = 0;
+				break;
+			case Value_Large:
+				*fontSizeAdjustment = 1;
+				break;
+			case Value_XLarge:
+				*fontSizeAdjustment = 2;
+				break;
+			case Value_XXLarge:
+				*fontSizeAdjustment = 3;
+				break;
+			default:
+				valid = false;
+				break;
 		}
 		return valid;
 	}
@@ -1848,10 +1965,17 @@ static bool setFontStyleFromValue(const Value &value, QFont *font)
 	if (value.type != Value::KnownIdentifier)
 		return false ;
 	switch (value.variant.toInt()) {
-		case Value_Normal: font->setStyle(QFont::StyleNormal); return true;
-		case Value_Italic: font->setStyle(QFont::StyleItalic); return true;
-		case Value_Oblique: font->setStyle(QFont::StyleOblique); return true;
-		default: break;
+		case Value_Normal:
+			font->setStyle(QFont::StyleNormal);
+			return true;
+		case Value_Italic:
+			font->setStyle(QFont::StyleItalic);
+			return true;
+		case Value_Oblique:
+			font->setStyle(QFont::StyleOblique);
+			return true;
+		default:
+			break;
 	}
 	return false;
 }
@@ -1860,9 +1984,14 @@ static bool setFontWeightFromValue(const Value &value, QFont *font)
 {
 	if (value.type == Value::KnownIdentifier) {
 		switch (value.variant.toInt()) {
-			case Value_Normal: font->setWeight(QFont::Normal); return true;
-			case Value_Bold: font->setWeight(QFont::Bold); return true;
-			default: break;
+			case Value_Normal:
+				font->setWeight(QFont::Normal);
+				return true;
+			case Value_Bold:
+				font->setWeight(QFont::Bold);
+				return true;
+			default:
+				break;
 		}
 		return false;
 	}
@@ -1901,10 +2030,17 @@ static void setTextDecorationFromValues(const QVector<Value> &values, QFont *fon
 		if (values.at(i).type != Value::KnownIdentifier)
 			continue;
 		switch (values.at(i).variant.toInt()) {
-			case Value_Underline: font->setUnderline(true); break;
-			case Value_Overline: font->setOverline(true); break;
-			case Value_LineThrough: font->setStrikeOut(true); break;
-			default: break;
+			case Value_Underline:
+				font->setUnderline(true);
+				break;
+			case Value_Overline:
+				font->setOverline(true);
+				break;
+			case Value_LineThrough:
+				font->setStrikeOut(true);
+				break;
+			default:
+				break;
 		}
 	}
 }
@@ -1917,8 +2053,8 @@ static void parseShorthandFontProperty(const QVector<Value> &values, QFont *font
 
 	int i = 0;
 	while (i < values.count()) {
-		if (setFontStyleFromValue(values.at(i), font)
-				  || setFontWeightFromValue(values.at(i), font))
+		if ((setFontStyleFromValue(values.at(i), font))
+				  || (setFontWeightFromValue(values.at(i), font)))
 			++i;
 		else
 			break;
@@ -1950,13 +2086,26 @@ void ValueExtractor::extractFont(QFont *font, int *fontSizeAdjustment)
 			continue;
 		const Value val = decl.values.first();
 		switch (decl.propertyId) {
-			case FontSize: setFontSizeFromValue(val, font, fontSizeAdjustment); break;
-			case FontStyle: setFontStyleFromValue(val, font); break;
-			case FontWeight: setFontWeightFromValue(val, font); break;
-			case FontFamily: setFontFamilyFromValues(decl.values, font); break;
-			case TextDecoration: setTextDecorationFromValues(decl.values, font); break;
-			case Font: parseShorthandFontProperty(decl.values, font, fontSizeAdjustment); break;
-			default: break;
+			case FontSize:
+				setFontSizeFromValue(val, font, fontSizeAdjustment);
+				break;
+			case FontStyle:
+				setFontStyleFromValue(val, font);
+				break;
+			case FontWeight:
+				setFontWeightFromValue(val, font);
+				break;
+			case FontFamily:
+				setFontFamilyFromValues(decl.values, font);
+				break;
+			case TextDecoration:
+				setTextDecorationFromValues(decl.values, font);
+				break;
+			case Font:
+				parseShorthandFontProperty(decl.values, font, fontSizeAdjustment);
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -1971,11 +2120,20 @@ bool ValueExtractor::extractPalette(QColor *fg, QColor *sfg, QBrush *sbg, QBrush
 	for (int i = 0; i < declarations.count(); ++i) {
 		const Declaration &decl = declarations.at(i);
 		switch (decl.propertyId) {
-			case Color: *fg = decl.colorValue(); break;
-			case QtSelectionForeground: *sfg = decl.colorValue(); break;
-			case QtSelectionBackground: *sbg = decl.brushValue(); break;
-			case QtAlternateBackground: *abg = decl.brushValue(); break;
-			default: continue;
+			case Color:
+				*fg = decl.colorValue();
+				break;
+			case QtSelectionForeground:
+				*sfg = decl.colorValue();
+				break;
+			case QtSelectionBackground:
+				*sbg = decl.brushValue();
+				break;
+			case QtAlternateBackground:
+				*abg = decl.brushValue();
+				break;
+			default:
+				continue;
 		}
 		hit = true;
 	}
@@ -2014,7 +2172,7 @@ bool Declaration::realValue(qreal *real, const char *unit) const
 	if (values.count() != 1)
 		return false;
 	const Value &v = values.first();
-	if (unit && v.type != Value::Length)
+	if ((unit) && (v.type != Value::Length))
 		return false;
 	QString s = v.variant.toString();
 	if (unit) {
@@ -2034,7 +2192,7 @@ bool Declaration::intValue(int *i, const char *unit) const
 	if (values.count() != 1)
 		return false;
 	const Value &v = values.first();
-	if (unit && v.type != Value::Length)
+	if ((unit) && (v.type != Value::Length))
 		return false;
 	QString s = v.variant.toString();
 	if (unit) {
@@ -2057,7 +2215,7 @@ QRect Declaration::rectValue() const
 	if (v.type != Value::Function)
 		return QRect();
 	QStringList func = v.variant.toStringList();
-	if (func.count() != 2 || func.first().compare(QLatin1String("rect")) != 0)
+	if ((func.count() != 2) || (func.first().compare(QLatin1String("rect")) != 0))
 		return QRect();
 	QStringList args = func[1].split(" ", QString::SkipEmptyParts);
 	if (args.count() != 4)
@@ -2070,10 +2228,15 @@ void Declaration::colorValues(QColor *c) const
 	int i;
 	for (i = 0; i < qMin(values.count(), 4); i++)
 		c[i] = parseColorValue(values.at(i));
-	if (i == 0) c[0] = c[1] = c[2] = c[3] = QColor();
-	else if (i == 1) c[3] = c[2] = c[1] = c[0];
-	else if (i == 2) c[2] = c[0], c[3] = c[1];
-	else if (i == 3) c[3] = c[1];
+	if (i == 0) {
+		c[0] = c[1] = c[2] = c[3] = QColor();
+	} else if (i == 1) {
+		c[3] = c[2] = c[1] = c[0];
+	} else if (i == 2) {
+		c[2] = c[0], c[3] = c[1];
+	} else if (i == 3) {
+		c[3] = c[1];
+	}
 }
 
 BorderStyle Declaration::styleValue() const
@@ -2088,10 +2251,15 @@ void Declaration::styleValues(BorderStyle *s) const
 	int i;
 	for (i = 0; i < qMin(values.count(), 4); i++)
 		s[i] = parseStyleValue(values.at(i));
-	if (i == 0) s[0] = s[1] = s[2] = s[3] = BorderStyle_None;
-	else if (i == 1) s[3] = s[2] = s[1] = s[0];
-	else if (i == 2) s[2] = s[0], s[3] = s[1];
-	else if (i == 3) s[3] = s[1];
+	if (i == 0) {
+		s[0] = s[1] = s[2] = s[3] = BorderStyle_None;
+	} else if (i == 1) {
+		s[3] = s[2] = s[1] = s[0];
+	} else if (i == 2) {
+		s[2] = s[0], s[3] = s[1];
+	} else if (i == 3) {
+		s[3] = s[1];
+	}
 }
 
 Repeat Declaration::repeatValue() const
@@ -2120,14 +2288,14 @@ PositionMode Declaration::positionValue() const
 
 QString Declaration::uriValue() const
 {
-	if (values.isEmpty() || values.first().type != Value::Uri)
+	if ((values.isEmpty()) || (values.first().type != Value::Uri))
 		return QString();
 	return values.first().variant.toString();
 }
 
 Qt::Alignment Declaration::alignmentValue() const
 {
-	if (values.isEmpty() || values.count() > 2)
+	if ((values.isEmpty()) || (values.count() > 2))
 		return Qt::AlignLeft | Qt::AlignTop;
 
 	return parseAlignment(values.constData(), values.count());
@@ -2152,10 +2320,15 @@ void Declaration::borderImageValue(QString *image, int *cuts,
 				break;
 			cuts[i] = v.variant.toString().toInt();
 		}
-		if (i == 0) cuts[0] = cuts[1] = cuts[2] = cuts[3] = 0;
-		else if (i == 1) cuts[3] = cuts[2] = cuts[1] = cuts[0];
-		else if (i == 2) cuts[2] = cuts[0], cuts[3] = cuts[1];
-		else if (i == 3) cuts[3] = cuts[1];
+		if (i == 0) {
+			cuts[0] = cuts[1] = cuts[2] = cuts[3] = 0;
+		} else if (i == 1) {
+			cuts[3] = cuts[2] = cuts[1] = cuts[0];
+		} else if (i == 2) {
+			cuts[2] = cuts[0], cuts[3] = cuts[1];
+		} else if (i == 3) {
+			cuts[3] = cuts[1];
+		}
 	}
 
 	if (values.last().type == Value::Identifier) {
@@ -2179,8 +2352,8 @@ int Selector::specificity() const
 		const BasicSelector &sel = basicSelectors.at(i);
 		if (!sel.elementName.isEmpty())
 			val += 1;
-
-		val += (sel.pseudos.count() + sel.attributeSelectors.count()) * 0x10;
+		
+		val += ((sel.pseudos.count() + sel.attributeSelectors.count()) * 0x10);
 		val += sel.ids.count() * 0x100;
 	}
 	return val;
@@ -2189,7 +2362,7 @@ int Selector::specificity() const
 QString Selector::pseudoElement() const
 {
 	const BasicSelector& bs = basicSelectors.last();
-	if (!bs.pseudos.isEmpty() && bs.pseudos.first().type == PseudoState_Unknown)
+	if ((!bs.pseudos.isEmpty()) && (bs.pseudos.first().type == PseudoState_Unknown))
 		return bs.pseudos.first().name;
 	return QString();
 }
@@ -2240,34 +2413,34 @@ bool StyleSelector::selectorMatches(const Selector &selector, NodePtr node)
 	do {
 		match = basicSelectorMatches(sel, node);
 		if (!match) {
-			if (sel.relationToNext == BasicSelector::MatchNextSelectorIfParent
-						 || i == selector.basicSelectors.count() - 1) // first element must always match!
+			if ((sel.relationToNext == BasicSelector::MatchNextSelectorIfParent)
+						 || (i == selector.basicSelectors.count() - 1)) // first element must always match!
 				break;
 		}
 
-		if (match || sel.relationToNext != BasicSelector::MatchNextSelectorIfAncestor)
+		if ((match) || (sel.relationToNext != BasicSelector::MatchNextSelectorIfAncestor))
 			--i;
 
 		if (i < 0)
 			break;
 
 		sel = selector.basicSelectors.at(i);
-		if (sel.relationToNext == BasicSelector::MatchNextSelectorIfAncestor
-				  || sel.relationToNext == BasicSelector::MatchNextSelectorIfParent) {
-
+		if ((sel.relationToNext == BasicSelector::MatchNextSelectorIfAncestor)
+				  || (sel.relationToNext == BasicSelector::MatchNextSelectorIfParent)) {
 			NodePtr nextParent = parentNode(node);
 			freeNode(node);
 			node = nextParent;
-				  } else if (sel.relationToNext == BasicSelector::MatchNextSelectorIfPreceeds) {
-					  NodePtr previousSibling = previousSiblingNode(node);
-					  freeNode(node);
-					  node = previousSibling;
-				  }
-				  if (isNullNode(node)) {
-					  match = false;
-					  break;
-				  }
-	} while (i >= 0 && (match || sel.relationToNext == BasicSelector::MatchNextSelectorIfAncestor));
+			} else if (sel.relationToNext == BasicSelector::MatchNextSelectorIfPreceeds) {
+				NodePtr previousSibling = previousSiblingNode(node);
+				freeNode(node);
+				node = previousSibling;
+			}
+			if (isNullNode(node)) {
+				match = false;
+				break;
+			}
+	} while ((i >= 0) && ((match) || (sel.relationToNext == 
+				BasicSelector::MatchNextSelectorIfAncestor)));
 
 	freeNode(node);
 
@@ -2292,19 +2465,17 @@ bool StyleSelector::basicSelectorMatches(const BasicSelector &sel, NodePtr node)
 				QStringList lst = attrValue.split(QLatin1Char(' '));
 				if (!lst.contains(a.value))
 					return false;
-			} else if (
-					   (a.valueMatchCriterium == QCss::AttributeSelector::MatchEqual
-							   && attrValue != a.value)
-							   ||
-							   (a.valueMatchCriterium == QCss::AttributeSelector::MatchBeginsWith
-							   && !attrValue.startsWith(a.value))
+			} else if (((a.valueMatchCriterium == QCss::AttributeSelector::MatchEqual) &&
+						(attrValue != a.value)) || ((a.valueMatchCriterium == 
+								QCss::AttributeSelector::MatchBeginsWith) && 
+								(!attrValue.startsWith(a.value)))
 					  )
-							   return false;
+			return false;
 		}
 	}
 
-	if (!sel.elementName.isEmpty()
-			&& !nodeNameEquals(node, sel.elementName))
+	if ((!sel.elementName.isEmpty())
+			&& (!nodeNameEquals(node, sel.elementName)))
 		return false;
 
 	if (!sel.ids.isEmpty()
@@ -2314,13 +2485,14 @@ bool StyleSelector::basicSelectorMatches(const BasicSelector &sel, NodePtr node)
 	return true;
 }
 
-static inline bool qcss_selectorLessThan(const QPair<int, QCss::StyleRule> &lhs, const QPair<int, QCss::StyleRule> &rhs)
+static inline bool qcss_selectorLessThan(const QPair<int, QCss::StyleRule> &lhs, 
+										 const QPair<int, QCss::StyleRule> &rhs)
 {
 	return lhs.first < rhs.first;
 }
 
-void StyleSelector::matchRules(NodePtr node, const QVector<StyleRule> &rules, StyleSheetOrigin origin,
-							   int depth, QVector<QPair<int, StyleRule> > *weightedRules)
+void StyleSelector::matchRules(NodePtr node, const QVector<StyleRule> &rules, 
+							   StyleSheetOrigin origin, int depth, QVector<QPair<int, StyleRule> > *weightedRules)
 {
 	for (int i = 0; i < rules.count(); ++i) {
 		const StyleRule &rule = rules.at(i);
@@ -2329,7 +2501,7 @@ void StyleSelector::matchRules(NodePtr node, const QVector<StyleRule> &rules, St
 			if (selectorMatches(selector, node)) {
 				QPair<int, StyleRule> weightedRule;
 				weightedRule.first = selector.specificity()
-						+ (origin == StyleSheetOrigin_Inline)*0x1000*depth;
+						+ ((origin == StyleSheetOrigin_Inline)*0x1000*depth);
 				weightedRule.second.selectors.append(selector);
 				weightedRule.second.declarations = rule.declarations;
 				weightedRules->append(weightedRule);
@@ -2391,7 +2563,7 @@ QVector<Declaration> StyleSelector::declarationsForNode(NodePtr node)
 		if (!selector.pseudoElement().isEmpty()) // skip rules with pseudo elements
 			continue;
 		int pseudoState = selector.pseudoState();
-		if (pseudoState == PseudoState_Enabled || pseudoState == PseudoState_Unspecified)
+		if ((pseudoState == PseudoState_Enabled) || (pseudoState == PseudoState_Unspecified))
 			decls += rules.at(i).declarations;
 	}
 	return decls;
@@ -2399,10 +2571,9 @@ QVector<Declaration> StyleSelector::declarationsForNode(NodePtr node)
 
 static inline bool isHexDigit(const char c)
 {
-	return (c >= '0' && c <= '9')
-			|| (c >= 'a' && c <= 'f')
-			|| (c >= 'A' && c <= 'F')
-			;
+	return ((c >= '0' && c <= '9') 
+			|| (c >= 'a' && c <= 'f') 
+			|| (c >= 'A' && c <= 'F'));
 }
 
 QString Scanner::preprocess(const QString &input)
@@ -2417,24 +2588,23 @@ QString Scanner::preprocess(const QString &input)
             // test for unicode hex escape
 			int hexCount = 0;
 			const int hexStart = i;
-			while (i < output.size()
-							&& isHexDigit(output.at(i).toLatin1())
-							&& hexCount < 7) {
+			while ((i < output.size()) && (isHexDigit(output.at(i).toLatin1())) 
+							 && (hexCount < 7)) {
 				++hexCount;
 				++i;
-							}
-							if (hexCount == 0)
-								continue;
+			}
+			if (hexCount == 0)
+				continue;
 
-							hexCount = qMin(hexCount, 6);
-							bool ok = false;
-							ushort code = output.mid(hexStart, hexCount).toUShort(&ok, 16);
-							if (ok) {
-								output.replace(hexStart - 1, hexCount + 1, QChar(code));
-								i = hexStart;
-							} else {
-								i = hexStart;
-							}
+			hexCount = qMin(hexCount, 6);
+			bool ok = false;
+			ushort code = output.mid(hexStart, hexCount).toUShort(&ok, 16);
+			if (ok) {
+				output.replace(hexStart - 1, hexCount + 1, QChar(code));
+				i = hexStart;
+			} else {
+				i = hexStart;
+			}
 		} else {
 			++i;
 		}
@@ -2465,7 +2635,7 @@ QString Symbol::lexem() const
 	if (len > 0)
 		result.reserve(len);
 	for (int i = 0; i < len; ++i) {
-		if (text.at(start + i) == QLatin1Char('\\') && i < len - 1)
+		if ((text.at(start + i) == QLatin1Char('\\')) && (i < len - 1))
 			++i;
 		result.append(text.at(start + i));
 	}
@@ -2565,19 +2735,23 @@ bool Parser::parseMedia(MediaRule *mediaRule)
 {
 	do {
 		skipSpace();
-		if (!parseNextMedium(&mediaRule->media)) return false;
+		if (!parseNextMedium(&mediaRule->media))
+			return false;
 	} while (test(COMMA));
 
-	if (!next(LBRACE)) return false;
+	if (!next(LBRACE))
+		return false;
 	skipSpace();
 
 	while (testRuleset()) {
 		StyleRule rule;
-		if (!parseRuleset(&rule)) return false;
+		if (!parseRuleset(&rule))
+			return false;
 		mediaRule->styleRules.append(rule);
 	}
 
-	if (!next(RBRACE)) return false;
+	if (!next(RBRACE))
+		return false;
 	skipSpace();
 	return true;
 }
@@ -2594,38 +2768,52 @@ bool Parser::parsePage(PageRule *pageRule)
 	skipSpace();
 
 	if (testPseudoPage())
-		if (!parsePseudoPage(&pageRule->selector)) return false;
+		if (!parsePseudoPage(&pageRule->selector))
+			return false;
 
 	skipSpace();
-	if (!next(LBRACE)) return false;
+	if (!next(LBRACE))
+		return false;
 
 	do {
 		skipSpace();
 		Declaration decl;
-		if (!parseNextDeclaration(&decl)) return false;
+		if (!parseNextDeclaration(&decl))
+			return false;
 		if (!decl.isEmpty())
 			pageRule->declarations.append(decl);
 	} while (test(SEMICOLON));
 
-	if (!next(RBRACE)) return false;
+	if (!next(RBRACE))
+		return false;
 	skipSpace();
 	return true;
 }
 
 bool Parser::parsePseudoPage(QString *selector)
 {
-	if (!next(IDENT)) return false;
+	if (!next(IDENT))
+		return false;
 	*selector = lexem();
 	return true;
 }
 
 bool Parser::parseNextOperator(Value *value)
 {
-	if (!hasNext()) return true;
+	if (!hasNext())
+		return true;
 	switch (next()) {
-		case SLASH: value->type = Value::TermOperatorSlash; skipSpace(); break;
-		case COMMA: value->type = Value::TermOperatorComma; skipSpace(); break;
-		default: prev(); break;
+		case SLASH:
+			value->type = Value::TermOperatorSlash;
+			skipSpace();
+			break;
+		case COMMA:
+			value->type = Value::TermOperatorComma;
+			skipSpace();
+			break;
+		default:
+			prev();
+			break;
 	}
 	return true;
 }
@@ -2659,18 +2847,21 @@ bool Parser::parseProperty(Declaration *decl)
 bool Parser::parseRuleset(StyleRule *styleRule)
 {
 	Selector sel;
-	if (!parseSelector(&sel)) return false;
+	if (!parseSelector(&sel))
+		return false;
 	styleRule->selectors.append(sel);
 
 	while (test(COMMA)) {
 		skipSpace();
 		Selector sel;
-		if (!parseNextSelector(&sel)) return false;
+		if (!parseNextSelector(&sel))
+			return false;
 		styleRule->selectors.append(sel);
 	}
 
 	skipSpace();
-	if (!next(LBRACE)) return false;
+	if (!next(LBRACE))
+		return false;
 	const int declarationStart = index;
 
 	do {
@@ -2697,7 +2888,8 @@ bool Parser::parseRuleset(StyleRule *styleRule)
 			styleRule->declarations.append(decl);
 	} while (test(SEMICOLON));
 
-	if (!next(RBRACE)) return false;
+	if (!next(RBRACE))
+		return false;
 	skipSpace();
 	return true;
 }
@@ -2705,15 +2897,19 @@ bool Parser::parseRuleset(StyleRule *styleRule)
 bool Parser::parseSelector(Selector *sel)
 {
 	BasicSelector basicSel;
-	if (!parseSimpleSelector(&basicSel)) return false;
+	if (!parseSimpleSelector(&basicSel))
+		return false;
 	while (testCombinator()) {
-		if (!parseCombinator(&basicSel.relationToNext)) return false;
+		if (!parseCombinator(&basicSel.relationToNext))
+			return false;
 
-		if (!testSimpleSelector()) break;
+		if (!testSimpleSelector())
+			break;
 		sel->basicSelectors.append(basicSel);
 
 		basicSel = BasicSelector();
-		if (!parseSimpleSelector(&basicSel)) return false;
+		if (!parseSimpleSelector(&basicSel))
+			return false;
 	}
 	sel->basicSelectors.append(basicSel);
 	return true;
@@ -2723,7 +2919,8 @@ bool Parser::parseSimpleSelector(BasicSelector *basicSel)
 {
 	int minCount = 0;
 	if (lookupElementName()) {
-		if (!parseElementName(&basicSel->elementName)) return false;
+		if (!parseElementName(&basicSel->elementName))
+			return false;
 	} else {
 		prev();
 		minCount = 1;
@@ -2743,17 +2940,20 @@ bool Parser::parseSimpleSelector(BasicSelector *basicSel)
 			AttributeSelector a;
 			a.name = QLatin1String("class");
 			a.valueMatchCriterium = AttributeSelector::MatchContains;
-			if (!parseClass(&a.value)) return false;
+			if (!parseClass(&a.value))
+				return false;
 			basicSel->attributeSelectors.append(a);
 		} else if (testAttrib()) {
 			onceMore = true;
 			AttributeSelector a;
-			if (!parseAttrib(&a)) return false;
+			if (!parseAttrib(&a))
+				return false;
 			basicSel->attributeSelectors.append(a);
 		} else if (testPseudo()) {
 			onceMore = true;
 			Pseudo ps;
-			if (!parsePseudo(&ps)) return false;
+			if (!parsePseudo(&ps))
+				return false;
 			basicSel->pseudos.append(ps);
 		}
 		if (onceMore) ++count;
@@ -2763,7 +2963,8 @@ bool Parser::parseSimpleSelector(BasicSelector *basicSel)
 
 bool Parser::parseClass(QString *name)
 {
-	if (!next(IDENT)) return false;
+	if (!next(IDENT))
+		return false;
 	*name = lexem();
 	return true;
 }
@@ -2771,9 +2972,14 @@ bool Parser::parseClass(QString *name)
 bool Parser::parseElementName(QString *name)
 {
 	switch (lookup()) {
-		case STAR: name->clear(); break;
-		case IDENT: *name = lexem(); break;
-		default: return false;
+		case STAR:
+			name->clear();
+			break;
+		case IDENT:
+			*name = lexem();
+			break;
+		default:
+			return false;
 	}
 	return true;
 }
@@ -2781,7 +2987,8 @@ bool Parser::parseElementName(QString *name)
 bool Parser::parseAttrib(AttributeSelector *attr)
 {
 	skipSpace();
-	if (!next(IDENT)) return false;
+	if (!next(IDENT))
+		return false;
 	attr->name = lexem();
 	skipSpace();
 
@@ -2797,7 +3004,8 @@ bool Parser::parseAttrib(AttributeSelector *attr)
 
 	skipSpace();
 
-	if (!test(IDENT) && !test(STRING)) return false;
+	if (!test(IDENT) && !test(STRING))
+		return false;
 	attr->value = unquotedLexem();
 
 	skipSpace();
@@ -2812,12 +3020,14 @@ bool Parser::parsePseudo(Pseudo *pseudo)
 		pseudo->type = static_cast<PseudoState>(findKnownValue(pseudo->name, pseudos, NumPseudos));
 		return true;
 	}
-	if (!next(FUNCTION)) return false;
+	if (!next(FUNCTION))
+		return false;
 	pseudo->function = lexem();
     // chop off trailing parenthesis
 	pseudo->function.chop(1);
 	skipSpace();
-	if (!test(IDENT)) return false;
+	if (!test(IDENT))
+		return false;
 	pseudo->name = lexem();
 	skipSpace();
 	return next(RPAREN);
@@ -2827,19 +3037,24 @@ bool Parser::parseNextDeclaration(Declaration *decl)
 {
 	if (!testProperty())
 		return true; // not an error!
-	if (!parseProperty(decl)) return false;
-	if (!next(COLON)) return false;
+	if (!parseProperty(decl))
+		return false;
+	if (!next(COLON))
+		return false;
 	skipSpace();
-	if (!parseNextExpr(&decl->values)) return false;
+	if (!parseNextExpr(&decl->values))
+		return false;
 	if (testPrio())
-		if (!parsePrio(decl)) return false;
+		if (!parsePrio(decl))
+			return false;
 	return true;
 }
 
 bool Parser::testPrio()
 {
 	const int rewind = index;
-	if (!test(EXCLAMATION_SYM)) return false;
+	if (!test(EXCLAMATION_SYM))
+		return false;
 	skipSpace();
 	if (!test(IDENT)) {
 		index = rewind;
@@ -2862,19 +3077,22 @@ bool Parser::parsePrio(Declaration *declaration)
 bool Parser::parseExpr(QVector<Value> *values)
 {
 	Value val;
-	if (!parseTerm(&val)) return false;
+	if (!parseTerm(&val))
+		return false;
 	values->append(val);
 	bool onceMore;
 	do {
 		onceMore = false;
 		val = Value();
-		if (!parseNextOperator(&val)) return false;
+		if (!parseNextOperator(&val))
+			return false;
 		if (val.type != QCss::Value::Unknown)
 			values->append(val);
 		if (testTerm()) {
 			onceMore = true;
 			val = Value();
-			if (!parseTerm(&val)) return false;
+			if (!parseTerm(&val))
+				return false;
 			values->append(val);
 		}
 	} while (onceMore);
@@ -2883,14 +3101,14 @@ bool Parser::parseExpr(QVector<Value> *values)
 
 bool Parser::testTerm()
 {
-	return test(PLUS) || test(MINUS)
+	return (test(PLUS) || test(MINUS)
 			|| test(NUMBER)
 			|| test(PERCENTAGE)
 			|| test(LENGTH)
 			|| test(STRING)
 			|| test(IDENT)
 			|| testHexColor()
-			|| testFunction();
+			|| testFunction());
 }
 
 bool Parser::parseTerm(Value *value)
@@ -2899,7 +3117,8 @@ bool Parser::parseTerm(Value *value)
 	bool haveUnary = false;
 	if (lookup() == PLUS || lookup() == MINUS) {
 		haveUnary = true;
-		if (!hasNext()) return false;
+		if (!hasNext())
+			return false;
 		next();
 		str += lexem();
 	}
@@ -3012,11 +3231,11 @@ bool Parser::testAndParseUri(QString *uri)
 
 bool Parser::testSimpleSelector()
 {
-	return testElementName()
+	return (testElementName()
 			|| (test(HASH))
 			|| testClass()
 			|| testAttrib()
-			|| testPseudo();
+			|| testPseudo());
 }
 
 bool Parser::next(TokenType t)
@@ -3062,32 +3281,51 @@ bool Parser::until(TokenType target, TokenType target2)
 	int parenCount = 0;
 	if (index) {
 		switch(symbols.at(index-1).token) {
-			case LBRACE: ++braceCount; break;
-			case LBRACKET: ++brackCount; break;
+			case LBRACE:
+				++braceCount;
+				break;
+			case LBRACKET:
+				++brackCount;
+				break;
 			case FUNCTION:
-				case LPAREN: ++parenCount; break;
-				default: ;
+			case LPAREN:
+				++parenCount;
+				break;
+			default: ;
 		}
 	}
 	while (index < symbols.size()) {
 		TokenType t = symbols.at(index++).token;
 		switch (t) {
-			case LBRACE: ++braceCount; break;
-			case RBRACE: --braceCount; break;
-			case LBRACKET: ++brackCount; break;
-			case RBRACKET: --brackCount; break;
+			case LBRACE:
+				++braceCount;
+				break;
+			case RBRACE:
+				--braceCount;
+				break;
+			case LBRACKET:
+				++brackCount;
+				break;
+			case RBRACKET:
+				--brackCount;
+				break;
 			case FUNCTION:
-				case LPAREN: ++parenCount; break;
-				case RPAREN: --parenCount; break;
-				default: break;
+			case LPAREN:
+				++parenCount;
+				break;
+			case RPAREN:
+				--parenCount;
+				break;
+			default:
+				break;
 		}
-		if ((t == target || (target2 != NONE && t == target2))
-				   && braceCount <= 0
-				   && brackCount <= 0
-				   && parenCount <= 0)
+		if (((t == target) || (target2 != NONE && t == target2))
+				   && (braceCount <= 0)
+				   && (brackCount <= 0)
+				   && (parenCount <= 0))
 			return true;
 
-		if (braceCount < 0 || brackCount < 0 || parenCount < 0) {
+		if ((braceCount < 0) || (brackCount < 0) || (parenCount < 0)) {
 			--index;
 			break;
 		}

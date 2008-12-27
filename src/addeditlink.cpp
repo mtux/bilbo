@@ -30,6 +30,7 @@ AddEditLink::AddEditLink(QWidget *parent)
 	ui.setupUi(dialog);
 	dialog->setAttribute( Qt::WA_DeleteOnClose );
 	this->setMainWidget(dialog);
+	this->setWindowTitle(dialog->windowTitle());
 
 	//ui.label_2->hide();
 	//ui.txtTitle->hide();
