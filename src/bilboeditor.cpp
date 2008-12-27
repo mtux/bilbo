@@ -44,7 +44,7 @@
 // #include "kaction.h"
 // #include "kicon.h"
 //#include "bilborichtextedit.h"
-#include "bilbotextcharformat.h"
+#include "bilbotextformat.h"
 #include "bilbotexthtmlimporter.h"
 #include "medialistwidget.h"
 
@@ -629,8 +629,8 @@ void BilboEditor::createUi()
 	lstMediaFiles->setViewMode(QListView::IconMode);
 	lstMediaFiles->setMaximumHeight(60);
 	connect(lstMediaFiles, SIGNAL(sigSetProperties(const int, const double, 
-			const double, const QString)), this, SLOT(sltSetImageProperties(const int, 
-			const double, const double, const QString)));
+			const double, const QString, const QString)), this, SLOT(sltSetImageProperties(
+					const int, const double, const double, const QString, const QString)));
 	connect(lstMediaFiles, SIGNAL(sigRemoveMedia(const int)), this, SLOT(sltRemoveMedia(const int)));
 	
 	QVBoxLayout *vLayout = new QVBoxLayout(tabVisual);
@@ -852,7 +852,7 @@ void BilboEditor::sltFontSizeIncrease()
 // 		editor->textCursor().mergeCharFormat(format2);
 // 	}
 	QTextCharFormat format;
-	//BilboTextCharFormat format;
+	//BilboTextFormat format;
 	int idx = editor->currentCharFormat().intProperty(QTextFormat::FontSizeAdjustment);
 	if ( idx < 3 ) {
 		format.setProperty(QTextFormat::FontSizeAdjustment, QVariant( ++idx ));
@@ -873,7 +873,7 @@ void BilboEditor::sltFontSizeDecrease()
 // 		editor->textCursor().mergeCharFormat(format);
 // 	}
 	QTextCharFormat format;
-	//BilboTextCharFormat format;
+	//BilboTextFormat format;
 	int idx = editor->currentCharFormat().intProperty(QTextFormat::FontSizeAdjustment);
 	if ( idx > -1 ) {
 		format.setProperty(QTextFormat::FontSizeAdjustment, QVariant( --idx ));
@@ -892,8 +892,8 @@ void BilboEditor::sltAddEditLink()
 	if (!f.isAnchor()) {
 		linkDialog->show();
 	} else {
-		linkDialog->show(f.anchorHref(), f.stringProperty(BilboTextCharFormat::AnchorTitle)
-				, f.stringProperty(BilboTextCharFormat::AnchorTarget));
+		linkDialog->show(f.anchorHref(), f.stringProperty(BilboTextFormat::AnchorTitle)
+				, f.stringProperty(BilboTextFormat::AnchorTarget));
 	}
 }
 
@@ -902,11 +902,11 @@ void BilboEditor::sltSetLink(const QString& address, const QString& target,
 //void BilboEditor::sltSetLink(QString address)
 {
 	QTextCharFormat f = editor->currentCharFormat();
-	//BilboTextCharFormat f = editor->textCursor().charFormat();
+	//BilboTextFormat f = editor->textCursor().charFormat();
 	f.setAnchor(true);
 	f.setAnchorHref(address);
-	f.setProperty(BilboTextCharFormat::AnchorTitle, QVariant(title));
-	f.setProperty(BilboTextCharFormat::AnchorTarget, QVariant(target));
+	f.setProperty(BilboTextFormat::AnchorTitle, QVariant(title));
+	f.setProperty(BilboTextFormat::AnchorTarget, QVariant(target));
 // 	f.setAnchorName(title);
 	
 // 	QStringList anchorNames;
@@ -927,7 +927,7 @@ void BilboEditor::sltSetLink(const QString& address, const QString& target,
 void BilboEditor::sltRemoveLink()
 {
 	QTextCharFormat f = editor->textCursor().charFormat();
-	//BilboTextCharFormat f = editor->textCursor().charFormat();
+	//BilboTextFormat f = editor->textCursor().charFormat();
 	f.setAnchor(false);
 	f.setUnderlineStyle(this->defaultCharFormat.underlineStyle());
 	f.setForeground(this->defaultCharFormat.foreground());
@@ -1118,7 +1118,7 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 // }
 
 void BilboEditor::sltSetImageProperties(const int index, const double width, 
-										const double height, const QString Alt_text)
+							const double height, const QString title, const QString Alt_text)
 {
 	this->editor->setFocus(Qt::OtherFocusReason);
 	QString path = lstMediaFiles->item(index)->data(Qt::UserRole).toString();
@@ -1138,6 +1138,8 @@ void BilboEditor::sltSetImageProperties(const int index, const double width,
 					kDebug() << "image exists";
 					imgFormat.setWidth(width);
 					imgFormat.setHeight(height);
+					imgFormat.setProperty(BilboTextFormat::ImageTitle, QVariant(title));
+					imgFormat.setProperty(BilboTextFormat::ImageAlternateText, QVariant(Alt_text));
 
 					cursor = this->editor->textCursor();
 					cursor.setPosition(i.fragment().position());

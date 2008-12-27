@@ -20,7 +20,7 @@
 #include "bilbotexthtmlimporter.h"
 #include "qtextlist.h"
 #include "kdebug.h"
-#include "bilbotextcharformat.h"
+#include "bilbotextformat.h"
 
 BilboTextHtmlImporter::BilboTextHtmlImporter(QTextDocument *_doc, const QString &_html, const QTextDocument *resourceProvider)
 	: indent(0), setNamedAnchorInNextOutput(false), doc(_doc), containsCompleteDoc(false)
@@ -165,11 +165,16 @@ void BilboTextHtmlImporter::import()
 			if (nodeFmt.hasProperty(QTextFormat::AnchorName))
 				fmt.setAnchorName(nodeFmt.anchorName());
 			/// my code
-			if (nodeFmt.hasProperty(BilboTextCharFormat::AnchorTitle))
-				fmt.setProperty(BilboTextCharFormat::AnchorTitle, nodeFmt.property(BilboTextCharFormat::AnchorTitle));
-			if (nodeFmt.hasProperty(BilboTextCharFormat::AnchorTarget))
-				fmt.setProperty(BilboTextCharFormat::AnchorTarget, nodeFmt.property(BilboTextCharFormat::AnchorTarget));
+			if (nodeFmt.hasProperty(BilboTextFormat::AnchorTitle))
+				fmt.setProperty(BilboTextFormat::AnchorTitle, nodeFmt.property(BilboTextFormat::AnchorTitle));
+			if (nodeFmt.hasProperty(BilboTextFormat::AnchorTarget))
+				fmt.setProperty(BilboTextFormat::AnchorTarget, nodeFmt.property(BilboTextFormat::AnchorTarget));
 
+			if (!node->imageTitle.isEmpty())
+				fmt.setProperty(BilboTextFormat::ImageTitle, QVariant(node->imageTitle));
+			if (!node->imageAlternateText.isEmpty())
+				fmt.setProperty(BilboTextFormat::ImageAlternateText, 
+								QVariant(node->imageAlternateText));
 			if (node->imageWidth >= 0)
 				fmt.setWidth(node->imageWidth);
 			if (node->imageHeight >= 0)

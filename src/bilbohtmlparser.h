@@ -187,6 +187,9 @@ struct BilboTextHtmlParserNode
 	qreal imageWidth;
 	qreal imageHeight;
 	
+	QString imageTitle;   ///my code
+	QString imageAlternateText;   ///my code
+	
 	QTextLength width;
 	QTextLength height;
 	
