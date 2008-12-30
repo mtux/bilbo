@@ -59,7 +59,7 @@ public:
 	
 	void addMedia(const QString &url);
 	
-	QMap <QString, BilboMedia*> *mediaList();
+	QMap <QString, BilboMedia*> & mediaList();
 Q_SIGNALS:
     /**
      * emitted when title of this entry changed.
@@ -82,7 +82,7 @@ private:
 	QWidget *wPost;
     BilboPost *mCurrentPost;
     int mCurrentPostBlogId;
-	QMap <QString, BilboMedia*> *mMediaList;
+	QMap <QString, BilboMedia*> mMediaList;
 };
 
 #endif

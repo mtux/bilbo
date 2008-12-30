@@ -23,10 +23,12 @@
 #include <kmimetype.h>
 #include <kdebug.h>
 #include <kio/job.h>
+#include <kio/netaccess.h>
 
 #include "addimagedialog.h"
 #include "bilbomedia.h"
 #include "constants.h"
+#include "settings.h"
 
 AddImageDialog::AddImageDialog(QWidget *parent) :KDialog(parent)
 {
@@ -59,6 +61,10 @@ void AddImageDialog::sltOkClicked()
 			media->setName(name);
 			
 			if (!tempUrl.isLocalFile()) {
+				if (Settings::download_remote_media())
+				{
+					kDebug() << "download!";
+				}
 				media->setRemoteUrl(tempUrl.url());
 				media->setUploded(true);
 				

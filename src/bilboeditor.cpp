@@ -756,7 +756,7 @@ void BilboEditor::createActions()
 	
 	actAlignLeft = new KAction(KIcon("format-justify-left"), i18nc("verb, to align text from left", "Align left"), this);
 	//actAlignLeft->setCheckable(true);
-	connect(actAlignLeft, SIGNAL(triggered(bool)), editor, SLOT(alignLeft()));
+	connect(actAlignLeft, SIGNAL(triggered(bool)), this, SLOT(sltAlignLeft()));
 	barVisual->addAction(actAlignLeft);
 	
 	actAlignCenter = new KAction(KIcon("format-justify-center"), i18nc("verb, to align text from center", "Align center"), this);
@@ -766,7 +766,7 @@ void BilboEditor::createActions()
 	
 	actAlignRight = new KAction(KIcon("format-justify-right"), i18nc("verb, to align text from right", "Align right"), this);
 	//actAlignRight->setCheckable(true);
-	connect(actAlignRight, SIGNAL(triggered(bool)), editor, SLOT(alignRight()));
+	connect(actAlignRight, SIGNAL(triggered(bool)), this, SLOT(sltAlignRight()));
 	barVisual->addAction(actAlignRight);
 	
 	actJustify = new KAction(KIcon("format-justify-fill"), i18nc("verb, to justify text", 
@@ -990,17 +990,17 @@ void BilboEditor::sltNewParagraph()
 	editor->textCursor().insertBlock(editor->textCursor().blockFormat(), editor->textCursor().charFormat());
 	editor->setFocus(Qt::OtherFocusReason);
 }
-// void BilboEditor::sltAlignRight()
-// {
-// 	editor->setAlignment(Qt::AlignRight);
-// 	editor->setFocus(Qt::OtherFocusReason);
-// }
-// 
-// void BilboEditor::sltAlignLeft()
-// {
-// 	editor->setAlignment(Qt::AlignLeft);
-// 	editor->setFocus(Qt::OtherFocusReason);
-// }
+void BilboEditor::sltAlignRight()
+{
+	editor->setAlignment(Qt::AlignRight | Qt::AlignAbsolute);
+	editor->setFocus(Qt::OtherFocusReason);
+}
+
+void BilboEditor::sltAlignLeft()
+{
+	editor->setAlignment(Qt::AlignLeft | Qt::AlignAbsolute);
+	editor->setFocus(Qt::OtherFocusReason);
+}
 // 
 // void BilboEditor::sltAlignCenter()
 // {
@@ -1306,11 +1306,19 @@ QString* BilboEditor::htmlContent()
 	return mHtmlContent;
 }
 
+//TODO if content is empty, simply clear editor content
+
 void BilboEditor::setHtmlContent(const QString & content)
 {
 	htmlExporter* htmlExp = new htmlExporter();
 	//this->editor->setHtml(content);
-	editor->setTextOrHtml(htmlToRichtext(content));
+// 	editor->setTextOrHtml(htmlToRichtext(content));
+	QTextDocument *doc = editor->document();
+	doc->setUndoRedoEnabled(false);
+	doc->clear();
+	BilboTextHtmlImporter(doc, content).import();
+	doc->setUndoRedoEnabled(true);
+	editor->setTextCursor( QTextCursor(doc));
 	//this->htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 	//this->editor->setHtml(content);
 	this->htmlEditor->setPlainText(content);
@@ -1333,7 +1341,7 @@ QMap <QString, BilboMedia*> * BilboEditor::mediaList()
 	return mMediaList;
 }
 
-void BilboEditor::setMediaList(QMap <QString, BilboMedia*> *list)
+void BilboEditor::setMediaList(QMap <QString, BilboMedia*> * list)
 {
 	mMediaList = list;
 }
@@ -1355,6 +1363,15 @@ void BilboEditor::setLayoutDirection(Qt::LayoutDirection direction)
 	QTextBlockFormat f = editor->textCursor().blockFormat();
 	f.setLayoutDirection(direction);
 	editor->textCursor().mergeBlockFormat(f);
+// 	QTextOption o;
+// 
+// 	o = editor->document()->defaultTextOption();
+// 	o.setAlignment(Qt::AlignRight);
+// 	o.setTextDirection(Qt::RightToLeft);
+// 	editor->document()->setDefaultTextOption(o);
+	if (f.hasProperty(QTextBlockFormat::BlockAlignment)) {
+		kDebug() << "has Alignment";
+	}
 	if (direction == Qt::LeftToRight)
 	{
 		this->actRightToLeft->setChecked(false);

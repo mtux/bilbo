@@ -1564,9 +1564,9 @@ void BilboTextHtmlParser::applyAttributes(const QStringList &attributes)
 		} else if (key == QLatin1String("align")) {
 			value = value.toLower();
 			if (value == QLatin1String("left"))
-				node->alignment = Qt::AlignLeft|Qt::AlignAbsolute;
+				node->alignment = (Qt::AlignLeft | Qt::AlignAbsolute);
 			else if (value == QLatin1String("right"))
-				node->alignment = Qt::AlignRight|Qt::AlignAbsolute;
+				node->alignment = (Qt::AlignRight | Qt::AlignAbsolute);
 			else if (value == QLatin1String("center"))
 				node->alignment = Qt::AlignHCenter;
 			else if (value == QLatin1String("justify"))

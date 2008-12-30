@@ -506,9 +506,9 @@ void htmlExporter::emitAlignment(Qt::Alignment align)
 {
 	//qDebug() << "emitAlignment" << html;
 //    if (align & Qt::AlignLeft) {
-	if (align & mDefaultBlockFormat.alignment()) {
-        return;
-	}
+// 	if (align & mDefaultBlockFormat.alignment()) {
+//         return;
+// 	}
 	if (align & Qt::AlignLeft) {
 		html += QLatin1String(" align=\"left\"");
 	} else if (align & Qt::AlignRight) {
@@ -802,21 +802,28 @@ void htmlExporter::emitBlockAttributes(const QTextBlock &block)
 	qDebug("htmlExporter::emitBlockAttributes");
 	QTextBlockFormat format = block.blockFormat();
 
-    if (format.layoutDirection() != mDefaultBlockFormat.layoutDirection())
+	Qt::LayoutDirection dir = format.layoutDirection();
+// 	if (dir == Qt::LeftToRight) {
+// 		mDefaultBlockFormat.setAlignment(Qt::AlignLeft);
+// 	} else {
+// 		mDefaultBlockFormat.setAlignment(Qt::AlignRight);
+// 	}
+	
+    if (dir != mDefaultBlockFormat.layoutDirection())
 	{
 		// assume default to not bloat the html too much
-		Qt::LayoutDirection dir = format.layoutDirection();
-
 		if (dir == Qt::LeftToRight) {
 	        html += QLatin1String(" dir=\"ltr\"");
-			mDefaultBlockFormat.setAlignment(Qt::AlignLeft);
+// 			mDefaultBlockFormat.setAlignment(Qt::AlignLeft);
 	    } else {
 	        html += QLatin1String(" dir=\"rtl\"");
-			mDefaultBlockFormat.setAlignment(Qt::AlignRight);
+// 			mDefaultBlockFormat.setAlignment(Qt::AlignRight);
 	    }
 	}
 	
-	emitAlignment(format.alignment());
+	if (format.hasProperty(QTextFormat::BlockAlignment)) {
+		emitAlignment(format.alignment());
+	}
 	
 	bool attributesEmitted = false;
     QLatin1String style(" style=\"");

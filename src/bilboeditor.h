@@ -22,6 +22,7 @@
 
 //#include <QTabWidget>
 #include <ktabwidget.h>
+#include <QTextFormat>
 //#include <QtGui>
 //#include <QWebView>
 //#include "multilinetextedit.h"
@@ -85,6 +86,7 @@ class BilboEditor : public KTabWidget
         void setHtmlContent(const QString &content);
 		
 		void setMediaList(QMap <QString, BilboMedia*> *list);
+// 		void setMediaList(QMap <QString, BilboMedia*> & list);
         
         void setPlainTextContent(const QString &content);
 		
@@ -149,12 +151,12 @@ class BilboEditor : public KTabWidget
 		/*!
 		Changes Alignment of current paragraph into Right Alignment.
 		 */
-// 		void sltAlignRight();
+		void sltAlignRight();
 		
 		/*!
 		Changes Alignment of current paragraph into Left Alignment.
 		 */
-// 		void sltAlignLeft();
+		void sltAlignLeft();
 		
 		/*!
 		Changes Alignment of current paragraph into Center Alignment.
