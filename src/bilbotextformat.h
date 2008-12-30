@@ -17,20 +17,20 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef BILBOTEXTCHARFORMAT_H
-#define BILBOTEXTCHARFORMAT_H
+#ifndef BILBOTEXTFORMAT_H
+#define BILBOTEXTFORMAT_H
 
 #include <qtextformat.h>
 
 /**
- * Adds some charformat attributes which don't exist in QTextCharFormat class.
+ * Adds some textformat attributes which don't exist in QTextFormat class.
  * this class may be removed in future, if all editor related staff be ordered as a lib.
  * 
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 // class BilboTextCharFormat : public QTextCharFormat
-class BilboTextCharFormat
+class BilboTextFormat
 {
 	//Q_OBJECT
    public:
@@ -43,7 +43,11 @@ class BilboTextCharFormat
 		enum Property {
 			/// Anchor properties
 			AnchorTitle = 0x100010,
-   			AnchorTarget = 0x100011
+   			AnchorTarget = 0x100011,
+	  
+	  		/// Image properties
+	  		ImageTitle = 0x100020,
+	  		ImageAlternateText = 0x100021,
 		};
 // 		enum TargetStyle {
 // 			OpenInCurrentWindow = 1,

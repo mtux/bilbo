@@ -592,7 +592,7 @@ namespace QCss
 
 			inline bool lookupElementName() const { return lookup() == IDENT || lookup() == STAR; }
 
-			inline void skipSpace() { while (test(S)); }
+			inline void skipSpace() { while (test(S)) {}; }
 
 			inline bool hasNext() const { return index < symbols.count(); }
 			inline TokenType next() { return symbols.at(index++).token; }

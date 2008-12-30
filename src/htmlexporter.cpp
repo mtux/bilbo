@@ -34,7 +34,7 @@
 #include <QTextFormat>
 #include <QVarLengthArray>
 #include <kdebug.h>
-#include "bilbotextcharformat.h"
+#include "bilbotextformat.h"
 
 htmlExporter::htmlExporter()
 {
@@ -596,9 +596,9 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
 //             closeAnchor = true;
 // 			html += QLatin1String("\"");
         }
-		if (format.hasProperty(BilboTextCharFormat::AnchorTitle))
+		if (format.hasProperty(BilboTextFormat::AnchorTitle))
 		{
-			const QString title = format.stringProperty(BilboTextCharFormat::AnchorTitle);
+			const QString title = format.stringProperty(BilboTextFormat::AnchorTitle);
 			if (!title.isEmpty())
 			{
 				html += QLatin1String(" title=\"");
@@ -606,9 +606,9 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
 				html += QLatin1String("\"");
 			}
 		}
-		if (format.hasProperty(BilboTextCharFormat::AnchorTarget))
+		if (format.hasProperty(BilboTextFormat::AnchorTarget))
 		{
-			const QString target = format.stringProperty(BilboTextCharFormat::AnchorTarget);
+			const QString target = format.stringProperty(BilboTextFormat::AnchorTarget);
 			if (!target.isEmpty())
 			{
 				html += QLatin1String(" target=\"");
@@ -693,6 +693,20 @@ void htmlExporter::emitFragment(const QTextFragment &fragment)
                 emitAttribute("src", imgFmt.name());
 			}
 
+			if (imgFmt.hasProperty(BilboTextFormat::ImageTitle)) {
+				const QString title = imgFmt.stringProperty(BilboTextFormat::ImageTitle);
+				if (!title.isEmpty()) {
+					emitAttribute("title", imgFmt.stringProperty(BilboTextFormat::ImageTitle));
+				}
+			}
+			
+			if (imgFmt.hasProperty(BilboTextFormat::ImageAlternateText)) {
+				const QString alternate = imgFmt.stringProperty(BilboTextFormat::ImageAlternateText);
+				if (!alternate.isEmpty()) {
+					emitAttribute("alt", imgFmt.stringProperty(BilboTextFormat::ImageAlternateText));
+				}
+			}
+			
             if (imgFmt.hasProperty(QTextFormat::ImageWidth)) {
                 emitAttribute("width", QString::number(imgFmt.width()));
 			}

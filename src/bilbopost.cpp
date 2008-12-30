@@ -168,7 +168,7 @@ bool BilboPost::isModifyTimeStamp()
 	return mModifyTimeStamp;
 }
 
-bool BilboPost::setModifyTimeStamp(bool willModify)
+void BilboPost::setModifyTimeStamp(bool willModify)
 {
 	mModifyTimeStamp = willModify;
 }

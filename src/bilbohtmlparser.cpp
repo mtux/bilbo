@@ -25,7 +25,7 @@
 #include "bilbocssparser.h"
 #include <QUrl>
 #include "kdebug.h" 
-#include "bilbotextcharformat.h"
+#include "bilbotextformat.h"
 
 #define MAX_ENTITY 258
 static const struct BilboTextHtmlEntity { const char *name; quint16 code; } entities[MAX_ENTITY]= {
@@ -477,8 +477,8 @@ QTextCharFormat BilboTextHtmlParserNode::charFormat() const
 		format.setAnchor(true);
 		format.setAnchorHref(anchorHref);
 		format.setAnchorName(anchorName);
-		format.setProperty(BilboTextCharFormat::AnchorTitle, QVariant(anchorTitle)); ///my code
-		format.setProperty(BilboTextCharFormat::AnchorTarget, QVariant(anchorTarget)); ///my code
+		format.setProperty(BilboTextFormat::AnchorTitle, QVariant(anchorTitle)); ///my code
+		format.setProperty(BilboTextFormat::AnchorTarget, QVariant(anchorTarget)); ///my code
 	}
 
 	return format;
@@ -1391,7 +1391,7 @@ void BilboTextHtmlParser::resolveParent()
 		p = at(p).parent;
 
     // some elements are not allowed in certain contexts
-	while (p && !node->allowedInContext(at(p).id)
+	while ((p && (!node->allowedInContext(at(p).id)))
            // ### make new styles aware of empty tags
 			  || at(p).mayNotHaveChildren()
 		  ) {
@@ -1490,6 +1490,10 @@ void BilboTextHtmlParser::applyAttributes(const QStringList &attributes)
 					setFloatAttribute(&node->imageWidth, value);
 				} else if (key == QLatin1String("height")) {
 					setFloatAttribute(&node->imageHeight, value);
+				} else if (key == QLatin1String("title")) {
+					node->imageTitle = value;
+				} else if (key == QLatin1String("alt")) {
+					node->imageAlternateText = value;
 				}
 				break;
 			case Html_tr:
