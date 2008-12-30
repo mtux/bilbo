@@ -68,19 +68,25 @@ bool DBMan::createDB()
 	
 	QSqlQuery q;
 	///Blog table!
-	if(!q.exec("CREATE TABLE blog (id INTEGER PRIMARY KEY, blogid TEXT, blog_url TEXT, username TEXT, password TEXT, style_url TEXT, api_type TEXT, title TEXT, direction TEXT)"))
+	if(!q.exec("CREATE TABLE blog (id INTEGER PRIMARY KEY, blogid TEXT, blog_url TEXT, username TEXT,\
+		    password TEXT, style_url TEXT, api_type TEXT, title TEXT, direction TEXT)"))
 		ret=false;
 	
 	///posts table!
-	if(!q.exec("CREATE TABLE post (id INTEGER PRIMARY KEY, postid TEXT, blog_id NUMERIC, author TEXT, title TEXT, content TEXT, c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC, is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT, position int);"))
+	if(!q.exec("CREATE TABLE post (id INTEGER PRIMARY KEY, postid TEXT, blog_id NUMERIC,\
+		    author TEXT, title TEXT, content TEXT, c_time TEXT, m_time TEXT, is_private NUMERIC,\
+		   is_comment_allowed NUMERIC, is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT,\
+		   summary TEXT, tags TEXT, position int);"))
 		ret=false;
 	
 	///categories table!
-	if(!q.exec("CREATE TABLE category (catid INTEGER PRIMARY KEY, name TEXT, blog_id NUMERIC);"))
+	if(!q.exec("CREATE TABLE category (catid INTEGER PRIMARY KEY, name TEXT, description TEXT,\
+		 htmlUrl TEXT, rssUrl TEXT, categoryId TEXT, parentId TEXT, blog_id NUMERIC);"))
 		ret=false;
 	
 	///files table
-	if(!q.exec("CREATE TABLE file (fileid INTEGER PRIMARY KEY, name TEXT, blog_id NUMERIC, is_uploaded NUMERIC, local_url TEXT, remote_url TEXT);"))
+	if(!q.exec("CREATE TABLE file (fileid INTEGER PRIMARY KEY, name TEXT, blog_id NUMERIC, is_uploaded NUMERIC,\
+		    local_url TEXT, remote_url TEXT);"))
 		ret=false;
 	
 	///connection bethween posts and categories
@@ -90,7 +96,9 @@ bool DBMan::createDB()
 	
 	///this will implement using clearPosts() , clearCategories() and clearFiles() in application level!
 	q.exec("CREATE TRIGGER delete_post AFTER DELETE ON post BEGIN DELETE from post_cat WHERE post_id=OLD.id; END");
-	q.exec("CREATE TRIGGER delete_blog AFTER DELETE ON blog BEGIN DELETE from category WHERE category.blog_id=OLD.id; DELETE from file WHERE file.blog_id=OLD.id; DELETE from post WHERE post.blog_id=OLD.id; END");
+	q.exec("CREATE TRIGGER delete_blog AFTER DELETE ON blog \
+			BEGIN DELETE from category WHERE category.blog_id=OLD.id; DELETE from file WHERE file.blog_id=OLD.id;\
+			DELETE from post WHERE post.blog_id=OLD.id; END");
 	
 	return ret;
 }
@@ -428,11 +436,17 @@ bool DBMan::clearPosts(int blog_id)
 	return q.exec();
 }
 
-int DBMan::addCategory(QString name, int blog_id)
+int DBMan::addCategory(const QString &name, const QString &description, const QString &htmlUrl, 
+					   const QString &rssUrl, const QString &categoryId, const QString &parentId, int blog_id)
 {
 	QSqlQuery q;
-	q.prepare("INSERT INTO category (name, blog_id) VALUES(?, ?)");
+	q.prepare("INSERT INTO category (name, description, htmlUrl, rssUrl, categoryId, parentId, blog_id) VALUES(?, ?, ?, ?, ?, ?, ?)");
 	q.addBindValue(name);
+	q.addBindValue(description);
+	q.addBindValue(htmlUrl);
+	q.addBindValue(rssUrl);
+	q.addBindValue(categoryId);
+	q.addBindValue(parentId);
 	q.addBindValue(blog_id);
 	
 	if(q.exec())
@@ -655,7 +669,7 @@ QMap< int, QString > DBMan::listPostsTitle(int blog_id)
 	return list;
 }
 
-QMap< QString, int > DBMan::listCategories(int blog_id)
+QMap< QString, int > DBMan::listCategoriesName(int blog_id)
 {
 	QMap< QString, int > list;
 	QSqlQuery q;
@@ -669,4 +683,29 @@ QMap< QString, int > DBMan::listCategories(int blog_id)
 		kDebug()<<"Cannot get list of categories for blog with id "<< blog_id;
 	
 	return list;
+}
+
+QList< Category > DBMan::listCategories(int blog_id)
+{
+	QList< Category > list;
+	QSqlQuery q;
+	q.prepare("SELECT catid, name, description, htmlUrl, rssUrl, categoryId, parentId FROM category WHERE blog_id = ?");
+	q.addBindValue(blog_id);
+	if(q.exec()){
+		while( q.next() ){
+			Category c;
+			c.blog_id = blog_id;
+			c.id = q.value(0).toInt();
+			c.name = q.value(1).toString();
+			c.description = q.value(2).toString();
+			c.htmlUrl = q.value(3).toString();
+			c.rssUrl = q.value(4).toString();
+			c.categoryId = q.value(5).toString();
+			c.parentId = q.value(6).toString();
+			list.append(c);
+		}
+	} else
+		kDebug()<<"Cannot get list of categories for blog with id "<< blog_id;
+	
+		return list;
 }

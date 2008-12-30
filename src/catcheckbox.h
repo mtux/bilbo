@@ -21,7 +21,7 @@
 #define CATCHECKBOX_H
 
 #include <QCheckBox>
-
+#include "constants.h"
 /**
 Extend QCheckBox to add property needed for Category checkboxes.
 
@@ -37,16 +37,19 @@ public:
 
     ~CatCheckBox();
 	
-	int catId();
-	void setCatId(int id);
+// 	int catId();
+// 	void setCatId(int id);
+// 	
+// 	QString catTitle() const;
+// 	void setCatTitle(const QString& title);
 	
-	QString catTitle() const;
-	void setCatTitle(const QString& title);
+	Category category() const;
+	void setCategory(const Category &category);
 	
 private:
 	int mCatId;
 	QString mCatTitle;
-
+	Category mCat;
 };
 
 #endif

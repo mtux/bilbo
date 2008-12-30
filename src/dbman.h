@@ -26,7 +26,8 @@ class BilboBlog;
 class BilboPost;
 
 /**
-DB manipulation class. this class implement Low level Database operations. and any object of App. have to use this API to store or retrive information and settings from Database.
+DB manipulation class. this class implement Low level Database operations. and any object of App.
+have to use this API to store or retrive information and settings from Database.
 
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
@@ -53,8 +54,8 @@ public:
 	QMap< int, QString > listPostsTitle(int blog_id);///QString as Title, and int as post_id
 	BilboPost *getPostInfo(int post_id);
 	
-	QMap<QString, int> listCategories(int blog_id);
-	
+	QMap<QString, int> listCategoriesName(int blog_id);
+	QList<Category> listCategories(int blog_id);
 	
 	
 	///END
@@ -90,7 +91,10 @@ public:
 	 * @param tags 
 	 * @return return post id in database (deffer with postid)
 	 */
-	int addPost(QString postid, int blog_id, QString author, QString title, QString &content, QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/, QStringList categories, int position);
+	int addPost(QString postid, int blog_id, QString author, QString title, QString &content,
+				 QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed,
+	             QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/,
+			     QStringList categories, int position);
 	
 	/**
 	 * 
@@ -100,7 +104,10 @@ public:
 	 */
 	int addPost(const BilboPost& post, int blog_id);
 	
-	bool editPost(int id, int blog_id, QString postid, QString author, QString title, QString &content, QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags, QStringList categories, int position);
+	bool editPost(int id, int blog_id, QString postid, QString author, QString title, QString &content,
+				   QString c_time, QString m_time, bool is_private, bool is_comment_allowed,
+	    		   bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags,
+	  			   QStringList categories, int position);
 	
 	bool editPost(BilboPost& post, int blog_id);
 	
@@ -109,7 +116,8 @@ public:
 	bool clearPosts(int blog_id);
 	
 	///Category:
-	int addCategory(QString name, int blog_id);
+	int addCategory(const QString &name, const QString &description, const QString &htmlUrl, 
+					const QString &rssUrl, const QString &categoryId, const QString &parentId, int blog_id);
 	bool clearCategories(int blog_id);
 	
 	///File:

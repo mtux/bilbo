@@ -98,18 +98,20 @@ void Backend::categoriesListed(const QList< QMap < QString , QString > > & categ
 {
 	kDebug()<<"Blog Id: "<< bBlog->id();
 	__db->clearCategories(bBlog->id());
-	QString name, description, htmlUrl, rssUrl;
+	QString name, description, htmlUrl, rssUrl, categoryId, parentId;
 	const QMap<QString, QString> *category;
 
 	for ( int i = 0; i < categories.count(); ++i) {
 		category = &(categories.at(i));
 
-		name = category->value("name");
-		description = category->value("description"); //TODO UNUSED
-		htmlUrl = category->value("htmlUrl"); //TODO UNUSED
-		rssUrl = category->value("rssUrl"); //TODO UNUSED
+		name = category->value("name", QString());
+		description = category->value("description", QString());
+		htmlUrl = category->value("htmlUrl", QString());
+		rssUrl = category->value("rssUrl", QString());
+		categoryId = category->value("categoryId", QString());
+		parentId = category->value("parentId", QString());
 		
-		__db->addCategory(name, bBlog->id());
+		__db->addCategory(name, description, htmlUrl, rssUrl, categoryId, parentId, bBlog->id());
 	}
 	Q_EMIT sigCategoryListFetched(bBlog->id());
 }

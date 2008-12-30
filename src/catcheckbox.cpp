@@ -33,24 +33,35 @@ CatCheckBox::~CatCheckBox()
 {
 }
 
-int CatCheckBox::catId()
+// int CatCheckBox::catId()
+// {
+// 	return mCatId;
+// }
+// 
+// void CatCheckBox::setCatId(int id)
+// {
+// 	mCatId = id;
+// }
+// 
+// void CatCheckBox::setCatTitle(const QString & title)
+// {
+// 	mCatTitle = title;
+// }
+// 
+// QString CatCheckBox::catTitle() const
+// {
+// 	return mCatTitle;
+// }
+
+Category CatCheckBox::category() const
 {
-	return mCatId;
+	return mCat;
 }
 
-void CatCheckBox::setCatId(int id)
+void CatCheckBox::setCategory(const Category & category)
 {
-	mCatId = id;
-}
-
-void CatCheckBox::setCatTitle(const QString & title)
-{
-	mCatTitle = title;
-}
-
-QString CatCheckBox::catTitle() const
-{
-	return mCatTitle;
+	mCat = category;
+	this->setToolTip(mCat.description);
 }
 
 

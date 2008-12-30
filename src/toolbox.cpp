@@ -256,16 +256,15 @@ void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 	parentWidget()->unsetCursor();
 	this->unsetCursor();
 	clearCatList();
-	QMap<QString, int> listCategories;
+	QList<Category> listCategories;
 	listCategories = __db->listCategories(blog_id);
 	
 	listCategoryCheckBoxes.clear();
-	QMap<QString, int>::const_iterator i;
-	QMap<QString, int>::const_iterator endIt= listCategories.constEnd();
+	QList<Category>::const_iterator i;
+	QList<Category>::const_iterator endIt= listCategories.constEnd();
 	for( i = listCategories.constBegin(); i != endIt; ++i ){
-		CatCheckBox *cb = new CatCheckBox(i.key(), this);
-		cb->setCatId(i.value());
-		cb->setCatTitle(i.key());
+		CatCheckBox *cb = new CatCheckBox(i->name, this);
+		cb->setCategory(*i);
 		listCategoryCheckBoxes.append(cb);
 		frameCat->layout()->addWidget(cb);
 	}
@@ -390,7 +389,7 @@ QStringList Toolbox::selectedCategoriesTitle()
 	int count = listCategoryCheckBoxes.count();
 	for( int i=0; i<count; ++i){
 		if(listCategoryCheckBoxes[i]->isChecked())
-			list.append(listCategoryCheckBoxes[i]->catTitle());
+			list.append(listCategoryCheckBoxes[i]->category().name);
 	}
 	return list;
 }
@@ -407,7 +406,7 @@ void Toolbox::setSelectedCategories(const QStringList &list)
     unCheckCatList();
 	int count = listCategoryCheckBoxes.count();
 	for( int i=0; i<count; ++i){
-		if(list.contains(listCategoryCheckBoxes[i]->catTitle(), Qt::CaseInsensitive))
+		if(list.contains(listCategoryCheckBoxes[i]->category().name, Qt::CaseInsensitive))
 			listCategoryCheckBoxes[i]->setChecked(true);
 	}
 }

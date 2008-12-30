@@ -36,4 +36,16 @@ Constants.
 #define TEMP_MEDIA_DIR KStandardDirs::locateLocal("data", "bilbo/tempmedia/", true)
 #define STATUSTIMEOUT 5000
 
+
+struct Category{
+	QString name;
+	QString description;
+	QString htmlUrl;
+	QString rssUrl;
+	QString categoryId;
+	QString parentId;
+	int id;
+	int blog_id;
+};
+
 #endif

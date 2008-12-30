@@ -242,7 +242,7 @@ void MainWindow::sltUploadAllChanges()
 
 void MainWindow::sltPostTitleChanged(const QString& title)
 {
-    kDebug();
+//     kDebug();
     tabPosts->setTabText(tabPosts->currentIndex(),title);
 }
 
@@ -431,8 +431,10 @@ void MainWindow::sltSaveAsDraft()
 void MainWindow::sltError(QString & errorMessage)
 {
     kDebug()<<"Error message: "<<errorMessage;
-    KMessageBox::detailedError(this, i18n("An Error ocurred on latest transaction "), errorMessage);
+    KMessageBox::detailedError(this, i18n("An error ocurred on latest transaction "), errorMessage);
 	statusBar()->clearMessage();
+	this->unsetCursor();
+	toolbox->unsetCursor();
 }
 
 void MainWindow::writeConfigs()
