@@ -34,6 +34,7 @@ class QPlainTextEdit;
 class MultiLineTextEdit;
 //class QAction;
 class KAction;
+class KActionCollection;
 //class QToolBar;
 class KToolBar;
 class AddEditLink;
@@ -102,6 +103,8 @@ class BilboEditor : public KTabWidget
 		 * @param direction is the new layout direction.
 		 */
 		void setLayoutDirection(Qt::LayoutDirection direction);
+		
+// 		KActionCollection *visualEditorActions;
 	
 	protected Q_SLOTS:
 		/*! 

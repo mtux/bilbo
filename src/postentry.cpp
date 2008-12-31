@@ -59,9 +59,8 @@ void PostEntry::createUi()
 			SLOT( sltTitleChanged(const QString&) ));
 	
 	gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
-	
-	wPost = new QWidget(this);
-	gridLayout->addWidget(wPost, 1, 0, 1, 1);
+	//wPost = new QWidget(this);
+	//gridLayout->addWidget(wPost, 1, 0, 1, 1);
 	
 }
 

@@ -79,7 +79,7 @@ private:
 	QHBoxLayout *horizontalLayout;
 	QLabel *labelTitle;
 	KLineEdit *txtTitle;
-	QWidget *wPost;
+// 	QWidget *wPost;
     BilboPost *mCurrentPost;
     int mCurrentPostBlogId;
 	QMap <QString, BilboMedia*> mMediaList;

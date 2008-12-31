@@ -26,6 +26,7 @@
 #include <klocalizedstring.h>
 #include <ktoolbar.h>
 #include <kaction.h>
+#include <kactioncollection.h>
 #include <kicon.h>
 #include <kcolordialog.h>
 //#include <klistwidget.h>
@@ -696,28 +697,39 @@ void BilboEditor::createUi()
 
 void BilboEditor::createActions()
 {
+// 	visualEditorActions = new KActionCollection(this->barVisual);
+	
 	actBold = new KAction(KIcon("format-text-bold"), i18nc("Makes text bold", "Bold"), 
 						  this);
 	actBold->setShortcut(Qt::CTRL + Qt::Key_B);
+	actBold->setToolTip(i18nc("Makes text bold, and its shortcut is (Ctrl+b)", 
+						"Bold (Ctrl+b)"));
 	actBold->setCheckable(true);
+// 	visualEditorActions->addAction(QLatin1String("bold"), actBold);
 	connect(actBold, SIGNAL(triggered(bool)), editor, SLOT(setTextBold( bool )));
 	barVisual->addAction(actBold);
 	
 	actItalic = new KAction(KIcon("format-text-italic"), i18nc("Makes text italic", 
 							"Italic"), this);
 	actItalic->setShortcut(Qt::CTRL + Qt::Key_I);
+	actItalic->setToolTip(i18nc("Makes text italic, and its shortcut is (Ctrl+i)", 
+						"Italic (Ctrl+i)"));
 	actItalic->setCheckable(true);
 	connect(actItalic, SIGNAL(triggered(bool)), editor, SLOT(setTextItalic( bool )));
 	barVisual->addAction(actItalic);
 	
 	actUnderline = new KAction(KIcon("format-text-underline"), i18nc("Makes text underlined", "Underline"), this);
 	actUnderline->setShortcut(Qt::CTRL + Qt::Key_U);
+	actUnderline->setToolTip(i18nc("Makes text underlined, and its shortcut is (Ctrl+u)", 
+						 "Underline (Ctrl+u)"));
 	actUnderline->setCheckable(true);
 	connect(actUnderline, SIGNAL(triggered(bool)), editor, SLOT(setTextUnderline( bool )));
 	barVisual->addAction(actUnderline);
 	
-	actStrikeout = new KAction(KIcon("format-text-strikethrough"), i18nc("Makes text overlined", "Strikeout"), this);
-	//actStrikeout->setShortcut(Qt::CTRL + Qt::Key_L);
+	actStrikeout = new KAction(KIcon("format-text-strikethrough"), i18nc("Strikes the text out", "Strikeout"), this);
+	actStrikeout->setShortcut(Qt::CTRL + Qt::Key_L);
+	actStrikeout->setToolTip(i18nc("Strikes the text out, and its shortcut is (Ctrl+l)", 
+							 "Underline (Ctrl+l)"));
 	actStrikeout->setCheckable(true);
 	connect(actStrikeout, SIGNAL(triggered(bool)), editor, SLOT(setTextStrikeOut( bool )));
 	barVisual->addAction(actStrikeout);
@@ -744,13 +756,18 @@ void BilboEditor::createActions()
 	
 	actRemoveFormatting= new KAction(KIcon("draw-eraser"), i18n("Remove formatting"), this);
 	actRemoveFormatting->setShortcut(Qt::CTRL + Qt::Key_R);
+	actRemoveFormatting->setToolTip(i18nc("Remove formatting, and its shortcut is (Ctrl+r)", 
+							 "Remove formatting (Ctrl+r)"));
 	connect(actRemoveFormatting, SIGNAL(triggered(bool)), this, SLOT(sltRemoveFormatting()));
 	barVisual->addAction(actRemoveFormatting);
 	
 	barVisual->addSeparator();
 	
 	actNewParagraph = new KAction(KIcon("new-paragraph"), i18nc("Inserts a new paragraph", "New Paragraph"), this);
-	actNewParagraph->setShortcut(Qt::CTRL + Qt::Key_P);
+	actNewParagraph->setShortcut(Qt::SHIFT + Qt::Key_Return);
+	actNewParagraph->setToolTip(i18nc
+			("Inserts a new paragraph, and its shortcut is (Shift+Enter)", 
+			 "New Paragraph (Shift+Enter)"));
 	connect(actNewParagraph, SIGNAL(triggered(bool)), this, SLOT(sltNewParagraph()));
 	barVisual->addAction(actNewParagraph);
 	
@@ -783,7 +800,7 @@ void BilboEditor::createActions()
 	barVisual->addSeparator();
 	
 	actAddLink = new KAction(KIcon("insert-link"), i18nc("verb, to add a new link or edit an existing one", "Add/Edit Link"), this);
-	actAddLink->setShortcut(Qt::CTRL + Qt::Key_L);
+// 	actAddLink->setShortcut(Qt::CTRL + Qt::Key_L);
 	connect(actAddLink, SIGNAL(triggered(bool)), this, SLOT(sltAddEditLink()));
 	barVisual->addAction(actAddLink);
 	
@@ -797,6 +814,8 @@ void BilboEditor::createActions()
 							  "Add Image"), this);
 	connect(actAddImage, SIGNAL(triggered(bool)), this, SLOT(sltAddImage()));
 	barVisual->addAction(actAddImage);
+	
+// 	visualEditorActions->associateWidget(barVisual);
 }
 
 // void BilboEditor::sltToggleItalic()
