@@ -30,6 +30,7 @@ Constants.
  */
 
 #define VERSION "0.1"
+#define APPNAME "Bilbo Blogger"
 #define DATA_DIR KStandardDirs::locateLocal("data", "bilbo/")
 // #define CONF_PATH QString(CONF_DIR)+QString("/bilbo.conf")
 #define CONF_DB QString(DATA_DIR)+QString("/bilbo.db")

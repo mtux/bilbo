@@ -34,8 +34,9 @@ static const char description[] =
 int main(int argc, char *argv[])
 {
     KAboutData about("bilbo", 0, ki18n("Bilbo Blogger"), VERSION, ki18n(description),
-                         KAboutData::License_GPL_V3, ki18n("(C) 2007 Bilbo Developers"), 
-                                 KLocalizedString(), "http://bilbo.sourceforge.net", 0);
+                        KAboutData::License_GPL_V3, ki18n("(C) 2008-2009 Bilbo Developers"), 
+						KLocalizedString(), "http://bilbo.sourceforge.net",
+						"http://bugs.launchpad.net/bilbo");
     about.addAuthor( ki18n("Mehrdad Momeny"), ki18n("Core Developer"), "mehrdad.momeny@gmail.com" );
     about.addAuthor( ki18n("Golnaz Nilieh"), ki18n("Core Developer"), "g382nilieh@gmail.com" );
     KCmdLineArgs::init(argc, argv, &about);
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
 // 	app.setQuitOnLastWindowClosed(false);
     
     MainWindow *bilbo = new MainWindow;
-//     bilbo->setAttribute(Qt::WA_DeleteOnClose);
+    bilbo->setAttribute(Qt::WA_DeleteOnClose, false);
     if(Settings::show_main_on_start())
         bilbo->show();
 	int r = app.exec();

@@ -321,6 +321,8 @@ void Toolbox::sltCurrentBlogChanged(int blog_id)
         kDebug()<<"Blog id do not sets correctly";
         return;
     }
+	btnBlogEdit->setEnabled(true);
+	btnBlogRemove->setEnabled(true);
     __currentBlogId = blog_id;
 	sltLoadCategoryListFromDB(blog_id);
 	sltLoadEntriesFromDB(blog_id);
@@ -516,6 +518,9 @@ void Toolbox::setButtonsIcon()
     btnEntriesCopyUrl->setIcon(KIcon("edit-copy"));
     btnCatReload->setIcon(KIcon("view-refresh"));
     btnCatAdd->setIcon(KIcon("list-add"));
+	btnMediaAdd->setIcon(KIcon("list-add"));
+	btnMediaEdit->setIcon(KIcon("edit-rename"));
+	btnMediaRemove->setIcon(KIcon("list-remove"));
     ///TODO Add option for selecting only text or only Icon for Toolbox buttons!
     btnBlogAdd->setText(QString());
     btnBlogEdit->setText(QString());
@@ -525,6 +530,9 @@ void Toolbox::setButtonsIcon()
     btnEntriesCopyUrl->setText(QString());
     btnCatReload->setText(QString());
     btnCatAdd->setText(QString());
+	btnMediaAdd->setText(QString());
+	btnMediaEdit->setText(QString());
+	btnMediaRemove->setText(QString());
 }
 
 
