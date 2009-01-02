@@ -26,7 +26,7 @@
 // #include <kurl.h>
 // #include <kdatetime.h>
 #include <kblog/blogpost.h>
-
+#include "constants.h"
 class QUrl;
 class QDateTime;
 class KUrl;
@@ -49,18 +49,6 @@ public:
 	BilboPost( const KBlog::BlogPost& );
     BilboPost( const BilboPost& );
     ~BilboPost();
-
-/*	QUrl postLink() const;
-	void setPostLink(const QUrl&);
-	
-	QUrl postPermaLink() const;
-	void setPostPermaLink(const QUrl&);
-	
-	QDateTime cTime() const;
-	void setCTime(const QDateTime&);
-	
-	QDateTime mTime() const;
-	void setMTime(const QDateTime&);*/
 	
 	QString author() const;
 	void setAuthor(const QString&);
@@ -77,11 +65,15 @@ public:
 	bool isModifyTimeStamp();
 	void setModifyTimeStamp(bool willModify);
 	
+	QList<Category> categoryList() const;
+	void setCategoryList(const QList<Category> &list);
+	
 private:
 	QString mAuthor;
 	int mId;///id in DB
 	Position mPosition;
 	bool mModifyTimeStamp;///Just for toolbox entry!
+	QList<Category> mCategoryList;
 };
 
 #endif

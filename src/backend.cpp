@@ -60,6 +60,7 @@ Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 	mBlog->setUrl(KUrl(bBlog->url()));
     mBlog->setBlogId(bBlog->blogid());
     mChecksum = 0;
+	categoryListNotSet = false;
     mediaLocalUrl= "";
     
     connect( mBlog, SIGNAL( error( KBlog::Blog::ErrorType, const QString& ) ),
@@ -150,12 +151,18 @@ void Backend::publishPost(BilboPost * post)
 	} else if(api==3){
 		KBlog::WordpressBuggy *wp = dynamic_cast<KBlog::WordpressBuggy*>(mBlog);
 		connect(wp, SIGNAL(createdPost( KBlog::BlogPost * )), this, SLOT(postPublished( KBlog::BlogPost * )));
+		if(post->categories().count() > 1){
+			mCreatePostCategories = post->categoryList();
+			bp->categories().clear();
+			categoryListNotSet = true;
+		}
 		wp->createPost(bp);
 	} else if(api==4){
 		KBlog::GData *gd = dynamic_cast<KBlog::GData*>(mBlog);
 		connect(gd, SIGNAL(createdPost( KBlog::BlogPost * )), this, SLOT(postPublished( KBlog::BlogPost * )));
 		gd->createPost(bp);
 	}
+	delete post;
 }
 
 void Backend::postPublished(KBlog::BlogPost *post)
@@ -168,11 +175,21 @@ void Backend::postPublished(KBlog::BlogPost *post)
         Q_EMIT sigError(tmp);
         return;
     }
-	BilboPost pp((*post));
-	int post_id = __db->addPost(pp, bBlog->id());
-	if(post_id!=-1){
-        kDebug()<<"Emiteding sigPostPublished...";
-		Q_EMIT sigPostPublished(bBlog->id(), post_id, post->isPrivate());
+	if(categoryListNotSet){
+		mSetPostCategoriesMap[ post->postId() ] = post;
+		QMap<QString, bool> cats;
+		int count = mCreatePostCategories.count();
+		for(int i=0; i<count; ++i){
+			cats[ mCreatePostCategories[i].categoryId ] = false;
+		}
+		setPostCategories(post->postId(), cats);
+	} else {
+		BilboPost pp((*post));
+		int post_id = __db->addPost(pp, bBlog->id());
+		if(post_id!=-1){
+			kDebug()<<"Emiteding sigPostPublished...";
+			Q_EMIT sigPostPublished(bBlog->id(), post_id, post->isPrivate());
+		}
 	}
 }
 
@@ -301,6 +318,40 @@ void Backend::error(KBlog::Blog::ErrorType type, const QString & errorMessage)
     kDebug()<<errType;
     kDebug()<<"Emitting sigError";
     Q_EMIT sigError( errType );
+}
+
+void Backend::setPostCategories(const QString postId, const QMap< QString, bool > & categoriesList)
+{
+	kDebug();
+	int count = categoriesList.count();
+	if(count < 1){
+		kDebug()<<"Category list is empty.";
+		return;
+	}
+	if(bBlog->api() == BilboBlog::MOVABLETYPE_API || bBlog->api() == BilboBlog::WORDPRESSBUGGY_API){
+		KBlog::MovableType *mt = qobject_cast<KBlog::MovableType*>(mBlog);
+		connect(mt, SIGNAL(settedPostCategories(const QString &)), this, SLOT(postCategoriesSetted(const QString&)));
+		mt->setPostCategories(postId, categoriesList);
+	} else {
+		kDebug()<<"Blog API doesn't support setting post categories the api type is: "<<bBlog->api();
+		QString err = i18n("The registred blog API doesn't support setting post categories.");
+		emit sigError(err);
+	}
+}
+
+void Backend::postCategoriesSetted(const QString &postId)
+{
+	kDebug();
+	KBlog::BlogPost *post = mSetPostCategoriesMap[ postId ];
+	BilboPost pp(*post);
+	mSetPostCategoriesMap.remove(postId);
+	int post_id = __db->addPost(pp, bBlog->id());
+	if(post_id!=-1){
+		bool isPrivate = post->isPrivate();
+		kDebug()<<"Emiteding sigPostPublished...";
+		Q_EMIT sigPostPublished(bBlog->id(), post_id, isPrivate);
+	}
+	delete post;
 }
 
 #include "backend.moc"

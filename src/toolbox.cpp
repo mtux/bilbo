@@ -332,7 +332,7 @@ void Toolbox::sltCurrentBlogChanged(int blog_id)
 void Toolbox::getFieldsValue(BilboPost *currentPost)
 {
 	kDebug();
-	currentPost->setCategories(this->selectedCategoriesTitle());
+	currentPost->setCategoryList(this->selectedCategories());
 	currentPost->setTags(this->currentTags());
 	currentPost->setModifyTimeStamp(this->chkOptionsTime->isChecked());
 	if(currentPost->status()==KBlog::BlogPost::Fetched || currentPost->status()==KBlog::BlogPost::Modified){///FIXME there is a BUG here!
@@ -380,6 +380,18 @@ void Toolbox::setFieldsValue(BilboPost* post)
 	optionsDate->setDate(post->modificationDateTime().date());
 	txtSummary->setPlainText(post->summary());
 //     txtOptionsTrackback->setText(post.);
+}
+
+QList< Category > Toolbox::selectedCategories()
+{
+	kDebug();
+	QList<Category> list;
+	int count = listCategoryCheckBoxes.count();
+	for( int i=0; i<count; ++i){
+		if(listCategoryCheckBoxes[i]->isChecked())
+			list.append(listCategoryCheckBoxes[i]->category());
+	}
+	return list;
 }
 
 QStringList Toolbox::selectedCategoriesTitle()
@@ -514,5 +526,6 @@ void Toolbox::setButtonsIcon()
     btnCatReload->setText(QString());
     btnCatAdd->setText(QString());
 }
+
 
 #include "toolbox.moc"

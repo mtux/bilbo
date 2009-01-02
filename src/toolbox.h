@@ -22,7 +22,7 @@
 
 #include <QDockWidget>
 #include <QtGui>
-
+#include "constants.h"
 #include "ui_toolboxbase.h"
 class KStatusBar;
 class QRadioButton;
@@ -89,6 +89,7 @@ signals:
 	
 private:
 	QStringList selectedCategoriesTitle();
+	QList<Category> selectedCategories();
 	QList<int> selectedCategoriesId();
 	void setSelectedCategories(const QStringList&);
 	void setSelectedCategories(const QList<int>&);

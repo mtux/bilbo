@@ -22,7 +22,7 @@
 
 #include <QObject>
 #include <QMap>
-// #include <kurl.h>
+#include "constants.h"
 #include <kblog/blog.h>
 
 
@@ -79,6 +79,8 @@ public:
      */
     void modifyPost( BilboPost *post );
     
+    void setPostCategories(const QString postId, const QMap<QString, bool> &categoriesList);
+    
 protected Q_SLOTS:
 	void categoriesListed(const QList< QMap< QString, QString > > &   categories   );
 	
@@ -91,6 +93,8 @@ protected Q_SLOTS:
     void postModified( KBlog::BlogPost *post );
     
     void error( KBlog::Blog::ErrorType type, const QString &errorMessage );
+	
+	void postCategoriesSetted(const QString &postId);
 	
 Q_SIGNALS:
     /**
@@ -133,30 +137,15 @@ Q_SIGNALS:
      * @param errorMessage error message.
      */
     void sigError( QString &errorMessage);
-    
-    /**
-     * This signal is emitted when an error occurs with XML parsing or
-     * a structural problem in an operation involving a blog post.
-     * @param type the type of the error.
-     * @param errorMessage the error message.
-     * @param post the post that caused the error.
-     */
-//     void sigPostError( KBlog::Blog::ErrorType type, const QString &errorMessage, KBlog::BlogPost *post );
-    
-    /**
-     * This signal is emitted when an error occurs with XML parsing or
-     * a structural problem in an operation involving some blog media.
-     * @param type the type of the error.
-     * @param errorMessage the error message.
-     * @param media the media that caused the error.
-     */
-//     void sigMediaError( KBlog::Blog::ErrorType type, const QString & errorMessage, BilboMedia * media );
 	
 private:
 	KBlog::Blog *mBlog;
 	BilboBlog *bBlog;
     quint16 mChecksum;
     QString mediaLocalUrl;
+	QList<Category> mCreatePostCategories;
+	QMap<QString, KBlog::BlogPost *> mSetPostCategoriesMap;
+	bool categoryListNotSet;
 };
 
 #endif

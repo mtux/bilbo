@@ -28,6 +28,7 @@ BilboPost::BilboPost()
     this->setLink(KUrl());
     this->setPermaLink(KUrl());
     this->setCategories(QStringList());
+	this->setCategoryList(QList<Category>());
     this->setCommentAllowed(true);
     this->setContent("");
     this->setTags(QStringList());
@@ -147,6 +148,7 @@ BilboPost::BilboPost(const BilboPost &post)
     this->setLink(post.link());
     this->setPermaLink(post.permaLink());
     this->setCategories(post.categories());
+	this->setCategoryList(post.categoryList());
     this->setCommentAllowed(post.isCommentAllowed());
     this->setError(post.error());
     this->setContent(post.content());
@@ -173,5 +175,18 @@ void BilboPost::setModifyTimeStamp(bool willModify)
 	mModifyTimeStamp = willModify;
 }
 
+QList< Category > BilboPost::categoryList() const
+{
+	return mCategoryList;
+}
 
-// #include "bilbopost.moc"
+void BilboPost::setCategoryList(const QList< Category > & list)
+{
+	mCategoryList = list;
+	QStringList cats;
+	int count = list.count();
+	for(int i=0; i<count; ++i){
+		cats.append(list[i].name);
+	}
+	this->setCategories(cats);
+}

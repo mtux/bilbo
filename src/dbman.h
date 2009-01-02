@@ -56,6 +56,7 @@ public:
 	
 	QMap<QString, int> listCategoriesName(int blog_id);
 	QList<Category> listCategories(int blog_id);
+	QMap<QString, bool> listCategoriesId(int blog_id);
 	
 	
 	///END
@@ -63,7 +64,8 @@ public:
 	///(BEGIN) Data Manipulation Functions:
 	
 	///Blog:
-	int addBlog(QString blogid, QString blog_url, QString username, QString password, QString style_url, QString api, QString title, int direction);
+	int addBlog(QString blogid, QString blog_url, QString username, QString password, QString style_url,
+				 QString api, QString title, int direction);
 	
 	int addBlog(BilboBlog& blog);
 	

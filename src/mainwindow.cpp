@@ -44,8 +44,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
 {
     kDebug();
     previousActivePostIndex = -1;
-        
-    // tell the KXmlGuiWindow that this is indeed the main widget
+
     tabPosts->setElideMode(Qt::ElideRight);///TODO make this Optional!
     setCentralWidget(tabPosts);
 
