@@ -28,7 +28,7 @@
 
 #include "addimagedialog.h"
 #include "bilbomedia.h"
-#include "constants.h"
+#include "global.h"
 #include "settings.h"
 
 AddImageDialog::AddImageDialog(QWidget *parent) :KDialog(parent)
@@ -69,7 +69,7 @@ void AddImageDialog::sltOkClicked()
 					
 					if (KIO::NetAccess::exists(mediaUrl.url(), true, NULL)) {
 // 						KTemporaryFile tmpFile;
-						KUrl localUrl = KUrl("file://" + TEMP_MEDIA_DIR + name); 
+						KUrl localUrl = KUrl("file://" + __tempMediaDir + name); 
 // 						KUrl localUrl = KUrl(tempFile.fileName());
 						KIO::Job*  copyJob= KIO::file_copy(mediaUrl, localUrl, -1, KIO::Overwrite);
 						connect(copyJob, SIGNAL(result(KJob *)), this, 
@@ -89,14 +89,14 @@ void AddImageDialog::sltOkClicked()
 				
 				connect(typeJob, SIGNAL(mimetype(KIO::Job *, const QString &)), this,  SLOT(sltRemoteFileTypeFound(KIO::Job *, const QString &)));
 			} else {
-				bool copyResult = QFile::copy(mediaUrl.toLocalFile(), TEMP_MEDIA_DIR  
+				bool copyResult = QFile::copy(mediaUrl.toLocalFile(), __tempMediaDir  
 						+ name);
 				if (!copyResult) {
 					int ret = KMessageBox::questionYesNo(this,i18n("This file is already  added to Bilbo temp directory, and won't be copied again.\nyou can save the file with different name and try again.\ndo you want to continue using the existing file?"), i18n("File already exists"));
 					if (ret == KMessageBox::No) return;
 				}
-				media->setLocalUrl(TEMP_MEDIA_DIR + name);
-				media->setRemoteUrl("file://" + TEMP_MEDIA_DIR + name);
+				media->setLocalUrl(__tempMediaDir + name);
+				media->setRemoteUrl("file://" + __tempMediaDir + name);
 				media->setUploded(false);
 				
 				KMimeType::Ptr typePtr;

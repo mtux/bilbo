@@ -1281,8 +1281,8 @@ void BilboEditor::sltSyncEditors(int index)
 		} else {
 			htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 		}
-		//QString baseU = "http://bilbo.sourceforge.net";
-		QString baseU = "file://";
+		QString baseU = "http://bilbo.sourceforge.net";
+// 		QString baseU = "file://";
 		if(__currentBlogId > -1){
 			BilboBlog *tmp = __db->getBlogInfo(__currentBlogId);
 			baseU = tmp->blogUrl();
