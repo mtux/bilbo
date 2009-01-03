@@ -31,6 +31,7 @@
 class QTextCharFormat;
 class QWebView;
 class QPlainTextEdit;
+// class QNetworkAccessManager;
 class MultiLineTextEdit;
 //class QAction;
 class KAction;
@@ -216,6 +217,8 @@ class BilboEditor : public KTabWidget
 		void sltSetImageProperties(const int index, const double width, const double height, 
 								   const QString title, const QString Alt_text);
 		
+// 		void sltRemoteImageReceived(const QTextCursor & cursor);
+		
 		void sltRemoveMedia(const int index);
 		
 		void sltSyncToolbar(const QTextCharFormat& f);
@@ -292,6 +295,7 @@ class BilboEditor : public KTabWidget
 		//BilboTextCharFormat defaultCharFormat;
 		QTextBlockFormat defaultBlockFormat;
 		QMap <QString, BilboMedia*> *mMediaList;
+// 		QNetworkAccessManager *netManager;
 		int prev_index;
 };
 

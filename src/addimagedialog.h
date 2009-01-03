@@ -67,6 +67,7 @@ class AddImageDialog: public KDialog
 	private Q_SLOTS:
 		void sltOkClicked();
 		void sltRemoteFileTypeFound(KIO::Job *job, const QString &type);
+		void sltRemoteFileCopied(KJob *job);
 };
 
 #endif

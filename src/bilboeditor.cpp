@@ -23,6 +23,7 @@
 //#include <QTabWidget>
 #include <QTextCharFormat>
 #include <QWebView>
+// #include <QNetworkAccessManager>
 #include <klocalizedstring.h>
 #include <ktoolbar.h>
 #include <kaction.h>
@@ -54,6 +55,7 @@ BilboEditor::BilboEditor(QWidget *parent)
 {
 	createUi();
 	editor->setFocus();
+// 	netManager = new QNetworkAccessManager(this);
 }
 
 
@@ -1088,11 +1090,23 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 	QString url;
 	QListWidgetItem *item;
 //	qDebug() << url;
-// 	QImage *image = new QImage();
-// 	editor->document()->addResource(QTextDocument::ImageResource,QUrl(url), QVariant(image));
-	if ( media->isUploaded()) {
-		url = media->remoteUrl();
-	} else {
+//  	QImage *image = new QImage();
+//  	editor->document()->addResource(QTextDocument::ImageResource, QUrl(url), QVariant(image));
+// 	if ( media->isUploaded()) {
+// 		kDebug() << "Remote";
+// // 		url = media->remoteUrl();
+// // 		QImage *image = new QImage(url);
+// // 		editor->document()->addResource(QTextDocument::ImageResource, QUrl(url), QVariant(image));
+// // 		editor->textCursor().insertImage(url);
+// 		
+// 		url = media->localUrl();
+// 		
+// // 		QNetworkRequest request = QNetworkRequest(QUrl(media->remoteUrl()));
+// // 		QNetworkReply *reply = netManeger->get(request);
+// // 		connect(reply, SIGNAL(finished()), this,
+// // 				SLOT(sltRemoteImageReceived(editor->textCursor())));
+// 		
+// 	} else {
 		if (mMediaList->contains(media->localUrl())) {
 			//media is already added.
 		} else {
@@ -1107,12 +1121,17 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 			item->setData(Qt::UserRole, QVariant(media->localUrl()));
 		}
 		url = media->localUrl();
-	}
+// 	}
 	QTextImageFormat imageFormat;
 	imageFormat.setName(url);
 	editor->textCursor().insertImage(imageFormat);
 	editor->setFocus(Qt::OtherFocusReason);
 }
+
+// void sltRemoteImageReceived(const QTextCursor & cursor)
+// {
+// 	
+// }
 // void BilboEditor::insertMedia(KBloggerMedia* media)
 // {
 // 	kDebug();
@@ -1262,7 +1281,8 @@ void BilboEditor::sltSyncEditors(int index)
 		} else {
 			htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 		}
-		QString baseU = "http://bilbo.sourceforge.net";
+		//QString baseU = "http://bilbo.sourceforge.net";
+		QString baseU = "file://";
 		if(__currentBlogId > -1){
 			BilboBlog *tmp = __db->getBlogInfo(__currentBlogId);
 			baseU = tmp->blogUrl();
