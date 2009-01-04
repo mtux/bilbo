@@ -59,7 +59,7 @@ public:
 	
 	void addMedia(const QString &url);
 	
-	QMap <QString, BilboMedia*> * mediaList();
+	QMap <QString, BilboMedia*> & mediaList();
 Q_SIGNALS:
     /**
      * emitted when title of this entry changed.

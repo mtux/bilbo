@@ -25,6 +25,7 @@
 #include <QButtonGroup>
 #include <kdatetime.h>
 #include <kurl.h>
+#include <QDir>
 
 #include "toolbox.h"
 #include "entriescountdialog.h"
@@ -88,6 +89,7 @@ void Toolbox::sltEditBlog()
 		return;
 	}
     blogToEdit = qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton());
+	blogToEditDir = QDir(DATA_DIR + __db->getBlogInfo(blogToEdit->blogId())->blogUrl());
 	
 	addEditBlogWindow = new AddEditBlog(blogToEdit->blogId(), this);
     addEditBlogWindow->setAttribute(Qt::WA_DeleteOnClose);
@@ -95,6 +97,7 @@ void Toolbox::sltEditBlog()
 	addEditBlogWindow->show();
 }
 
+// TODO remove the blog media directory
 void Toolbox::sltRemoveBlog()
 {
 	kDebug();
@@ -120,6 +123,9 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 // 	connect(a, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
     a->setChecked(true);
     sltReloadCategoryList();
+	
+	KStandardDirs::makeDir(DATA_DIR + addedBlog.title());
+	
     delete addEditBlogWindow;
 }
 
@@ -133,6 +139,8 @@ void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 //     Q_EMIT sigCurrentBlogChanged(listBlogs.value(listBlogRadioButtons.checkedButton()->text(), -1));
     sltCurrentBlogChanged(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
     sltReloadCategoryList();
+	blogToEditDir.rename(blogToEditDir.dirName(), DATA_DIR + editedBlog.title());
+	
     delete addEditBlogWindow;
 }
 

@@ -22,6 +22,7 @@
 
 #include <QDockWidget>
 #include <QtGui>
+#include <QDir>
 
 #include "ui_toolboxbase.h"
 class KStatusBar;
@@ -100,6 +101,7 @@ private:
 	
 	AddEditBlog *addEditBlogWindow;
 	BlogRadioButton *blogToEdit;
+	QDir blogToEditDir;
 // 	BilboPost *currentPost;
 	KStatusBar *statusbar;
 };

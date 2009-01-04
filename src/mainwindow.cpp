@@ -27,6 +27,9 @@
 #include <kdebug.h>
 #include <kmessagebox.h>
 #include <KDE/KLocale>
+#include <QDir>
+#include <QFile>
+#include <QMap>
 
 #include "mainwindow.h"
 #include "global.h"
@@ -397,13 +400,36 @@ void MainWindow::sltCurrentBlogChanged(int blog_id)
 void MainWindow::sltSavePostLocally()
 {
     kDebug();
+	int blog_id = toolbox->currentBlogId();
+	
+	if (blog_id == -1) {
+		kDebug() << "no blogs selected";
+	} else {
+		QDir blogDir = QDir(DATA_DIR + __db->getBlogInfo(blog_id)->title());
+		
+		if (blogDir.exists()) {
+			QMap <QString, BilboMedia*>::const_iterator i = 
+					activePost->mediaList().constBegin();
+			while (i != activePost->mediaList().constEnd()) {
+				
+				if (i.key().startsWith(__tempMediaDir)) {
+					kDebug() << blogDir.path();
+					QFile::copy(i.key(), blogDir.path() + '/' + i.value()->name());
+				}
+				++i;
+			}
+			
+		} else {
+			kDebug() << "error: no directory created for this blog";
+		}
+	}
 }
 
 void MainWindow::sltSaveAsDraft()
 {
     kDebug();
     int blog_id = toolbox->currentBlogId();
-    if(blog_id==-1){
+    if (blog_id == -1) {
         KMessageBox::sorry(this, i18n("You have to select a blog to save this post as draft on it."));
         kDebug()<<"Blog id not sets correctly.";
         return;
