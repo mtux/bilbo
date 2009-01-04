@@ -89,7 +89,7 @@ void Toolbox::sltEditBlog()
 		return;
 	}
     blogToEdit = qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton());
-	blogToEditDir = QDir(DATA_DIR + __db->getBlogInfo(blogToEdit->blogId())->blogUrl());
+// 	blogToEditDir = QDir(DATA_DIR + __db->getBlogInfo(blogToEdit->blogId())->blogUrl());
 	
 	addEditBlogWindow = new AddEditBlog(blogToEdit->blogId(), this);
     addEditBlogWindow->setAttribute(Qt::WA_DeleteOnClose);
@@ -124,7 +124,7 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
     a->setChecked(true);
     sltReloadCategoryList();
 	
-	KStandardDirs::makeDir(DATA_DIR + addedBlog.title());
+// 	KStandardDirs::makeDir(DATA_DIR + addedBlog.title());
 	
     delete addEditBlogWindow;
 }
@@ -139,7 +139,7 @@ void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 //     Q_EMIT sigCurrentBlogChanged(listBlogs.value(listBlogRadioButtons.checkedButton()->text(), -1));
     sltCurrentBlogChanged(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
     sltReloadCategoryList();
-	blogToEditDir.rename(blogToEditDir.dirName(), DATA_DIR + editedBlog.title());
+// 	blogToEditDir.rename(blogToEditDir.dirName(), DATA_DIR + editedBlog.title());
 	
     delete addEditBlogWindow;
 }

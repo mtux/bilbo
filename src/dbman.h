@@ -63,11 +63,11 @@ public:
 	///(BEGIN) Data Manipulation Functions:
 	
 	///Blog:
-	int addBlog(QString blogid, QString blog_url, QString username, QString password, QString style_url, QString api, QString title, int direction);
+	int addBlog(QString blogid, QString blog_url, QString username, QString password, QString style_url, QString api, QString title, int direction, QString directory);
 	
 	int addBlog(BilboBlog& blog);
 	
-	bool editBlog(int id, QString username, QString password, QString style_url, QString api, QString title, int direction);
+	bool editBlog(int id, QString username, QString password, QString style_url, QString api, QString title, int direction, QString directory);
 	
 	bool editBlog(BilboBlog& blog);
 	

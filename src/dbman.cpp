@@ -69,7 +69,8 @@ bool DBMan::createDB()
 	QSqlQuery q;
 	///Blog table!
 	if(!q.exec("CREATE TABLE blog (id INTEGER PRIMARY KEY, blogid TEXT, blog_url TEXT, username TEXT,\
-		    password TEXT, style_url TEXT, api_type TEXT, title TEXT, direction TEXT)"))
+		    password TEXT, style_url TEXT, api_type TEXT, title TEXT, direction TEXT,\
+		    local_directory TEXT)"))
 		ret=false;
 	
 	///posts table!
@@ -103,10 +104,10 @@ bool DBMan::createDB()
 	return ret;
 }
 
-int DBMan::addBlog(QString blogid, QString blog_url, QString username, QString password, QString style_url, QString api, QString title, int direction)
+int DBMan::addBlog(QString blogid, QString blog_url, QString username, QString password, QString style_url, QString api, QString title, int direction, QString directory)
 {
 	QSqlQuery q;
-	q.prepare("INSERT INTO blog (blogid, blog_url, username, password, style_url, api_type, title, direction) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+	q.prepare("INSERT INTO blog (blogid, blog_url, username, password, style_url, api_type, title, direction, local_directory) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 	q.addBindValue(blogid);
 	q.addBindValue(blog_url);
 	q.addBindValue(username);
@@ -115,6 +116,7 @@ int DBMan::addBlog(QString blogid, QString blog_url, QString username, QString p
 	q.addBindValue(api);
 	q.addBindValue(title);
 	q.addBindValue(direction);
+	q.addBindValue(directory);
 	
 	if(q.exec())
 		return q.lastInsertId().toInt();
@@ -125,7 +127,7 @@ int DBMan::addBlog(QString blogid, QString blog_url, QString username, QString p
 int DBMan::addBlog(BilboBlog & blog)
 {
 	QSqlQuery q;
-	q.prepare("INSERT INTO blog (blogid, blog_url, username, password, style_url, api_type, title, direction) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+	q.prepare("INSERT INTO blog (blogid, blog_url, username, password, style_url, api_type, title, direction, local_directory) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 	q.addBindValue(blog.blogid());
 	//q.addBindValue(blog.url().toString());
 	q.addBindValue(blog.url().url());
@@ -135,6 +137,7 @@ int DBMan::addBlog(BilboBlog & blog)
 	q.addBindValue(blog.api());
 	q.addBindValue(blog.title());
 	q.addBindValue(blog.direction());
+	q.addBindValue(blog.localDirectory());
 	
 	if(q.exec())
 		return q.lastInsertId().toInt();
@@ -151,16 +154,17 @@ int DBMan::addBlog(BilboBlog & blog)
  * @param api 
  * @return 
  */
-bool DBMan::editBlog(int id, QString username, QString password, QString style_url, QString api, QString title, int direction)
+bool DBMan::editBlog(int id, QString username, QString password, QString style_url, QString api, QString title, int direction, QString directory)
 {
 	QSqlQuery q;
-	q.prepare("UPDATE blog SET username=? , password=? , style_url=? , api_type=?, title=?, direction=? WHERE id=?");
+	q.prepare("UPDATE blog SET username=? , password=? , style_url=? , api_type=?, title=?, direction=? local_directory=? WHERE id=?");
 	q.addBindValue(username);
 	q.addBindValue(password);
 	q.addBindValue(style_url);
 	q.addBindValue(api);
 	q.addBindValue(title);
 	q.addBindValue(direction);
+	q.addBindValue(directory);
 	q.addBindValue(id);
 	
 	return q.exec();
@@ -169,13 +173,14 @@ bool DBMan::editBlog(int id, QString username, QString password, QString style_u
 bool DBMan::editBlog(BilboBlog & blog)
 {
 	QSqlQuery q;
-	q.prepare("UPDATE blog SET username=? , password=? , style_url=? , api_type=?, title=?, direction=? WHERE id=?");
+	q.prepare("UPDATE blog SET username=? , password=? , style_url=? , api_type=?, title=?, direction=? local_directory=? WHERE id=?");
 	q.addBindValue(blog.username());
 	q.addBindValue(blog.password());
 	q.addBindValue(blog.stylePath());
 	q.addBindValue(blog.api());
 	q.addBindValue(blog.title());
 	q.addBindValue(blog.direction());
+	q.addBindValue(blog.localDirectory());
 	q.addBindValue(blog.id());
 	
 	return q.exec();
@@ -530,7 +535,7 @@ BilboBlog * DBMan::getBlogInfo(QString title)
 {
 	BilboBlog *b = new BilboBlog();
 	QSqlQuery q;
-	q.prepare("SELECT id, blogid, blog_url, username, password, style_url, api_type, title, direction FROM blog WHERE title = ?");
+	q.prepare("SELECT id, blogid, blog_url, username, password, style_url, api_type, title, direction, local_directory FROM blog WHERE title = ?");
 	q.addBindValue(title);
 	if(q.exec())
 		if( q.next() ){
@@ -543,6 +548,7 @@ BilboBlog * DBMan::getBlogInfo(QString title)
 			b->setApi((BilboBlog::ApiType)q.value(6).toInt());
 			b->setTitle( q.value(7).toString());
 			b->setDirection((Qt::LayoutDirection)q.value(8).toInt());
+			b->setLocalDirectory(q.value(9).toString());
 			return b;
 		}
 	return 0;
@@ -552,7 +558,7 @@ BilboBlog * DBMan::getBlogInfo(int blog_id)
 {
 	BilboBlog *b = new BilboBlog();
 	QSqlQuery q;
-	q.prepare("SELECT id, blogid, blog_url, username, password, style_url, api_type, title, direction FROM blog WHERE id = ?");
+	q.prepare("SELECT id, blogid, blog_url, username, password, style_url, api_type, title, direction, local_directory FROM blog WHERE id = ?");
 	q.addBindValue(blog_id);
 	if(q.exec()){
 		if( q.next() ){
@@ -565,6 +571,7 @@ BilboBlog * DBMan::getBlogInfo(int blog_id)
 			b->setApi((BilboBlog::ApiType)q.value(6).toInt());
 			b->setTitle( q.value(7).toString());
 			b->setDirection( (Qt::LayoutDirection) q.value(8).toInt());
+			b->setLocalDirectory(q.value(9).toString());
 			return b;
 		}
 	}

@@ -407,11 +407,12 @@ void MainWindow::sltSavePostLocally()
 		kDebug() << "no blogs selected";
 		blogDir = QDir(UNKNOWN_BLOG_DIR);
 	} else {
-		blogDir = QDir(DATA_DIR + __db->getBlogInfo(blog_id)->title());
-		
+		blogDir = QDir(__db->getBlogInfo(blog_id)->localDirectory());
+// 		kDebug() << __db->getBlogInfo(blog_id)->localDirectory() << " " << blog_id;
 		if (! blogDir.exists()) {
 			kDebug() << "error: no directory created for the selected blog";
-			statusBar()->showMessage(i18n("error: no directory created for the selected blog."));
+			statusBar()->showMessage(i18n("error: no directory created for the selected blog.") 
+					, STATUSTIMEOUT);
 			return;
 		}
 	}
@@ -425,7 +426,8 @@ void MainWindow::sltSavePostLocally()
 		}
 		++i;
 	}
-	statusBar()->showMessage(i18n("Current post saved in \"%1\".", blogDir.path() ));
+	statusBar()->showMessage(i18n("Current post saved in \"%1\".", blogDir.path()), 
+			  STATUSTIMEOUT);
 }
 
 void MainWindow::sltSaveAsDraft()

@@ -256,13 +256,31 @@ void AddEditBlog::sltAccepted()
 	if(bBlog->url().isEmpty())
 		bBlog->setUrl(QUrl(txtUrl->text()));
 	
+	KUrl url = KUrl(bBlog->url());
+	QString blogDir = DATA_DIR + url.host().replace('/', '_');
+	
 	if(isNewBlog){
+		
+		if (KStandardDirs::makeDir(blogDir)) {
+			bBlog->setLocalDirectory(blogDir);
+		} else {
+			kDebug() << blogDir << " can't be created, as blogDir";
+			return;
+		}
+		
         int blog_id = __db->addBlog(*bBlog);
 		bBlog->setId(blog_id);
 		if(blog_id!=-1)
 			Q_EMIT sigBlogAdded(*bBlog);
-	}
-	else{
+	} else{
+		
+		QDir dir = QDir(bBlog->localDirectory());
+		if (dir.rename(dir.dirName(), url.host().replace('/', '_'))) {
+			bBlog->setLocalDirectory(blogDir);
+		} else {
+			kDebug() << "current blog directory can't be renamed to " << blogDir;
+			return;
+		}
         if(__db->editBlog(*bBlog))
 			Q_EMIT sigBlogEdited(*bBlog);
 	}
