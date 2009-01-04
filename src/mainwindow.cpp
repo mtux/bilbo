@@ -401,28 +401,31 @@ void MainWindow::sltSavePostLocally()
 {
     kDebug();
 	int blog_id = toolbox->currentBlogId();
-	
+	QDir blogDir;
+
 	if (blog_id == -1) {
 		kDebug() << "no blogs selected";
+		blogDir = QDir(UNKNOWN_BLOG_DIR);
 	} else {
-		QDir blogDir = QDir(DATA_DIR + __db->getBlogInfo(blog_id)->title());
+		blogDir = QDir(DATA_DIR + __db->getBlogInfo(blog_id)->title());
 		
-		if (blogDir.exists()) {
-			QMap <QString, BilboMedia*>::const_iterator i = 
-					activePost->mediaList().constBegin();
-			while (i != activePost->mediaList().constEnd()) {
-				
-				if (i.key().startsWith(__tempMediaDir)) {
-					kDebug() << blogDir.path();
-					QFile::copy(i.key(), blogDir.path() + '/' + i.value()->name());
-				}
-				++i;
-			}
-			
-		} else {
-			kDebug() << "error: no directory created for this blog";
+		if (! blogDir.exists()) {
+			kDebug() << "error: no directory created for the selected blog";
+			statusBar()->showMessage(i18n("error: no directory created for the selected blog."));
+			return;
 		}
 	}
+	QMap <QString, BilboMedia*>::const_iterator i = 
+			activePost->mediaList().constBegin();
+	while (i != activePost->mediaList().constEnd()) {
+				
+		if (i.key().startsWith(__tempMediaDir)) {
+			kDebug() << blogDir.path();
+			QFile::copy(i.key(), blogDir.path() + '/' + i.value()->name());
+		}
+		++i;
+	}
+	statusBar()->showMessage(i18n("Current post saved in \"%1\".", blogDir.path() ));
 }
 
 void MainWindow::sltSaveAsDraft()
