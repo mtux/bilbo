@@ -230,6 +230,7 @@ class BilboEditor : public KTabWidget
 		void sltSyncEditors(int index);
 		
 	private:
+		
 		/*!
 		Creates actions of Bilbo editor, and assigns each one to a button, then adds each 
 		 * button to barVisual, on the editor tab.
@@ -249,6 +250,9 @@ class BilboEditor : public KTabWidget
 		Prepares the html code to be used by editor->setHtml() function.
 		 */
 		QString htmlToRichtext(const QString& html);
+		
+		void useRemoteImagePaths();
+		void useLocalImagePaths();
 		
 		QWidget *tabVisual;
 		QWidget *tabHtml;
