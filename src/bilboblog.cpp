@@ -119,6 +119,16 @@ void BilboBlog::setDirection(const Qt::LayoutDirection dir)
 	mDir = dir;
 }
 
+QString BilboBlog::localDirectory() const
+{
+	return mLocalDirectory;
+}
+
+void BilboBlog::setLocalDirectory(const QString &directory)
+{
+	mLocalDirectory = directory;
+}
+
 QString BilboBlog::blogUrl()
 {
     //QString url=this->url().toString();

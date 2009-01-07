@@ -31,9 +31,11 @@
 class QTextCharFormat;
 class QWebView;
 class QPlainTextEdit;
+// class QNetworkAccessManager;
 class MultiLineTextEdit;
 //class QAction;
 class KAction;
+class KActionCollection;
 //class QToolBar;
 class KToolBar;
 class AddEditLink;
@@ -102,6 +104,8 @@ class BilboEditor : public KTabWidget
 		 * @param direction is the new layout direction.
 		 */
 		void setLayoutDirection(Qt::LayoutDirection direction);
+		
+// 		KActionCollection *visualEditorActions;
 	
 	protected Q_SLOTS:
 		/*! 
@@ -213,6 +217,8 @@ class BilboEditor : public KTabWidget
 		void sltSetImageProperties(const int index, const double width, const double height, 
 								   const QString title, const QString Alt_text);
 		
+// 		void sltRemoteImageReceived(const QTextCursor & cursor);
+		
 		void sltRemoveMedia(const int index);
 		
 		void sltSyncToolbar(const QTextCharFormat& f);
@@ -224,6 +230,7 @@ class BilboEditor : public KTabWidget
 		void sltSyncEditors(int index);
 		
 	private:
+		
 		/*!
 		Creates actions of Bilbo editor, and assigns each one to a button, then adds each 
 		 * button to barVisual, on the editor tab.
@@ -243,6 +250,9 @@ class BilboEditor : public KTabWidget
 		Prepares the html code to be used by editor->setHtml() function.
 		 */
 		QString htmlToRichtext(const QString& html);
+		
+		void useRemoteImagePaths();
+		void useLocalImagePaths();
 		
 		QWidget *tabVisual;
 		QWidget *tabHtml;
@@ -289,6 +299,7 @@ class BilboEditor : public KTabWidget
 		//BilboTextCharFormat defaultCharFormat;
 		QTextBlockFormat defaultBlockFormat;
 		QMap <QString, BilboMedia*> *mMediaList;
+// 		QNetworkAccessManager *netManager;
 		int prev_index;
 };
 

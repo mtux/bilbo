@@ -66,6 +66,8 @@ public:
 	void setId(const int);
 	Qt::LayoutDirection direction() const;
 	void setDirection( const Qt::LayoutDirection );
+	QString localDirectory() const;
+	void setLocalDirectory(const QString&);
     
     /**
      * return Blog Actual Url!
@@ -86,6 +88,7 @@ private:
 	ApiType mApi;
 	int mId;//id in DB
 	Qt::LayoutDirection mDir;
+	QString mLocalDirectory;
 };
 
 #endif

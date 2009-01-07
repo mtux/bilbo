@@ -23,9 +23,11 @@
 //#include <QTabWidget>
 #include <QTextCharFormat>
 #include <QWebView>
+// #include <QNetworkAccessManager>
 #include <klocalizedstring.h>
 #include <ktoolbar.h>
 #include <kaction.h>
+#include <kactioncollection.h>
 #include <kicon.h>
 #include <kcolordialog.h>
 //#include <klistwidget.h>
@@ -53,6 +55,7 @@ BilboEditor::BilboEditor(QWidget *parent)
 {
 	createUi();
 	editor->setFocus();
+// 	netManager = new QNetworkAccessManager(this);
 }
 
 
@@ -696,28 +699,39 @@ void BilboEditor::createUi()
 
 void BilboEditor::createActions()
 {
+// 	visualEditorActions = new KActionCollection(this->barVisual);
+	
 	actBold = new KAction(KIcon("format-text-bold"), i18nc("Makes text bold", "Bold"), 
 						  this);
 	actBold->setShortcut(Qt::CTRL + Qt::Key_B);
+	actBold->setToolTip(i18nc("Makes text bold, and its shortcut is (Ctrl+b)", 
+						"Bold (Ctrl+b)"));
 	actBold->setCheckable(true);
+// 	visualEditorActions->addAction(QLatin1String("bold"), actBold);
 	connect(actBold, SIGNAL(triggered(bool)), editor, SLOT(setTextBold( bool )));
 	barVisual->addAction(actBold);
 	
 	actItalic = new KAction(KIcon("format-text-italic"), i18nc("Makes text italic", 
 							"Italic"), this);
 	actItalic->setShortcut(Qt::CTRL + Qt::Key_I);
+	actItalic->setToolTip(i18nc("Makes text italic, and its shortcut is (Ctrl+i)", 
+						"Italic (Ctrl+i)"));
 	actItalic->setCheckable(true);
 	connect(actItalic, SIGNAL(triggered(bool)), editor, SLOT(setTextItalic( bool )));
 	barVisual->addAction(actItalic);
 	
 	actUnderline = new KAction(KIcon("format-text-underline"), i18nc("Makes text underlined", "Underline"), this);
 	actUnderline->setShortcut(Qt::CTRL + Qt::Key_U);
+	actUnderline->setToolTip(i18nc("Makes text underlined, and its shortcut is (Ctrl+u)", 
+						 "Underline (Ctrl+u)"));
 	actUnderline->setCheckable(true);
 	connect(actUnderline, SIGNAL(triggered(bool)), editor, SLOT(setTextUnderline( bool )));
 	barVisual->addAction(actUnderline);
 	
-	actStrikeout = new KAction(KIcon("format-text-strikethrough"), i18nc("Makes text overlined", "Strikeout"), this);
-	//actStrikeout->setShortcut(Qt::CTRL + Qt::Key_L);
+	actStrikeout = new KAction(KIcon("format-text-strikethrough"), i18nc("Strikes the text out", "Strikeout"), this);
+	actStrikeout->setShortcut(Qt::CTRL + Qt::Key_L);
+	actStrikeout->setToolTip(i18nc("Strikes the text out, and its shortcut is (Ctrl+l)", 
+							 "Underline (Ctrl+l)"));
 	actStrikeout->setCheckable(true);
 	connect(actStrikeout, SIGNAL(triggered(bool)), editor, SLOT(setTextStrikeOut( bool )));
 	barVisual->addAction(actStrikeout);
@@ -744,13 +758,18 @@ void BilboEditor::createActions()
 	
 	actRemoveFormatting= new KAction(KIcon("draw-eraser"), i18n("Remove formatting"), this);
 	actRemoveFormatting->setShortcut(Qt::CTRL + Qt::Key_R);
+	actRemoveFormatting->setToolTip(i18nc("Remove formatting, and its shortcut is (Ctrl+r)", 
+							 "Remove formatting (Ctrl+r)"));
 	connect(actRemoveFormatting, SIGNAL(triggered(bool)), this, SLOT(sltRemoveFormatting()));
 	barVisual->addAction(actRemoveFormatting);
 	
 	barVisual->addSeparator();
 	
 	actNewParagraph = new KAction(KIcon("new-paragraph"), i18nc("Inserts a new paragraph", "New Paragraph"), this);
-	actNewParagraph->setShortcut(Qt::CTRL + Qt::Key_P);
+	actNewParagraph->setShortcut(Qt::SHIFT + Qt::Key_Return);
+	actNewParagraph->setToolTip(i18nc
+			("Inserts a new paragraph, and its shortcut is (Shift+Enter)", 
+			 "New Paragraph (Shift+Enter)"));
 	connect(actNewParagraph, SIGNAL(triggered(bool)), this, SLOT(sltNewParagraph()));
 	barVisual->addAction(actNewParagraph);
 	
@@ -783,7 +802,7 @@ void BilboEditor::createActions()
 	barVisual->addSeparator();
 	
 	actAddLink = new KAction(KIcon("insert-link"), i18nc("verb, to add a new link or edit an existing one", "Add/Edit Link"), this);
-	actAddLink->setShortcut(Qt::CTRL + Qt::Key_L);
+// 	actAddLink->setShortcut(Qt::CTRL + Qt::Key_L);
 	connect(actAddLink, SIGNAL(triggered(bool)), this, SLOT(sltAddEditLink()));
 	barVisual->addAction(actAddLink);
 	
@@ -797,6 +816,8 @@ void BilboEditor::createActions()
 							  "Add Image"), this);
 	connect(actAddImage, SIGNAL(triggered(bool)), this, SLOT(sltAddImage()));
 	barVisual->addAction(actAddImage);
+	
+// 	visualEditorActions->associateWidget(barVisual);
 }
 
 // void BilboEditor::sltToggleItalic()
@@ -1069,11 +1090,23 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 	QString url;
 	QListWidgetItem *item;
 //	qDebug() << url;
-// 	QImage *image = new QImage();
-// 	editor->document()->addResource(QTextDocument::ImageResource,QUrl(url), QVariant(image));
-	if ( media->isUploaded()) {
-		url = media->remoteUrl();
-	} else {
+//  	QImage *image = new QImage();
+//  	editor->document()->addResource(QTextDocument::ImageResource, QUrl(url), QVariant(image));
+// 	if ( media->isUploaded()) {
+// 		kDebug() << "Remote";
+// // 		url = media->remoteUrl();
+// // 		QImage *image = new QImage(url);
+// // 		editor->document()->addResource(QTextDocument::ImageResource, QUrl(url), QVariant(image));
+// // 		editor->textCursor().insertImage(url);
+// 		
+// 		url = media->localUrl();
+// 		
+// // 		QNetworkRequest request = QNetworkRequest(QUrl(media->remoteUrl()));
+// // 		QNetworkReply *reply = netManeger->get(request);
+// // 		connect(reply, SIGNAL(finished()), this,
+// // 				SLOT(sltRemoteImageReceived(editor->textCursor())));
+// 		
+// 	} else {
 		if (mMediaList->contains(media->localUrl())) {
 			//media is already added.
 		} else {
@@ -1088,12 +1121,17 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 			item->setData(Qt::UserRole, QVariant(media->localUrl()));
 		}
 		url = media->localUrl();
-	}
+// 	}
 	QTextImageFormat imageFormat;
 	imageFormat.setName(url);
 	editor->textCursor().insertImage(imageFormat);
 	editor->setFocus(Qt::OtherFocusReason);
 }
+
+// void sltRemoteImageReceived(const QTextCursor & cursor)
+// {
+// 	
+// }
 // void BilboEditor::insertMedia(KBloggerMedia* media)
 // {
 // 	kDebug();
@@ -1215,12 +1253,12 @@ void BilboEditor::sltSyncEditors(int index)
 	
 	if(index == 0) {
 		///Qt QTextEdit::setHtml() or QTextDocument::toHtml() convert <h1-5> tags to <span> tags
-		//delete editor->document();
-		//QTextDocument *doc = new QTextDocument(editor);
+		
 		doc = editor->document();
 		doc->setUndoRedoEnabled(false);
 		doc->clear();
 		BilboTextHtmlImporter(doc, htmlEditor->toPlainText()).import();
+		useLocalImagePaths();
 		doc->setUndoRedoEnabled(true);
 		editor->setTextCursor( QTextCursor(doc));
 		
@@ -1233,6 +1271,7 @@ void BilboEditor::sltSyncEditors(int index)
 		kDebug() << editor->document()->toHtml() << "index=1" << endl;
 		kDebug() << editor->toCleanHtml() << "index=0" << endl;
 		//kDebug() << editor->toHtml() << endl;
+		useRemoteImagePaths();
 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 	} else {
 		if (prev_index == 1) {
@@ -1241,9 +1280,11 @@ void BilboEditor::sltSyncEditors(int index)
 			doc->clear();
 			BilboTextHtmlImporter(doc, htmlEditor->toPlainText()).import();
 		} else {
+			useRemoteImagePaths();
 			htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 		}
 		QString baseU = "http://bilbo.sourceforge.net";
+// 		QString baseU = "file://";
 		if(__currentBlogId > -1){
 			BilboBlog *tmp = __db->getBlogInfo(__currentBlogId);
 			baseU = tmp->blogUrl();
@@ -1294,6 +1335,7 @@ QString* BilboEditor::htmlContent()
 	htmlExp->setDefaultBlockFormat(this->defaultBlockFormat);
 	
 	if (this->currentIndex() == 0) {
+		useRemoteImagePaths();
 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
 		//htmlEditor->setPlainText(editor->textOrHtml());
 	} else if (this->currentIndex() == 1) {
@@ -1380,4 +1422,80 @@ void BilboEditor::setLayoutDirection(Qt::LayoutDirection direction)
 	}
 }
 
+void BilboEditor::useRemoteImagePaths()
+{
+	QTextCharFormat f;
+	QTextCursor cursor;
+	QTextBlock block = this->editor->document()->firstBlock();
+	QTextBlock::iterator i;
+	do {
+		for (i = block.begin(); !(i.atEnd()); ++i) {
+			kDebug() << "start iterating";
+			f = i.fragment().charFormat();
+			if (f.isImageFormat()) {
+				kDebug() << "is image format";
+				QTextImageFormat imgFormat = f.toImageFormat();
+				
+				if (mMediaList->contains(imgFormat.name())) {
+					kDebug() << "image exists";
+					BilboMedia *tempMedia = mMediaList->value(imgFormat.name());
+					imgFormat.setName(tempMedia->remoteUrl());
+// 					imgFormat.setProperty(BilboTextFormat::ImageLocalPath, 
+// 										  QVariant(tempMedia->localUrl()));
+
+					cursor = this->editor->textCursor();
+					cursor.setPosition(i.fragment().position());
+					cursor.movePosition(QTextCursor::NextCharacter, 
+										QTextCursor::KeepAnchor, i.fragment().length());
+					if (cursor.hasSelection()) {
+						cursor.mergeCharFormat(imgFormat);
+						this->editor->setTextCursor(cursor);
+					}
+				}
+			}
+		}
+		block = block.next();
+	} while (block.isValid());
+}
+
+void BilboEditor::useLocalImagePaths()
+{
+	QTextCharFormat f;
+	QTextCursor cursor;
+	QTextBlock block = this->editor->document()->firstBlock();
+	QTextBlock::iterator i;
+	QMap <QString, BilboMedia*>::const_iterator c_i = 
+			mMediaList->constBegin();
+	do {
+		for (i = block.begin(); !(i.atEnd()); ++i) {
+			kDebug() << "start iterating";
+			f = i.fragment().charFormat();
+			if (f.isImageFormat()) {
+				kDebug() << "is image format";
+				QTextImageFormat imgFormat = f.toImageFormat();
+				
+				BilboMedia *tempMedia = c_i.value();
+				while (tempMedia->remoteUrl() != imgFormat.name()) {
+					++c_i;
+					if (c_i == mMediaList->constEnd()) {
+						c_i = mMediaList->constBegin();
+					}
+					tempMedia = c_i.value();
+				}
+				
+				imgFormat.setName(tempMedia->localUrl());
+
+				cursor = this->editor->textCursor();
+				cursor.setPosition(i.fragment().position());
+				cursor.movePosition(QTextCursor::NextCharacter, 
+									QTextCursor::KeepAnchor, i.fragment().length());
+				if (cursor.hasSelection()) {
+					cursor.mergeCharFormat(imgFormat);
+					this->editor->setTextCursor(cursor);
+				}
+			}
+		}
+		block = block.next();
+	} while (block.isValid());
+}
 #include "bilboeditor.moc"

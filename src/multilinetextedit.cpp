@@ -52,7 +52,7 @@ void MultiLineTextEdit::keyPressEvent(QKeyEvent *event)
 {
 	//qDebug("MultiLineTextEdit::keyPressEvent");
 	int tempKey = event->key();
-	if (tempKey == Qt::Key_Return)
+	if (tempKey == Qt::Key_Return && event->modifiers() != Qt::ShiftModifier)
 	{
 		this->textCursor().insertText(QString(QChar::LineSeparator));
 		//qDebug() << "Enter Pressed" ;

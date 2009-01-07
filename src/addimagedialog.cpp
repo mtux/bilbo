@@ -24,10 +24,11 @@
 #include <kdebug.h>
 #include <kio/job.h>
 #include <kio/netaccess.h>
+#include <kio/jobuidelegate.h>
 
 #include "addimagedialog.h"
 #include "bilbomedia.h"
-#include "constants.h"
+#include "global.h"
 #include "settings.h"
 
 AddImageDialog::AddImageDialog(QWidget *parent) :KDialog(parent)
@@ -51,40 +52,55 @@ AddImageDialog::~AddImageDialog()
 
 void AddImageDialog::sltOkClicked()
 {
-	KUrl tempUrl = ui.kurlreqLocalUrl->url();
+	KUrl mediaUrl = ui.kurlreqLocalUrl->url();
 
-	if (!tempUrl.isEmpty()) {
-		if (tempUrl.isValid()) {
+	if (!mediaUrl.isEmpty()) {
+		if (mediaUrl.isValid()) {
 			media = new BilboMedia();
-			QString name = tempUrl.fileName();
+			QString name = mediaUrl.fileName();
+			
 // 	qDebug() << type;
 			media->setName(name);
 			
-			if (!tempUrl.isLocalFile()) {
+			if (!mediaUrl.isLocalFile()) {
 				if (Settings::download_remote_media())
 				{
 					kDebug() << "download!";
+					
+					if (KIO::NetAccess::exists(mediaUrl.url(), true, NULL)) {
+// 						KTemporaryFile tmpFile;
+						KUrl localUrl = KUrl("file://" + __tempMediaDir + name); 
+// 						KUrl localUrl = KUrl(tempFile.fileName());
+						KIO::Job*  copyJob= KIO::file_copy(mediaUrl, localUrl, -1, KIO::Overwrite);
+						connect(copyJob, SIGNAL(result(KJob *)), this, 
+								SLOT(sltRemoteFileCopied(KJob *)));
+					} else {
+						KMessageBox::sorry(this, i18n("The requested media file doesn't exist, or it isn't readable."), 
+										   i18n("File not found"));
+						return;
+					}
 				}
-				media->setRemoteUrl(tempUrl.url());
+				media->setRemoteUrl(mediaUrl.url());
 				media->setUploded(true);
 				
-				KIO::MimetypeJob* typeJob = KIO::mimetype(tempUrl);
+				KIO::MimetypeJob* typeJob = KIO::mimetype(mediaUrl);
 				//KIO::TransferJob* tempJob = typeJob;
-				//KIO::TransferJob* tempJob = KIO::mimetype(tempUrl,false);
+				//KIO::TransferJob* tempJob = KIO::mimetype(mediaUrl,false);
 				
-				connect(typeJob, SIGNAL(mimetype(KIO::Job*, const QString&)), this, SLOT(sltRemoteFileTypeFound(KIO::Job*, const QString&)));
+				connect(typeJob, SIGNAL(mimetype(KIO::Job *, const QString &)), this,  SLOT(sltRemoteFileTypeFound(KIO::Job *, const QString &)));
 			} else {
-				bool copyResult = QFile::copy(tempUrl.toLocalFile(), TEMP_MEDIA_DIR  
+				bool copyResult = QFile::copy(mediaUrl.toLocalFile(), __tempMediaDir  
 						+ name);
 				if (!copyResult) {
 					int ret = KMessageBox::questionYesNo(this,i18n("This file is already  added to Bilbo temp directory, and won't be copied again.\nyou can save the file with different name and try again.\ndo you want to continue using the existing file?"), i18n("File already exists"));
 					if (ret == KMessageBox::No) return;
 				}
-				media->setLocalUrl("file://" + TEMP_MEDIA_DIR + name);
+				media->setLocalUrl(__tempMediaDir + name);
+				media->setRemoteUrl("file://" + __tempMediaDir + name);
 				media->setUploded(false);
 				
 				KMimeType::Ptr typePtr;
-				typePtr = KMimeType::findByUrl(tempUrl, 0, true, false);
+				typePtr = KMimeType::findByUrl(mediaUrl, 0, true, false);
 				name = typePtr.data()->name();
 				kDebug() << name ;
 				media->setMimeType(name);
@@ -101,7 +117,23 @@ void AddImageDialog::sltRemoteFileTypeFound(KIO::Job *job, const QString &type)
 {
 	kDebug() << type ;
 	media->setMimeType(type);
-	Q_EMIT signalAddImage(media);
+	if (!Settings::download_remote_media()) {
+		media->setLocalUrl(media->remoteUrl());
+		Q_EMIT signalAddImage(media);
+	}
+}
+
+void AddImageDialog::sltRemoteFileCopied(KJob *job)
+{
+	KIO::FileCopyJob *copyJob = dynamic_cast <KIO::FileCopyJob*> (job);
+	if (job->error()) {
+		copyJob->ui()->setWindow(this);
+		copyJob->ui()->showErrorMessage();
+	} else {
+		//KIO::FileCopyJob *copyJob = dynamic_cast <KIO::FileCopyJob*> (job);
+		media->setLocalUrl(copyJob->destUrl().toLocalFile());
+		Q_EMIT signalAddImage(media);
+	}
 }
 
 #include "addimagedialog.moc"

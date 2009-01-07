@@ -14,7 +14,7 @@
     </entry>
     <entry name="download_remote_media" type="Bool">
 	    <label>Download Remote media, to be visible in Visual Editor.</label>
-	    <default>false</default>
+	    <default>true</default>
     </entry>
   </group>
 </kcfg>

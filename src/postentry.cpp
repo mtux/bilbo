@@ -59,9 +59,8 @@ void PostEntry::createUi()
 			SLOT( sltTitleChanged(const QString&) ));
 	
 	gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
-	
-	wPost = new QWidget(this);
-	gridLayout->addWidget(wPost, 1, 0, 1, 1);
+	//wPost = new QWidget(this);
+	//gridLayout->addWidget(wPost, 1, 0, 1, 1);
 	
 }
 
@@ -156,9 +155,9 @@ void PostEntry::setCurrentPostProperties(BilboPost post)
 	setCurrentPost(post);
 }
 
-QMap< QString, BilboMedia * > * PostEntry::mediaList()
+QMap< QString, BilboMedia * > & PostEntry::mediaList()
 {
-	return &mMediaList;
+	return mMediaList;
 }
 
 #include "postentry.moc"
