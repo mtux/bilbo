@@ -221,6 +221,10 @@ class BilboEditor : public KTabWidget
 		
 		void sltRemoveMedia(const int index);
 		
+		void sltAddOrderedList();
+		
+		void sltAddUnorderedList();
+		
 		void sltSyncToolbar(const QTextCharFormat& f);
 		
 		/*!
@@ -291,6 +295,8 @@ class BilboEditor : public KTabWidget
 		KAction *actRemoveFormatting;
 		KAction *actColorSelect;
 		KAction *actAddImage;
+		KAction *actOrderedList;
+		KAction *actUnorderedList;
 		
 		QString *mHtmlContent;
 		

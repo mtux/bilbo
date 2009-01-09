@@ -817,6 +817,17 @@ void BilboEditor::createActions()
 	connect(actAddImage, SIGNAL(triggered(bool)), this, SLOT(sltAddImage()));
 	barVisual->addAction(actAddImage);
 	
+	barVisual->addSeparator();
+	
+	actOrderedList = new KAction(KIcon("format-list-ordered"), i18n("Ordered List"), this);
+	actOrderedList->setCheckable(true);
+	connect(actOrderedList, SIGNAL(triggered(bool)), this, SLOT(sltAddOrderedList()));
+	barVisual->addAction(actOrderedList);
+	
+	actUnorderedList = new KAction(KIcon("format-list-unordered"), i18n("Unordered List"), this);
+	actUnorderedList->setCheckable(true);
+	connect(actUnorderedList, SIGNAL(triggered(bool)), this, SLOT(sltAddUnorderedList()));
+	barVisual->addAction(actUnorderedList);
 // 	visualEditorActions->associateWidget(barVisual);
 }
 
@@ -1220,6 +1231,32 @@ void BilboEditor::sltRemoveMedia(const int index)
 	QString text = this->editor->document()->toHtml();
 	text.remove(QRegExp(removeString));
 	this->editor->document()->setHtml(text);
+}
+
+void BilboEditor::sltAddOrderedList()
+{
+// 	if (editor->textCursor().currentList() == 0) {
+		editor->textCursor().createList(QTextListFormat::ListDecimal);
+// 	} else {
+// 		QTextListFormat lf = editor->textCursor().currentList()->format();
+// // 		QTextBlockFormat bf = editor->textCursor().block().blockFormat();
+// // 		bf.setIndent(lf.indent() - 1);
+// // 		editor->textCursor().mergeBlockFormat(bf);
+// 		editor->textCursor().currentList()->remove(editor->textCursor().block());
+// 	}
+}
+
+void BilboEditor::sltAddUnorderedList()
+{
+// 	if (editor->textCursor().currentList() == 0) {
+		editor->textCursor().createList(QTextListFormat::ListDisc);
+// 	} else {
+// 		QTextListFormat lf = editor->textCursor().currentList()->format();
+// // 		QTextBlockFormat bf = editor->textCursor().block().blockFormat();
+// // 		bf.setIndent(lf.indent() - 1);
+// // 		editor->textCursor().mergeBlockFormat(bf);
+// 		editor->textCursor().currentList()->remove(editor->textCursor().block());	
+// 	}
 }
 
 void BilboEditor::sltSyncToolbar(const QTextCharFormat& f)
