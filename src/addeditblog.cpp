@@ -31,6 +31,7 @@
 
 #include "bilboblog.h"
 #include "addeditblog.h"
+#include "dbman.h"
 #include "global.h"
 
 #define TIMEOUT 40000
@@ -48,7 +49,7 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 		btnFetch->setEnabled(true);
 		btnAutoConf->setEnabled(true);
 		isNewBlog=false;
-        bBlog = __db->getBlogInfo(blog_id);
+        bBlog = DBMan::self()->getBlogInfo(blog_id);
 		//txtUrl->setText(bBlog->url().toString());
 		txtUrl->setText(bBlog->url().url());
 		txtUser->setText(bBlog->username());
@@ -275,7 +276,7 @@ void AddEditBlog::sltAccepted()
 			return;
 		}
 		
-        int blog_id = __db->addBlog(*bBlog);
+        int blog_id = DBMan::self()->addBlog(*bBlog);
 		bBlog->setId(blog_id);
 		if(blog_id!=-1)
 			Q_EMIT sigBlogAdded(*bBlog);
@@ -288,7 +289,7 @@ void AddEditBlog::sltAccepted()
 			kDebug() << "current blog directory can't be renamed to " << blogDir;
 			return;
 		}
-        if(__db->editBlog(*bBlog))
+        if(DBMan::self()->editBlog(*bBlog))
 			Q_EMIT sigBlogEdited(*bBlog);
 	}
 }

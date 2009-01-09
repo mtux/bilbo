@@ -258,7 +258,7 @@ void PostEntry::sltPostPublished(int blog_id, int post_id, bool isPrivate)
 {
 	kDebug()<<"Post Id: "<< post_id;
 	///FIXME This DB communication is un necessary! fix it
-// 	BilboBlog *b = __db->getBlogInfo(blog_id);
+// 	BilboBlog *b = DBMan::self()->getBlogInfo(blog_id);
 	QString blog_name="NOT SET";// = b->title();
 // 	delete b;
 	QString msg;

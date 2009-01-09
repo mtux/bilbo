@@ -35,6 +35,7 @@
 #include <kdebug.h>
 
 #include "bilboeditor.h"
+#include "dbman.h"
 #include "htmlexporter.h"
 #include "multilinetextedit.h"
 #include "addeditlink.h"
@@ -505,7 +506,7 @@ BilboEditor::~BilboEditor()
 //         }
 //         QString baseU = "http://bilbo.sourceforge.net";
 //         if(__currentBlogId > -1){
-//             BilboBlog *tmp = __db->getBlogInfo(__currentBlogId);
+//             BilboBlog *tmp = DBMan::self()->getBlogInfo(__currentBlogId);
 //             baseU = tmp->blogUrl();
 //             delete tmp;
 //         }
@@ -1287,7 +1288,7 @@ void BilboEditor::sltSyncEditors(int index)
 		QString baseU = "http://bilbo.sourceforge.net";
 // 		QString baseU = "file://";
 		if(__currentBlogId > -1){
-			BilboBlog *tmp = __db->getBlogInfo(__currentBlogId);
+			BilboBlog *tmp = DBMan::self()->getBlogInfo(__currentBlogId);
 			baseU = tmp->blogUrl();
 			delete tmp;
 		}

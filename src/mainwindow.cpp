@@ -35,6 +35,7 @@
 
 #include "mainwindow.h"
 #include "global.h"
+#include "dbman.h"
 #include "toolbox.h"
 #include "postentry.h"
 #include "addeditblog.h"
@@ -191,7 +192,7 @@ void MainWindow::sltCreateNewPost()
 // 	// FIXME these lines added to set direction for new posts, but it generates Segmentation fault at run time!
 	int tempId = toolbox->currentBlogId();
 	if (tempId != -1) {
-		BilboBlog *tmp = __db->getBlogInfo(tempId);
+		BilboBlog *tmp = DBMan::self()->getBlogInfo(tempId);
 		temp->setDefaultLayoutDirection(tmp->direction());
 		delete tmp;
 	}
@@ -345,7 +346,7 @@ void MainWindow::sltNewPostSelected(BilboPost * newPost)
     temp->setCurrentPost(*newPost);
     temp->setCurrentPostBlogId(toolbox->currentBlogId());
 	
-    BilboBlog *tmp = __db->getBlogInfo(toolbox->currentBlogId());
+    BilboBlog *tmp = DBMan::self()->getBlogInfo(toolbox->currentBlogId());
     temp->setDefaultLayoutDirection(tmp->direction());
     delete tmp;
 
@@ -367,7 +368,7 @@ void MainWindow::sltCurrentBlogChanged(int blog_id)
 //     BilboBlog *tmp = __db->getBlogInfo(blog_id);
 //     this->centralWidget()->setLayoutDirection(tmp->direction());
 //     delete tmp;
-    BilboBlog *tmp = __db->getBlogInfo(blog_id);
+	BilboBlog *tmp = DBMan::self()->getBlogInfo(blog_id);
     this->activePost->setDefaultLayoutDirection(tmp->direction());
 	this->activePost->setCurrentPostBlogId( blog_id );
     this->actPublish->setText(i18n("Publish to \"%1\"", tmp->title()));
@@ -384,7 +385,7 @@ void MainWindow::sltSavePostLocally()
 		kDebug() << "no blogs selected";
 		blogDir = QDir(UNKNOWN_BLOG_DIR);
 	} else {
-		blogDir = QDir(__db->getBlogInfo(blog_id)->localDirectory());
+		blogDir = QDir(DBMan::self()->getBlogInfo(blog_id)->localDirectory());
 // 		kDebug() << __db->getBlogInfo(blog_id)->localDirectory() << " " << blog_id;
 		if (! blogDir.exists()) {
 			kDebug() << "error: no directory created for the selected blog";

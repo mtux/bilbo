@@ -23,7 +23,7 @@
 #include <kdebug.h>
 #include <ktempdir.h>
 // Settings *__conf;
-DBMan *__db;
+// DBMan *__db;
 int __currentBlogId;
 KTempDir *dir;
 QString __tempMediaDir;
@@ -32,7 +32,7 @@ void global_init()
 {
 	kDebug();
 // // 	__conf = new Settings;
-	__db = new DBMan;
+// 	__db = new DBMan;
     __currentBlogId = -1;
 	dir = new KTempDir();
 	__tempMediaDir = dir->name();
@@ -42,6 +42,6 @@ void global_end()
 {
 	kDebug();
 // 	delete __conf;
-	delete __db;
+// 	delete __db;
 	delete dir;
 }

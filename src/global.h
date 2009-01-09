@@ -23,7 +23,7 @@
 #define GLOBAL_H
 
 #include <QSettings>
-#include "dbman.h"
+// #include "dbman.h"
 
 /**
 Global variables.
@@ -36,7 +36,7 @@ Global variables.
 
 // extern Settings *__conf;
 
-extern DBMan *__db;
+// extern DBMan *__db;
 
 extern int __currentBlogId;
 

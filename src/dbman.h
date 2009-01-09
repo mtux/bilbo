@@ -35,11 +35,23 @@ have to use this API to store or retrive information and settings from Database.
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 
-class DBMan{
+class DBMan
+{
 public:
-    DBMan();
+	DBMan();
 
     ~DBMan();
+	
+	/**
+	 * \brief Retrieve the instance of DataBase Manager.
+	 *
+	 * The Database manager (DBMan) is a singleton class of which only a single
+	 * instance will exist. If no manager exists yet this function will
+	 * create one for you.
+	 *
+	 * \return the instance of the DBMan
+		 */
+	static DBMan* self();
 	
 	///(BEGIN) Data retrieveing Functions:
 	
@@ -137,6 +149,7 @@ private:
 	bool createDB();
 	QSqlDatabase db;
 	bool connectDB();
+	static DBMan* mSelf;
 };
 
 #endif

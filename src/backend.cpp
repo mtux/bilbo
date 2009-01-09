@@ -24,6 +24,7 @@
 #include "global.h"
 #include "bilbopost.h"
 #include "bilbomedia.h"
+#include "dbman.h"
 
 #include <kurl.h>
 #include <kblog/blogger1.h>
@@ -39,7 +40,7 @@
 Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 {
 	kDebug()<<"with blog id: "<< blog_id;
-	bBlog = __db->getBlogInfo(blog_id);
+	bBlog = DBMan::self()->getBlogInfo(blog_id);
 	switch( bBlog->api() ){
 	case BilboBlog::BLOGGER1_API:
 		mBlog = new KBlog::Blogger1(KUrl(), this);
@@ -99,7 +100,7 @@ void Backend::getCategoryListFromServer()
 void Backend::categoriesListed(const QList< QMap < QString , QString > > & categories)
 {
 	kDebug()<<"Blog Id: "<< bBlog->id();
-	__db->clearCategories(bBlog->id());
+	DBMan::self()->clearCategories(bBlog->id());
 	QString name, description, htmlUrl, rssUrl, categoryId, parentId;
 	const QMap<QString, QString> *category;
 
@@ -113,7 +114,7 @@ void Backend::categoriesListed(const QList< QMap < QString , QString > > & categ
 		categoryId = category->value("categoryId", QString());
 		parentId = category->value("parentId", QString());
 		
-		__db->addCategory(name, description, htmlUrl, rssUrl, categoryId, parentId, bBlog->id());
+		DBMan::self()->addCategory(name, description, htmlUrl, rssUrl, categoryId, parentId, bBlog->id());
 	}
 	Q_EMIT sigCategoryListFetched(bBlog->id());
 }
@@ -128,10 +129,10 @@ void Backend::getEntriesListFromServer(int count)
 void Backend::entriesListed(const QList< KBlog::BlogPost > & posts)
 {
     kDebug()<<"Blog Id: "<< bBlog->id();
-	__db->clearPosts(bBlog->id());
+	DBMan::self()->clearPosts(bBlog->id());
 	
 	for(int i=0; i<posts.count(); i++){
-		__db->addPost(BilboPost(posts[i]), bBlog->id());
+		DBMan::self()->addPost(BilboPost(posts[i]), bBlog->id());
 	}
 	Q_EMIT sigEntriesListFetched(bBlog->id());
 }
@@ -186,7 +187,7 @@ void Backend::postPublished(KBlog::BlogPost *post)
 		setPostCategories(post->postId(), cats);
 	} else {
 		BilboPost pp(*post);
-		int post_id = __db->addPost(pp, bBlog->id());
+		int post_id = DBMan::self()->addPost(pp, bBlog->id());
 		if(post_id!=-1){
 			kDebug()<<"Emiteding sigPostPublished...";
 			Q_EMIT sigPostPublished(bBlog->id(), post_id, post->isPrivate());
@@ -336,7 +337,7 @@ void Backend::postCategoriesSetted(const QString &postId)
 	KBlog::BlogPost *post = mSetPostCategoriesMap[ postId ];
 	BilboPost pp(*post);
 	mSetPostCategoriesMap.remove(postId);
-	int post_id = __db->addPost(pp, bBlog->id());
+	int post_id = DBMan::self()->addPost(pp, bBlog->id());
 	if(post_id!=-1){
 		bool isPrivate = post->isPrivate();
 		kDebug()<<"Emiteding sigPostPublished...";

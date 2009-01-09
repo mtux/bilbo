@@ -29,6 +29,7 @@
 #include <QDir>
 
 #include "toolbox.h"
+#include "dbman.h"
 #include "entriescountdialog.h"
 #include "addeditblog.h"
 #include "global.h"
@@ -88,7 +89,7 @@ void Toolbox::sltEditBlog()
 		return;
 	}
     blogToEdit = qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton());
-// 	blogToEditDir = QDir(DATA_DIR + __db->getBlogInfo(blogToEdit->blogId())->blogUrl());
+// 	blogToEditDir = QDir(DATA_DIR + DBMan::self()->getBlogInfo(blogToEdit->blogId())->blogUrl());
 	
 	addEditBlogWindow = new AddEditBlog(blogToEdit->blogId(), this);
     addEditBlogWindow->setAttribute(Qt::WA_DeleteOnClose);
@@ -100,7 +101,7 @@ void Toolbox::sltEditBlog()
 void Toolbox::sltRemoveBlog()
 {
 	kDebug();
-    __db->removeBlog(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
+    DBMan::self()->removeBlog(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
 //     listBlogs.remove(listBlogRadioButtons.checkedButton()->text());
 	QAbstractButton *tmp = listBlogRadioButtons.checkedButton();
     listBlogRadioButtons.removeButton(listBlogRadioButtons.checkedButton());
@@ -146,24 +147,18 @@ void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 void Toolbox::reloadBlogList()
 {
 	kDebug();
-// 	listBlogs.clear();
-    QMap<QString, int> listBlogs;
-    listBlogs = __db->listBlogsTitle();
     foreach( QAbstractButton *ab,listBlogRadioButtons.buttons()){
 		delete ab;
 	}
 	listBlogRadioButtons.buttons().clear();
-    QMap<QString, int>::const_iterator i = listBlogs.constBegin();
-    QMap<QString, int>::const_iterator endI = listBlogs.constEnd();
-	for( ; i != endI; ++i ){
-        BlogRadioButton *rb = new BlogRadioButton(i.key());
-        rb->setBlogId(i.value());
-        BilboBlog *bb = __db->getBlogInfo(i.value());
-		rb->setToolTip(bb->blogUrl());
-        delete bb;
+	QList<BilboBlog*> listBlogs = DBMan::self()->listBlogs();
+	int count = listBlogs.count();
+	for( int i=0; i < count; ++i ){
+        BlogRadioButton *rb = new BlogRadioButton(listBlogs[i]->title(), this);
+		rb->setBlogId(listBlogs[i]->id());
+		rb->setToolTip(listBlogs[i]->blogUrl());
 		listBlogRadioButtons.addButton(rb);
 		frameBlog->layout()->addWidget(rb);
-// 		connect(rb, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
 	}
 }
 
@@ -241,7 +236,7 @@ void Toolbox::sltLoadEntriesFromDB(int blog_id)
     this->unsetCursor();
 	parentWidget()->unsetCursor();
 	QMap<int, QString> listEntries;
-	listEntries = __db->listPostsTitle(blog_id);
+	listEntries = DBMan::self()->listPostsTitle(blog_id);
 	QMap<int, QString>::const_iterator endIt = listEntries.constEnd();
 	QMap<int, QString>::const_iterator it = listEntries.constBegin();
 	for(; it!=endIt; ++it){
@@ -264,7 +259,7 @@ void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 	this->unsetCursor();
 	clearCatList();
 	QList<Category> listCategories;
-	listCategories = __db->listCategories(blog_id);
+	listCategories = DBMan::self()->listCategories(blog_id);
 	
 	listCategoryCheckBoxes.clear();
 	QList<Category>::const_iterator i;
@@ -333,7 +328,7 @@ void Toolbox::sltCurrentBlogChanged(int blog_id)
     __currentBlogId = blog_id;
 	sltLoadCategoryListFromDB(blog_id);
 	sltLoadEntriesFromDB(blog_id);
-    Qt::LayoutDirection ll = __db->getBlogInfo(blog_id)->direction();
+    Qt::LayoutDirection ll = DBMan::self()->getBlogInfo(blog_id)->direction();
 	frameCat->setLayoutDirection(ll);
 	lstEntriesList->setLayoutDirection(ll);
 }
@@ -467,7 +462,7 @@ int Toolbox::currentBlogId()
 void Toolbox::sltEntrySelected(QListWidgetItem * item)
 {
     kDebug();
-	BilboPost *post = __db->getPostInfo(lstEntriesList->currentItem()->data(32).toInt());
+	BilboPost *post = DBMan::self()->getPostInfo(lstEntriesList->currentItem()->data(32).toInt());
 //     setFieldsValue(*post);
     kDebug()<<"Emiting sigEntrySelected...";
 	Q_EMIT sigEntrySelected(post);
@@ -497,7 +492,7 @@ void Toolbox::sltEntriesCopyUrl()
 		return;
 	}
 	QClipboard *clip = QApplication::clipboard();
-	BilboPost *p = __db->getPostInfo(lstEntriesList->currentItem()->data(32).toInt());
+	BilboPost *p = DBMan::self()->getPostInfo(lstEntriesList->currentItem()->data(32).toInt());
     clip->setText(p->link().url());
 }
 

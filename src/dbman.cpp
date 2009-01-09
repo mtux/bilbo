@@ -43,6 +43,15 @@ DBMan::DBMan()
 		exit(1);
 }
 
+DBMan * DBMan::mSelf = 0L;
+
+DBMan * DBMan::self()
+{
+	if( !mSelf )
+		mSelf = new DBMan;
+	return mSelf;
+}
+
 bool DBMan::connectDB()
 {
 	kDebug();
@@ -60,6 +69,8 @@ bool DBMan::connectDB()
 
 DBMan::~DBMan()
 {
+	kDebug();
+	mSelf = 0L;
     db.close();
 }
 
@@ -529,7 +540,7 @@ QList< BilboBlog *> DBMan::listBlogs()
 {
 	QList<BilboBlog *> list;
 	QSqlQuery q;
-	q.exec("SELECT id, blogid, blog_url, username, password, style_url, api_type, title FROM blog");
+	q.exec("SELECT id, blogid, blog_url, username, password, style_url, api_type, title, local_directory FROM blog");
 	while( q.next() ){
 		BilboBlog *tmp = new BilboBlog;
 		tmp->setId(q.value(0).toInt());
@@ -538,7 +549,9 @@ QList< BilboBlog *> DBMan::listBlogs()
 		tmp->setUsername (q.value(3).toString());
 		tmp->setPassword (q.value(4).toString());
 		tmp->setStylePath(q.value(5).toString());
-		tmp->setTitle(q.value(6).toString());
+		tmp->setApi((BilboBlog::ApiType)q.value(6).toInt());
+		tmp->setTitle(q.value(7).toString());
+		tmp->setLocalDirectory( q.value(8).toString() );
 		list.append(tmp);
 	}
 	
@@ -558,7 +571,7 @@ QMap< QString, int > DBMan::listBlogsTitle()
 
 BilboBlog * DBMan::getBlogInfo(QString title)
 {
-	BilboBlog *b = new BilboBlog();
+	BilboBlog *b = new BilboBlog;
 	QSqlQuery q;
 	q.prepare("SELECT id, blogid, blog_url, username, password, style_url, api_type, title, \
             direction, local_directory \
@@ -583,7 +596,7 @@ BilboBlog * DBMan::getBlogInfo(QString title)
 
 BilboBlog * DBMan::getBlogInfo(int blog_id)
 {
-	BilboBlog *b = new BilboBlog();
+	BilboBlog *b = new BilboBlog;
 	QSqlQuery q;
 	q.prepare("SELECT id, blogid, blog_url, username, password, style_url, api_type, \
             title, direction, local_directory \
@@ -617,7 +630,7 @@ QList< BilboPost* > DBMan::listPosts(int blog_id)
 	q.addBindValue(blog_id);
 	if(q.exec()){
 		while( q.next() ){
-			BilboPost *tmp = new BilboPost;
+			BilboPost *tmp = new BilboPost();
 			tmp->setId( q.value(0).toInt());
 			tmp->setAuthor( q.value(2).toString());
 			tmp->setPostId(q.value(1).toString());
