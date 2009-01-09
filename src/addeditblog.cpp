@@ -215,7 +215,7 @@ void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list
 	kDebug();
 // 	delete mFetchBlogIdTimer;
 	if(list.count()>1){
-		///TODO: handle more than one blog!
+		///TODO handle more than one blog!
 		kDebug()<<"User has more than ONE blog!";
 	}
 	txtId->setText(list.first().values().first());

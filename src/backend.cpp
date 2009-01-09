@@ -138,7 +138,6 @@ void Backend::entriesListed(const QList< KBlog::BlogPost > & posts)
 
 void Backend::publishPost(BilboPost * post)
 {
-	///FIXME: Categories problem!
     kDebug()<<"Blog Id: "<< bBlog->id();
 	
 	KBlog::BlogPost *bp = post->toKBlogPost();

@@ -29,7 +29,7 @@
 #include "bilbopost.h"
 #include "bilbomedia.h"
 #include "backend.h"
-///TODO Needs code cleaning!
+
 PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
@@ -63,8 +63,6 @@ void PostEntry::createUi()
 			SLOT( sltTitleChanged(const QString&) ));
 	
 	gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
-	//wPost = new QWidget(this);
-	//gridLayout->addWidget(wPost, 1, 0, 1, 1);
 	
 }
 
@@ -76,7 +74,6 @@ void PostEntry::sltTitleChanged(const QString& title)
 
 QString PostEntry::postTitle() const
 {
-	//return QString(this->txtTitle->text());
 	return mCurrentPost->title();
 }
 
@@ -141,6 +138,7 @@ void PostEntry::addMedia(const QString &url)
 
 PostEntry::~PostEntry()
 {
+	kDebug();
 //     delete editPostWidget;
 //     delete gridLayout;
 //     delete horizontalLayout;
@@ -168,7 +166,7 @@ bool PostEntry::uploadMediaFiles()
 {
 	bool result = false;
 	int numOfFilesToBeUploaded = 0;
-	Backend *b = new Backend(mCurrentPostBlogId);
+	Backend *b = new Backend(mCurrentPostBlogId, this);
 	QMap <QString, BilboMedia*>::iterator it = mMediaList.begin();
 	QMap <QString, BilboMedia*>::iterator endIt = mMediaList.end();
 	for( ; it!=endIt; ++it){
@@ -198,8 +196,10 @@ void PostEntry::sltMediaFileUploaded(BilboMedia * media)
 	if(progress->value()>= progress->maximum()){
 		this->layout()->removeWidget(progress);
 		progress->deleteLater();
-		if(!isUploadingMediaFilesFailed)
+		if(!isUploadingMediaFilesFailed){
 			publishPostAfterUploadMediaFiles();
+		}
+		sender()->deleteLater();
 	}
 }
 
@@ -211,25 +211,23 @@ void PostEntry::sltError(const QString & errMsg)
 		this->layout()->removeWidget(progress);
 		progress->deleteLater();
 	}
+	sender()->deleteLater();
 }
 
 void PostEntry::sltMediaError(const QString & errorMessage, BilboMedia * media)
 {
 	kDebug();
 	isUploadingMediaFilesFailed = true;
-	QString name = mMediaList.key(media, QString());
-	if(name.isEmpty()){
-		kDebug()<<" AN ERROR OCCURRED ON UPLOADING, Cannot determine the media name, path is: "<<media->localUrl()
-				<<"\tError message is: "<<errorMessage;
-	} else {
-		kDebug()<<" AN ERROR OCCURRED ON UPLOADING,\tError message is: "<<errorMessage;
-	}
+	QString name = media->name();
+	kDebug()<<" AN ERROR OCCURRED ON UPLOADING,\tError message is: "<<errorMessage;
+
 	KMessageBox::detailedSorry(this, i18n("Uploading media file %1 (Local Path: %2) failed", name, media->localUrl()),
 							    errorMessage, i18n("Uploading media file Failed!"));
 	if(progress){
 		this->layout()->removeWidget(progress);
 		progress->deleteLater();
 	}
+	sender()->deleteLater();
 }
 
 void PostEntry::publishPost(int blogId, BilboPost * postData)

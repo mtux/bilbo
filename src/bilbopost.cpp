@@ -41,8 +41,9 @@ BilboPost::BilboPost()
     this->setTrackBackAllowed(true);
     this->setTitle("");
     this->setAuthor("");
-    this->setPosition(Published);
+//     this->setPosition(Published);
     this->setId(-1);
+	this->setStatus(KBlog::BlogPost::New);
 }
 
 BilboPost::~BilboPost()
@@ -90,15 +91,15 @@ BilboPost::BilboPost(const KBlog::BlogPost &post)
 // 	this->setTitle(post.title());
 }
 
-BilboPost::Position BilboPost::position() const
-{
-	return mPosition;
-}
-
-void BilboPost::setPosition(const Position pos)
-{
-	mPosition = pos;
-}
+// BilboPost::Position BilboPost::position() const
+// {
+// 	return mPosition;
+// }
+// 
+// void BilboPost::setPosition(const Position pos)
+// {
+// 	mPosition = pos;
+// }
 
 KBlog::BlogPost * BilboPost::toKBlogPost()
 {
@@ -120,6 +121,7 @@ KBlog::BlogPost * BilboPost::toKBlogPost()
 	pp->setPostId(this->postId());
 	pp->setLink(this->link());
 	pp->setPermaLink(this->permaLink());
+	pp->setStatus( this->status() );
 	
 	return pp;
 }
@@ -163,8 +165,9 @@ BilboPost::BilboPost(const BilboPost &post)
     this->setTrackBackAllowed(post.isTrackBackAllowed());
     this->setTitle(post.title());
     this->setAuthor(post.author());
-    this->setPosition(post.position());
+//     this->setPosition(post.position());
     this->setId(post.id());
+	this->setStatus( post.status() );
 }
 
 bool BilboPost::isModifyTimeStamp()

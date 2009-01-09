@@ -51,8 +51,6 @@ Toolbox::Toolbox(QWidget *parent)
 	frameBlog->layout()->setAlignment(Qt::AlignTop);
 	frameCat->layout()->setAlignment(Qt::AlignTop);
 	reloadBlogList();
-// 	currentBlog=0;
-// 	currentPost = new BilboPost();
 	optionsDate->setDate(QDateTime::currentDateTime().date());
 	optionsTime->setTime(QDateTime::currentDateTime().time());
 	connect(btnBlogAdd, SIGNAL(clicked()), this, SLOT(sltAddBlog()));
@@ -365,7 +363,7 @@ void Toolbox::getFieldsValue(BilboPost *currentPost)
 	currentPost->setPrivate((comboOptionsStatus->currentIndex()==1)?true:false);
 	currentPost->setCommentAllowed(chkOptionsComments->isChecked());
 	currentPost->setTrackBackAllowed(chkOptionsTrackback->isChecked());
-	currentPost->setPosition((BilboPost::Position)comboOptionsStatus->currentIndex());
+// 	currentPost->setPosition((BilboPost::Position)comboOptionsStatus->currentIndex());
     currentPost->setSummary(txtSummary->toPlainText());
 }
 
@@ -381,9 +379,12 @@ void Toolbox::setFieldsValue(BilboPost* post)
 
 	setSelectedCategories(post->categories());
 	txtCatTags->setText(post->tags().join(", "));
-	comboOptionsStatus->setCurrentIndex(post->position());
-	if(post->position()!=BilboPost::Local && post->isPrivate())
+	if(post->status() == KBlog::BlogPost::New)
+		comboOptionsStatus->setCurrentIndex(2);
+	else if(post->isPrivate())
         comboOptionsStatus->setCurrentIndex(1);
+	else
+		comboOptionsStatus->setCurrentIndex(0);
 	chkOptionsComments->setChecked(post->isCommentAllowed());
 	chkOptionsTrackback->setChecked(post->isTrackBackAllowed());
 	chkOptionsTime->setChecked(post->isModifyTimeStamp());
@@ -419,7 +420,7 @@ QStringList Toolbox::selectedCategoriesTitle()
 
 QList< int > Toolbox::selectedCategoriesId()
 {
-	///TODO: Implement it
+	///TODO Implement it
 	kDebug()<<"NOT IMPLEMENTED YET!";
 	return QList<int>();
 }
@@ -436,7 +437,7 @@ void Toolbox::setSelectedCategories(const QStringList &list)
 
 void Toolbox::setSelectedCategories(const QList< int > &)
 {
-	///TODO: Implement it
+	///TODO Implement it
 	kDebug()<<"NOT IMPLEMENTED YET!";
 }
 
@@ -502,6 +503,7 @@ void Toolbox::sltEntriesCopyUrl()
 
 Toolbox::~Toolbox()
 {
+	kDebug();
 //     delete addEditBlogWindow;
 //     delete blogToEdit;
 //     delete currentBlog;

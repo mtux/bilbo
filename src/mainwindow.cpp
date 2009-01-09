@@ -109,6 +109,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
 
 MainWindow::~MainWindow()
 {
+	kDebug();
     writeConfigs();
 //     delete toolbox;
 //     delete activePost;
