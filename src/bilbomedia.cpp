@@ -21,8 +21,10 @@
 #include <kicon.h>
 //#include <QMimeData>
 
-BilboMedia::BilboMedia()
+BilboMedia::BilboMedia(QObject *parent) 
+	: QObject(parent)
 {
+	mChecksum = 0;
 }
 
 BilboMedia::~BilboMedia()
@@ -107,4 +109,15 @@ KIcon BilboMedia::icon() const
 	iconName.replace(QChar('/'), QChar('-'));
 	return KIcon(iconName);
 }
-// #include <bilbomedia.moc>
+
+quint16 BilboMedia::checksum()
+{
+	return mChecksum;
+}
+
+void BilboMedia::setCheckSum(quint16 sum)
+{
+	mChecksum = sum;
+}
+
+#include <bilbomedia.moc>

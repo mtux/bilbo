@@ -123,7 +123,7 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 // 	connect(a, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
     a->setChecked(true);
     sltReloadCategoryList();
-	
+	sltSetCurrentBlog();
 // 	KStandardDirs::makeDir(DATA_DIR + addedBlog.title());
 	
     delete addEditBlogWindow;
@@ -183,7 +183,7 @@ void Toolbox::sltReloadCategoryList()
 	Backend *b = new Backend(blog_id);
 	b->getCategoryListFromServer();
 	connect(b, SIGNAL(sigCategoryListFetched(int)), this, SLOT(sltLoadCategoryListFromDB(int)));
-    connect(b, SIGNAL(sigError(QString&)), this, SIGNAL(sigError(QString&)));
+	connect(b, SIGNAL(sigError(const QString&)), this, SIGNAL(sigError(const QString&)));
 	statusbar->showMessage(i18n("Requesting category list..."));
     this->setCursor(Qt::BusyCursor);
 	parentWidget()->setCursor(Qt::BusyCursor);
@@ -284,7 +284,7 @@ void Toolbox::sltGetEntriesCount(int count)
     Backend *entryB = new Backend(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
 	entryB->getEntriesListFromServer(count);
 	connect(entryB, SIGNAL(sigEntriesListFetched(int)), this, SLOT(sltLoadEntriesFromDB(int)));
-    connect(entryB, SIGNAL(sigError(QString&)), this, SIGNAL(sigError(QString&)));
+	connect(entryB, SIGNAL(sigError(const QString&)), this, SIGNAL(sigError(const QString&)));
 	statusbar->showMessage(i18n("Requesting Entry list..."));
     this->setCursor(Qt::BusyCursor);
 	parentWidget()->setCursor(Qt::BusyCursor);

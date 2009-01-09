@@ -83,18 +83,14 @@ public:
     
 protected Q_SLOTS:
 	void categoriesListed(const QList< QMap< QString, QString > > &   categories   );
-	
 	void entriesListed(const QList< KBlog::BlogPost > &posts);
-	
 	void postPublished(KBlog::BlogPost *post);
-	
-    void mediaUploaded( KBlog::BlogMedia *media );
-    
+	void mediaUploaded( KBlog::BlogMedia *media );
     void postModified( KBlog::BlogPost *post );
-    
     void error( KBlog::Blog::ErrorType type, const QString &errorMessage );
-	
+	void sltMediaError(KBlog::Blog::ErrorType type, const QString &errorMessage, KBlog::BlogMedia *media);
 	void postCategoriesSetted(const QString &postId);
+	
 	
 Q_SIGNALS:
     /**
@@ -136,15 +132,19 @@ Q_SIGNALS:
      * @param type type of error
      * @param errorMessage error message.
      */
-    void sigError( QString &errorMessage);
+    void sigError( const QString &errorMessage);
+	
+	void sigMediaError(const QString &errorMessage, BilboMedia* media);
 	
 private:
+	QString errorTypeToString(KBlog::Blog::ErrorType type);
 	KBlog::Blog *mBlog;
 	BilboBlog *bBlog;
-    quint16 mChecksum;
+//     quint16 mChecksum;
     QString mediaLocalUrl;
 	QList<Category> mCreatePostCategories;
 	QMap<QString, KBlog::BlogPost *> mSetPostCategoriesMap;
+    QMap<KBlog::BlogMedia *, BilboMedia *> mPublishMediaMap;
 	bool categoryListNotSet;
 };
 

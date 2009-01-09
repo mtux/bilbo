@@ -21,10 +21,12 @@
 #include <kdebug.h>
 #include <klocalizedstring.h>
 #include <klineedit.h>
-
+#include <KMessageBox>
 #include "postentry.h"
 #include "bilboeditor.h"
 #include "bilbopost.h"
+#include "bilbomedia.h"
+#include "backend.h"
 ///TODO Needs code cleaning!
 PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
@@ -158,6 +160,128 @@ void PostEntry::setCurrentPostProperties(BilboPost post)
 QMap< QString, BilboMedia * > & PostEntry::mediaList()
 {
 	return mMediaList;
+}
+
+bool PostEntry::uploadMediaFiles()
+{
+	bool result = false;
+	int numOfFilesToBeUploaded = 0;
+	Backend *b = new Backend(mCurrentPostBlogId);
+	QMap <QString, BilboMedia*>::iterator it = mMediaList.begin();
+	QMap <QString, BilboMedia*>::iterator endIt = mMediaList.end();
+	for( ; it!=endIt; ++it){
+		if(!it.value()->isUploaded()){
+			result = true;
+			connect(b, SIGNAL(sigMediaUploaded(BilboMedia*)), this, SLOT(sltMediaFileUploaded(BilboMedia*)));
+			connect(b, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString)));
+			connect(b, SIGNAL(sigMediaError(const QString&, BilboMedia*)), this, SLOT(sltMediaError(const QString&, BilboMedia*)));
+			b->uploadMedia(it.value());
+			++numOfFilesToBeUploaded;
+		}
+	}
+	if(result){
+		progress = new QProgressBar(this);
+		this->layout()->addWidget(progress);
+		progress->setMaximum(numOfFilesToBeUploaded);
+		progress->setValue( 0 );
+	}
+	isUploadingMediaFilesFailed = false;
+	return result;
+}
+
+void PostEntry::sltMediaFileUploaded(BilboMedia * media)
+{
+	kDebug();
+	progress->setValue(progress->value() + 1);
+	if(progress->value()>= progress->maximum()){
+		this->layout()->removeWidget(progress);
+		progress->deleteLater();
+		if(!isUploadingMediaFilesFailed)
+			publishPostAfterUploadMediaFiles();
+	}
+}
+
+void PostEntry::sltError(const QString & errMsg)
+{
+	kDebug();
+	KMessageBox::detailedSorry(this, i18n("An Error occurred on latest transaction."),errMsg);
+	if(progress){
+		this->layout()->removeWidget(progress);
+		progress->deleteLater();
+	}
+}
+
+void PostEntry::sltMediaError(const QString & errorMessage, BilboMedia * media)
+{
+	kDebug();
+	isUploadingMediaFilesFailed = true;
+	QString name = mMediaList.key(media, QString());
+	if(name.isEmpty()){
+		kDebug()<<" AN ERROR OCCURRED ON UPLOADING, Cannot determine the media name, path is: "<<media->localUrl()
+				<<"\tError message is: "<<errorMessage;
+	} else {
+		kDebug()<<" AN ERROR OCCURRED ON UPLOADING,\tError message is: "<<errorMessage;
+	}
+	KMessageBox::detailedSorry(this, i18n("Uploading media file %1 (Local Path: %2) failed", name, media->localUrl()),
+							    errorMessage, i18n("Uploading media file Failed!"));
+	if(progress){
+		this->layout()->removeWidget(progress);
+		progress->deleteLater();
+	}
+}
+
+void PostEntry::publishPost(int blogId, BilboPost * postData)
+{
+	kDebug();
+	this->setCurrentPostProperties(*postData);
+	mCurrentPostBlogId = blogId;
+	if(!this->uploadMediaFiles())
+		publishPostAfterUploadMediaFiles();
+}
+
+void PostEntry::publishPostAfterUploadMediaFiles()
+{
+	kDebug();
+	
+	progress = new QProgressBar(this);
+	this->layout()->addWidget(progress);
+	progress->setMaximum( 0 );
+	progress->setMinimum( 0 );
+	
+	Backend *b = new Backend(mCurrentPostBlogId);
+	connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
+	connect(b, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString&)));
+	b->publishPost(mCurrentPost);
+}
+
+void PostEntry::sltPostPublished(int blog_id, int post_id, bool isPrivate)
+{
+	kDebug()<<"Post Id: "<< post_id;
+	///FIXME This DB communication is un necessary! fix it
+// 	BilboBlog *b = __db->getBlogInfo(blog_id);
+	QString blog_name="NOT SET";// = b->title();
+// 	delete b;
+	QString msg;
+	if(isPrivate){
+		msg = i18n("New Draft saved to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
+	}
+	else {
+		msg = i18n("New Post published to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
+	}
+	if(KMessageBox::questionYesNo(this, msg, "Successful") != KMessageBox::Yes){
+// 		sltRemoveCurrentPostEntry();//FIXME this functionality doesn't work! fix it.
+	}
+	if(progress){
+		this->layout()->removeWidget(progress);
+		progress->deleteLater();
+	}
+	if(isPrivate){
+		msg = i18n("Draft saved successfully!");
+	} else {
+		msg = i18n("New post published successfully!");
+	}
+	emit postPublishingDone(msg);
+	sender()->deleteLater();
 }
 
 #include "postentry.moc"

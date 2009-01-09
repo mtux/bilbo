@@ -97,7 +97,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     connect(tabPosts, SIGNAL(currentChanged( int )), this, SLOT(sltActivePostChanged(int)));
     connect(toolbox, SIGNAL(sigEntrySelected(BilboPost *)), this, SLOT(sltNewPostSelected(BilboPost*)));
     connect(toolbox, SIGNAL(sigCurrentBlogChanged(int)), this, SLOT(sltCurrentBlogChanged(int)));
-	connect(toolbox, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
+	connect(toolbox, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString&)));
     
 //     if(Settings::show_main_on_start())
 //         this->show();
@@ -194,6 +194,7 @@ void MainWindow::sltCreateNewPost()
 	}
 // 	
      connect(temp, SIGNAL(sigTitleChanged(const QString& )), this, SLOT(sltPostTitleChanged(const QString&)));
+	 connect(temp, SIGNAL(postPublishingDone(const QString& )), this, SLOT(postManipulationDone(const QString&)));
 // // 	activePost=temp;
     tabPosts->setCurrentWidget(temp);
 	//sltActivePostChanged(tabPosts->currentIndex());
@@ -305,46 +306,19 @@ void MainWindow::sltPublishPost()
         kDebug()<<"Blog id not sets correctly.";
         return;
     }
-    Backend *b = new Backend(blog_id);
-    connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
-    connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
     BilboPost *post = new BilboPost;
 	toolbox->getFieldsValue(post);
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
-        if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
+        if(KMessageBox::warningContinueCancel(this, 
+		   i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
            ) == KMessageBox::Cancel)
             return;
     }
-    post->setContent(*(activePost->postBody()));
-    post->setTitle(activePost->postTitle());
     post->setPrivate(false);
-	
-    b->publishPost(post);
+	activePost->publishPost(blog_id, post);
     statusBar()->showMessage(i18n("publishing new post..."));
     this->setCursor(Qt::BusyCursor);
 	toolbox->setCursor(Qt::BusyCursor);
-}
-
-void MainWindow::sltPostPublished(int blog_id, int post_id, bool isPrivate)
-{
-    kDebug()<<"Post Id: "<< post_id;
-    BilboBlog *b = __db->getBlogInfo(blog_id);
-    QString blog_name = b->title();
-    delete b;
-    QString msg;
-    if(isPrivate){
-        msg = i18n("New Draft saved to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
-        statusBar()->showMessage(i18n("New draft saved to \"%1\"", blog_name) , STATUSTIMEOUT);
-    }
-    else {
-        msg = i18n("New Post published to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
-        statusBar()->showMessage(i18n("New post published to \"%1\"",blog_name) , STATUSTIMEOUT);
-    }
-    if(KMessageBox::questionYesNo(this, msg, "Successful") != KMessageBox::Yes)
-        sltRemoveCurrentPostEntry();
-	
-    this->unsetCursor();
-	toolbox->unsetCursor();
 }
 
 void MainWindow::sltRemoveCurrentPostEntry()
@@ -392,6 +366,7 @@ void MainWindow::sltCurrentBlogChanged(int blog_id)
 //     delete tmp;
     BilboBlog *tmp = __db->getBlogInfo(blog_id);
     this->activePost->setDefaultLayoutDirection(tmp->direction());
+	this->activePost->setCurrentPostBlogId( blog_id );
     this->actPublish->setText(i18n("Publish to \"%1\"", tmp->title()));
     delete tmp;
 }
@@ -440,25 +415,22 @@ void MainWindow::sltSaveAsDraft()
     }
     Backend *b = new Backend(blog_id);
     connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
-    connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
+	connect(b, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString&)));
     BilboPost *post = new BilboPost;
 	toolbox->getFieldsValue(post);
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
-        if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
-                                             ) == KMessageBox::Cancel)
+        if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\n\
+		   												Are you sure of pubishing this post?")) == KMessageBox::Cancel)
             return;
     }
-    post->setContent(*(activePost->postBody()));
-    post->setTitle(activePost->postTitle());
     post->setPrivate(true);
-	
-    b->publishPost(post);
+	activePost->publishPost(blog_id, post);
     statusBar()->showMessage(i18n("Saving draft..."));
     this->setCursor(Qt::BusyCursor);
 	toolbox->setCursor(Qt::BusyCursor);
 }
 
-void MainWindow::sltError(QString & errorMessage)
+void MainWindow::sltError(const QString & errorMessage)
 {
     kDebug()<<"Error message: "<<errorMessage;
     KMessageBox::detailedError(this, i18n("An error ocurred on latest transaction "), errorMessage);
@@ -500,6 +472,18 @@ void MainWindow::keyReleaseEvent(QKeyEvent * event)
                 break;
         }
     }
+}
+
+void MainWindow::postManipulationDone(const QString &customMessage)
+{
+	kDebug();
+	if(customMessage.isEmpty()){
+		statusBar()->showMessage(i18n("Done!") , STATUSTIMEOUT);
+	} else {
+		statusBar()->showMessage(customMessage , STATUSTIMEOUT);
+	}
+	this->unsetCursor();
+	toolbox->unsetCursor();
 }
 
 #include "mainwindow.moc"

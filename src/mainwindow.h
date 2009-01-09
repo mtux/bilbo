@@ -27,15 +27,14 @@
 
 class KTabWidget;
 class KAction;
-// class KToggleAction;
+class QProgressBar;
 class QToolButton;
-// class BilboPost;
 class Toolbox;
 // class AddEditBlog;
 class PostEntry;
 class SysTray;
 // class Backend;
-// class BilboMedia;
+class BilboMedia;
 /**
 Main window of bilbo blogger implementation...
 
@@ -50,6 +49,8 @@ public:
 
     ~MainWindow();
     
+signals:
+	void mediaFilesUploaded(int count);
 protected slots:
     void sltCreateNewPost();
     void settingsChanged();
@@ -62,7 +63,7 @@ protected slots:
     void sltNewPostSelected( BilboPost *newPost );
 	
     void sltPublishPost();
-    void sltPostPublished( int blog_id, int post_id, bool isPrivate );
+
 	/**
      *    Slot to remove current Post entry from main tab wigdet!
      */
@@ -73,10 +74,11 @@ protected slots:
     void sltSavePostLocally();
     void sltSaveAsDraft();
     
-    void sltError( QString &errorMessage );
+	void sltError( const QString &errorMessage );
     
 private slots:
     void optionsPreferences();
+	void postManipulationDone(const QString &customMessage);
     
 protected:
     void keyReleaseEvent ( QKeyEvent * event );
@@ -111,5 +113,6 @@ private:
     QToolButton *btnRemovePost;
     
     int previousActivePostIndex;
+
 };
 #endif

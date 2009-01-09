@@ -20,6 +20,7 @@
 #ifndef BILBOMEDIA_H
 #define BILBOMEDIA_H
 
+#include <QObject>
 #include <QString>
 
 /**
@@ -30,11 +31,12 @@ Contains needed properties of each media object, like images and videos.
  */
 class QMimeData;
 class KIcon;
-class BilboMedia
+class BilboMedia : public QObject
 {
+	Q_OBJECT
 	public:
 		///BilboMedia constructor
-		BilboMedia();
+		BilboMedia(QObject *parent=0);
 		
 		///BilboMedia destructor
 		~BilboMedia();
@@ -62,6 +64,9 @@ class BilboMedia
 		
 		KIcon icon() const;
 		
+		quint16 checksum();
+		void setCheckSum(quint16 sum);
+		
 	private:
 		int mBlogId;
 		int mMediaId;
@@ -70,7 +75,7 @@ class BilboMedia
 		QString mRemoteUrl;
 		QString mMimeType;
 		QString mName;
-		
+		quint16 mChecksum;
 };
 
 #endif

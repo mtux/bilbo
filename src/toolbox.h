@@ -87,7 +87,7 @@ public slots:
 signals:
 	void sigCurrentBlogChanged( int blog_id );
     void sigEntrySelected( BilboPost *post );
-	void sigError(QString&);
+	void sigError(const QString&);
 	
 private:
 	QStringList selectedCategoriesTitle();

@@ -141,9 +141,10 @@ void AddEditBlog::fetchBlogId()
 			mBlog = new KBlog::Blogger1(KUrl(txtUrl->text()), this);
 			dynamic_cast<KBlog::Blogger1*>(mBlog)->setUsername(txtUser->text());
 			dynamic_cast<KBlog::Blogger1*>(mBlog)->setPassword(txtPass->text());
-			connect( dynamic_cast<KBlog::Blogger1*>(mBlog) , SIGNAL(listedBlogs( const QList<QMap<QString, QString> >&)), this, SLOT(fetchedBlogId( const QList<QMap<QString, QString> >&)));
-// 			connect( dynamic_cast<KBlog::Blogger1*>(mBlog), SIGNAL(fetchedProfileId( const QString& ) ), this, SLOT( fetchedProfileId( const QString& ) ) );
-			connect( dynamic_cast<KBlog::Blogger1*>(mBlog), SIGNAL(error( KBlog::Blog::ErrorType, const QString& ) ), this, SLOT( handleFetchError( KBlog::Blog::ErrorType, const QString& ) ) );
+			connect( dynamic_cast<KBlog::Blogger1*>(mBlog) , SIGNAL(listedBlogs( const QList<QMap<QString, QString> >&)),
+					 this, SLOT(fetchedBlogId( const QList<QMap<QString, QString> >&)));
+			connect( dynamic_cast<KBlog::Blogger1*>(mBlog), SIGNAL(error( KBlog::Blog::ErrorType, const QString& ) ),
+					 this, SLOT( handleFetchError( KBlog::Blog::ErrorType, const QString& ) ) );
 			mFetchBlogIdTimer = new QTimer(this);
 			mFetchBlogIdTimer->setSingleShot(true);
 			connect( mFetchBlogIdTimer, SIGNAL( timeout() ), this, SLOT( handleFetchIDTimeout() ) );
@@ -173,7 +174,9 @@ void AddEditBlog::fetchBlogId()
 void AddEditBlog::handleFetchIDTimeout()
 {
 	kDebug();
-	KMessageBox::error(this, i18n("Fetching the blog's id timed out. Check your internet connection, Or your homepage Url!\nnote that the url has to contain \"http://\" or ...\nfor example: http://bilbo.sf.net/xmlrpc.php is a good url"));
+	KMessageBox::error(this, i18n("Fetching the blog's id timed out. Check your internet connection,\
+			 Or your homepage Url!\nnote that the url has to contain \"http://\" or ...\n\
+					 for example: http://bilbo.sf.net/xmlrpc.php is a good url"));
 	txtId->setText(QString());
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
@@ -186,7 +189,9 @@ void AddEditBlog::handleFetchIDTimeout()
 void AddEditBlog::handleFetchAPITimeout()
 {
 	kDebug();
-    KMessageBox::sorry(this, i18n("Sorry, Bilbo cannot get API type automatically, please check your internet connection, otherwise you have to set API type on advanced tab handy."), i18n("AutoConfiguration Failed"));
+    KMessageBox::sorry(this, i18n("Sorry, Bilbo cannot get API type automatically,\
+						please check your internet connection, otherwise you have to set API type on advanced tab handy."),
+    					i18n("AutoConfiguration Failed"));
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
@@ -241,7 +246,8 @@ void AddEditBlog::sltAccepted()
 {
 	kDebug();
 	if(bBlog->blogid().isEmpty() && txtId->text().isEmpty()){
-		KMessageBox::sorry(this, i18n("Sorry, BlogId not retrived yet,\nYou have to Fetch blog id by hitting \"Auto Configure\" Or \"Fetch ID\" button or Insert your Blog Id manually."));
+		KMessageBox::sorry(this, i18n("Sorry, BlogId not retrived yet,\nYou have to Fetch blog id by hitting\
+				\"Auto Configure\" Or \"Fetch ID\" button or Insert your Blog Id manually."));
 		return;
 	}
 	bBlog->setApi((BilboBlog::ApiType)comboApi->currentIndex());
