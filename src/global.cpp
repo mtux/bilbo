@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,7 +23,7 @@
 #include <kdebug.h>
 #include <ktempdir.h>
 // Settings *__conf;
-DBMan *__db;
+// DBMan *__db;
 int __currentBlogId;
 KTempDir *dir;
 QString __tempMediaDir;
@@ -31,7 +32,7 @@ void global_init()
 {
 	kDebug();
 // // 	__conf = new Settings;
-	__db = new DBMan;
+// 	__db = new DBMan;
     __currentBlogId = -1;
 	dir = new KTempDir();
 	__tempMediaDir = dir->name();
@@ -41,6 +42,6 @@ void global_end()
 {
 	kDebug();
 // 	delete __conf;
-	delete __db;
+// 	delete __db;
 	delete dir;
 }

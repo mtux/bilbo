@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,6 +18,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "bilbopost.h"
 #include <QStringList>
 #include <kdatetime.h>
@@ -28,6 +30,7 @@ BilboPost::BilboPost()
     this->setLink(KUrl());
     this->setPermaLink(KUrl());
     this->setCategories(QStringList());
+	this->setCategoryList(QList<Category>());
     this->setCommentAllowed(true);
     this->setContent("");
     this->setTags(QStringList());
@@ -38,8 +41,9 @@ BilboPost::BilboPost()
     this->setTrackBackAllowed(true);
     this->setTitle("");
     this->setAuthor("");
-    this->setPosition(Published);
+//     this->setPosition(Published);
     this->setId(-1);
+	this->setStatus(KBlog::BlogPost::New);
 }
 
 BilboPost::~BilboPost()
@@ -87,15 +91,15 @@ BilboPost::BilboPost(const KBlog::BlogPost &post)
 // 	this->setTitle(post.title());
 }
 
-BilboPost::Position BilboPost::position() const
-{
-	return mPosition;
-}
-
-void BilboPost::setPosition(const Position pos)
-{
-	mPosition = pos;
-}
+// BilboPost::Position BilboPost::position() const
+// {
+// 	return mPosition;
+// }
+// 
+// void BilboPost::setPosition(const Position pos)
+// {
+// 	mPosition = pos;
+// }
 
 KBlog::BlogPost * BilboPost::toKBlogPost()
 {
@@ -117,6 +121,7 @@ KBlog::BlogPost * BilboPost::toKBlogPost()
 	pp->setPostId(this->postId());
 	pp->setLink(this->link());
 	pp->setPermaLink(this->permaLink());
+	pp->setStatus( this->status() );
 	
 	return pp;
 }
@@ -147,6 +152,7 @@ BilboPost::BilboPost(const BilboPost &post)
     this->setLink(post.link());
     this->setPermaLink(post.permaLink());
     this->setCategories(post.categories());
+	this->setCategoryList(post.categoryList());
     this->setCommentAllowed(post.isCommentAllowed());
     this->setError(post.error());
     this->setContent(post.content());
@@ -159,8 +165,9 @@ BilboPost::BilboPost(const BilboPost &post)
     this->setTrackBackAllowed(post.isTrackBackAllowed());
     this->setTitle(post.title());
     this->setAuthor(post.author());
-    this->setPosition(post.position());
+//     this->setPosition(post.position());
     this->setId(post.id());
+	this->setStatus( post.status() );
 }
 
 bool BilboPost::isModifyTimeStamp()
@@ -173,5 +180,18 @@ void BilboPost::setModifyTimeStamp(bool willModify)
 	mModifyTimeStamp = willModify;
 }
 
+QList< Category > BilboPost::categoryList() const
+{
+	return mCategoryList;
+}
 
-// #include "bilbopost.moc"
+void BilboPost::setCategoryList(const QList< Category > & list)
+{
+	mCategoryList = list;
+	QStringList cats;
+	int count = list.count();
+	for(int i=0; i<count; ++i){
+		cats.append(list[i].name);
+	}
+	this->setCategories(cats);
+}

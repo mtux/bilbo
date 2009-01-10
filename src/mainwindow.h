@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,6 +18,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -27,15 +29,14 @@
 
 class KTabWidget;
 class KAction;
-// class KToggleAction;
+class QProgressBar;
 class QToolButton;
-// class BilboPost;
 class Toolbox;
 // class AddEditBlog;
 class PostEntry;
 class SysTray;
 // class Backend;
-// class BilboMedia;
+class BilboMedia;
 /**
 Main window of bilbo blogger implementation...
 
@@ -50,6 +51,8 @@ public:
 
     ~MainWindow();
     
+signals:
+	void mediaFilesUploaded(int count);
 protected slots:
     void sltCreateNewPost();
     void settingsChanged();
@@ -62,7 +65,7 @@ protected slots:
     void sltNewPostSelected( BilboPost *newPost );
 	
     void sltPublishPost();
-    void sltPostPublished( int blog_id, int post_id, bool isPrivate );
+
 	/**
      *    Slot to remove current Post entry from main tab wigdet!
      */
@@ -73,10 +76,11 @@ protected slots:
     void sltSavePostLocally();
     void sltSaveAsDraft();
     
-    void sltError( QString &errorMessage );
+	void sltError( const QString &errorMessage );
     
 private slots:
     void optionsPreferences();
+	void postManipulationDone(const QString &customMessage);
     
 protected:
     void keyReleaseEvent ( QKeyEvent * event );
@@ -103,13 +107,12 @@ private:
     KAction *actSaveDraft;
     KAction *actDeletePost;
     KAction *actDeleteLocally;
-//     KAction *actAbout;
-//     KAction *actQuit;
     KAction *actToggleToolboxVisible;
     KAction *actSave;
     
     QToolButton *btnRemovePost;
     
     int previousActivePostIndex;
+
 };
 #endif

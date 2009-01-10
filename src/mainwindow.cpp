@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,6 +19,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+
 #include <ktabwidget.h>
 #include <kstatusbar.h>
 #include <kaction.h>
@@ -33,6 +35,7 @@
 
 #include "mainwindow.h"
 #include "global.h"
+#include "dbman.h"
 #include "toolbox.h"
 #include "postentry.h"
 #include "addeditblog.h"
@@ -47,8 +50,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
 {
     kDebug();
     previousActivePostIndex = -1;
-        
-    // tell the KXmlGuiWindow that this is indeed the main widget
+
     tabPosts->setElideMode(Qt::ElideRight);///TODO make this Optional!
     setCentralWidget(tabPosts);
 
@@ -98,7 +100,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     connect(tabPosts, SIGNAL(currentChanged( int )), this, SLOT(sltActivePostChanged(int)));
     connect(toolbox, SIGNAL(sigEntrySelected(BilboPost *)), this, SLOT(sltNewPostSelected(BilboPost*)));
     connect(toolbox, SIGNAL(sigCurrentBlogChanged(int)), this, SLOT(sltCurrentBlogChanged(int)));
-	connect(toolbox, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
+	connect(toolbox, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString&)));
     
 //     if(Settings::show_main_on_start())
 //         this->show();
@@ -108,6 +110,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
 
 MainWindow::~MainWindow()
 {
+	kDebug();
     writeConfigs();
 //     delete toolbox;
 //     delete activePost;
@@ -189,12 +192,13 @@ void MainWindow::sltCreateNewPost()
 // 	// FIXME these lines added to set direction for new posts, but it generates Segmentation fault at run time!
 	int tempId = toolbox->currentBlogId();
 	if (tempId != -1) {
-		BilboBlog *tmp = __db->getBlogInfo(tempId);
+		BilboBlog *tmp = DBMan::self()->getBlogInfo(tempId);
 		temp->setDefaultLayoutDirection(tmp->direction());
 		delete tmp;
 	}
 // 	
      connect(temp, SIGNAL(sigTitleChanged(const QString& )), this, SLOT(sltPostTitleChanged(const QString&)));
+	 connect(temp, SIGNAL(postPublishingDone(const QString& )), this, SLOT(postManipulationDone(const QString&)));
 // // 	activePost=temp;
     tabPosts->setCurrentWidget(temp);
 	//sltActivePostChanged(tabPosts->currentIndex());
@@ -306,46 +310,19 @@ void MainWindow::sltPublishPost()
         kDebug()<<"Blog id not sets correctly.";
         return;
     }
-    Backend *b = new Backend(blog_id);
-    connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
-    connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
     BilboPost *post = new BilboPost;
 	toolbox->getFieldsValue(post);
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
-        if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
+        if(KMessageBox::warningContinueCancel(this, 
+		   i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
            ) == KMessageBox::Cancel)
             return;
     }
-    post->setContent(*(activePost->postBody()));
-    post->setTitle(activePost->postTitle());
     post->setPrivate(false);
-	
-    b->publishPost(post);
+	activePost->publishPost(blog_id, post);
     statusBar()->showMessage(i18n("publishing new post..."));
     this->setCursor(Qt::BusyCursor);
 	toolbox->setCursor(Qt::BusyCursor);
-}
-
-void MainWindow::sltPostPublished(int blog_id, int post_id, bool isPrivate)
-{
-    kDebug()<<"Post Id: "<< post_id;
-    BilboBlog *b = __db->getBlogInfo(blog_id);
-    QString blog_name = b->title();
-    delete b;
-    QString msg;
-    if(isPrivate){
-        msg = i18n("New Draft saved to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
-        statusBar()->showMessage(i18n("New draft saved to \"%1\"", blog_name) , STATUSTIMEOUT);
-    }
-    else {
-        msg = i18n("New Post published to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
-        statusBar()->showMessage(i18n("New post published to \"%1\"",blog_name) , STATUSTIMEOUT);
-    }
-    if(KMessageBox::questionYesNo(this, msg, "Successful") != KMessageBox::Yes)
-        sltRemoveCurrentPostEntry();
-	
-    this->unsetCursor();
-	toolbox->unsetCursor();
 }
 
 void MainWindow::sltRemoveCurrentPostEntry()
@@ -369,7 +346,7 @@ void MainWindow::sltNewPostSelected(BilboPost * newPost)
     temp->setCurrentPost(*newPost);
     temp->setCurrentPostBlogId(toolbox->currentBlogId());
 	
-    BilboBlog *tmp = __db->getBlogInfo(toolbox->currentBlogId());
+    BilboBlog *tmp = DBMan::self()->getBlogInfo(toolbox->currentBlogId());
     temp->setDefaultLayoutDirection(tmp->direction());
     delete tmp;
 
@@ -391,8 +368,9 @@ void MainWindow::sltCurrentBlogChanged(int blog_id)
 //     BilboBlog *tmp = __db->getBlogInfo(blog_id);
 //     this->centralWidget()->setLayoutDirection(tmp->direction());
 //     delete tmp;
-    BilboBlog *tmp = __db->getBlogInfo(blog_id);
+	BilboBlog *tmp = DBMan::self()->getBlogInfo(blog_id);
     this->activePost->setDefaultLayoutDirection(tmp->direction());
+	this->activePost->setCurrentPostBlogId( blog_id );
     this->actPublish->setText(i18n("Publish to \"%1\"", tmp->title()));
     delete tmp;
 }
@@ -407,7 +385,7 @@ void MainWindow::sltSavePostLocally()
 		kDebug() << "no blogs selected";
 		blogDir = QDir(UNKNOWN_BLOG_DIR);
 	} else {
-		blogDir = QDir(__db->getBlogInfo(blog_id)->localDirectory());
+		blogDir = QDir(DBMan::self()->getBlogInfo(blog_id)->localDirectory());
 // 		kDebug() << __db->getBlogInfo(blog_id)->localDirectory() << " " << blog_id;
 		if (! blogDir.exists()) {
 			kDebug() << "error: no directory created for the selected blog";
@@ -441,25 +419,22 @@ void MainWindow::sltSaveAsDraft()
     }
     Backend *b = new Backend(blog_id);
     connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
-    connect(b, SIGNAL(sigError(QString&)), this, SLOT(sltError(QString&)));
+	connect(b, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString&)));
     BilboPost *post = new BilboPost;
 	toolbox->getFieldsValue(post);
     if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
-        if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
-                                             ) == KMessageBox::Cancel)
+        if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\n\
+		   												Are you sure of pubishing this post?")) == KMessageBox::Cancel)
             return;
     }
-    post->setContent(*(activePost->postBody()));
-    post->setTitle(activePost->postTitle());
     post->setPrivate(true);
-	
-    b->publishPost(post);
+	activePost->publishPost(blog_id, post);
     statusBar()->showMessage(i18n("Saving draft..."));
     this->setCursor(Qt::BusyCursor);
 	toolbox->setCursor(Qt::BusyCursor);
 }
 
-void MainWindow::sltError(QString & errorMessage)
+void MainWindow::sltError(const QString & errorMessage)
 {
     kDebug()<<"Error message: "<<errorMessage;
     KMessageBox::detailedError(this, i18n("An error ocurred on latest transaction "), errorMessage);
@@ -501,6 +476,18 @@ void MainWindow::keyReleaseEvent(QKeyEvent * event)
                 break;
         }
     }
+}
+
+void MainWindow::postManipulationDone(const QString &customMessage)
+{
+	kDebug();
+	if(customMessage.isEmpty()){
+		statusBar()->showMessage(i18n("Done!") , STATUSTIMEOUT);
+	} else {
+		statusBar()->showMessage(customMessage , STATUSTIMEOUT);
+	}
+	this->unsetCursor();
+	toolbox->unsetCursor();
 }
 
 #include "mainwindow.moc"

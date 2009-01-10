@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -16,6 +17,7 @@
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************
  *                                                                         *
  *	 This file is a modified version of qtexthtmlparser.cpp, which is part *
  *   of the QtGui module of the Qt Toolkit. It has been costomized for     *

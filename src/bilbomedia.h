@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,9 +18,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef BILBOMEDIA_H
 #define BILBOMEDIA_H
 
+#include <QObject>
 #include <QString>
 
 /**
@@ -30,11 +33,12 @@ Contains needed properties of each media object, like images and videos.
  */
 class QMimeData;
 class KIcon;
-class BilboMedia
+class BilboMedia : public QObject
 {
+	Q_OBJECT
 	public:
 		///BilboMedia constructor
-		BilboMedia();
+		BilboMedia(QObject *parent=0);
 		
 		///BilboMedia destructor
 		~BilboMedia();
@@ -62,6 +66,9 @@ class BilboMedia
 		
 		KIcon icon() const;
 		
+		quint16 checksum();
+		void setCheckSum(quint16 sum);
+		
 	private:
 		int mBlogId;
 		int mMediaId;
@@ -70,7 +77,7 @@ class BilboMedia
 		QString mRemoteUrl;
 		QString mMimeType;
 		QString mName;
-		
+		quint16 mChecksum;
 };
 
 #endif

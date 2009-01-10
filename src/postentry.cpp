@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,15 +18,18 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include <QtGui>
 #include <kdebug.h>
 #include <klocalizedstring.h>
 #include <klineedit.h>
-
+#include <KMessageBox>
 #include "postentry.h"
 #include "bilboeditor.h"
 #include "bilbopost.h"
-///TODO Needs code cleaning!
+#include "bilbomedia.h"
+#include "backend.h"
+
 PostEntry::PostEntry(QWidget *parent)
     :QFrame(parent)
 {
@@ -59,8 +63,6 @@ void PostEntry::createUi()
 			SLOT( sltTitleChanged(const QString&) ));
 	
 	gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
-	//wPost = new QWidget(this);
-	//gridLayout->addWidget(wPost, 1, 0, 1, 1);
 	
 }
 
@@ -72,7 +74,6 @@ void PostEntry::sltTitleChanged(const QString& title)
 
 QString PostEntry::postTitle() const
 {
-	//return QString(this->txtTitle->text());
 	return mCurrentPost->title();
 }
 
@@ -137,6 +138,7 @@ void PostEntry::addMedia(const QString &url)
 
 PostEntry::~PostEntry()
 {
+	kDebug();
 //     delete editPostWidget;
 //     delete gridLayout;
 //     delete horizontalLayout;
@@ -158,6 +160,128 @@ void PostEntry::setCurrentPostProperties(BilboPost post)
 QMap< QString, BilboMedia * > & PostEntry::mediaList()
 {
 	return mMediaList;
+}
+
+bool PostEntry::uploadMediaFiles()
+{
+	bool result = false;
+	int numOfFilesToBeUploaded = 0;
+	Backend *b = new Backend(mCurrentPostBlogId, this);
+	QMap <QString, BilboMedia*>::iterator it = mMediaList.begin();
+	QMap <QString, BilboMedia*>::iterator endIt = mMediaList.end();
+	for( ; it!=endIt; ++it){
+		if(!it.value()->isUploaded()){
+			result = true;
+			connect(b, SIGNAL(sigMediaUploaded(BilboMedia*)), this, SLOT(sltMediaFileUploaded(BilboMedia*)));
+			connect(b, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString)));
+			connect(b, SIGNAL(sigMediaError(const QString&, BilboMedia*)), this, SLOT(sltMediaError(const QString&, BilboMedia*)));
+			b->uploadMedia(it.value());
+			++numOfFilesToBeUploaded;
+		}
+	}
+	if(result){
+		progress = new QProgressBar(this);
+		this->layout()->addWidget(progress);
+		progress->setMaximum(numOfFilesToBeUploaded);
+		progress->setValue( 0 );
+	}
+	isUploadingMediaFilesFailed = false;
+	return result;
+}
+
+void PostEntry::sltMediaFileUploaded(BilboMedia * media)
+{
+	kDebug();
+	progress->setValue(progress->value() + 1);
+	if(progress->value()>= progress->maximum()){
+		this->layout()->removeWidget(progress);
+		progress->deleteLater();
+		if(!isUploadingMediaFilesFailed){
+			publishPostAfterUploadMediaFiles();
+		}
+		sender()->deleteLater();
+	}
+}
+
+void PostEntry::sltError(const QString & errMsg)
+{
+	kDebug();
+	KMessageBox::detailedSorry(this, i18n("An Error occurred on latest transaction."),errMsg);
+	if(progress){
+		this->layout()->removeWidget(progress);
+		progress->deleteLater();
+	}
+	sender()->deleteLater();
+}
+
+void PostEntry::sltMediaError(const QString & errorMessage, BilboMedia * media)
+{
+	kDebug();
+	isUploadingMediaFilesFailed = true;
+	QString name = media->name();
+	kDebug()<<" AN ERROR OCCURRED ON UPLOADING,\tError message is: "<<errorMessage;
+
+	KMessageBox::detailedSorry(this, i18n("Uploading media file %1 (Local Path: %2) failed", name, media->localUrl()),
+							    errorMessage, i18n("Uploading media file Failed!"));
+	if(progress){
+		this->layout()->removeWidget(progress);
+		progress->deleteLater();
+	}
+	sender()->deleteLater();
+}
+
+void PostEntry::publishPost(int blogId, BilboPost * postData)
+{
+	kDebug();
+	this->setCurrentPostProperties(*postData);
+	mCurrentPostBlogId = blogId;
+	if(!this->uploadMediaFiles())
+		publishPostAfterUploadMediaFiles();
+}
+
+void PostEntry::publishPostAfterUploadMediaFiles()
+{
+	kDebug();
+	
+	progress = new QProgressBar(this);
+	this->layout()->addWidget(progress);
+	progress->setMaximum( 0 );
+	progress->setMinimum( 0 );
+	
+	Backend *b = new Backend(mCurrentPostBlogId);
+	connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
+	connect(b, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString&)));
+	b->publishPost(mCurrentPost);
+}
+
+void PostEntry::sltPostPublished(int blog_id, int post_id, bool isPrivate)
+{
+	kDebug()<<"Post Id: "<< post_id;
+	///FIXME This DB communication is un necessary! fix it
+// 	BilboBlog *b = DBMan::self()->getBlogInfo(blog_id);
+	QString blog_name="NOT SET";// = b->title();
+// 	delete b;
+	QString msg;
+	if(isPrivate){
+		msg = i18n("New Draft saved to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
+	}
+	else {
+		msg = i18n("New Post published to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
+	}
+	if(KMessageBox::questionYesNo(this, msg, "Successful") != KMessageBox::Yes){
+// 		sltRemoveCurrentPostEntry();//FIXME this functionality doesn't work! fix it.
+	}
+	if(progress){
+		this->layout()->removeWidget(progress);
+		progress->deleteLater();
+	}
+	if(isPrivate){
+		msg = i18n("Draft saved successfully!");
+	} else {
+		msg = i18n("New post published successfully!");
+	}
+	emit postPublishingDone(msg);
+	sender()->deleteLater();
 }
 
 #include "postentry.moc"

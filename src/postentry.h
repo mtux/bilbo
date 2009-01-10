@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,6 +18,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef POSTENTRIY_H
 #define POSTENTRIY_H
 
@@ -60,20 +62,40 @@ public:
 	void addMedia(const QString &url);
 	
 	QMap <QString, BilboMedia*> & mediaList();
+	
+	/**
+	 *    Will Upload media files not uploaded yet, and return true if there's any file to upload
+	 * and False if there isn't any file!
+	 * @return True if there's any file to upload, otherwise false.
+	 */
+	bool uploadMediaFiles();
+	
+	void publishPost(int blogId, BilboPost *postData);
 Q_SIGNALS:
     /**
      * emitted when title of this entry changed.
      * @param title is a QString which contains new title.
      */
     void sigTitleChanged(const QString &title);
-
+	/**
+	 *    This signal emitted when a post manipulation job e.g. Publishing a new post finished.
+	 * @param customMessage A Custom message will be shown on StatusBar.
+	 */
+	void postPublishingDone(const QString &customMessage);
+protected slots:
+	void sltMediaFileUploaded( BilboMedia *media );
+	void sltError(const QString& errMsg);
+	void sltMediaError(const QString &errorMessage, BilboMedia* media);
+	void sltPostPublished( int blog_id, int post_id, bool isPrivate );
+	
 private Q_SLOTS:
 	void sltTitleChanged(const QString& title);
 	
 private:
     void createUi();
+	void publishPostAfterUploadMediaFiles();
     
-    
+	QProgressBar *progress;
 	BilboEditor *editPostWidget;
 	QGridLayout *gridLayout;
 	QHBoxLayout *horizontalLayout;
@@ -83,6 +105,8 @@ private:
     BilboPost *mCurrentPost;
     int mCurrentPostBlogId;
 	QMap <QString, BilboMedia*> mMediaList;
+	
+	bool isUploadingMediaFilesFailed;
 };
 
 #endif

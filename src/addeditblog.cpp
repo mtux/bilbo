@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,6 +31,7 @@
 
 #include "bilboblog.h"
 #include "addeditblog.h"
+#include "dbman.h"
 #include "global.h"
 
 #define TIMEOUT 40000
@@ -47,7 +49,7 @@ AddEditBlog::AddEditBlog(int blog_id, QWidget *parent)
 		btnFetch->setEnabled(true);
 		btnAutoConf->setEnabled(true);
 		isNewBlog=false;
-        bBlog = __db->getBlogInfo(blog_id);
+        bBlog = DBMan::self()->getBlogInfo(blog_id);
 		//txtUrl->setText(bBlog->url().toString());
 		txtUrl->setText(bBlog->url().url());
 		txtUser->setText(bBlog->username());
@@ -141,9 +143,10 @@ void AddEditBlog::fetchBlogId()
 			mBlog = new KBlog::Blogger1(KUrl(txtUrl->text()), this);
 			dynamic_cast<KBlog::Blogger1*>(mBlog)->setUsername(txtUser->text());
 			dynamic_cast<KBlog::Blogger1*>(mBlog)->setPassword(txtPass->text());
-			connect( dynamic_cast<KBlog::Blogger1*>(mBlog) , SIGNAL(listedBlogs( const QList<QMap<QString, QString> >&)), this, SLOT(fetchedBlogId( const QList<QMap<QString, QString> >&)));
-// 			connect( dynamic_cast<KBlog::Blogger1*>(mBlog), SIGNAL(fetchedProfileId( const QString& ) ), this, SLOT( fetchedProfileId( const QString& ) ) );
-			connect( dynamic_cast<KBlog::Blogger1*>(mBlog), SIGNAL(error( KBlog::Blog::ErrorType, const QString& ) ), this, SLOT( handleFetchError( KBlog::Blog::ErrorType, const QString& ) ) );
+			connect( dynamic_cast<KBlog::Blogger1*>(mBlog) , SIGNAL(listedBlogs( const QList<QMap<QString, QString> >&)),
+					 this, SLOT(fetchedBlogId( const QList<QMap<QString, QString> >&)));
+			connect( dynamic_cast<KBlog::Blogger1*>(mBlog), SIGNAL(error( KBlog::Blog::ErrorType, const QString& ) ),
+					 this, SLOT( handleFetchError( KBlog::Blog::ErrorType, const QString& ) ) );
 			mFetchBlogIdTimer = new QTimer(this);
 			mFetchBlogIdTimer->setSingleShot(true);
 			connect( mFetchBlogIdTimer, SIGNAL( timeout() ), this, SLOT( handleFetchIDTimeout() ) );
@@ -173,7 +176,9 @@ void AddEditBlog::fetchBlogId()
 void AddEditBlog::handleFetchIDTimeout()
 {
 	kDebug();
-	KMessageBox::error(this, i18n("Fetching the blog's id timed out. Check your internet connection, Or your homepage Url!\nnote that the url has to contain \"http://\" or ...\nfor example: http://bilbo.sf.net/xmlrpc.php is a good url"));
+	KMessageBox::error(this, i18n("Fetching the blog's id timed out. Check your internet connection,\
+			 Or your homepage Url!\nnote that the url has to contain \"http://\" or ...\n\
+					 for example: http://bilbo.sf.net/xmlrpc.php is a good url"));
 	txtId->setText(QString());
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
@@ -186,7 +191,9 @@ void AddEditBlog::handleFetchIDTimeout()
 void AddEditBlog::handleFetchAPITimeout()
 {
 	kDebug();
-    KMessageBox::sorry(this, i18n("Sorry, Bilbo cannot get API type automatically, please check your internet connection, otherwise you have to set API type on advanced tab handy."), i18n("AutoConfiguration Failed"));
+    KMessageBox::sorry(this, i18n("Sorry, Bilbo cannot get API type automatically,\
+						please check your internet connection, otherwise you have to set API type on advanced tab handy."),
+    					i18n("AutoConfiguration Failed"));
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
 	btnAutoConf->setEnabled(true);
@@ -209,7 +216,7 @@ void AddEditBlog::fetchedBlogId(const QList< QMap < QString , QString > > & list
 	kDebug();
 // 	delete mFetchBlogIdTimer;
 	if(list.count()>1){
-		///TODO: handle more than one blog!
+		///TODO handle more than one blog!
 		kDebug()<<"User has more than ONE blog!";
 	}
 	txtId->setText(list.first().values().first());
@@ -241,7 +248,8 @@ void AddEditBlog::sltAccepted()
 {
 	kDebug();
 	if(bBlog->blogid().isEmpty() && txtId->text().isEmpty()){
-		KMessageBox::sorry(this, i18n("Sorry, BlogId not retrived yet,\nYou have to Fetch blog id by hitting \"Auto Configure\" Or \"Fetch ID\" button or Insert your Blog Id manually."));
+		KMessageBox::sorry(this, i18n("Sorry, BlogId not retrived yet,\nYou have to Fetch blog id by hitting\
+				\"Auto Configure\" Or \"Fetch ID\" button or Insert your Blog Id manually."));
 		return;
 	}
 	bBlog->setApi((BilboBlog::ApiType)comboApi->currentIndex());
@@ -268,7 +276,7 @@ void AddEditBlog::sltAccepted()
 			return;
 		}
 		
-        int blog_id = __db->addBlog(*bBlog);
+        int blog_id = DBMan::self()->addBlog(*bBlog);
 		bBlog->setId(blog_id);
 		if(blog_id!=-1)
 			Q_EMIT sigBlogAdded(*bBlog);
@@ -281,7 +289,7 @@ void AddEditBlog::sltAccepted()
 			kDebug() << "current blog directory can't be renamed to " << blogDir;
 			return;
 		}
-        if(__db->editBlog(*bBlog))
+        if(DBMan::self()->editBlog(*bBlog))
 			Q_EMIT sigBlogEdited(*bBlog);
 	}
 }

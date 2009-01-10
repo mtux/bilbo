@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,7 +35,7 @@
 #include <kdebug.h>
 
 #include "bilboeditor.h"
-//#include "htmlexporter.h"
+#include "dbman.h"
 #include "multilinetextedit.h"
 #include "addeditlink.h"
 #include "addimagedialog.h"
@@ -508,7 +509,7 @@ BilboEditor::~BilboEditor()
 //         }
 //         QString baseU = "http://bilbo.sourceforge.net";
 //         if(__currentBlogId > -1){
-//             BilboBlog *tmp = __db->getBlogInfo(__currentBlogId);
+//             BilboBlog *tmp = DBMan::self()->getBlogInfo(__currentBlogId);
 //             baseU = tmp->blogUrl();
 //             delete tmp;
 //         }
@@ -1333,7 +1334,7 @@ void BilboEditor::sltSyncEditors(int index)
 		QString baseU = "http://bilbo.sourceforge.net";
 // 		QString baseU = "file://";
 		if(__currentBlogId > -1){
-			BilboBlog *tmp = __db->getBlogInfo(__currentBlogId);
+			BilboBlog *tmp = DBMan::self()->getBlogInfo(__currentBlogId);
 			baseU = tmp->blogUrl();
 			delete tmp;
 		}

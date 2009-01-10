@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,6 +29,7 @@
 #include <QDir>
 
 #include "toolbox.h"
+#include "dbman.h"
 #include "entriescountdialog.h"
 #include "addeditblog.h"
 #include "global.h"
@@ -50,8 +52,6 @@ Toolbox::Toolbox(QWidget *parent)
 	frameBlog->layout()->setAlignment(Qt::AlignTop);
 	frameCat->layout()->setAlignment(Qt::AlignTop);
 	reloadBlogList();
-// 	currentBlog=0;
-// 	currentPost = new BilboPost();
 	optionsDate->setDate(QDateTime::currentDateTime().date());
 	optionsTime->setTime(QDateTime::currentDateTime().time());
 	connect(btnBlogAdd, SIGNAL(clicked()), this, SLOT(sltAddBlog()));
@@ -89,7 +89,7 @@ void Toolbox::sltEditBlog()
 		return;
 	}
     blogToEdit = qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton());
-// 	blogToEditDir = QDir(DATA_DIR + __db->getBlogInfo(blogToEdit->blogId())->blogUrl());
+// 	blogToEditDir = QDir(DATA_DIR + DBMan::self()->getBlogInfo(blogToEdit->blogId())->blogUrl());
 	
 	addEditBlogWindow = new AddEditBlog(blogToEdit->blogId(), this);
     addEditBlogWindow->setAttribute(Qt::WA_DeleteOnClose);
@@ -101,7 +101,7 @@ void Toolbox::sltEditBlog()
 void Toolbox::sltRemoveBlog()
 {
 	kDebug();
-    __db->removeBlog(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
+    DBMan::self()->removeBlog(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
 //     listBlogs.remove(listBlogRadioButtons.checkedButton()->text());
 	QAbstractButton *tmp = listBlogRadioButtons.checkedButton();
     listBlogRadioButtons.removeButton(listBlogRadioButtons.checkedButton());
@@ -123,7 +123,7 @@ void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
 // 	connect(a, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
     a->setChecked(true);
     sltReloadCategoryList();
-	
+	sltSetCurrentBlog();
 // 	KStandardDirs::makeDir(DATA_DIR + addedBlog.title());
 	
     delete addEditBlogWindow;
@@ -147,24 +147,18 @@ void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
 void Toolbox::reloadBlogList()
 {
 	kDebug();
-// 	listBlogs.clear();
-    QMap<QString, int> listBlogs;
-    listBlogs = __db->listBlogsTitle();
     foreach( QAbstractButton *ab,listBlogRadioButtons.buttons()){
 		delete ab;
 	}
 	listBlogRadioButtons.buttons().clear();
-    QMap<QString, int>::const_iterator i = listBlogs.constBegin();
-    QMap<QString, int>::const_iterator endI = listBlogs.constEnd();
-	for( ; i != endI; ++i ){
-        BlogRadioButton *rb = new BlogRadioButton(i.key());
-        rb->setBlogId(i.value());
-        BilboBlog *bb = __db->getBlogInfo(i.value());
-		rb->setToolTip(bb->blogUrl());
-        delete bb;
+	QList<BilboBlog*> listBlogs = DBMan::self()->listBlogs();
+	int count = listBlogs.count();
+	for( int i=0; i < count; ++i ){
+        BlogRadioButton *rb = new BlogRadioButton(listBlogs[i]->title(), this);
+		rb->setBlogId(listBlogs[i]->id());
+		rb->setToolTip(listBlogs[i]->blogUrl());
 		listBlogRadioButtons.addButton(rb);
 		frameBlog->layout()->addWidget(rb);
-// 		connect(rb, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
 	}
 }
 
@@ -183,7 +177,7 @@ void Toolbox::sltReloadCategoryList()
 	Backend *b = new Backend(blog_id);
 	b->getCategoryListFromServer();
 	connect(b, SIGNAL(sigCategoryListFetched(int)), this, SLOT(sltLoadCategoryListFromDB(int)));
-    connect(b, SIGNAL(sigError(QString&)), this, SIGNAL(sigError(QString&)));
+	connect(b, SIGNAL(sigError(const QString&)), this, SIGNAL(sigError(const QString&)));
 	statusbar->showMessage(i18n("Requesting category list..."));
     this->setCursor(Qt::BusyCursor);
 	parentWidget()->setCursor(Qt::BusyCursor);
@@ -242,7 +236,7 @@ void Toolbox::sltLoadEntriesFromDB(int blog_id)
     this->unsetCursor();
 	parentWidget()->unsetCursor();
 	QMap<int, QString> listEntries;
-	listEntries = __db->listPostsTitle(blog_id);
+	listEntries = DBMan::self()->listPostsTitle(blog_id);
 	QMap<int, QString>::const_iterator endIt = listEntries.constEnd();
 	QMap<int, QString>::const_iterator it = listEntries.constBegin();
 	for(; it!=endIt; ++it){
@@ -265,7 +259,7 @@ void Toolbox::sltLoadCategoryListFromDB(int blog_id)
 	this->unsetCursor();
 	clearCatList();
 	QList<Category> listCategories;
-	listCategories = __db->listCategories(blog_id);
+	listCategories = DBMan::self()->listCategories(blog_id);
 	
 	listCategoryCheckBoxes.clear();
 	QList<Category>::const_iterator i;
@@ -284,7 +278,7 @@ void Toolbox::sltGetEntriesCount(int count)
     Backend *entryB = new Backend(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
 	entryB->getEntriesListFromServer(count);
 	connect(entryB, SIGNAL(sigEntriesListFetched(int)), this, SLOT(sltLoadEntriesFromDB(int)));
-    connect(entryB, SIGNAL(sigError(QString&)), this, SIGNAL(sigError(QString&)));
+	connect(entryB, SIGNAL(sigError(const QString&)), this, SIGNAL(sigError(const QString&)));
 	statusbar->showMessage(i18n("Requesting Entry list..."));
     this->setCursor(Qt::BusyCursor);
 	parentWidget()->setCursor(Qt::BusyCursor);
@@ -329,10 +323,12 @@ void Toolbox::sltCurrentBlogChanged(int blog_id)
         kDebug()<<"Blog id do not sets correctly";
         return;
     }
+	btnBlogEdit->setEnabled(true);
+	btnBlogRemove->setEnabled(true);
     __currentBlogId = blog_id;
 	sltLoadCategoryListFromDB(blog_id);
 	sltLoadEntriesFromDB(blog_id);
-    Qt::LayoutDirection ll = __db->getBlogInfo(blog_id)->direction();
+    Qt::LayoutDirection ll = DBMan::self()->getBlogInfo(blog_id)->direction();
 	frameCat->setLayoutDirection(ll);
 	lstEntriesList->setLayoutDirection(ll);
 }
@@ -340,7 +336,7 @@ void Toolbox::sltCurrentBlogChanged(int blog_id)
 void Toolbox::getFieldsValue(BilboPost *currentPost)
 {
 	kDebug();
-	currentPost->setCategories(this->selectedCategoriesTitle());
+	currentPost->setCategoryList(this->selectedCategories());
 	currentPost->setTags(this->currentTags());
 	currentPost->setModifyTimeStamp(this->chkOptionsTime->isChecked());
 	if(currentPost->status()==KBlog::BlogPost::Fetched || currentPost->status()==KBlog::BlogPost::Modified){///FIXME there is a BUG here!
@@ -362,7 +358,7 @@ void Toolbox::getFieldsValue(BilboPost *currentPost)
 	currentPost->setPrivate((comboOptionsStatus->currentIndex()==1)?true:false);
 	currentPost->setCommentAllowed(chkOptionsComments->isChecked());
 	currentPost->setTrackBackAllowed(chkOptionsTrackback->isChecked());
-	currentPost->setPosition((BilboPost::Position)comboOptionsStatus->currentIndex());
+// 	currentPost->setPosition((BilboPost::Position)comboOptionsStatus->currentIndex());
     currentPost->setSummary(txtSummary->toPlainText());
 }
 
@@ -378,9 +374,12 @@ void Toolbox::setFieldsValue(BilboPost* post)
 
 	setSelectedCategories(post->categories());
 	txtCatTags->setText(post->tags().join(", "));
-	comboOptionsStatus->setCurrentIndex(post->position());
-	if(post->position()!=BilboPost::Local && post->isPrivate())
+	if(post->status() == KBlog::BlogPost::New)
+		comboOptionsStatus->setCurrentIndex(2);
+	else if(post->isPrivate())
         comboOptionsStatus->setCurrentIndex(1);
+	else
+		comboOptionsStatus->setCurrentIndex(0);
 	chkOptionsComments->setChecked(post->isCommentAllowed());
 	chkOptionsTrackback->setChecked(post->isTrackBackAllowed());
 	chkOptionsTime->setChecked(post->isModifyTimeStamp());
@@ -388,6 +387,18 @@ void Toolbox::setFieldsValue(BilboPost* post)
 	optionsDate->setDate(post->modificationDateTime().date());
 	txtSummary->setPlainText(post->summary());
 //     txtOptionsTrackback->setText(post.);
+}
+
+QList< Category > Toolbox::selectedCategories()
+{
+	kDebug();
+	QList<Category> list;
+	int count = listCategoryCheckBoxes.count();
+	for( int i=0; i<count; ++i){
+		if(listCategoryCheckBoxes[i]->isChecked())
+			list.append(listCategoryCheckBoxes[i]->category());
+	}
+	return list;
 }
 
 QStringList Toolbox::selectedCategoriesTitle()
@@ -404,7 +415,7 @@ QStringList Toolbox::selectedCategoriesTitle()
 
 QList< int > Toolbox::selectedCategoriesId()
 {
-	///TODO: Implement it
+	///TODO Implement it
 	kDebug()<<"NOT IMPLEMENTED YET!";
 	return QList<int>();
 }
@@ -421,7 +432,7 @@ void Toolbox::setSelectedCategories(const QStringList &list)
 
 void Toolbox::setSelectedCategories(const QList< int > &)
 {
-	///TODO: Implement it
+	///TODO Implement it
 	kDebug()<<"NOT IMPLEMENTED YET!";
 }
 
@@ -451,7 +462,7 @@ int Toolbox::currentBlogId()
 void Toolbox::sltEntrySelected(QListWidgetItem * item)
 {
     kDebug();
-	BilboPost *post = __db->getPostInfo(lstEntriesList->currentItem()->data(32).toInt());
+	BilboPost *post = DBMan::self()->getPostInfo(lstEntriesList->currentItem()->data(32).toInt());
 //     setFieldsValue(*post);
     kDebug()<<"Emiting sigEntrySelected...";
 	Q_EMIT sigEntrySelected(post);
@@ -481,12 +492,13 @@ void Toolbox::sltEntriesCopyUrl()
 		return;
 	}
 	QClipboard *clip = QApplication::clipboard();
-	BilboPost *p = __db->getPostInfo(lstEntriesList->currentItem()->data(32).toInt());
+	BilboPost *p = DBMan::self()->getPostInfo(lstEntriesList->currentItem()->data(32).toInt());
     clip->setText(p->link().url());
 }
 
 Toolbox::~Toolbox()
 {
+	kDebug();
 //     delete addEditBlogWindow;
 //     delete blogToEdit;
 //     delete currentBlog;
@@ -512,6 +524,9 @@ void Toolbox::setButtonsIcon()
     btnEntriesCopyUrl->setIcon(KIcon("edit-copy"));
     btnCatReload->setIcon(KIcon("view-refresh"));
     btnCatAdd->setIcon(KIcon("list-add"));
+	btnMediaAdd->setIcon(KIcon("list-add"));
+	btnMediaEdit->setIcon(KIcon("edit-rename"));
+	btnMediaRemove->setIcon(KIcon("list-remove"));
     ///TODO Add option for selecting only text or only Icon for Toolbox buttons!
     btnBlogAdd->setText(QString());
     btnBlogEdit->setText(QString());
@@ -521,6 +536,10 @@ void Toolbox::setButtonsIcon()
     btnEntriesCopyUrl->setText(QString());
     btnCatReload->setText(QString());
     btnCatAdd->setText(QString());
+	btnMediaAdd->setText(QString());
+	btnMediaEdit->setText(QString());
+	btnMediaRemove->setText(QString());
 }
+
 
 #include "toolbox.moc"

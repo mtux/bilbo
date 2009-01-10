@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,12 +18,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef BILBOENGINE_H
 #define BILBOENGINE_H
 
 #include <QObject>
 #include <QMap>
-// #include <kurl.h>
+#include "constants.h"
 #include <kblog/blog.h>
 
 
@@ -79,18 +81,18 @@ public:
      */
     void modifyPost( BilboPost *post );
     
+    void setPostCategories(const QString postId, const QMap<QString, bool> &categoriesList);
+    
 protected Q_SLOTS:
 	void categoriesListed(const QList< QMap< QString, QString > > &   categories   );
-	
 	void entriesListed(const QList< KBlog::BlogPost > &posts);
-	
 	void postPublished(KBlog::BlogPost *post);
-	
-    void mediaUploaded( KBlog::BlogMedia *media );
-    
+	void mediaUploaded( KBlog::BlogMedia *media );
     void postModified( KBlog::BlogPost *post );
-    
     void error( KBlog::Blog::ErrorType type, const QString &errorMessage );
+	void sltMediaError(KBlog::Blog::ErrorType type, const QString &errorMessage, KBlog::BlogMedia *media);
+	void postCategoriesSetted(const QString &postId);
+	
 	
 Q_SIGNALS:
     /**
@@ -132,31 +134,20 @@ Q_SIGNALS:
      * @param type type of error
      * @param errorMessage error message.
      */
-    void sigError( QString &errorMessage);
-    
-    /**
-     * This signal is emitted when an error occurs with XML parsing or
-     * a structural problem in an operation involving a blog post.
-     * @param type the type of the error.
-     * @param errorMessage the error message.
-     * @param post the post that caused the error.
-     */
-//     void sigPostError( KBlog::Blog::ErrorType type, const QString &errorMessage, KBlog::BlogPost *post );
-    
-    /**
-     * This signal is emitted when an error occurs with XML parsing or
-     * a structural problem in an operation involving some blog media.
-     * @param type the type of the error.
-     * @param errorMessage the error message.
-     * @param media the media that caused the error.
-     */
-//     void sigMediaError( KBlog::Blog::ErrorType type, const QString & errorMessage, BilboMedia * media );
+    void sigError( const QString &errorMessage);
+	
+	void sigMediaError(const QString &errorMessage, BilboMedia* media);
 	
 private:
+	QString errorTypeToString(KBlog::Blog::ErrorType type);
 	KBlog::Blog *mBlog;
 	BilboBlog *bBlog;
-    quint16 mChecksum;
+//     quint16 mChecksum;
     QString mediaLocalUrl;
+	QList<Category> mCreatePostCategories;
+	QMap<QString, KBlog::BlogPost *> mSetPostCategoriesMap;
+    QMap<KBlog::BlogMedia *, BilboMedia *> mPublishMediaMap;
+	bool categoryListNotSet;
 };
 
 #endif

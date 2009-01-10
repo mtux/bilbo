@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,6 +18,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef DBMAN_H
 #define DBMAN_H
 #include <QtSql>
@@ -33,11 +35,23 @@ have to use this API to store or retrive information and settings from Database.
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 
-class DBMan{
+class DBMan
+{
 public:
-    DBMan();
+	DBMan();
 
     ~DBMan();
+	
+	/**
+	 * \brief Retrieve the instance of DataBase Manager.
+	 *
+	 * The Database manager (DBMan) is a singleton class of which only a single
+	 * instance will exist. If no manager exists yet this function will
+	 * create one for you.
+	 *
+	 * \return the instance of the DBMan
+		 */
+	static DBMan* self();
 	
 	///(BEGIN) Data retrieveing Functions:
 	
@@ -56,6 +70,7 @@ public:
 	
 	QMap<QString, int> listCategoriesName(int blog_id);
 	QList<Category> listCategories(int blog_id);
+	QMap<QString, bool> listCategoriesId(int blog_id);
 	
 	
 	///END
@@ -63,11 +78,13 @@ public:
 	///(BEGIN) Data Manipulation Functions:
 	
 	///Blog:
-	int addBlog(QString blogid, QString blog_url, QString username, QString password, QString style_url, QString api, QString title, int direction, QString directory);
+	int addBlog(QString blogid, QString blog_url, QString username, QString password, QString style_url,
+                 QString api, QString title, int direction, QString directory);
 	
 	int addBlog(BilboBlog& blog);
 	
-	bool editBlog(int id, QString username, QString password, QString style_url, QString api, QString title, int direction, QString directory);
+	bool editBlog(int id, QString username, QString password, QString style_url, QString api,
+                   QString title, int direction, QString directory);
 	
 	bool editBlog(BilboBlog& blog);
 	
@@ -132,6 +149,7 @@ private:
 	bool createDB();
 	QSqlDatabase db;
 	bool connectDB();
+	static DBMan* mSelf;
 };
 
 #endif

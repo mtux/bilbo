@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,6 +18,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef BILBOPOST_H
 #define BILBOPOST_H
 
@@ -26,7 +28,7 @@
 // #include <kurl.h>
 // #include <kdatetime.h>
 #include <kblog/blogpost.h>
-
+#include "constants.h"
 class QUrl;
 class QDateTime;
 class KUrl;
@@ -42,25 +44,13 @@ it's implemented to decrease dependency to KBlog :)
 class BilboPost : public KBlog::BlogPost
 {
 public:
-	enum Position{
-		Published=0, Draft, Local
-	};
+// 	enum Position{
+// 		Published=0, Draft, Local
+// 	};
     BilboPost();
 	BilboPost( const KBlog::BlogPost& );
     BilboPost( const BilboPost& );
     ~BilboPost();
-
-/*	QUrl postLink() const;
-	void setPostLink(const QUrl&);
-	
-	QUrl postPermaLink() const;
-	void setPostPermaLink(const QUrl&);
-	
-	QDateTime cTime() const;
-	void setCTime(const QDateTime&);
-	
-	QDateTime mTime() const;
-	void setMTime(const QDateTime&);*/
 	
 	QString author() const;
 	void setAuthor(const QString&);
@@ -68,8 +58,8 @@ public:
 	int id() const;
 	void setId( const int);
 	
-	Position position() const;
-	void setPosition( const Position);
+// 	Position position() const;
+// 	void setPosition( const Position);
 	
 	KBlog::BlogPost * toKBlogPost();
 	QString toString() const;
@@ -77,11 +67,15 @@ public:
 	bool isModifyTimeStamp();
 	void setModifyTimeStamp(bool willModify);
 	
+	QList<Category> categoryList() const;
+	void setCategoryList(const QList<Category> &list);
+	
 private:
 	QString mAuthor;
 	int mId;///id in DB
-	Position mPosition;
+// 	Position mPosition;
 	bool mModifyTimeStamp;///Just for toolbox entry!
+	QList<Category> mCategoryList;
 };
 
 #endif

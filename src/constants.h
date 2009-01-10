@@ -1,6 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Mehrdad Momeny, Golnaz Nilieh   *
- *   mehrdad.momeny@gmail.com, g382nilieh@gmail.com   *
+ *   This file is part of the Bilbo Blogger.                               *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+ *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,6 +31,7 @@ Constants.
  */
 
 #define VERSION "0.1"
+#define APPNAME "Bilbo Blogger"
 #define DATA_DIR KStandardDirs::locateLocal("data", "bilbo/")
 // #define CONF_PATH QString(CONF_DIR)+QString("/bilbo.conf")
 #define CONF_DB QString(DATA_DIR)+QString("/bilbo.db")
