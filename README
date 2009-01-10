@@ -1,2 +1,4 @@
 Bilbo Blogger is a free/Open Source Blogging application, focused on simplicity and usability.
-it will support most popular blogging APIs. it have an api plugin system to simplify adding support for a new blogging API.
+It based on KDE KBlog library, and uses and based on Qt4 and KDE 4 libraries.
+
+It's under active development, and first version will be ready about 10 April 2009.

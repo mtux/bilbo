@@ -981,17 +981,17 @@ void htmlExporter::emitBlock(const QTextBlock &block)
     const bool pre = blockFormat.nonBreakableLines();
     if (pre) {
 // 		qDebug() << "NonBreakable lines" << endl;
-        if (list) {
-            html += QLatin1Char('>');
-		}
+//         if (list) {
+//             html += QLatin1Char('>');
+// 		}
         html += QLatin1String("<pre");
         emitBlockAttributes(block);
         html += QLatin1Char('>');
 		
     } else {
-		if (list) {
-			html += QLatin1Char('>');
-		}
+// 		if (list) {
+// 			html += QLatin1Char('>');
+// 		}
         //html += QLatin1String("<div");
 		html += QLatin1String("<p");
 		emitBlockAttributes(block);
@@ -1014,13 +1014,14 @@ void htmlExporter::emitBlock(const QTextBlock &block)
     if (pre) {
         html += QLatin1String("</pre>");
 	} else {	
-		if (list) {
-        	html += QLatin1String("</li>");
-		} else if ( ! (html.right(7).contains(QRegExp("<br[\\s]*/>[\\n]*"))) ) {
-        	html += QLatin1String("<br />");//"</p>");
-		}
+// 		if ( ! (html.right(7).contains(QRegExp("<br[\\s]*/>[\\n]*"))) ) {
+//         	html += QLatin1String("<br />");//"</p>");
+// 		}
 		//html += QLatin1String("</div>");
 		html += QLatin1String("</p>");
+		if (list) {
+			html += QLatin1String("</li>");
+		}
 	}
     // HACK html.replace( QRegExp("<br[\\s]*/>[\\n]*<br[\\s]*/>[\\n]*"),"<br />&nbsp;<br />" );
 
