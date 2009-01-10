@@ -272,11 +272,13 @@ void KMarkupDirector::processBlockContents(const QTextBlock &block)
         QTextCharFormat fragmentFormat = fragment.charFormat();
 
         if (!fragmentFormat.isImageFormat() && fragment.text().at(0).category() == QChar::Separator_Line) {
+// 		if (!fragmentFormat.isImageFormat() && fragment.text().at(0) == QChar::LineSeparator) {
 
             // Consecutive newlines in a qtextdocument are in a single fragment if inserted with setHtml.
             foreach(QChar c, fragment.text()) {
 //         kDebug() << c;
                 if (c.category() == QChar::Separator_Line) {
+// 				if (c == QChar::LineSeparator) {
                     d->builder->addNewline();
                 }
             }
@@ -349,11 +351,14 @@ void KMarkupDirector::processBlockContents(const QTextBlock &block)
                         d->builder->endParagraph();
                         paraClosed = true;
                       }
-                      d->builder->addNewline();
+//                       d->builder->addNewline();
                     } else if (paraClosed) {
                       d->builder->beginParagraph(blockAlignment);
                       paraClosed = false;
                     }
+					else {
+						d->builder->addNewline();
+					}
                   }
                 }
 
