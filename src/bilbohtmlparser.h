@@ -37,8 +37,6 @@
 //#include "private/qtexthtmlparser_p.h"
 
 /**
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com> 
 */
 
 //using namespace QCss;

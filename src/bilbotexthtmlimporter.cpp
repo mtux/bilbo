@@ -263,6 +263,7 @@ void BilboTextHtmlImporter::import()
 			} else {
 				if (i == 1 && cursor.position() == 0 && node->isEmptyParagraph) {
 					containsCompleteDoc = true;
+					kDebug() << "contains complete doc";
 					cursor.setBlockFormat(block);
 					cursor.setBlockCharFormat(charFmt);
 				} else {

@@ -31,7 +31,7 @@
 #include <kactioncollection.h>
 #include <kicon.h>
 #include <kcolordialog.h>
-//#include <klistwidget.h>
+// #include <klistwidget.h>
 #include <kdebug.h>
 
 #include "bilboeditor.h"
@@ -47,13 +47,14 @@
 // #include "kaction.h"
 // #include "kicon.h"
 //#include "bilborichtextedit.h"
+#include "medialistwidget.h"
 #include "bilbotextformat.h"
 #include "bilbotexthtmlimporter.h"
-#include "medialistwidget.h"
-
-#include "bilbomarkupbuilders/kabstractmarkupbuilder.h"
-#include "bilbomarkupbuilders/kmarkupdirector.h"
-#include "bilbomarkupbuilders/ktexthtmlbuilder.h"
+ 
+#include "htmlexporter.h"
+// #include "bilbomarkupbuilders/kabstractmarkupbuilder.h"
+// #include "bilbomarkupbuilders/kmarkupdirector.h"
+// #include "bilbomarkupbuilders/ktexthtmlbuilder.h"
 
 BilboEditor::BilboEditor(QWidget *parent)
 	:KTabWidget(parent)
@@ -1288,13 +1289,13 @@ void BilboEditor::sltSyncEditors(int index)
 	kDebug();
 	QTextDocument *doc = editor->document();
 	
-// 	htmlExporter* htmlExp = new htmlExporter();
-// 	htmlExp->setDefaultCharFormat(this->defaultCharFormat);
-// 	htmlExp->setDefaultBlockFormat(this->defaultBlockFormat);
+	htmlExporter* htmlExp = new htmlExporter();
+	htmlExp->setDefaultCharFormat(this->defaultCharFormat);
+	htmlExp->setDefaultBlockFormat(this->defaultBlockFormat);
 	
-	KAbstractMarkupBuilder *builder = new KTextHTMLBuilder();
-	KMarkupDirector md = KMarkupDirector(builder);
-	
+// 	KAbstractMarkupBuilder *builder = new KTextHTMLBuilder();
+// 	KMarkupDirector md = KMarkupDirector(builder);
+// 	
 	if(index == 0) {
 		///Qt QTextEdit::setHtml() or QTextDocument::toHtml() convert <h1-5> tags to <span> tags
 		
@@ -1304,6 +1305,8 @@ void BilboEditor::sltSyncEditors(int index)
 		BilboTextHtmlImporter(doc, htmlEditor->toPlainText()).import();
 		useLocalImagePaths();
 		doc->setUndoRedoEnabled(true);
+		kDebug() << doc->blockCount() << " has blocks";
+		kDebug() << editor->document()->toHtml() << "index=2" << endl;
 		editor->setTextCursor( QTextCursor(doc));
 		
 		//editor->setTextOrHtml(htmlToRichtext(htmlEditor->toPlainText()));
@@ -1316,10 +1319,11 @@ void BilboEditor::sltSyncEditors(int index)
 		useRemoteImagePaths();
 // 		QTextDocument *doc = editor->document(); // editor is a QTextEdit
 
-		md.constructContent(doc);
-// 		browser.setHtml(builder->getResult());
-// 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
-		htmlEditor->setPlainText(builder->getResult());
+// 		md.constructContent(doc);
+// 		htmlEditor->setPlainText(builder->getResult());
+		
+		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+		
 	} else {
 		if (prev_index == 1) {
 			//editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
@@ -1328,8 +1332,8 @@ void BilboEditor::sltSyncEditors(int index)
 			BilboTextHtmlImporter(doc, htmlEditor->toPlainText()).import();
 		} else {
 			useRemoteImagePaths();
-// 			htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
-			htmlEditor->setPlainText(builder->getResult());
+			htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+// 			htmlEditor->setPlainText(builder->getResult());
 		}
 		QString baseU = "http://bilbo.sourceforge.net";
 // 		QString baseU = "file://";
@@ -1342,8 +1346,8 @@ void BilboEditor::sltSyncEditors(int index)
 	}
 	
 	prev_index = index;
-//  	delete htmlExp;
-	delete builder;
+ 	delete htmlExp;
+// 	delete builder;
 }
 
 QString BilboEditor::htmlToRichtext(const QString& html)
@@ -1379,27 +1383,29 @@ QString BilboEditor::htmlToRichtext(const QString& html)
 QString* BilboEditor::htmlContent()
 {
 	// TODO move htmlExp definiton to BilboEditor constructor.
-// 	htmlExporter* htmlExp = new htmlExporter();
-// 	htmlExp->setDefaultCharFormat(this->defaultCharFormat);
-// 	htmlExp->setDefaultBlockFormat(this->defaultBlockFormat);
+	htmlExporter* htmlExp = new htmlExporter();
+	htmlExp->setDefaultCharFormat(this->defaultCharFormat);
+	htmlExp->setDefaultBlockFormat(this->defaultBlockFormat);
 	
-	QTextDocument *doc = editor->document();
-	
-	KAbstractMarkupBuilder *builder = new KTextHTMLBuilder();
-	KMarkupDirector md = KMarkupDirector(builder);
+// 	QTextDocument *doc = editor->document();
+// 	
+// 	KAbstractMarkupBuilder *builder = new KTextHTMLBuilder();
+// 	KMarkupDirector md = KMarkupDirector(builder);
 	
 	if (this->currentIndex() == 0) {
 		useRemoteImagePaths();
-// 		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
-		md.constructContent(doc);
-		htmlEditor->setPlainText(builder->getResult());
+		htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+		
+// 		md.constructContent(doc);
+// 		htmlEditor->setPlainText(builder->getResult());
+		
 		//htmlEditor->setPlainText(editor->textOrHtml());
 	} else if (this->currentIndex() == 1) {
 // 		editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
 	}
 	
-// 	delete htmlExp;
-	delete builder;
+	delete htmlExp;
+// 	delete builder;
 	
 	mHtmlContent = new QString(htmlEditor->toPlainText());
 	return mHtmlContent;
@@ -1415,7 +1421,7 @@ void BilboEditor::setHtmlContent(const QString & content)
 	QTextDocument *doc = editor->document();
 	doc->setUndoRedoEnabled(false);
 	doc->clear();
-	BilboTextHtmlImporter(doc, content).import();
+// 	BilboTextHtmlImporter(doc, content).import();
 	doc->setUndoRedoEnabled(true);
 	editor->setTextCursor( QTextCursor(doc));
 	//this->htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));

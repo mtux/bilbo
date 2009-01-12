@@ -18,7 +18,7 @@ set(bilbo_SRCS
  addeditblog.cpp
  postentry.cpp
  bilboeditor.cpp
-# htmlexporter.cpp
+ htmlexporter.cpp
  addeditlink.cpp
  dbman.cpp
  global.cpp
