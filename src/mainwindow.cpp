@@ -31,6 +31,7 @@
 #include <KDE/KLocale>
 #include <QDir>
 #include <QFile>
+#include <KApplication>
 #include <QMap>
 
 #include "mainwindow.h"
@@ -112,26 +113,11 @@ MainWindow::~MainWindow()
 {
 	kDebug();
     writeConfigs();
-//     delete toolbox;
-//     delete activePost;
-//     delete systemTray;
-//     delete toolboxDock;
-//     delete tabPosts;
-//     delete btnRemovePost;
-//     delete actAddBlog;
-//     delete actUploadAll;
-//     delete actNewPost;
-//     delete actPublish;
-//     delete actSaveLocally;
-//     delete actSaveDraft;
-//     delete actDeletePost;
-//     delete actDeleteLocally;
-//     delete actToggleToolboxVisible;
 }
 
 void MainWindow::setupActions()
 {
-    KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection());
+    KStandardAction::quit(kapp, SLOT(quit()), actionCollection());
 
     KStandardAction::preferences(this, SLOT(optionsPreferences()), actionCollection());
 
@@ -488,6 +474,20 @@ void MainWindow::postManipulationDone(const QString &customMessage)
 	}
 	this->unsetCursor();
 	toolbox->unsetCursor();
+}
+
+bool MainWindow::queryClose()
+{
+	hide();
+	return false;
+}
+
+bool MainWindow::queryExit()
+{
+	//TODO Save Current Open posts!
+	delete DBMan::self();
+	this->deleteLater();
+	return true;
 }
 
 #include "mainwindow.moc"

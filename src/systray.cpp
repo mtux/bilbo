@@ -28,6 +28,7 @@
 
 SysTray::SysTray(QWidget* parent): KSystemTrayIcon(parent)
 {
+	kDebug();
 // 	bilbo = new MainWindow();
 	this->setIcon(parent->windowIcon());
     this->setToolTip(i18n("Bilbo Blogger"));
@@ -39,12 +40,7 @@ SysTray::SysTray(QWidget* parent): KSystemTrayIcon(parent)
 
 SysTray::~SysTray()
 {
-//     delete trayMenu;
-//     delete actQuit;
-//     delete actNewPost;
-//     delete actHideShow;
-//     delete actAbout;
-//     delete bilbo;
+	kDebug();
 }
 
 // void SysTray::createActions()

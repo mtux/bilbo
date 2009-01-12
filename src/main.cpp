@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 // 	app.setQuitOnLastWindowClosed(false);
     
     MainWindow *bilbo = new MainWindow;
-    bilbo->setAttribute(Qt::WA_DeleteOnClose, false);
+//     bilbo->setAttribute(Qt::WA_DeleteOnClose, false);
     if(Settings::show_main_on_start())
         bilbo->show();
 	int r = app.exec();

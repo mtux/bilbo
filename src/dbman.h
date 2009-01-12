@@ -28,7 +28,7 @@ class BilboBlog;
 class BilboPost;
 
 /**
-DB manipulation class. this class implement Low level Database operations. and any object of App.
+DataBase Manager class. this class implement Low level Database operations. and any object of App.
 have to use this API to store or retrive information and settings from Database.
 
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
