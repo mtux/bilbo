@@ -83,7 +83,12 @@ private slots:
 	void postManipulationDone(const QString &customMessage);
     
 protected:
-    void keyReleaseEvent ( QKeyEvent * event );
+	void keyReleaseEvent ( QKeyEvent * event );
+	bool queryClose();
+	/**
+	*  Reimplemented to save settings
+	*/
+	bool queryExit();
     
 private:
     void setupActions();
