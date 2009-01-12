@@ -20,8 +20,10 @@
  ***************************************************************************/
 
 #include "bilbomedia.h"
-#include <kicon.h>
+#include "kicon.h"
+#include "kdebug.h"
 //#include <QMimeData>
+#include <QPixmap>
 
 BilboMedia::BilboMedia(QObject *parent) 
 	: QObject(parent)
@@ -106,10 +108,21 @@ void BilboMedia::setName(const QString &name)
 
 KIcon BilboMedia::icon() const
 {
-	QString iconName;
-	iconName = this->mimeType();
-	iconName.replace(QChar('/'), QChar('-'));
-	return KIcon(iconName);
+	QPixmap iconPic;
+	QString type;
+	type = this->mimeType();
+	if (type.contains("image") && !this->localUrl().isEmpty()) {
+		iconPic.load(this->localUrl());
+		iconPic.scaled(32, 32, Qt::IgnoreAspectRatio);
+		if (!iconPic.isNull()) {
+			return KIcon(iconPic);
+		} else {
+			kDebug() << "iconPic is Null";
+		}
+	}
+	
+	type.replace(QChar('/'), QChar('-'));
+	return KIcon(type);
 }
 
 quint16 BilboMedia::checksum()

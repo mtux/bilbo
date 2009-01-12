@@ -826,12 +826,12 @@ void BilboEditor::createActions()
 	barVisual->addSeparator();
 	
 	actOrderedList = new KAction(KIcon("format-list-ordered"), i18n("Ordered List"), this);
-	actOrderedList->setCheckable(true);
+// 	actOrderedList->setCheckable(true);
 	connect(actOrderedList, SIGNAL(triggered(bool)), this, SLOT(sltAddOrderedList()));
 	barVisual->addAction(actOrderedList);
 	
 	actUnorderedList = new KAction(KIcon("format-list-unordered"), i18n("Unordered List"), this);
-	actUnorderedList->setCheckable(true);
+// 	actUnorderedList->setCheckable(true);
 	connect(actUnorderedList, SIGNAL(triggered(bool)), this, SLOT(sltAddUnorderedList()));
 	barVisual->addAction(actUnorderedList);
 // 	visualEditorActions->associateWidget(barVisual);
