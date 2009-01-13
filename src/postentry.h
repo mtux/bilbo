@@ -44,7 +44,7 @@ public:
     PostEntry(QWidget *parent);
     ~PostEntry();
 	QString postTitle() const;
-	QString * postBody();
+	const QString& postBody();
     
     void setPostTitle(const QString &title);
     void setPostBody(const QString &body);

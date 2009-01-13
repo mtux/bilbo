@@ -636,11 +636,16 @@ void BilboEditor::createUi()
 	lstMediaFiles = new MediaListWidget(tabVisual);
 	//lstMediaFiles->setFlow(QListView::LeftToRight);
 	lstMediaFiles->setViewMode(QListView::IconMode);
+	lstMediaFiles->setIconSize(QSize(32,32));
+	lstMediaFiles->setGridSize(QSize(60,48));
+	lstMediaFiles->setDragDropMode(QAbstractItemView::NoDragDrop);
 	lstMediaFiles->setMaximumHeight(60);
-	connect(lstMediaFiles, SIGNAL(sigSetProperties(const int, const double, 
-			const double, const QString, const QString)), this, SLOT(sltSetImageProperties(
-					const int, const double, const double, const QString, const QString)));
+	connect(lstMediaFiles, SIGNAL(sigSetProperties(const int, const QString, 
+			const QString, const QString, const QString)), this, SLOT(sltSetImageProperties(
+					const int, const QString, const QString, const QString, const QString)));
 	connect(lstMediaFiles, SIGNAL(sigRemoveMedia(const int)), this, SLOT(sltRemoveMedia(const int)));
+	
+	kDebug() << lstMediaFiles->iconSize() << "icon size";
 	
 	QVBoxLayout *vLayout = new QVBoxLayout(tabVisual);
 // 	barVisual->show();
@@ -1130,17 +1135,18 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 			mMediaList->insert(media->localUrl(), media);
 			if (media->mimeType().contains("image")) {
 				item = new QListWidgetItem(media->icon(),media->name(),lstMediaFiles,MediaListWidget::ImageType);
-				
 			} else {
 				item = new QListWidgetItem(media->icon(),media->name(),lstMediaFiles,MediaListWidget::OtherType);
 			}
 			//url = media->localUrl();
 			item->setData(Qt::UserRole, QVariant(media->localUrl()));
+			item->setToolTip(media->name());
 		}
 		url = media->localUrl();
 // 	}
 	QTextImageFormat imageFormat;
 	imageFormat.setName(url);
+	kDebug() << imageFormat.height() << "image height";
 	editor->textCursor().insertImage(imageFormat);
 	editor->setFocus(Qt::OtherFocusReason);
 }
@@ -1172,8 +1178,8 @@ void BilboEditor::sltSetImage(BilboMedia *media)
 // 	}
 // }
 
-void BilboEditor::sltSetImageProperties(const int index, const double width, 
-							const double height, const QString title, const QString Alt_text)
+void BilboEditor::sltSetImageProperties(const int index, const QString width, 
+							const QString height, const QString title, const QString Alt_text)
 {
 	this->editor->setFocus(Qt::OtherFocusReason);
 	QString path = lstMediaFiles->item(index)->data(Qt::UserRole).toString();
@@ -1191,10 +1197,18 @@ void BilboEditor::sltSetImageProperties(const int index, const double width,
 				QTextImageFormat imgFormat = f.toImageFormat();
 				if (imgFormat.name() == path) {
 					kDebug() << "image exists";
-					imgFormat.setWidth(width);
-					imgFormat.setHeight(height);
-					imgFormat.setProperty(BilboTextFormat::ImageTitle, QVariant(title));
-					imgFormat.setProperty(BilboTextFormat::ImageAlternateText, QVariant(Alt_text));
+					if (!width.isEmpty()) {
+						imgFormat.setWidth(width.toDouble());
+					}
+					if (!height.isEmpty()) {
+						imgFormat.setHeight(height.toDouble());
+					}
+					if (!title.isEmpty()) {
+						imgFormat.setProperty(BilboTextFormat::ImageTitle, QVariant(title));
+					}
+					if (!Alt_text.isEmpty()) {
+						imgFormat.setProperty(BilboTextFormat::ImageAlternateText, QVariant(Alt_text));
+					}
 
 					cursor = this->editor->textCursor();
 					cursor.setPosition(i.fragment().position());
@@ -1380,7 +1394,7 @@ QString BilboEditor::htmlToRichtext(const QString& html)
 	return h;
 }
 
-QString* BilboEditor::htmlContent()
+const QString& BilboEditor::htmlContent()
 {
 	// TODO move htmlExp definiton to BilboEditor constructor.
 	htmlExporter* htmlExp = new htmlExporter();
@@ -1407,8 +1421,8 @@ QString* BilboEditor::htmlContent()
 	delete htmlExp;
 // 	delete builder;
 	
-	mHtmlContent = new QString(htmlEditor->toPlainText());
-	return mHtmlContent;
+	const QString& htmlContent = htmlEditor->toPlainText();
+	return htmlContent;
 }
 
 //TODO if content is empty, simply clear editor content
@@ -1421,7 +1435,7 @@ void BilboEditor::setHtmlContent(const QString & content)
 	QTextDocument *doc = editor->document();
 	doc->setUndoRedoEnabled(false);
 	doc->clear();
-// 	BilboTextHtmlImporter(doc, content).import();
+	BilboTextHtmlImporter(doc, content).import();
 	doc->setUndoRedoEnabled(true);
 	editor->setTextCursor( QTextCursor(doc));
 	//this->htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));

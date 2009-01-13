@@ -77,10 +77,10 @@ QString PostEntry::postTitle() const
 	return mCurrentPost->title();
 }
 
-QString * PostEntry::postBody()
+const QString& PostEntry::postBody()
 {
-	QString *str = this->editPostWidget->htmlContent();
-	mCurrentPost->setContent(*str);
+	const QString& str = this->editPostWidget->htmlContent();
+	mCurrentPost->setContent(str);
 	return str;
 }
 
@@ -108,7 +108,7 @@ void PostEntry::setCurrentPostBlogId(int blog_id)
 
 BilboPost* PostEntry::currentPost()
 {
-    mCurrentPost->setContent(*postBody());
+    mCurrentPost->setContent(postBody());
     //mCurrentPost->setTitle(postTitle());
     //return (*mCurrentPost);
 	return (mCurrentPost);
@@ -145,7 +145,7 @@ PostEntry::~PostEntry()
 void PostEntry::setCurrentPostProperties(BilboPost post)
 {
 	post.setTitle(txtTitle->text());
-	post.setContent(*this->editPostWidget->htmlContent());
+	post.setContent(this->editPostWidget->htmlContent());
 	setCurrentPost(post);
 }
 

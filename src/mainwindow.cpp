@@ -298,7 +298,7 @@ void MainWindow::sltPublishPost()
     }
     BilboPost *post = new BilboPost;
 	toolbox->getFieldsValue(post);
-    if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
+    if(activePost->postBody().isEmpty() || activePost->postTitle().isEmpty()){
         if(KMessageBox::warningContinueCancel(this, 
 		   i18n("Your post title or body is empty!\nAre you sure of pubishing this post?")
            ) == KMessageBox::Cancel)
@@ -408,7 +408,7 @@ void MainWindow::sltSaveAsDraft()
 	connect(b, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString&)));
     BilboPost *post = new BilboPost;
 	toolbox->getFieldsValue(post);
-    if(activePost->postBody()->isEmpty() || activePost->postTitle().isEmpty()){
+    if(activePost->postBody().isEmpty() || activePost->postTitle().isEmpty()){
         if(KMessageBox::warningContinueCancel(this, i18n("Your post title or body is empty!\n\
 		   												Are you sure of pubishing this post?")) == KMessageBox::Cancel)
             return;

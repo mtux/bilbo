@@ -74,9 +74,9 @@ class BilboEditor : public KTabWidget
 		/**
 		 * Synchronizes htmlEditor and editor tabs, by sending content of the current one to another.
 		 * then copies the content of htmlEditor into the variable mHtmlContent, and returns it.
-		 * @return a pointer to an String which contains html text
+		 * @return a reference to an String which contains html text
 		 */
-		QString *htmlContent();
+		const QString& htmlContent();
 		
 		QMap <QString, BilboMedia*> * mediaList();
 		
@@ -216,7 +216,7 @@ class BilboEditor : public KTabWidget
 		 */
 		void sltSetImage(BilboMedia *media);
 		
-		void sltSetImageProperties(const int index, const double width, const double height, 
+		void sltSetImageProperties(const int index, const QString width, const QString height, 
 								   const QString title, const QString Alt_text);
 		
 // 		void sltRemoteImageReceived(const QTextCursor & cursor);
@@ -300,7 +300,7 @@ class BilboEditor : public KTabWidget
 		KAction *actOrderedList;
 		KAction *actUnorderedList;
 		
-		QString *mHtmlContent;
+// 		QString *mHtmlContent;
 		
 		AddEditLink *linkDialog;
 		QTextCharFormat defaultCharFormat;

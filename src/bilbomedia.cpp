@@ -113,7 +113,8 @@ KIcon BilboMedia::icon() const
 	type = this->mimeType();
 	if (type.contains("image") && !this->localUrl().isEmpty()) {
 		iconPic.load(this->localUrl());
-		iconPic.scaled(32, 32, Qt::IgnoreAspectRatio);
+// 		iconPic.scaled(64, 64, Qt::IgnoreAspectRatio);
+		iconPic.scaledToHeight(32);
 		if (!iconPic.isNull()) {
 			return KIcon(iconPic);
 		} else {

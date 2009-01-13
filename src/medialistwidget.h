@@ -46,7 +46,7 @@ class MediaListWidget : public KListWidget
 		
 	Q_SIGNALS:
 		void sigRemoveMedia(const int index);
-		void sigSetProperties(const int index, const double width, const double height, 
+		void sigSetProperties(const int index, const QString width, const QString height, 
 							  const QString title, const QString Alt_text);
 		
 	protected Q_SLOTS:
