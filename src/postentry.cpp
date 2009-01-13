@@ -80,6 +80,9 @@ QString PostEntry::postTitle() const
 const QString& PostEntry::postBody()
 {
 	const QString& str = this->editPostWidget->htmlContent();
+	if(!mCurrentPost){
+		mCurrentPost = new BilboPost;
+	}
 	mCurrentPost->setContent(str);
 	return str;
 }
@@ -92,6 +95,7 @@ void PostEntry::setPostTitle(const QString & title)
 
 void PostEntry::setPostBody(const QString & body)
 {
+	kDebug()<<body;
 	mCurrentPost->setContent(body);
     this->editPostWidget->setHtmlContent(body);
 }
@@ -201,6 +205,7 @@ void PostEntry::sltError(const QString & errMsg)
 	if(progress){
 		QTimer::singleShot(500, this, SLOT(sltDeleteProgressBar()));
 	}
+	emit postPublishingDone(errMsg);
 	sender()->deleteLater();
 }
 
@@ -216,6 +221,7 @@ void PostEntry::sltMediaError(const QString & errorMessage, BilboMedia * media)
 	if(progress){
 		QTimer::singleShot(500, this, SLOT(sltDeleteProgressBar()));
 	}
+	emit postPublishingDone(errorMessage);
 	sender()->deleteLater();
 }
 
@@ -238,38 +244,39 @@ void PostEntry::publishPostAfterUploadMediaFiles()
 	progress->setMinimum( 0 );
 	
 	Backend *b = new Backend(mCurrentPostBlogId);
-	connect(b, SIGNAL(sigPostPublished(int, int, bool)), this, SLOT(sltPostPublished(int, int, bool)));
+	connect(b, SIGNAL(sigPostPublished(int, BilboPost*)), this, SLOT(sltPostPublished(int, BilboPost*)));
 	connect(b, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString&)));
 	b->publishPost(mCurrentPost);
 }
 
-void PostEntry::sltPostPublished(int blog_id, int post_id, bool isPrivate)
+void PostEntry::sltPostPublished(int blog_id, BilboPost *post )
 {
-	kDebug()<<"Post Id: "<< post_id;
+	kDebug()<<"Post Id on server: "<< post->postId();
 	///FIXME This DB communication is un necessary! fix it
 // 	BilboBlog *b = DBMan::self()->getBlogInfo(blog_id);
 	QString blog_name="NOT SET";// = b->title();
 // 	delete b;
 	QString msg;
-	if(isPrivate){
-		msg = i18n("New Draft saved to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
+	if(post->isPrivate()){
+		msg = i18n("New Draft with title \"%1\" saved successfully.", post->title());
 	}
 	else {
-		msg = i18n("New Post published to \"%1\" successfully.\nDo you want to keep it on editor?", blog_name);
+		msg = i18n("New Post with title \"%1\" published successfully.", post->title());
 	}
-	if(KMessageBox::questionYesNo(this, msg, "Successful") != KMessageBox::Yes){
+	KMessageBox::information(this, msg, "Successful");
+// 	if(KMessageBox::questionYesNo(this, msg, "Successful") != KMessageBox::Yes){
 // 		sltRemoveCurrentPostEntry();//FIXME this functionality doesn't work! fix it.
-	}
+// 	}
 	if(progress){
 		this->layout()->removeWidget(progress);
 		progress->deleteLater();
 	}
-	if(isPrivate){
-		msg = i18n("Draft saved successfully!");
-	} else {
-		msg = i18n("New post published successfully!");
-	}
-	emit postPublishingDone(msg);
+// 	if(isPrivate){
+// 		msg = i18n("Draft saved successfully!");
+// 	} else {
+// 		msg = i18n("New post published successfully!");
+// 	}
+	emit postPublishingDone(QString());
 	sender()->deleteLater();
 }
 

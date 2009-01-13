@@ -662,7 +662,7 @@ QList< BilboPost* > DBMan::listPosts(int blog_id)
 	QList<BilboPost *> list;
 	QSqlQuery q;
 	q.prepare("SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed,\
-			 is_trackback_allowed, link, perma_link, summary, tags\
+			 is_trackback_allowed, link, perma_link, summary, tags, status\
 			 FROM post WHERE blog_id = ? ORDER BY m_time DESC");
 	q.addBindValue(blog_id);
 	if(q.exec()){
@@ -682,6 +682,7 @@ QList< BilboPost* > DBMan::listPosts(int blog_id)
 			tmp->setPermaLink(KUrl(q.value(11).toString()));
 			tmp->setSummary(q.value(12).toString());
 			tmp->setTags(q.value(13).toString().split(',', QString::SkipEmptyParts ));
+			tmp->setStatus((KBlog::BlogPost::Status) q.value(14).toInt() );
 			
 			///get Category list:
 			QList<Category> catList;
@@ -717,7 +718,7 @@ BilboPost * DBMan::getPostInfo(int post_id)
 	QSqlQuery q;
 	BilboPost *tmp = new BilboPost();
 	q.prepare("SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed,\
-			 is_trackback_allowed, link, perma_link, summary, tags FROM post WHERE id = ?");
+			 is_trackback_allowed, link, perma_link, summary, tags, status FROM post WHERE id = ?");
 	q.addBindValue(post_id);
 	if(q.exec()){
 		if( q.next() ){
@@ -737,6 +738,7 @@ BilboPost * DBMan::getPostInfo(int post_id)
 			tmp->setPermaLink(pu);
 			tmp->setSummary(q.value(12).toString());
 			tmp->setTags(q.value(13).toString().split(',', QString::SkipEmptyParts ));
+			tmp->setStatus((KBlog::BlogPost::Status) q.value(14).toInt() );
 			
 			///get Category list:
 			QList<Category> catList;

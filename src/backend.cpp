@@ -186,11 +186,13 @@ void Backend::postPublished(KBlog::BlogPost *post)
 //         kDebug()<<"there's "<<count<< " categories to send."<<"\t numbers: "<<cats.count()<<" are:"<<cats.keys();
 		setPostCategories(post->postId(), cats);
 	} else {
-		BilboPost pp(*post);
-		int post_id = DBMan::self()->addPost(pp, bBlog->id());
+		BilboPost *pp = new BilboPost(*post);
+		int post_id = DBMan::self()->addPost(*pp, bBlog->id());
 		if(post_id!=-1){
+			pp->setId( post_id );
+			pp->setPrivate( post->isPrivate() );
 			kDebug()<<"Emiteding sigPostPublished...";
-			Q_EMIT sigPostPublished(bBlog->id(), post_id, post->isPrivate());
+			Q_EMIT sigPostPublished( bBlog->id(), pp );
 		}
 	}
 }
@@ -335,13 +337,14 @@ void Backend::postCategoriesSetted(const QString &postId)
 {
 	kDebug();
 	KBlog::BlogPost *post = mSetPostCategoriesMap[ postId ];
-	BilboPost pp(*post);
+	BilboPost *pp = new BilboPost(*post);
 	mSetPostCategoriesMap.remove(postId);
-	int post_id = DBMan::self()->addPost(pp, bBlog->id());
+	int post_id = DBMan::self()->addPost(*pp, bBlog->id());
 	if(post_id!=-1){
-		bool isPrivate = post->isPrivate();
+		pp->setPrivate( post->isPrivate() );
+		pp->setId( post_id );
 		kDebug()<<"Emiteding sigPostPublished...";
-		Q_EMIT sigPostPublished(bBlog->id(), post_id, isPrivate);
+		Q_EMIT sigPostPublished(bBlog->id(), pp);
 	}
 	delete post;
 }

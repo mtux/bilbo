@@ -375,6 +375,7 @@ void Toolbox::setFieldsValue(BilboPost* post)
 
 	setSelectedCategories(post->categories());
 	txtCatTags->setText(post->tags().join(", "));
+	kDebug()<<"Post status is: "<<post->status();
 	if(post->status() == KBlog::BlogPost::New)
 		comboOptionsStatus->setCurrentIndex(2);
 	else if(post->isPrivate())

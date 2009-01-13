@@ -113,7 +113,7 @@ Q_SIGNALS:
 	 * @param post_id post id in Database.
      * @param isPrivate show if this post was draft!
 	 */
-	void sigPostPublished(int blog_id, int post_id, bool isPrivate);
+	void sigPostPublished( int blog_id, BilboPost *post );
     
     /**
      * This signal is emitted when a media has been uploaded to the server.
@@ -127,7 +127,7 @@ Q_SIGNALS:
      * @param post_id 
      * @param isPrivate 
      */
-    void sigPostModified( int blog_id, int post_id, bool isPrivate );
+	void sigPostModified( int blog_id, BilboPost *post );
     
     /**
      * this signal emitted when an error occured on current transaction.
