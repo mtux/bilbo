@@ -303,7 +303,8 @@ void Toolbox::clearCatList()
 {
     kDebug();
 // 	listCategories.clear();
-	qDeleteAll(listCategoryCheckBoxes.constBegin(), listCategoryCheckBoxes.constEnd());
+	if(listCategoryCheckBoxes.count()>0)
+		qDeleteAll(listCategoryCheckBoxes/*.constBegin(), listCategoryCheckBoxes.constEnd()*/);
 // 	for(int j=0; j<listCategoryCheckBoxes.count(); ++j){
 // 		delete(listCategoryCheckBoxes[j]);
 // 	}
