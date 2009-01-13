@@ -314,10 +314,10 @@ void MainWindow::sltPublishPost()
 void MainWindow::sltRemoveCurrentPostEntry()
 {
     kDebug();
-    if(tabPosts->count()==1){
-        sltCreateNewPost();
-        previousActivePostIndex = 0;
-    }
+//     if(tabPosts->count()==1){
+//         sltCreateNewPost();
+//         previousActivePostIndex = 0;
+//     }
     tabPosts->removeTab(tabPosts->currentIndex());
 //     tabPosts->setCurrentIndex(previousActivePostIndex);
 }

@@ -86,7 +86,7 @@ protected slots:
 	void sltMediaFileUploaded( BilboMedia *media );
 	void sltError(const QString& errMsg);
 	void sltMediaError(const QString &errorMessage, BilboMedia* media);
-	void sltPostPublished( int blog_id, int post_id, bool isPrivate );
+	void sltPostPublished( int blog_id, BilboPost *post );
 	
 private Q_SLOTS:
 	void sltTitleChanged(const QString& title);
