@@ -26,6 +26,10 @@
 #include "constants.h"
 class BilboBlog;
 class BilboPost;
+namespace KWallet
+{
+	class Wallet;
+}
 
 /**
 DataBase Manager class. this class implement Low level Database operations. and any object of App.
@@ -150,6 +154,7 @@ private:
 	QSqlDatabase db;
 	bool connectDB();
 	static DBMan* mSelf;
+	KWallet::Wallet* mWallet;
 };
 
 #endif

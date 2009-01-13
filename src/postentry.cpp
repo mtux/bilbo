@@ -139,15 +139,7 @@ void PostEntry::addMedia(const QString &url)
 PostEntry::~PostEntry()
 {
 	kDebug();
-//     delete editPostWidget;
-//     delete gridLayout;
-//     delete horizontalLayout;
-// 	delete horizontalLayout;
-//     delete labelTitle;
-//     delete txtTitle;
-//     delete wPost;
     delete mCurrentPost;
-//  	delete mMediaList;
 }
 
 void PostEntry::setCurrentPostProperties(BilboPost post)
@@ -194,8 +186,7 @@ void PostEntry::sltMediaFileUploaded(BilboMedia * media)
 	kDebug();
 	progress->setValue(progress->value() + 1);
 	if(progress->value()>= progress->maximum()){
-		this->layout()->removeWidget(progress);
-		progress->deleteLater();
+		QTimer::singleShot(800, this, SLOT(sltDeleteProgressBar()));
 		if(!isUploadingMediaFilesFailed){
 			publishPostAfterUploadMediaFiles();
 		}
@@ -208,8 +199,7 @@ void PostEntry::sltError(const QString & errMsg)
 	kDebug();
 	KMessageBox::detailedSorry(this, i18n("An Error occurred on latest transaction."),errMsg);
 	if(progress){
-		this->layout()->removeWidget(progress);
-		progress->deleteLater();
+		QTimer::singleShot(500, this, SLOT(sltDeleteProgressBar()));
 	}
 	sender()->deleteLater();
 }
@@ -224,8 +214,7 @@ void PostEntry::sltMediaError(const QString & errorMessage, BilboMedia * media)
 	KMessageBox::detailedSorry(this, i18n("Uploading media file %1 (Local Path: %2) failed", name, media->localUrl()),
 							    errorMessage, i18n("Uploading media file Failed!"));
 	if(progress){
-		this->layout()->removeWidget(progress);
-		progress->deleteLater();
+		QTimer::singleShot(500, this, SLOT(sltDeleteProgressBar()));
 	}
 	sender()->deleteLater();
 }
@@ -282,6 +271,12 @@ void PostEntry::sltPostPublished(int blog_id, int post_id, bool isPrivate)
 	}
 	emit postPublishingDone(msg);
 	sender()->deleteLater();
+}
+
+void PostEntry::sltDeleteProgressBar()
+{
+	this->layout()->removeWidget(progress);
+	progress->deleteLater();
 }
 
 #include "postentry.moc"

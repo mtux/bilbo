@@ -90,6 +90,7 @@ protected slots:
 	
 private Q_SLOTS:
 	void sltTitleChanged(const QString& title);
+	void sltDeleteProgressBar();
 	
 private:
     void createUi();

@@ -97,7 +97,8 @@ void AddEditBlog::autoConfigure()
 	kDebug();
 	if(txtUrl->text().isEmpty() || txtUser->text().isEmpty() || txtPass->text().isEmpty()){
 		kDebug()<<"Username, Password or Url doesn't set!";
-		KMessageBox::sorry(this, i18n("You have to set the username, password and url of your blog or website."), i18n("Incomplete fields"));
+		KMessageBox::sorry(this, i18n("You have to set the username, password and url of your blog or website."),
+						   i18n("Incomplete fields"));
 		return;
 	}
 	btnAutoConf->setEnabled(false);
@@ -177,8 +178,8 @@ void AddEditBlog::handleFetchIDTimeout()
 {
 	kDebug();
 	KMessageBox::error(this, i18n("Fetching the blog's id timed out. Check your internet connection,\
-			 Or your homepage Url!\nnote that the url has to contain \"http://\" or ...\n\
-					 for example: http://bilbo.sf.net/xmlrpc.php is a good url"));
+and your homepage Url, username or password!\nnote that the url has to contain \"http://\" or ...\
+					 \nfor example: http://bilbo.sf.net/xmlrpc.php is a good url"));
 	txtId->setText(QString());
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
@@ -192,7 +193,7 @@ void AddEditBlog::handleFetchAPITimeout()
 {
 	kDebug();
     KMessageBox::sorry(this, i18n("Sorry, Bilbo cannot get API type automatically,\
-						please check your internet connection, otherwise you have to set API type on advanced tab handy."),
+please check your internet connection, otherwise you have to set API type on advanced tab handy."),
     					i18n("AutoConfiguration Failed"));
 	txtId->setEnabled(true);
 	btnFetch->setEnabled(true);
