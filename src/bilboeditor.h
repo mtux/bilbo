@@ -107,6 +107,13 @@ class BilboEditor : public KTabWidget
 		 */
 		void setLayoutDirection(Qt::LayoutDirection direction);
 		
+		/**
+		 * Parses the content of htmlEditor tab, to replace media local paths with remote
+		 * addresses. It's used after uploading media files, for updating html content of the
+		 * post before being published.
+		 * @return true if successfull, and false otherwise.
+		 */
+		bool updateMediaPaths();
 // 		KActionCollection *visualEditorActions;
 	
 	protected Q_SLOTS:
@@ -257,8 +264,8 @@ class BilboEditor : public KTabWidget
 		 */
 		QString htmlToRichtext(const QString& html);
 		
-		void useRemoteImagePaths();
-		void useLocalImagePaths();
+		void useRemoteImagePaths(QTextDocument* doc);
+		void useLocalImagePaths(QTextDocument* doc);
 		
 		QWidget *tabVisual;
 		QWidget *tabHtml;

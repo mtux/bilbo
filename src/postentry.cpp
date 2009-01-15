@@ -166,7 +166,8 @@ bool PostEntry::uploadMediaFiles()
 	QMap <QString, BilboMedia*>::iterator it = mMediaList.begin();
 	QMap <QString, BilboMedia*>::iterator endIt = mMediaList.end();
 	for( ; it!=endIt; ++it){
-		if(!it.value()->isUploaded()){
+// 		if(!it.value()->isUploaded()){
+		if(it.value()->isLocal()){
 			result = true;
 			connect(b, SIGNAL(sigMediaUploaded(BilboMedia*)), this, SLOT(sltMediaFileUploaded(BilboMedia*)));
 			connect(b, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString)));
@@ -192,6 +193,8 @@ void PostEntry::sltMediaFileUploaded(BilboMedia * media)
 	if(progress->value()>= progress->maximum()){
 		QTimer::singleShot(800, this, SLOT(sltDeleteProgressBar()));
 		if(!isUploadingMediaFilesFailed){
+// 			this->editPostWidget->updateMediaPaths();
+//             this->setPostBody(this->editPostWidget->htmlContent());
 			publishPostAfterUploadMediaFiles();
 		}
 		sender()->deleteLater();
