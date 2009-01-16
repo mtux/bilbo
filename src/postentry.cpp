@@ -193,9 +193,10 @@ void PostEntry::sltMediaFileUploaded(BilboMedia * media)
 	if(progress->value()>= progress->maximum()){
 		QTimer::singleShot(800, this, SLOT(sltDeleteProgressBar()));
 		if(!isUploadingMediaFilesFailed){
-// 			this->editPostWidget->updateMediaPaths();
-//             this->setPostBody(this->editPostWidget->htmlContent());
-			publishPostAfterUploadMediaFiles();
+            if(editPostWidget->updateMediaPaths())
+                publishPostAfterUploadMediaFiles();
+            else
+                kDebug()<<"Updateing media pathes failed!";
 		}
 		sender()->deleteLater();
 	}
