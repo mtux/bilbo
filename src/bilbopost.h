@@ -38,44 +38,44 @@ class KDateTime;
 /**
 Definition of a blog post!
 it's implemented to decrease dependency to KBlog :)
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 class BilboPost : public KBlog::BlogPost
 {
 public:
-// 	enum Position{
-// 		Published=0, Draft, Local
-// 	};
+//  enum Position{
+//   Published=0, Draft, Local
+//  };
     BilboPost();
-	BilboPost( const KBlog::BlogPost& );
+    BilboPost( const KBlog::BlogPost& );
     BilboPost( const BilboPost& );
     ~BilboPost();
-	
-	QString author() const;
-	void setAuthor(const QString&);
-	
-	int id() const;
-	void setId( const int);
-	
-// 	Position position() const;
-// 	void setPosition( const Position);
-	
-	KBlog::BlogPost * toKBlogPost();
-	QString toString() const;
-	
-	bool isModifyTimeStamp();
-	void setModifyTimeStamp(bool willModify);
-	
-	QList<Category> categoryList() const;
-	void setCategoryList(const QList<Category> &list);
-	
+
+    QString author() const;
+    void setAuthor( const QString& );
+
+    int id() const;
+    void setId( const int );
+
+//  Position position() const;
+//  void setPosition( const Position);
+
+    KBlog::BlogPost * toKBlogPost();
+    QString toString() const;
+
+    bool isModifyTimeStamp();
+    void setModifyTimeStamp( bool willModify );
+
+    QList<Category> categoryList() const;
+    void setCategoryList( const QList<Category> &list );
+
 private:
-	QString mAuthor;
-	int mId;///id in DB
-// 	Position mPosition;
-	bool mModifyTimeStamp;///Just for toolbox entry!
-	QList<Category> mCategoryList;
+    QString mAuthor;
+    int mId;///id in DB
+//  Position mPosition;
+    bool mModifyTimeStamp;///Just for toolbox entry!
+    QList<Category> mCategoryList;
 };
 
 #endif

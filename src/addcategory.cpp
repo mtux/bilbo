@@ -21,13 +21,13 @@
 
 #include "addcategory.h"
 
-AddCategory::AddCategory(QWidget *parent)
-    :KDialog(parent)
+AddCategory::AddCategory( QWidget *parent )
+        : KDialog( parent )
 {
-    QWidget *dialog = new QWidget(this);
-    ui.setupUi(dialog);
+    QWidget *dialog = new QWidget( this );
+    ui.setupUi( dialog );
     dialog->setAttribute( Qt::WA_DeleteOnClose );
-    this->setMainWidget(dialog);
+    this->setMainWidget( dialog );
 }
 
 #include "addcategory.moc"

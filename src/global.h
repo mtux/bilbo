@@ -27,8 +27,8 @@
 
 /**
 Global variables.
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 
 // class QSettings;
@@ -43,7 +43,7 @@ extern int __currentBlogId;
 extern QString __tempMediaDir;
 
 // enum api_type { BLOGGER_API = 0,
-// 	METAWEBLOG_API,
+//  METAWEBLOG_API,
 //  MOVABLETYPE_API,
 //  WORDPRESSBUGGY_API,
 //  GDATA_API

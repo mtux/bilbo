@@ -23,7 +23,7 @@
 #include <QtGui>
 #include "multilinetextedit.h"
 
-MultiLineTextEdit::MultiLineTextEdit(QWidget *parent) : KRichTextEdit(parent)
+MultiLineTextEdit::MultiLineTextEdit( QWidget *parent ) : KRichTextEdit( parent )
 {
 }
 
@@ -33,37 +33,36 @@ MultiLineTextEdit::~MultiLineTextEdit()
 
 // void MultiLineTextEdit::alignRight()
 // {
-// 	if (this->textCursor().blockFormat().layoutDirection() == Qt::RightToLeft) {
-// 		KRichTextEdit::alignLeft();
-// 	} else {
-// 		KRichTextEdit::alignRight();
-// 	}
+//  if (this->textCursor().blockFormat().layoutDirection() == Qt::RightToLeft) {
+//   KRichTextEdit::alignLeft();
+//  } else {
+//   KRichTextEdit::alignRight();
+//  }
 // }
-// 
+//
 // void MultiLineTextEdit::alignLeft()
 // {
-// 	if (this->textCursor().blockFormat().layoutDirection() == Qt::RightToLeft) {
-// 		KRichTextEdit::alignRight();
-// 	} else {
-// 		KRichTextEdit::alignLeft();
-// 	}
+//  if (this->textCursor().blockFormat().layoutDirection() == Qt::RightToLeft) {
+//   KRichTextEdit::alignRight();
+//  } else {
+//   KRichTextEdit::alignLeft();
+//  }
 // }
 
-void MultiLineTextEdit::keyPressEvent(QKeyEvent *event)
+void MultiLineTextEdit::keyPressEvent( QKeyEvent *event )
 {
-	//qDebug("MultiLineTextEdit::keyPressEvent");
-	int tempKey = event->key();
-	if (tempKey == Qt::Key_Return && event->modifiers() == Qt::ShiftModifier)
-	{
-		this->textCursor().insertText(QString(QChar::LineSeparator));
-		//qDebug() << "Enter Pressed" ;
+    //qDebug("MultiLineTextEdit::keyPressEvent");
+    int tempKey = event->key();
+    if ( tempKey == Qt::Key_Return && event->modifiers() == Qt::ShiftModifier ) {
+        this->textCursor().insertText( QString( QChar::LineSeparator ) );
+        //qDebug() << "Enter Pressed" ;
 
-	} else {
-		//dynamic_cast <QTextEdit*>(this) ->keyPressEvent(event);
-		//dynamic_cast <QWidget*>(this) ->keyPressEvent(event);
-		KRichTextEdit::keyPressEvent(event);
+    } else {
+        //dynamic_cast <QTextEdit*>(this) ->keyPressEvent(event);
+        //dynamic_cast <QWidget*>(this) ->keyPressEvent(event);
+        KRichTextEdit::keyPressEvent( event );
 
-	}
+    }
 }
 
 #include <multilinetextedit.moc>

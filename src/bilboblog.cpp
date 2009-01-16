@@ -21,8 +21,8 @@
 
 #include "bilboblog.h"
 
-BilboBlog::BilboBlog(QObject *parent)
-	:QObject(parent)
+BilboBlog::BilboBlog( QObject *parent )
+        : QObject( parent )
 {
 }
 
@@ -32,118 +32,118 @@ BilboBlog::~BilboBlog()
 
 KUrl BilboBlog::url() const
 {
-	return mUrl;
+    return mUrl;
 }
 
-void BilboBlog::setUrl(const KUrl &url)
+void BilboBlog::setUrl( const KUrl &url )
 {
-	mUrl = url;
+    mUrl = url;
 }
 
 QString BilboBlog::blogid() const
 {
-	return mBlogid;
+    return mBlogid;
 }
 
-void BilboBlog::setBlogId(const QString &url)
+void BilboBlog::setBlogId( const QString &url )
 {
-	mBlogid = url;
+    mBlogid = url;
 }
 
 QString BilboBlog::username() const
 {
-	return mUsername;
+    return mUsername;
 }
 
-void BilboBlog::setUsername(const QString &username)
+void BilboBlog::setUsername( const QString &username )
 {
-	mUsername = username;
+    mUsername = username;
 }
 
 QString BilboBlog::password() const
 {
-	return mPassword;
+    return mPassword;
 }
 
-void BilboBlog::setPassword(const QString &password)
+void BilboBlog::setPassword( const QString &password )
 {
-	mPassword = password;
+    mPassword = password;
 }
 
 QString BilboBlog::title() const
 {
-	return mTitle;
+    return mTitle;
 }
 
-void BilboBlog::setTitle(const QString &title)
+void BilboBlog::setTitle( const QString &title )
 {
-	mTitle = title;
+    mTitle = title;
 }
 
 QString BilboBlog::stylePath() const
 {
-	return mStylePath;
+    return mStylePath;
 }
 
-void BilboBlog::setStylePath(const QString &path)
+void BilboBlog::setStylePath( const QString &path )
 {
-	mStylePath = path;
+    mStylePath = path;
 }
 
 BilboBlog::ApiType BilboBlog::api() const
 {
-	return mApi;
+    return mApi;
 }
 
-void BilboBlog::setApi(const ApiType api)
+void BilboBlog::setApi( const ApiType api )
 {
-	mApi = api;
+    mApi = api;
 }
 
 int BilboBlog::id() const
 {
-	return mId;
+    return mId;
 }
 
-void BilboBlog::setId(const int id)
+void BilboBlog::setId( const int id )
 {
-	mId = id;
+    mId = id;
 }
 
 Qt::LayoutDirection BilboBlog::direction() const
 {
-	return mDir;
+    return mDir;
 }
 
-void BilboBlog::setDirection(const Qt::LayoutDirection dir)
+void BilboBlog::setDirection( const Qt::LayoutDirection dir )
 {
-	mDir = dir;
+    mDir = dir;
 }
 
 QString BilboBlog::localDirectory() const
 {
-	return mLocalDirectory;
+    return mLocalDirectory;
 }
 
-void BilboBlog::setLocalDirectory(const QString &directory)
+void BilboBlog::setLocalDirectory( const QString &directory )
 {
-	mLocalDirectory = directory;
+    mLocalDirectory = directory;
 }
 
 QString BilboBlog::blogUrl()
 {
     //QString url=this->url().toString();
-	QString url=this->url().url();
-    switch( this->api() ){
-    case BLOGGER1_API:
-        break;
-    case METAWEBLOG_API:
-    case MOVABLETYPE_API:
-    case WORDPRESSBUGGY_API:
-        url = url.remove("xmlrpc.php", Qt::CaseInsensitive);
-        break;
-    case GDATA_API:
-        break;
+    QString url = this->url().url();
+    switch ( this->api() ) {
+        case BLOGGER1_API:
+            break;
+        case METAWEBLOG_API:
+        case MOVABLETYPE_API:
+        case WORDPRESSBUGGY_API:
+            url = url.remove( "xmlrpc.php", Qt::CaseInsensitive );
+            break;
+        case GDATA_API:
+            break;
     }
     return url;
 }

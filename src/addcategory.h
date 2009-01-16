@@ -25,10 +25,11 @@
 #include <kdialog.h>
 #include "ui_addcategorybase.h"
 
-class AddCategory: public KDialog{
-Q_OBJECT
+class AddCategory: public KDialog
+{
+    Q_OBJECT
 public:
-    AddCategory(QWidget *parent = 0);
+    AddCategory( QWidget *parent = 0 );
 
 private:
     Ui::AddCategoryBase ui;

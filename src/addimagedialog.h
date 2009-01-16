@@ -33,8 +33,8 @@ class BilboMedia;
 /**
 Implements a dialog to enter address of a local or remote image file.
 
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 // TODO change the class to support more than one type of media.
 // TODO use KDialog instead of QDialog.
@@ -42,34 +42,34 @@ Implements a dialog to enter address of a local or remote image file.
 
 class AddImageDialog: public KDialog
 {
-	Q_OBJECT
-	public:
-		/// AddImageDialog constructor.
-		/**
-		 * Creates a new AddImageDialog instance, and opens it.
-		 * @param parent is needed for QDialog constructor, which is the parent class of 
-		 * AddImageDialog.
-		 */
-		AddImageDialog(QWidget *parent = 0);
-		
-		/// AddImageDialog destructor.
-		~AddImageDialog();
-		
-	Q_SIGNALS:
-		/**
-		 * when the dialog is accepted, sends the selected image url to the caller function.
-		 * @param url 
-		 */
-		void signalAddImage(BilboMedia *media);
-		
-	private:
-		Ui::AddImageDialogBase ui;
-		BilboMedia *media;
-		
-	private Q_SLOTS:
-		void sltOkClicked();
-		void sltRemoteFileTypeFound(KIO::Job *job, const QString &type);
-		void sltRemoteFileCopied(KJob *job);
+    Q_OBJECT
+public:
+    /// AddImageDialog constructor.
+    /**
+     * Creates a new AddImageDialog instance, and opens it.
+     * @param parent is needed for QDialog constructor, which is the parent class of
+     * AddImageDialog.
+     */
+    AddImageDialog( QWidget *parent = 0 );
+
+    /// AddImageDialog destructor.
+    ~AddImageDialog();
+
+Q_SIGNALS:
+    /**
+     * when the dialog is accepted, sends the selected image url to the caller function.
+     * @param url
+     */
+    void signalAddImage( BilboMedia *media );
+
+private:
+    Ui::AddImageDialogBase ui;
+    BilboMedia *media;
+
+private Q_SLOTS:
+    void sltOkClicked();
+    void sltRemoteFileTypeFound( KIO::Job *job, const QString &type );
+    void sltRemoteFileCopied( KJob *job );
 };
 
 #endif

@@ -39,468 +39,466 @@
 #include "blogradiobutton.h"
 #include "catcheckbox.h"
 
-Toolbox::Toolbox(QWidget *parent)
-    :QWidget(parent)
+Toolbox::Toolbox( QWidget *parent )
+        : QWidget( parent )
 {
-	kDebug();
-    if(parent)
-        this->statusbar = qobject_cast<KXmlGuiWindow*>(parent)->statusBar();
+    kDebug();
+    if ( parent )
+        this->statusbar = qobject_cast<KXmlGuiWindow*>( parent )->statusBar();
     else
-        this->statusbar = new KStatusBar(this);
-	setupUi(this);
+        this->statusbar = new KStatusBar( this );
+    setupUi( this );
     setButtonsIcon();
-	frameBlog->layout()->setAlignment(Qt::AlignTop);
-	frameCat->layout()->setAlignment(Qt::AlignTop);
-	reloadBlogList();
-	optionsDate->setDate(QDateTime::currentDateTime().date());
-	optionsTime->setTime(QDateTime::currentDateTime().time());
-	connect(btnBlogAdd, SIGNAL(clicked()), this, SLOT(sltAddBlog()));
-	connect(btnBlogEdit, SIGNAL(clicked()), this, SLOT(sltEditBlog()));
-	connect(btnBlogRemove, SIGNAL(clicked()), this, SLOT(sltRemoveBlog()));
-	
-	connect(btnCatReload, SIGNAL(clicked()), this, SLOT(sltReloadCategoryList()));
-	connect(btnEntriesReload, SIGNAL(clicked()), this, SLOT(sltReloadEntries()));
-	connect(box, SIGNAL(currentChanged ( int )), this, SLOT(sltCurrentPageChanged(int)));
-	connect(this, SIGNAL(sigCurrentBlogChanged(int)), this, SLOT(sltCurrentBlogChanged(int)));//Replaced with next statment!
-    connect(&listBlogRadioButtons, SIGNAL(buttonClicked ( int )), this, SLOT(sltSetCurrentBlog()));
-    
-    connect(lstEntriesList, SIGNAL(itemDoubleClicked( QListWidgetItem* )),
-            this, SLOT( sltEntrySelected( QListWidgetItem* )));
-    connect(btnEntriesCopyUrl, SIGNAL(clicked( bool )), this, SLOT(sltEntriesCopyUrl()));
-    
-    lblOptionsTrackBack->setVisible(false);
-    txtOptionsTrackback->setVisible(false);
+    frameBlog->layout()->setAlignment( Qt::AlignTop );
+    frameCat->layout()->setAlignment( Qt::AlignTop );
+    reloadBlogList();
+    optionsDate->setDate( QDateTime::currentDateTime().date() );
+    optionsTime->setTime( QDateTime::currentDateTime().time() );
+    connect( btnBlogAdd, SIGNAL( clicked() ), this, SLOT( sltAddBlog() ) );
+    connect( btnBlogEdit, SIGNAL( clicked() ), this, SLOT( sltEditBlog() ) );
+    connect( btnBlogRemove, SIGNAL( clicked() ), this, SLOT( sltRemoveBlog() ) );
+
+    connect( btnCatReload, SIGNAL( clicked() ), this, SLOT( sltReloadCategoryList() ) );
+    connect( btnEntriesReload, SIGNAL( clicked() ), this, SLOT( sltReloadEntries() ) );
+    connect( box, SIGNAL( currentChanged( int ) ), this, SLOT( sltCurrentPageChanged( int ) ) );
+    connect( this, SIGNAL( sigCurrentBlogChanged( int ) ), this, SLOT( sltCurrentBlogChanged( int ) ) );//Replaced with next statment!
+    connect( &listBlogRadioButtons, SIGNAL( buttonClicked( int ) ), this, SLOT( sltSetCurrentBlog() ) );
+
+    connect( lstEntriesList, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ),
+             this, SLOT( sltEntrySelected( QListWidgetItem* ) ) );
+    connect( btnEntriesCopyUrl, SIGNAL( clicked( bool ) ), this, SLOT( sltEntriesCopyUrl() ) );
+
+    lblOptionsTrackBack->setVisible( false );
+    txtOptionsTrackback->setVisible( false );
 }
 
 void Toolbox::sltAddBlog()
 {
-	kDebug();
-	addEditBlogWindow = new AddEditBlog(-1, this);
-    addEditBlogWindow->setAttribute(Qt::WA_DeleteOnClose);
-	addEditBlogWindow->show();
-	connect(addEditBlogWindow, SIGNAL(sigBlogAdded(BilboBlog&)), this, SLOT(sltBlogAdded(BilboBlog&)));
+    kDebug();
+    addEditBlogWindow = new AddEditBlog( -1, this );
+    addEditBlogWindow->setAttribute( Qt::WA_DeleteOnClose );
+    addEditBlogWindow->show();
+    connect( addEditBlogWindow, SIGNAL( sigBlogAdded( BilboBlog& ) ), this, SLOT( sltBlogAdded( BilboBlog& ) ) );
 }
 
 void Toolbox::sltEditBlog()
 {
-	kDebug();
-	if(!listBlogRadioButtons.checkedButton()){
-		KMessageBox::sorry(this, i18n("There isn't any selected blog, you have to select a blog first."));
-		return;
-	}
-    blogToEdit = qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton());
-// 	blogToEditDir = QDir(DATA_DIR + DBMan::self()->getBlogInfo(blogToEdit->blogId())->blogUrl());
-	
-	addEditBlogWindow = new AddEditBlog(blogToEdit->blogId(), this);
-    addEditBlogWindow->setAttribute(Qt::WA_DeleteOnClose);
-    connect(addEditBlogWindow, SIGNAL(sigBlogEdited(BilboBlog&)), this, SLOT(sltBlogEdited(BilboBlog&)));
-	addEditBlogWindow->show();
+    kDebug();
+    if ( !listBlogRadioButtons.checkedButton() ) {
+        KMessageBox::sorry( this, i18n( "There isn't any selected blog, you have to select a blog first." ) );
+        return;
+    }
+    blogToEdit = qobject_cast<BlogRadioButton*>( listBlogRadioButtons.checkedButton() );
+//  blogToEditDir = QDir(DATA_DIR + DBMan::self()->getBlogInfo(blogToEdit->blogId())->blogUrl());
+
+    addEditBlogWindow = new AddEditBlog( blogToEdit->blogId(), this );
+    addEditBlogWindow->setAttribute( Qt::WA_DeleteOnClose );
+    connect( addEditBlogWindow, SIGNAL( sigBlogEdited( BilboBlog& ) ), this, SLOT( sltBlogEdited( BilboBlog& ) ) );
+    addEditBlogWindow->show();
 }
 
 // TODO remove the blog media directory
 void Toolbox::sltRemoveBlog()
 {
-	kDebug();
-    DBMan::self()->removeBlog(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
+    kDebug();
+    DBMan::self()->removeBlog( qobject_cast<BlogRadioButton*>( listBlogRadioButtons.checkedButton() )->blogId() );
 //     listBlogs.remove(listBlogRadioButtons.checkedButton()->text());
-	QAbstractButton *tmp = listBlogRadioButtons.checkedButton();
-    listBlogRadioButtons.removeButton(listBlogRadioButtons.checkedButton());
-	delete tmp;
-	clearEntriesList();
-	clearCatList();
-	txtCatTags->clear();
+    QAbstractButton *tmp = listBlogRadioButtons.checkedButton();
+    listBlogRadioButtons.removeButton( listBlogRadioButtons.checkedButton() );
+    delete tmp;
+    clearEntriesList();
+    clearCatList();
+    txtCatTags->clear();
 }
 
-void Toolbox::sltBlogAdded(BilboBlog &addedBlog)
+void Toolbox::sltBlogAdded( BilboBlog &addedBlog )
 {
-	kDebug();
-// 	listBlogs.insert(addedBlog.title(), addedBlog.id());
-    BlogRadioButton *a = new BlogRadioButton(addedBlog.title());
-	a->setToolTip(addedBlog.blogUrl());
-    a->setBlogId(addedBlog.id());
-	listBlogRadioButtons.addButton(a);
-	frameBlog->layout()->addWidget(a);
-// 	connect(a, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
-    a->setChecked(true);
+    kDebug();
+//  listBlogs.insert(addedBlog.title(), addedBlog.id());
+    BlogRadioButton *a = new BlogRadioButton( addedBlog.title() );
+    a->setToolTip( addedBlog.blogUrl() );
+    a->setBlogId( addedBlog.id() );
+    listBlogRadioButtons.addButton( a );
+    frameBlog->layout()->addWidget( a );
+//  connect(a, SIGNAL(toggled(bool)), this, SLOT(sltSetCurrentBlog(bool)));
+    a->setChecked( true );
     sltReloadCategoryList();
-	sltSetCurrentBlog();
-// 	KStandardDirs::makeDir(DATA_DIR + addedBlog.title());
-	
+    sltSetCurrentBlog();
+//  KStandardDirs::makeDir(DATA_DIR + addedBlog.title());
+
     delete addEditBlogWindow;
 }
 
-void Toolbox::sltBlogEdited(BilboBlog &editedBlog)
+void Toolbox::sltBlogEdited( BilboBlog &editedBlog )
 {
-	kDebug();
+    kDebug();
 //     listBlogs.remove(blogToEdit->text());
-	blogToEdit->setText(editedBlog.title());
-	blogToEdit->setToolTip(editedBlog.blogUrl());
+    blogToEdit->setText( editedBlog.title() );
+    blogToEdit->setToolTip( editedBlog.blogUrl() );
 //     listBlogs.insert(editedBlog.title(), editedBlog.id());
 //     Q_EMIT sigCurrentBlogChanged(listBlogs.value(listBlogRadioButtons.checkedButton()->text(), -1));
-    sltCurrentBlogChanged(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
+    sltCurrentBlogChanged( qobject_cast<BlogRadioButton*>( listBlogRadioButtons.checkedButton() )->blogId() );
     sltReloadCategoryList();
-// 	blogToEditDir.rename(blogToEditDir.dirName(), DATA_DIR + editedBlog.title());
-	
+//  blogToEditDir.rename(blogToEditDir.dirName(), DATA_DIR + editedBlog.title());
+
     delete addEditBlogWindow;
 }
 
 void Toolbox::reloadBlogList()
 {
-	kDebug();
-    foreach( QAbstractButton *ab,listBlogRadioButtons.buttons()){
-		delete ab;
-	}
-	listBlogRadioButtons.buttons().clear();
-	QList<BilboBlog*> listBlogs = DBMan::self()->listBlogs();
-	int count = listBlogs.count();
-	for( int i=0; i < count; ++i ){
-        BlogRadioButton *rb = new BlogRadioButton(listBlogs[i]->title(), this);
-		rb->setBlogId(listBlogs[i]->id());
-		rb->setToolTip(listBlogs[i]->blogUrl());
-		listBlogRadioButtons.addButton(rb);
-		frameBlog->layout()->addWidget(rb);
-	}
+    kDebug();
+    foreach( QAbstractButton *ab, listBlogRadioButtons.buttons() ) {
+        delete ab;
+    }
+    listBlogRadioButtons.buttons().clear();
+    QList<BilboBlog*> listBlogs = DBMan::self()->listBlogs();
+    int count = listBlogs.count();
+    for ( int i = 0; i < count; ++i ) {
+        BlogRadioButton *rb = new BlogRadioButton( listBlogs[i]->title(), this );
+        rb->setBlogId( listBlogs[i]->id() );
+        rb->setToolTip( listBlogs[i]->blogUrl() );
+        listBlogRadioButtons.addButton( rb );
+        frameBlog->layout()->addWidget( rb );
+    }
 }
 
 void Toolbox::sltReloadCategoryList()
 {
-	kDebug();
-    if(!listBlogRadioButtons.checkedButton()){
-		KMessageBox::sorry(this, i18n("There isn't any selected blog, you have to select a blog from Blogs page before asking for Category list"));
-		return;
-	}
-	
-	int blog_id;
-	
-    blog_id = qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId();
+    kDebug();
+    if ( !listBlogRadioButtons.checkedButton() ) {
+        KMessageBox::sorry( this, i18n( "There isn't any selected blog, you have to select a blog from Blogs page before asking for Category list" ) );
+        return;
+    }
 
-	Backend *b = new Backend(blog_id);
-	b->getCategoryListFromServer();
-	connect(b, SIGNAL(sigCategoryListFetched(int)), this, SLOT(sltLoadCategoryListFromDB(int)));
-	connect(b, SIGNAL(sigError(const QString&)), this, SIGNAL(sigError(const QString&)));
-	statusbar->showMessage(i18n("Requesting category list..."));
-    this->setCursor(Qt::BusyCursor);
-	parentWidget()->setCursor(Qt::BusyCursor);
+    int blog_id;
+
+    blog_id = qobject_cast<BlogRadioButton*>( listBlogRadioButtons.checkedButton() )->blogId();
+
+    Backend *b = new Backend( blog_id );
+    b->getCategoryListFromServer();
+    connect( b, SIGNAL( sigCategoryListFetched( int ) ), this, SLOT( sltLoadCategoryListFromDB( int ) ) );
+    connect( b, SIGNAL( sigError( const QString& ) ), this, SIGNAL( sigError( const QString& ) ) );
+    statusbar->showMessage( i18n( "Requesting category list..." ) );
+    this->setCursor( Qt::BusyCursor );
+    parentWidget()->setCursor( Qt::BusyCursor );
 }
 
 void Toolbox::sltReloadEntries()
 {
-	kDebug();
-    if(!listBlogRadioButtons.checkedButton()){
-		KMessageBox::sorry(this, i18n("There isn't any selected blog, you have to select a blog from Blogs page before asking for Entries list"));
-		kDebug()<<"There isn't any selected blog.";
-		return;
-	}
-	EntriesCountDialog *dia = new EntriesCountDialog(this);
+    kDebug();
+    if ( !listBlogRadioButtons.checkedButton() ) {
+        KMessageBox::sorry( this, i18n( "There isn't any selected blog, you have to select a blog from Blogs page before asking for Entries list" ) );
+        kDebug() << "There isn't any selected blog.";
+        return;
+    }
+    EntriesCountDialog *dia = new EntriesCountDialog( this );
     dia->setAttribute( Qt::WA_DeleteOnClose );
-	dia->show();
-	connect(dia, SIGNAL(sigAccepted(int)), this, SLOT(sltGetEntriesCount(int)));
+    dia->show();
+    connect( dia, SIGNAL( sigAccepted( int ) ), this, SLOT( sltGetEntriesCount( int ) ) );
 }
 
 void Toolbox::sltSetCurrentBlog()
 {
-    kDebug()<<"Current blog is: "<<listBlogRadioButtons.checkedButton()->text();
+    kDebug() << "Current blog is: " << listBlogRadioButtons.checkedButton()->text();
 //     int id = listBlogs.value(listBlogRadioButtons.checkedButton()->text(), -1);
-    int id = qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId();
-    kDebug()<<"Current Blog Id: "<<id;
-// 	if(checked){
-// 		currentBlog = dynamic_cast<BlogRadioButton*>(sender());
-        emit sigCurrentBlogChanged(id);
-// 	}
+    int id = qobject_cast<BlogRadioButton*>( listBlogRadioButtons.checkedButton() )->blogId();
+    kDebug() << "Current Blog Id: " << id;
+//  if(checked){
+//   currentBlog = dynamic_cast<BlogRadioButton*>(sender());
+    emit sigCurrentBlogChanged( id );
+//  }
 }
 
-void Toolbox::sltCurrentPageChanged(int index)
+void Toolbox::sltCurrentPageChanged( int index )
 {
-// 	kDebug();
-    if(!listBlogRadioButtons.checkedButton())
-		return;
-	switch( index ){
-	case 1:
-// 		sltLoadEntriesFromDB(listBlogs.value(currentBlog->text(), -1));
-		break;
-	case 2:
-// 		sltLoadCategoryListFromDB(listBlogs.value(currentBlog->text(), -1));
-		break;
-	}
+//  kDebug();
+    if ( !listBlogRadioButtons.checkedButton() )
+        return;
+    switch ( index ) {
+        case 1:
+//   sltLoadEntriesFromDB(listBlogs.value(currentBlog->text(), -1));
+            break;
+        case 2:
+//   sltLoadCategoryListFromDB(listBlogs.value(currentBlog->text(), -1));
+            break;
+    }
 }
 
-void Toolbox::sltLoadEntriesFromDB(int blog_id)
+void Toolbox::sltLoadEntriesFromDB( int blog_id )
 {
-	kDebug();
-	if(blog_id==-1){
-        kDebug()<<"Blog Id do not sets correctly";
-		return;
-	}
-	clearEntriesList();
-	statusbar->showMessage(i18n("Entries list received."), STATUSTIMEOUT);
+    kDebug();
+    if ( blog_id == -1 ) {
+        kDebug() << "Blog Id do not sets correctly";
+        return;
+    }
+    clearEntriesList();
+    statusbar->showMessage( i18n( "Entries list received." ), STATUSTIMEOUT );
     this->unsetCursor();
-	parentWidget()->unsetCursor();
-	QMap<int, QString> listEntries;
-	listEntries = DBMan::self()->listPostsTitle(blog_id);
-	QMap<int, QString>::const_iterator endIt = listEntries.constEnd();
-	QMap<int, QString>::const_iterator it = listEntries.constBegin();
-	for(; it!=endIt; ++it){
-		QListWidgetItem *lstItem = new QListWidgetItem(it.value());
-		lstItem->setData(32, it.key());
-		lstEntriesList->addItem(lstItem);
-	}
-// 	lstEntriesList->addItems(listEntries.keys());
+    parentWidget()->unsetCursor();
+    QMap<int, QString> listEntries;
+    listEntries = DBMan::self()->listPostsTitle( blog_id );
+    QMap<int, QString>::const_iterator endIt = listEntries.constEnd();
+    QMap<int, QString>::const_iterator it = listEntries.constBegin();
+    for ( ; it != endIt; ++it ) {
+        QListWidgetItem *lstItem = new QListWidgetItem( it.value() );
+        lstItem->setData( 32, it.key() );
+        lstEntriesList->addItem( lstItem );
+    }
+//  lstEntriesList->addItems(listEntries.keys());
 }
 
-void Toolbox::sltLoadCategoryListFromDB(int blog_id)
+void Toolbox::sltLoadCategoryListFromDB( int blog_id )
 {
-	kDebug();
-	if(blog_id==-1){
-		kDebug()<<"Blog Id do not sets correctly";
-		return;
-	}
-	statusbar->showMessage(i18n("Category list received."), STATUSTIMEOUT);
-	parentWidget()->unsetCursor();
-	this->unsetCursor();
-	clearCatList();
-	QList<Category> listCategories;
-	listCategories = DBMan::self()->listCategories(blog_id);
-	
-	listCategoryCheckBoxes.clear();
-	QList<Category>::const_iterator i;
-	QList<Category>::const_iterator endIt= listCategories.constEnd();
-	for( i = listCategories.constBegin(); i != endIt; ++i ){
-		CatCheckBox *cb = new CatCheckBox(i->name, this);
-		cb->setCategory(*i);
-		listCategoryCheckBoxes.append(cb);
-		frameCat->layout()->addWidget(cb);
-	}
+    kDebug();
+    if ( blog_id == -1 ) {
+        kDebug() << "Blog Id do not sets correctly";
+        return;
+    }
+    statusbar->showMessage( i18n( "Category list received." ), STATUSTIMEOUT );
+    parentWidget()->unsetCursor();
+    this->unsetCursor();
+    clearCatList();
+    QList<Category> listCategories;
+    listCategories = DBMan::self()->listCategories( blog_id );
+
+    listCategoryCheckBoxes.clear();
+    QList<Category>::const_iterator i;
+    QList<Category>::const_iterator endIt = listCategories.constEnd();
+    for ( i = listCategories.constBegin(); i != endIt; ++i ) {
+        CatCheckBox *cb = new CatCheckBox( i->name, this );
+        cb->setCategory( *i );
+        listCategoryCheckBoxes.append( cb );
+        frameCat->layout()->addWidget( cb );
+    }
 }
 
-void Toolbox::sltGetEntriesCount(int count)
+void Toolbox::sltGetEntriesCount( int count )
 {
-	kDebug();
-    Backend *entryB = new Backend(qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId());
-	entryB->getEntriesListFromServer(count);
-	connect(entryB, SIGNAL(sigEntriesListFetched(int)), this, SLOT(sltLoadEntriesFromDB(int)));
-	connect(entryB, SIGNAL(sigError(const QString&)), this, SIGNAL(sigError(const QString&)));
-	statusbar->showMessage(i18n("Requesting Entry list..."));
-    this->setCursor(Qt::BusyCursor);
-	parentWidget()->setCursor(Qt::BusyCursor);
+    kDebug();
+    Backend *entryB = new Backend( qobject_cast<BlogRadioButton*>( listBlogRadioButtons.checkedButton() )->blogId() );
+    entryB->getEntriesListFromServer( count );
+    connect( entryB, SIGNAL( sigEntriesListFetched( int ) ), this, SLOT( sltLoadEntriesFromDB( int ) ) );
+    connect( entryB, SIGNAL( sigError( const QString& ) ), this, SIGNAL( sigError( const QString& ) ) );
+    statusbar->showMessage( i18n( "Requesting Entry list..." ) );
+    this->setCursor( Qt::BusyCursor );
+    parentWidget()->setCursor( Qt::BusyCursor );
 }
 
 void Toolbox::resetFields()
 {
-	kDebug();
-	unCheckCatList();
-	txtCatTags->clear();
-	chkOptionsTime->setChecked(false);
-	optionsDate->setDate(QDateTime::currentDateTime().date());
-	optionsTime->setTime(QDateTime::currentDateTime().time());
-	txtOptionsTrackback->clear();
-    txtSummary->setPlainText(QString());
-    chkOptionsComments->setChecked(true);
-    chkOptionsTrackback->setChecked(true);
-    comboOptionsStatus->setCurrentIndex(0);
+    kDebug();
+    unCheckCatList();
+    txtCatTags->clear();
+    chkOptionsTime->setChecked( false );
+    optionsDate->setDate( QDateTime::currentDateTime().date() );
+    optionsTime->setTime( QDateTime::currentDateTime().time() );
+    txtOptionsTrackback->clear();
+    txtSummary->setPlainText( QString() );
+    chkOptionsComments->setChecked( true );
+    chkOptionsTrackback->setChecked( true );
+    comboOptionsStatus->setCurrentIndex( 0 );
 }
 
 void Toolbox::clearCatList()
 {
     kDebug();
-// 	listCategories.clear();
-	if(listCategoryCheckBoxes.count()>0)
-		qDeleteAll(listCategoryCheckBoxes/*.constBegin(), listCategoryCheckBoxes.constEnd()*/);
-// 	for(int j=0; j<listCategoryCheckBoxes.count(); ++j){
-// 		delete(listCategoryCheckBoxes[j]);
-// 	}
+//  listCategories.clear();
+    if ( listCategoryCheckBoxes.count() > 0 )
+        qDeleteAll( listCategoryCheckBoxes/*.constBegin(), listCategoryCheckBoxes.constEnd()*/ );
+//  for(int j=0; j<listCategoryCheckBoxes.count(); ++j){
+//   delete(listCategoryCheckBoxes[j]);
+//  }
 }
 
 void Toolbox::clearEntriesList()
 {
     kDebug();
-	lstEntriesList->clear();
+    lstEntriesList->clear();
 }
 
-void Toolbox::sltCurrentBlogChanged(int blog_id)
+void Toolbox::sltCurrentBlogChanged( int blog_id )
 {
-	///TODO Save current state to a temporary variable!
+    ///TODO Save current state to a temporary variable!
     kDebug();
-    if(blog_id==-1){
-        kDebug()<<"Blog id do not sets correctly";
+    if ( blog_id == -1 ) {
+        kDebug() << "Blog id do not sets correctly";
         return;
     }
-	btnBlogEdit->setEnabled(true);
-	btnBlogRemove->setEnabled(true);
+    btnBlogEdit->setEnabled( true );
+    btnBlogRemove->setEnabled( true );
     __currentBlogId = blog_id;
-	sltLoadCategoryListFromDB(blog_id);
-	sltLoadEntriesFromDB(blog_id);
-    Qt::LayoutDirection ll = DBMan::self()->getBlogInfo(blog_id)->direction();
-	frameCat->setLayoutDirection(ll);
-	lstEntriesList->setLayoutDirection(ll);
+    sltLoadCategoryListFromDB( blog_id );
+    sltLoadEntriesFromDB( blog_id );
+    Qt::LayoutDirection ll = DBMan::self()->getBlogInfo( blog_id )->direction();
+    frameCat->setLayoutDirection( ll );
+    lstEntriesList->setLayoutDirection( ll );
 }
 
-void Toolbox::getFieldsValue(BilboPost *currentPost)
+void Toolbox::getFieldsValue( BilboPost *currentPost )
 {
-	kDebug();
-	currentPost->setCategoryList(this->selectedCategories());
-	currentPost->setTags(this->currentTags());
-	currentPost->setModifyTimeStamp(this->chkOptionsTime->isChecked());
-	if(currentPost->status()==KBlog::BlogPost::Fetched || currentPost->status()==KBlog::BlogPost::Modified){///FIXME there is a BUG here!
-		if(chkOptionsTime->isChecked())
-			currentPost->setModificationDateTime(KDateTime(optionsDate->date(), optionsTime->time()));
-		else
-            currentPost->setModificationDateTime(KDateTime::currentLocalDateTime());
-	} else {
-		if(chkOptionsTime->isChecked()){
-			currentPost->setModificationDateTime(KDateTime(optionsDate->date(), optionsTime->time()));
+    kDebug();
+    currentPost->setCategoryList( this->selectedCategories() );
+    currentPost->setTags( this->currentTags() );
+    currentPost->setModifyTimeStamp( this->chkOptionsTime->isChecked() );
+    if ( currentPost->status() == KBlog::BlogPost::Fetched || currentPost->status() == KBlog::BlogPost::Modified ) {///FIXME there is a BUG here!
+        if ( chkOptionsTime->isChecked() )
+            currentPost->setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
+        else
+            currentPost->setModificationDateTime( KDateTime::currentLocalDateTime() );
+    } else {
+        if ( chkOptionsTime->isChecked() ) {
+            currentPost->setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
 //             currentPost->setCreationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
-		}
-		else {
-            currentPost->setModificationDateTime(KDateTime::currentLocalDateTime());
-// 			currentPost->setCreationDateTime(KDateTime::currentLocalDateTime());
-		}
-	}
+        } else {
+            currentPost->setModificationDateTime( KDateTime::currentLocalDateTime() );
+//    currentPost->setCreationDateTime(KDateTime::currentLocalDateTime());
+        }
+    }
 
-	currentPost->setPrivate((comboOptionsStatus->currentIndex()==1)?true:false);
-	currentPost->setCommentAllowed(chkOptionsComments->isChecked());
-	currentPost->setTrackBackAllowed(chkOptionsTrackback->isChecked());
-// 	currentPost->setPosition((BilboPost::Position)comboOptionsStatus->currentIndex());
-    currentPost->setSummary(txtSummary->toPlainText());
+    currentPost->setPrivate(( comboOptionsStatus->currentIndex() == 1 ) ? true : false );
+    currentPost->setCommentAllowed( chkOptionsComments->isChecked() );
+    currentPost->setTrackBackAllowed( chkOptionsTrackback->isChecked() );
+//  currentPost->setPosition((BilboPost::Position)comboOptionsStatus->currentIndex());
+    currentPost->setSummary( txtSummary->toPlainText() );
 }
 
-void Toolbox::setFieldsValue(BilboPost* post)
+void Toolbox::setFieldsValue( BilboPost* post )
 {
-	kDebug();
+    kDebug();
 //     kDebug()<<"New Post is: "<<post.toString();
-	//delete currentPost;
-	if (post == 0) {
-		resetFields();
-// 		currentPost = post;
-	}
+    //delete currentPost;
+    if ( post == 0 ) {
+        resetFields();
+//   currentPost = post;
+    }
 
-	setSelectedCategories(post->categories());
-	txtCatTags->setText(post->tags().join(", "));
-	kDebug()<<"Post status is: "<<post->status();
-	if(post->status() == KBlog::BlogPost::New)
-		comboOptionsStatus->setCurrentIndex(2);
-	else if(post->isPrivate())
-        comboOptionsStatus->setCurrentIndex(1);
-	else
-		comboOptionsStatus->setCurrentIndex(0);
-	chkOptionsComments->setChecked(post->isCommentAllowed());
-	chkOptionsTrackback->setChecked(post->isTrackBackAllowed());
-	chkOptionsTime->setChecked(post->isModifyTimeStamp());
-	optionsTime->setTime(post->modificationDateTime().time());
-	optionsDate->setDate(post->modificationDateTime().date());
-	txtSummary->setPlainText(post->summary());
+    setSelectedCategories( post->categories() );
+    txtCatTags->setText( post->tags().join( ", " ) );
+    kDebug() << "Post status is: " << post->status();
+    if ( post->status() == KBlog::BlogPost::New )
+        comboOptionsStatus->setCurrentIndex( 2 );
+    else if ( post->isPrivate() )
+        comboOptionsStatus->setCurrentIndex( 1 );
+    else
+        comboOptionsStatus->setCurrentIndex( 0 );
+    chkOptionsComments->setChecked( post->isCommentAllowed() );
+    chkOptionsTrackback->setChecked( post->isTrackBackAllowed() );
+    chkOptionsTime->setChecked( post->isModifyTimeStamp() );
+    optionsTime->setTime( post->modificationDateTime().time() );
+    optionsDate->setDate( post->modificationDateTime().date() );
+    txtSummary->setPlainText( post->summary() );
 //     txtOptionsTrackback->setText(post.);
 }
 
 QList< Category > Toolbox::selectedCategories()
 {
-	kDebug();
-	QList<Category> list;
-	int count = listCategoryCheckBoxes.count();
-	for( int i=0; i<count; ++i){
-		if(listCategoryCheckBoxes[i]->isChecked())
-			list.append(listCategoryCheckBoxes[i]->category());
-	}
-	return list;
+    kDebug();
+    QList<Category> list;
+    int count = listCategoryCheckBoxes.count();
+    for ( int i = 0; i < count; ++i ) {
+        if ( listCategoryCheckBoxes[i]->isChecked() )
+            list.append( listCategoryCheckBoxes[i]->category() );
+    }
+    return list;
 }
 
 QStringList Toolbox::selectedCategoriesTitle()
 {
-	kDebug();
-	QStringList list;
-	int count = listCategoryCheckBoxes.count();
-	for( int i=0; i<count; ++i){
-		if(listCategoryCheckBoxes[i]->isChecked())
-			list.append(listCategoryCheckBoxes[i]->category().name);
-	}
-	return list;
+    kDebug();
+    QStringList list;
+    int count = listCategoryCheckBoxes.count();
+    for ( int i = 0; i < count; ++i ) {
+        if ( listCategoryCheckBoxes[i]->isChecked() )
+            list.append( listCategoryCheckBoxes[i]->category().name );
+    }
+    return list;
 }
 
 QList< int > Toolbox::selectedCategoriesId()
 {
-	///TODO Implement it
-	kDebug()<<"NOT IMPLEMENTED YET!";
-	return QList<int>();
+    ///TODO Implement it
+    kDebug() << "NOT IMPLEMENTED YET!";
+    return QList<int>();
 }
 
-void Toolbox::setSelectedCategories(const QStringList &list)
+void Toolbox::setSelectedCategories( const QStringList &list )
 {
     unCheckCatList();
-	int count = listCategoryCheckBoxes.count();
-	for( int i=0; i<count; ++i){
-		if(list.contains(listCategoryCheckBoxes[i]->category().name, Qt::CaseInsensitive))
-			listCategoryCheckBoxes[i]->setChecked(true);
-	}
+    int count = listCategoryCheckBoxes.count();
+    for ( int i = 0; i < count; ++i ) {
+        if ( list.contains( listCategoryCheckBoxes[i]->category().name, Qt::CaseInsensitive ) )
+            listCategoryCheckBoxes[i]->setChecked( true );
+    }
 }
 
-void Toolbox::setSelectedCategories(const QList< int > &)
+void Toolbox::setSelectedCategories( const QList< int > & )
 {
-	///TODO Implement it
-	kDebug()<<"NOT IMPLEMENTED YET!";
+    ///TODO Implement it
+    kDebug() << "NOT IMPLEMENTED YET!";
 }
 
 QStringList Toolbox::currentTags()
 {
-	kDebug();
-	QStringList t;
-	t = txtCatTags->text().split(',', QString::SkipEmptyParts);
-	for(int i=0; i < t.count() ; ++i){
-		t[i] = t[i].trimmed();
-	}
-	return t;
+    kDebug();
+    QStringList t;
+    t = txtCatTags->text().split( ',', QString::SkipEmptyParts );
+    for ( int i = 0; i < t.count() ; ++i ) {
+        t[i] = t[i].trimmed();
+    }
+    return t;
 }
 
 int Toolbox::currentBlogId()
 {
     kDebug();
-    if(listBlogRadioButtons.checkedButton()){
-        int id = qobject_cast<BlogRadioButton*>(listBlogRadioButtons.checkedButton())->blogId();
-        kDebug()<<id;
+    if ( listBlogRadioButtons.checkedButton() ) {
+        int id = qobject_cast<BlogRadioButton*>( listBlogRadioButtons.checkedButton() )->blogId();
+        kDebug() << id;
         return id;
-    }
-	else
-		return -1;
+    } else
+        return -1;
 }
 
-void Toolbox::sltEntrySelected(QListWidgetItem * item)
+void Toolbox::sltEntrySelected( QListWidgetItem * item )
 {
     kDebug();
-	BilboPost *post = DBMan::self()->getPostInfo(lstEntriesList->currentItem()->data(32).toInt());
+    BilboPost *post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data( 32 ).toInt() );
 //     setFieldsValue(*post);
-    kDebug()<<"Emiting sigEntrySelected...";
-	Q_EMIT sigEntrySelected(post);
+    kDebug() << "Emiting sigEntrySelected...";
+    Q_EMIT sigEntrySelected( post );
 }
 
-void Toolbox::setCurrentBlog(int blog_id)
+void Toolbox::setCurrentBlog( int blog_id )
 {
     kDebug();
 //     QString blogTitle = listBlogs.key(blog_id);
-    foreach( QAbstractButton *b, listBlogRadioButtons.buttons()){
-        if(qobject_cast<BlogRadioButton*>(b)->blogId()==blog_id){
-            b->setChecked(true);
+    foreach( QAbstractButton *b, listBlogRadioButtons.buttons() ) {
+        if ( qobject_cast<BlogRadioButton*>( b )->blogId() == blog_id ) {
+            b->setChecked( true );
             break;
         }
     }
 }
 
-void Toolbox::setCurrentPage(int index)
+void Toolbox::setCurrentPage( int index )
 {
-    box->setCurrentIndex(index);
+    box->setCurrentIndex( index );
 }
 
 void Toolbox::sltEntriesCopyUrl()
 {
-	if(lstEntriesList->currentItem()==0){
-		KMessageBox::sorry(this, i18n("There isn't any selected entry!\nIn order to use this function you have to select an entry first."));
-		return;
-	}
-	QClipboard *clip = QApplication::clipboard();
-	BilboPost *p = DBMan::self()->getPostInfo(lstEntriesList->currentItem()->data(32).toInt());
-    clip->setText(p->link().url());
+    if ( lstEntriesList->currentItem() == 0 ) {
+        KMessageBox::sorry( this, i18n( "There isn't any selected entry!\nIn order to use this function you have to select an entry first." ) );
+        return;
+    }
+    QClipboard *clip = QApplication::clipboard();
+    BilboPost *p = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data( 32 ).toInt() );
+    clip->setText( p->link().url() );
 }
 
 Toolbox::~Toolbox()
 {
-	kDebug();
+    kDebug();
 //     delete addEditBlogWindow;
 //     delete blogToEdit;
 //     delete currentBlog;
@@ -510,37 +508,37 @@ Toolbox::~Toolbox()
 
 void Toolbox::unCheckCatList()
 {
-	int count = listCategoryCheckBoxes.count();
-    for(int j=0; j<count; ++j){
-        listCategoryCheckBoxes[j]->setChecked(false);
+    int count = listCategoryCheckBoxes.count();
+    for ( int j = 0; j < count; ++j ) {
+        listCategoryCheckBoxes[j]->setChecked( false );
     }
 }
 
 void Toolbox::setButtonsIcon()
 {
-    btnBlogAdd->setIcon(KIcon("list-add"));
-    btnBlogEdit->setIcon(KIcon("edit-rename"));
-    btnBlogRemove->setIcon(KIcon("list-remove"));
-    btnEntriesReload->setIcon(KIcon("view-refresh"));
-    btnEntriesUpdate->setIcon(KIcon("arrow-down"));
-    btnEntriesCopyUrl->setIcon(KIcon("edit-copy"));
-    btnCatReload->setIcon(KIcon("view-refresh"));
-    btnCatAdd->setIcon(KIcon("list-add"));
-	btnMediaAdd->setIcon(KIcon("list-add"));
-	btnMediaEdit->setIcon(KIcon("edit-rename"));
-	btnMediaRemove->setIcon(KIcon("list-remove"));
+    btnBlogAdd->setIcon( KIcon( "list-add" ) );
+    btnBlogEdit->setIcon( KIcon( "edit-rename" ) );
+    btnBlogRemove->setIcon( KIcon( "list-remove" ) );
+    btnEntriesReload->setIcon( KIcon( "view-refresh" ) );
+    btnEntriesUpdate->setIcon( KIcon( "arrow-down" ) );
+    btnEntriesCopyUrl->setIcon( KIcon( "edit-copy" ) );
+    btnCatReload->setIcon( KIcon( "view-refresh" ) );
+    btnCatAdd->setIcon( KIcon( "list-add" ) );
+    btnMediaAdd->setIcon( KIcon( "list-add" ) );
+    btnMediaEdit->setIcon( KIcon( "edit-rename" ) );
+    btnMediaRemove->setIcon( KIcon( "list-remove" ) );
     ///TODO Add option for selecting only text or only Icon for Toolbox buttons!
-    btnBlogAdd->setText(QString());
-    btnBlogEdit->setText(QString());
-    btnBlogRemove->setText(QString());
-    btnEntriesReload->setText(QString());
-    btnEntriesUpdate->setText(QString());
-    btnEntriesCopyUrl->setText(QString());
-    btnCatReload->setText(QString());
-    btnCatAdd->setText(QString());
-	btnMediaAdd->setText(QString());
-	btnMediaEdit->setText(QString());
-	btnMediaRemove->setText(QString());
+    btnBlogAdd->setText( QString() );
+    btnBlogEdit->setText( QString() );
+    btnBlogRemove->setText( QString() );
+    btnEntriesReload->setText( QString() );
+    btnEntriesUpdate->setText( QString() );
+    btnEntriesCopyUrl->setText( QString() );
+    btnCatReload->setText( QString() );
+    btnCatAdd->setText( QString() );
+    btnMediaAdd->setText( QString() );
+    btnMediaEdit->setText( QString() );
+    btnMediaRemove->setText( QString() );
 }
 
 

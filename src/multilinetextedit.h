@@ -29,36 +29,36 @@
 
 //!Class MultiLineTextEdit Implements a TextEdit widget that supports new line charachters
 /*!
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 
 class MultiLineTextEdit : public KRichTextEdit
 {
-	Q_OBJECT
-	public:
-		//!Implements the class constructor.
-		/*!
-		 * \param *parent is needed for KRichTextEdit constructor, which MultiLineTextEdit 
-		 * inherits from.
-		 */
-		MultiLineTextEdit(QWidget *parent = 0);
-		
-		//!Implements the class destructor.
-		~MultiLineTextEdit();
-		
-// 	public Q_SLOTS:
-// 		void alignRight();
-// 		void alignLeft();
-		
-	protected:
-		
-		/*!
-		 * When MultiLineTextEdit is focused on, checks each presssed key; then replaces 
-		 * "Return" characters with QChar::LineSeparator special character.
-		 * this function is defined virtual in parent class: KRichTextEdit.
-		 */
-		void keyPressEvent(QKeyEvent *event);
+    Q_OBJECT
+public:
+    //!Implements the class constructor.
+    /*!
+     * \param *parent is needed for KRichTextEdit constructor, which MultiLineTextEdit
+     * inherits from.
+     */
+    MultiLineTextEdit( QWidget *parent = 0 );
+
+    //!Implements the class destructor.
+    ~MultiLineTextEdit();
+
+//  public Q_SLOTS:
+//   void alignRight();
+//   void alignLeft();
+
+protected:
+
+    /*!
+     * When MultiLineTextEdit is focused on, checks each presssed key; then replaces
+     * "Return" characters with QChar::LineSeparator special character.
+     * this function is defined virtual in parent class: KRichTextEdit.
+     */
+    void keyPressEvent( QKeyEvent *event );
 };
 
 #endif

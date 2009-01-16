@@ -21,20 +21,20 @@
 
 #include "entriescountdialog.h"
 #include <kdebug.h>
-EntriesCountDialog::EntriesCountDialog(QWidget *parent)
-    :KDialog(parent)
+EntriesCountDialog::EntriesCountDialog( QWidget *parent )
+        : KDialog( parent )
 {
     QWidget *dialog = new QWidget;
-    ui.setupUi(dialog);
+    ui.setupUi( dialog );
     dialog->setAttribute( Qt::WA_DeleteOnClose );
-    this->setMainWidget(dialog);
-	connect(this, SIGNAL(accepted()), this, SLOT(sltAccepted()));
+    this->setMainWidget( dialog );
+    connect( this, SIGNAL( accepted() ), this, SLOT( sltAccepted() ) );
 }
 
 void EntriesCountDialog::sltAccepted()
 {
-    kDebug()<<"Emiting sigAccepted...";
-	Q_EMIT sigAccepted(ui.spinCount->value());
+    kDebug() << "Emiting sigAccepted...";
+    Q_EMIT sigAccepted( ui.spinCount->value() );
 }
 
 #include "entriescountdialog.moc"

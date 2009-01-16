@@ -26,39 +26,39 @@
 #include <ui_editimagebase.h>
 
 /**
-	@author 
+ @author
 */
 class KAction;
 class MediaListWidget : public KListWidget
 {
-	Q_OBJECT
-	public:
-		MediaListWidget(QWidget *parent);
-	
-		~MediaListWidget();
-		
-		void contextMenuEvent(QContextMenuEvent *event);
-		
-		enum ItemType {
-			ImageType = 1001,
-			OtherType = 1002
-		};
-		
-	Q_SIGNALS:
-		void sigRemoveMedia(const int index);
-		void sigSetProperties(const int index, const QString width, const QString height, 
-							  const QString title, const QString Alt_text);
-		
-	protected Q_SLOTS:
-		void sltEditProperties();
-		void sltSetProperties();
-		void sltRemoveMedia();
-		
-	private:
-		KAction *actEdit;
-		KAction *actRemove;
-		
-		Ui::EditImageBase ui;
+    Q_OBJECT
+public:
+    MediaListWidget( QWidget *parent );
+
+    ~MediaListWidget();
+
+    void contextMenuEvent( QContextMenuEvent *event );
+
+    enum ItemType {
+        ImageType = 1001,
+        OtherType = 1002
+    };
+
+Q_SIGNALS:
+    void sigRemoveMedia( const int index );
+    void sigSetProperties( const int index, const QString width, const QString height,
+                           const QString title, const QString Alt_text );
+
+protected Q_SLOTS:
+    void sltEditProperties();
+    void sltSetProperties();
+    void sltRemoveMedia();
+
+private:
+    KAction *actEdit;
+    KAction *actRemove;
+
+    Ui::EditImageBase ui;
 
 };
 

@@ -28,32 +28,32 @@ class QMenu;
 /**
 System tray icon of app
 
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 class SysTray : public KSystemTrayIcon
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-    SysTray(QWidget* parent=0);
+    SysTray( QWidget* parent = 0 );
 
     ~SysTray();
-	
+
 protected Q_SLOTS:
-// 	void sltHideShow();
-// 	void sltActivated(QSystemTrayIcon::ActivationReason);
+//  void sltHideShow();
+//  void sltActivated(QSystemTrayIcon::ActivationReason);
 
 private:
-// 	void createActions();
-	
-// 	QMenu *trayMenu;
-	
-// 	QAction *actQuit;
-	QAction *actNewPost;
-// 	QAction *actHideShow;
-// 	QAction *actAbout;
-	
-// 	MainWindow *bilbo;
+//  void createActions();
+
+//  QMenu *trayMenu;
+
+//  QAction *actQuit;
+    QAction *actNewPost;
+//  QAction *actHideShow;
+//  QAction *actAbout;
+
+//  MainWindow *bilbo;
 
 };
 

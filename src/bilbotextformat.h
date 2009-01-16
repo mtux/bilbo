@@ -25,54 +25,54 @@
 /**
  * Adds some textformat attributes which don't exist in QTextFormat class.
  * this class may be removed in future, if all editor related staff be ordered as a lib.
- * 
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ *
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 // class BilboTextCharFormat : public QTextCharFormat
 class BilboTextFormat
 {
-	//Q_OBJECT
-   public:
-// 		BilboTextCharFormat();
-// 	
-// 		~BilboTextCharFormat();
-		
-		//BilboTextCharFormat& operator =(const BilboTextCharFormat& other);
-		
-		enum Property {
-			/// Anchor properties
-			AnchorTitle = 0x100010,
-   			AnchorTarget = 0x100011,
-	  
-	  		/// Image properties
-	  		ImageTitle = 0x100020,
-	  		ImageAlternateText = 0x100021,
-		};
-// 		enum TargetStyle {
-// 			OpenInCurrentWindow = 1,
-//    			OpenInNewWindow = 2
-// 		};
-		
-// 		bool isValid() const;
-// 		
-// 		inline void setAnchorTitle(const QString &title) {
-// 			setProperty(AnchorTitle, title);
-// 		}
-// 		inline QString anchorTitle() const {
-// 			return stringProperty(AnchorTitle);
-// 		}
-// 		inline void setAnchorTarget(TargetStyles style) {
-// 			setProperty(AnchorTarget, style);
-// 		}
-// 		inline TargetStyles anchorTarget() const {
-// 			return static_cast<TargetStyles>(intProperty(AnchorTitle));
-// 		}
-// 		
-// 	protected:
-// 		explicit BilboTextCharFormat(const QTextFormat &format);
-// 		
-// 		friend class QTextFormat;
+    //Q_OBJECT
+public:
+//   BilboTextCharFormat();
+//
+//   ~BilboTextCharFormat();
+
+    //BilboTextCharFormat& operator =(const BilboTextCharFormat& other);
+
+    enum Property {
+        /// Anchor properties
+        AnchorTitle = 0x100010,
+        AnchorTarget = 0x100011,
+
+        /// Image properties
+        ImageTitle = 0x100020,
+        ImageAlternateText = 0x100021,
+    };
+//   enum TargetStyle {
+//    OpenInCurrentWindow = 1,
+//       OpenInNewWindow = 2
+//   };
+
+//   bool isValid() const;
+//
+//   inline void setAnchorTitle(const QString &title) {
+//    setProperty(AnchorTitle, title);
+//   }
+//   inline QString anchorTitle() const {
+//    return stringProperty(AnchorTitle);
+//   }
+//   inline void setAnchorTarget(TargetStyles style) {
+//    setProperty(AnchorTarget, style);
+//   }
+//   inline TargetStyles anchorTarget() const {
+//    return static_cast<TargetStyles>(intProperty(AnchorTitle));
+//   }
+//
+//  protected:
+//   explicit BilboTextCharFormat(const QTextFormat &format);
+//
+//   friend class QTextFormat;
 };
 
 #endif

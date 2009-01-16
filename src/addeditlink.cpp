@@ -23,59 +23,59 @@
 //#include <kdialogbuttonbox.h>
 #include "addeditlink.h"
 
-AddEditLink::AddEditLink(QWidget *parent)
-	:KDialog(parent)
+AddEditLink::AddEditLink( QWidget *parent )
+        : KDialog( parent )
 {
-	//QWidget *dialog = new QWidget;
-	QDialog *dialog = new QDialog(parent);
-	ui.setupUi(dialog);
-	dialog->setAttribute( Qt::WA_DeleteOnClose );
-	this->setMainWidget(dialog);
-	this->setWindowTitle(dialog->windowTitle());
+    //QWidget *dialog = new QWidget;
+    QDialog *dialog = new QDialog( parent );
+    ui.setupUi( dialog );
+    dialog->setAttribute( Qt::WA_DeleteOnClose );
+    this->setMainWidget( dialog );
+    this->setWindowTitle( dialog->windowTitle() );
 
-	//ui.label_2->hide();
-	//ui.txtTitle->hide();
-	//ui.comboTarget->hide();
-	//ui.label_3->hide();
-	this->resize(dialog->width(), dialog->height());
-	connect(this, SIGNAL(accepted()), this, SLOT(sltAccepted()));
+    //ui.label_2->hide();
+    //ui.txtTitle->hide();
+    //ui.comboTarget->hide();
+    //ui.label_3->hide();
+    this->resize( dialog->width(), dialog->height() );
+    connect( this, SIGNAL( accepted() ), this, SLOT( sltAccepted() ) );
 }
 
 void AddEditLink::sltAccepted()
 {
-	if ( ui.txtAddress->text().isEmpty()) return;
-	QString linkTarget;
-	if (ui.comboTarget->currentIndex() == 1) {
-		linkTarget = "_self";
-	} else if (ui.comboTarget->currentIndex() == 2) {
-		linkTarget = "_blank";
-	}
-	const QString target = linkTarget;
-	
- 	Q_EMIT addLink( ui.txtAddress->text(), target, ui.txtTitle->text() );
-// 	Q_EMIT addLink( ui.txtAddress->text() );
-// 	close();
-// 	QDialog::accept();
-// // 	hide();
+    if ( ui.txtAddress->text().isEmpty() ) return;
+    QString linkTarget;
+    if ( ui.comboTarget->currentIndex() == 1 ) {
+        linkTarget = "_self";
+    } else if ( ui.comboTarget->currentIndex() == 2 ) {
+        linkTarget = "_blank";
+    }
+    const QString target = linkTarget;
+
+    Q_EMIT addLink( ui.txtAddress->text(), target, ui.txtTitle->text() );
+//  Q_EMIT addLink( ui.txtAddress->text() );
+//  close();
+//  QDialog::accept();
+// //  hide();
 }
 
-void AddEditLink::show(const QString& address, const QString& title, const QString& target)
+void AddEditLink::show( const QString& address, const QString& title, const QString& target )
 {
-	KDialog::show();
-	if(!address.isEmpty()){
-		ui.txtAddress->setText(address);
-		this->setWindowTitle(i18nc("verb, to edit link", "Edit Link"));
-	}
-	if(!title.isEmpty()){
-		ui.txtTitle->setText(title);
-	}
-	if(!target.isEmpty()){
-		if (target == "_self") {
-			ui.comboTarget->setCurrentIndex(1);
-		} else if (target == "_blank") {
-			ui.comboTarget->setCurrentIndex(2);
-		}
-	}
+    KDialog::show();
+    if ( !address.isEmpty() ) {
+        ui.txtAddress->setText( address );
+        this->setWindowTitle( i18nc( "verb, to edit link", "Edit Link" ) );
+    }
+    if ( !title.isEmpty() ) {
+        ui.txtTitle->setText( title );
+    }
+    if ( !target.isEmpty() ) {
+        if ( target == "_self" ) {
+            ui.comboTarget->setCurrentIndex( 1 );
+        } else if ( target == "_blank" ) {
+            ui.comboTarget->setCurrentIndex( 2 );
+        }
+    }
 }
 
 #include "addeditlink.moc"

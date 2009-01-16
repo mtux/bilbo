@@ -30,54 +30,55 @@ class BilboBlog;
 class KJob;
 
 /**
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-class AddEditBlog: public KDialog {
-Q_OBJECT
+class AddEditBlog: public KDialog
+{
+    Q_OBJECT
 public:
     /**
-     * 
+     *
      * @param blog_id id of blog we will edit it, for adding a blog this should be "-1"
      * @param parent Parent
      */
-    AddEditBlog(int blog_id, QWidget *parent = 0, Qt::WFlags flags=0);
+    AddEditBlog( int blog_id, QWidget *parent = 0, Qt::WFlags flags = 0 );
     ~AddEditBlog();
-	
+
 protected Q_SLOTS:
-    virtual void slotButtonClicked(int button);
-	void enableAutoConfBtn();
-	void enableOkButton( const QString & );
-	void autoConfigure();
-	void fetchBlogId();
-	
-	void fetchedBlogId(const QList<QMap<QString, QString> >& list);
-	void fetchedProfileId( const QString& );
-	
-	void handleFetchIDTimeout();
-	void handleFetchAPITimeout();
-	void handleFetchError( KBlog::Blog::ErrorType type, const QString& errorMsg);
-	
-	void sltAccepted();
+    virtual void slotButtonClicked( int button );
+    void enableAutoConfBtn();
+    void enableOkButton( const QString & );
+    void autoConfigure();
+    void fetchBlogId();
+
+    void fetchedBlogId( const QList<QMap<QString, QString> >& list );
+    void fetchedProfileId( const QString& );
+
+    void handleFetchIDTimeout();
+    void handleFetchAPITimeout();
+    void handleFetchError( KBlog::Blog::ErrorType type, const QString& errorMsg );
+
+    void sltAccepted();
     void sltRejected();
-	
+
     void sltReturnPressed();
-    
-    void gotHtml(KJob *);
-    void gotXmlRpcTest(KJob *job);
+
+    void gotHtml( KJob * );
+    void gotXmlRpcTest( KJob *job );
 Q_SIGNALS:
-	void sigBlogAdded(BilboBlog&);
-	void sigBlogEdited(BilboBlog&);
-	
+    void sigBlogAdded( BilboBlog& );
+    void sigBlogEdited( BilboBlog& );
+
 private:
     Ui::AddEditBlogBase ui;
     KTabWidget *mainW;
-	bool isNewBlog;
-	BilboBlog *bBlog;
-	KBlog::Blog *mBlog;
-	QTimer* mFetchProfileIdTimer;
-	QTimer* mFetchBlogIdTimer;
-	QTimer* mFetchAPITimer;
+    bool isNewBlog;
+    BilboBlog *bBlog;
+    KBlog::Blog *mBlog;
+    QTimer* mFetchProfileIdTimer;
+    QTimer* mFetchBlogIdTimer;
+    QTimer* mFetchAPITimer;
     bool isIdFetched;
 //     KPushButton *btnOk;
 //     KPushButton *btnCancel;

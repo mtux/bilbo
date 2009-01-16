@@ -26,8 +26,8 @@
 
 /**
 Constants.
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 
 // #define VERSION "0.1"
@@ -40,15 +40,15 @@ Constants.
 #define STATUSTIMEOUT 5000
 
 
-struct Category{
-	QString name;
-	QString description;
-	QString htmlUrl;
-	QString rssUrl;
-	QString categoryId;
-	QString parentId;
-	int id;
-	int blog_id;
+struct Category {
+    QString name;
+    QString description;
+    QString htmlUrl;
+    QString rssUrl;
+    QString categoryId;
+    QString parentId;
+    int id;
+    int blog_id;
 };
 
 #endif

@@ -21,12 +21,12 @@
 
 #include "catcheckbox.h"
 
-CatCheckBox::CatCheckBox(QWidget* parent): QCheckBox(parent)
+CatCheckBox::CatCheckBox( QWidget* parent ): QCheckBox( parent )
 {
 }
 
 
-CatCheckBox::CatCheckBox(const QString& text, QWidget* parent): QCheckBox(text, parent)
+CatCheckBox::CatCheckBox( const QString& text, QWidget* parent ): QCheckBox( text, parent )
 {
 }
 
@@ -37,13 +37,13 @@ CatCheckBox::~CatCheckBox()
 
 Category CatCheckBox::category() const
 {
-	return mCat;
+    return mCat;
 }
 
-void CatCheckBox::setCategory(const Category & category)
+void CatCheckBox::setCategory( const Category & category )
 {
-	mCat = category;
-	this->setToolTip(mCat.description);
+    mCat = category;
+    this->setToolTip( mCat.description );
 }
 
 

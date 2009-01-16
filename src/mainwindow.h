@@ -40,8 +40,8 @@ class BilboMedia;
 /**
 Main window of bilbo blogger implementation...
 
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 class MainWindow : public KXmlGuiWindow
 {
@@ -50,60 +50,60 @@ public:
     MainWindow();
 
     ~MainWindow();
-    
+
 signals:
-	void mediaFilesUploaded(int count);
+    void mediaFilesUploaded( int count );
 protected slots:
     void sltCreateNewPost();
     void settingsChanged();
-    
+
     void sltUploadAllChanges();
-    void sltPostTitleChanged(const QString& title);
+    void sltPostTitleChanged( const QString& title );
     void sltToggleToolboxVisible();
     void sltActivePostChanged( int tabIndex );
-    
+
     void sltNewPostSelected( BilboPost *newPost );
-	
+
     void sltPublishPost();
 
-	/**
-     *    Slot to remove current Post entry from main tab wigdet!
-     */
+    /**
+        *    Slot to remove current Post entry from main tab wigdet!
+        */
     void sltRemoveCurrentPostEntry();
 
     void sltCurrentBlogChanged( int blog_id );
-    
+
     void sltSavePostLocally();
     void sltSaveAsDraft();
-    
-	void sltError( const QString &errorMessage );
-    
+
+    void sltError( const QString &errorMessage );
+
 private slots:
     void optionsPreferences();
-	void postManipulationDone(const QString &customMessage);
-    
+    void postManipulationDone( const QString &customMessage );
+
 protected:
-	void keyReleaseEvent ( QKeyEvent * event );
-	bool queryClose();
-	/**
-	*  Reimplemented to save settings
-	*/
-	bool queryExit();
-    
+    void keyReleaseEvent( QKeyEvent * event );
+    bool queryClose();
+    /**
+    *  Reimplemented to save settings
+    */
+    bool queryExit();
+
 private:
     void setupActions();
     void setupSystemTray();
     void writeConfigs();
-    
+
     Ui::SettingsBase ui_prefs_base;
-	Ui::EditorSettingsBase ui_editorsettings_base;
-    
+    Ui::EditorSettingsBase ui_editorsettings_base;
+
     Toolbox *toolbox;
     QDockWidget *toolboxDock;
     PostEntry *activePost;
-	SysTray *systemTray;
+    SysTray *systemTray;
     KTabWidget *tabPosts;
-    
+
     KAction *actAddBlog;
     KAction *actUploadAll;
     KAction *actNewPost;
@@ -114,9 +114,9 @@ private:
     KAction *actDeleteLocally;
     KAction *actToggleToolboxVisible;
     KAction *actSave;
-    
+
     QToolButton *btnRemovePost;
-    
+
     int previousActivePostIndex;
 
 };

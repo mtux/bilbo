@@ -27,25 +27,25 @@
 /**
 Extend QCheckBox to add property needed for Category checkboxes.
 
-	@author 
+ @author
 */
 class Q_GUI_EXPORT CatCheckBox : public QCheckBox
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-    CatCheckBox(QWidget* parent=0);
-    
-    CatCheckBox(const QString& text, QWidget* parent=0);
+    CatCheckBox( QWidget* parent = 0 );
+
+    CatCheckBox( const QString& text, QWidget* parent = 0 );
 
     ~CatCheckBox();
-	
-	Category category() const;
-	void setCategory(const Category &category);
-	
+
+    Category category() const;
+    void setCategory( const Category &category );
+
 private:/*
-	int mCatId;
-	QString mCatTitle;*/
-	Category mCat;
+ int mCatId;
+ QString mCatTitle;*/
+    Category mCat;
 };
 
 #endif

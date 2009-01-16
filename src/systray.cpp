@@ -26,21 +26,21 @@
 #include <KDE/KLocale>
 
 
-SysTray::SysTray(QWidget* parent): KSystemTrayIcon(parent)
+SysTray::SysTray( QWidget* parent ): KSystemTrayIcon( parent )
 {
-	kDebug();
-// 	bilbo = new MainWindow();
-	this->setIcon(parent->windowIcon());
-    this->setToolTip(i18n("Bilbo Blogger"));
-// 	trayMenu = new QMenu;
-// 	createActions();
-	
-// 	connect(this,  SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(sltActivated(QSystemTrayIcon::ActivationReason)) );
+    kDebug();
+//  bilbo = new MainWindow();
+    this->setIcon( parent->windowIcon() );
+    this->setToolTip( i18n( "Bilbo Blogger" ) );
+//  trayMenu = new QMenu;
+//  createActions();
+
+//  connect(this,  SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(sltActivated(QSystemTrayIcon::ActivationReason)) );
 }
 
 SysTray::~SysTray()
 {
-	kDebug();
+    kDebug();
 }
 
 // void SysTray::createActions()
@@ -50,17 +50,17 @@ SysTray::~SysTray()
 
 // void SysTray::sltActivated(QSystemTrayIcon::ActivationReason reason)
 // {
-// // 	if(reason==2 || reason==3){
-// // 		if(bilbo){
-// // 			if(bilbo->isVisible())
-// // 				bilbo->hide();
-// // 			else
-// // 				bilbo->show();
-// // 		} else {
-// // 			bilbo = new MainWindow;
-// // 			bilbo->show();
-// // 		}
-// // 	}
+// //  if(reason==2 || reason==3){
+// //   if(bilbo){
+// //    if(bilbo->isVisible())
+// //     bilbo->hide();
+// //    else
+// //     bilbo->show();
+// //   } else {
+// //    bilbo = new MainWindow;
+// //    bilbo->show();
+// //   }
+// //  }
 // }
 
 #include "systray.moc"

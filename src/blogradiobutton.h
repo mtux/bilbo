@@ -27,21 +27,21 @@
 /**
 Bilbo radio button for Blog entries! extend QRadioButton to add more functionality.
 
-	@author 
+ @author
 */
 class Q_GUI_EXPORT BlogRadioButton : public QRadioButton
 {
     Q_OBJECT
 public:
-    BlogRadioButton(const QString& text, QWidget* parent=0);
-    
-    BlogRadioButton(QWidget* parent=0);
+    BlogRadioButton( const QString& text, QWidget* parent = 0 );
+
+    BlogRadioButton( QWidget* parent = 0 );
 
     ~BlogRadioButton();
-    
+
     int blogId() const;
-    void setBlogId(int blog_id);
-    
+    void setBlogId( int blog_id );
+
 protected:
     int mBlogId;
 

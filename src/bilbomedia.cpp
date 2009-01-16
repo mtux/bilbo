@@ -25,10 +25,10 @@
 //#include <QMimeData>
 #include <QPixmap>
 
-BilboMedia::BilboMedia(QObject *parent) 
-	: QObject(parent)
+BilboMedia::BilboMedia( QObject *parent )
+        : QObject( parent )
 {
-	mChecksum = 0;
+    mChecksum = 0;
 }
 
 BilboMedia::~BilboMedia()
@@ -37,107 +37,107 @@ BilboMedia::~BilboMedia()
 
 int BilboMedia::blogId() const
 {
-	return mBlogId;
+    return mBlogId;
 }
 
 
-void BilboMedia::setBlogId(const int blog_id)
+void BilboMedia::setBlogId( const int blog_id )
 {
-	mBlogId = blog_id;
+    mBlogId = blog_id;
 }
 
 int BilboMedia::mediaId() const
 {
-	return mMediaId;
+    return mMediaId;
 }
 
-void BilboMedia::setMediaId(const int media_id)
+void BilboMedia::setMediaId( const int media_id )
 {
-	mMediaId = media_id;
+    mMediaId = media_id;
 }
 
 // bool BilboMedia::isUploaded() const
 bool BilboMedia::isLocal() const
 {
-// 	return mIsUploaded;
-	return mIsLocal;
+//  return mIsUploaded;
+    return mIsLocal;
 }
 
 // void BilboMedia::setUploaded(bool uploaded)
-void BilboMedia::setLocal(bool is_local)
+void BilboMedia::setLocal( bool is_local )
 {
-// 	mIsUploaded = uploaded;
-	mIsLocal = is_local;
+//  mIsUploaded = uploaded;
+    mIsLocal = is_local;
 }
 
 QString BilboMedia::localUrl() const
 {
-	return mLocalUrl;
+    return mLocalUrl;
 }
 
-void BilboMedia::setLocalUrl(const QString& url)
+void BilboMedia::setLocalUrl( const QString& url )
 {
-	mLocalUrl = url;
+    mLocalUrl = url;
 }
 
 QString BilboMedia::remoteUrl() const
 {
-	return mRemoteUrl;
+    return mRemoteUrl;
 }
 
-void BilboMedia::setRemoteUrl(const QString& url)
+void BilboMedia::setRemoteUrl( const QString& url )
 {
-	mRemoteUrl = url;
+    mRemoteUrl = url;
 }
 
 QString BilboMedia::mimeType() const
 {
-	return mMimeType;
+    return mMimeType;
 }
 
-void BilboMedia::setMimeType(const QString &type)
+void BilboMedia::setMimeType( const QString &type )
 {
-	mMimeType = type;
+    mMimeType = type;
 }
 
 QString BilboMedia::name() const
 {
-	return mName;
+    return mName;
 }
 
-void BilboMedia::setName(const QString &name)
+void BilboMedia::setName( const QString &name )
 {
-	mName = name;
+    mName = name;
 }
 
 KIcon BilboMedia::icon() const
 {
-	QPixmap iconPic;
-	QString type;
-	type = this->mimeType();
-	if (type.contains("image") && !this->localUrl().isEmpty()) {
-		iconPic.load(this->localUrl());
-// 		iconPic.scaled(64, 64, Qt::IgnoreAspectRatio);
-		iconPic.scaledToHeight(32);
-		if (!iconPic.isNull()) {
-			return KIcon(iconPic);
-		} else {
-			kDebug() << "iconPic is Null";
-		}
-	}
-	
-	type.replace(QChar('/'), QChar('-'));
-	return KIcon(type);
+    QPixmap iconPic;
+    QString type;
+    type = this->mimeType();
+    if ( type.contains( "image" ) && !this->localUrl().isEmpty() ) {
+        iconPic.load( this->localUrl() );
+//   iconPic.scaled(64, 64, Qt::IgnoreAspectRatio);
+        iconPic.scaledToHeight( 32 );
+        if ( !iconPic.isNull() ) {
+            return KIcon( iconPic );
+        } else {
+            kDebug() << "iconPic is Null";
+        }
+    }
+
+    type.replace( QChar( '/' ), QChar( '-' ) );
+    return KIcon( type );
 }
 
 quint16 BilboMedia::checksum()
 {
-	return mChecksum;
+    return mChecksum;
 }
 
-void BilboMedia::setCheckSum(quint16 sum)
+void BilboMedia::setCheckSum( quint16 sum )
 {
-	mChecksum = sum;
+    mChecksum = sum;
 }
 
 #include <bilbomedia.moc>

@@ -30,18 +30,18 @@ QString __tempMediaDir;
 
 void global_init()
 {
-	kDebug();
-// // 	__conf = new Settings;
-// 	__db = new DBMan;
+    kDebug();
+// //  __conf = new Settings;
+//  __db = new DBMan;
     __currentBlogId = -1;
-	dir = new KTempDir();
-	__tempMediaDir = dir->name();
+    dir = new KTempDir();
+    __tempMediaDir = dir->name();
 }
 
 void global_end()
 {
-	kDebug();
-// 	delete __conf;
-// 	delete __db;
-	delete dir;
+    kDebug();
+//  delete __conf;
+//  delete __db;
+    delete dir;
 }

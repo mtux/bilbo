@@ -30,74 +30,74 @@
 #include "bilbomedia.h"
 #include "backend.h"
 
-PostEntry::PostEntry(QWidget *parent)
-    :QFrame(parent)
+PostEntry::PostEntry( QWidget *parent )
+        : QFrame( parent )
 {
-	createUi();
-// 	mMediaList = new QMap<QString, BilboMedia*>();
-	editPostWidget = new BilboEditor(this);
-	editPostWidget->setMediaList(&mMediaList);
-// 	editPostWidget->setMediaList(mMediaList);
-	this->layout()->addWidget(editPostWidget);
+    createUi();
+//  mMediaList = new QMap<QString, BilboMedia*>();
+    editPostWidget = new BilboEditor( this );
+    editPostWidget->setMediaList( &mMediaList );
+//  editPostWidget->setMediaList(mMediaList);
+    this->layout()->addWidget( editPostWidget );
     mCurrentPost = 0;
-	
-	mCurrentPostBlogId = -1;
+
+    mCurrentPostBlogId = -1;
 }
 
 void PostEntry::createUi()
 {
-	this->resize(626, 307);
-	gridLayout = new QGridLayout(this);
-	
-	horizontalLayout = new QHBoxLayout(this);
-	horizontalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
-	
-	labelTitle = new QLabel(this);
-	labelTitle->setText(i18nc("noun, the post title", "Title:"));
-	horizontalLayout->addWidget(labelTitle);
+    this->resize( 626, 307 );
+    gridLayout = new QGridLayout( this );
 
-	txtTitle = new KLineEdit(this);
-	horizontalLayout->addWidget(txtTitle);
-	labelTitle->setBuddy(txtTitle);
-    connect(txtTitle, SIGNAL(textChanged(const QString&)), this, 
-			SLOT( sltTitleChanged(const QString&) ));
-	
-	gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
-	
+    horizontalLayout = new QHBoxLayout( this );
+    horizontalLayout->setSizeConstraint( QLayout::SetDefaultConstraint );
+
+    labelTitle = new QLabel( this );
+    labelTitle->setText( i18nc( "noun, the post title", "Title:" ) );
+    horizontalLayout->addWidget( labelTitle );
+
+    txtTitle = new KLineEdit( this );
+    horizontalLayout->addWidget( txtTitle );
+    labelTitle->setBuddy( txtTitle );
+    connect( txtTitle, SIGNAL( textChanged( const QString& ) ), this,
+             SLOT( sltTitleChanged( const QString& ) ) );
+
+    gridLayout->addLayout( horizontalLayout, 0, 0, 1, 1 );
+
 }
 
-void PostEntry::sltTitleChanged(const QString& title)
+void PostEntry::sltTitleChanged( const QString& title )
 {
-	mCurrentPost->setTitle(title);
-	Q_EMIT sigTitleChanged(title);
+    mCurrentPost->setTitle( title );
+    Q_EMIT sigTitleChanged( title );
 }
 
 QString PostEntry::postTitle() const
 {
-	return mCurrentPost->title();
+    return mCurrentPost->title();
 }
 
 const QString& PostEntry::postBody()
 {
-	const QString& str = this->editPostWidget->htmlContent();
-	if(!mCurrentPost){
-		mCurrentPost = new BilboPost;
-	}
-	mCurrentPost->setContent(str);
-	return str;
+    const QString& str = this->editPostWidget->htmlContent();
+    if ( !mCurrentPost ) {
+        mCurrentPost = new BilboPost;
+    }
+    mCurrentPost->setContent( str );
+    return str;
 }
 
-void PostEntry::setPostTitle(const QString & title)
+void PostEntry::setPostTitle( const QString & title )
 {
-	this->txtTitle->setText(title);
-	mCurrentPost->setTitle(title);
+    this->txtTitle->setText( title );
+    mCurrentPost->setTitle( title );
 }
 
-void PostEntry::setPostBody(const QString & body)
+void PostEntry::setPostBody( const QString & body )
 {
-	kDebug()<<body;
-	mCurrentPost->setContent(body);
-    this->editPostWidget->setHtmlContent(body);
+    kDebug() << body;
+    mCurrentPost->setContent( body );
+    this->editPostWidget->setHtmlContent( body );
 }
 
 int PostEntry::currentPostBlogId()
@@ -105,189 +105,188 @@ int PostEntry::currentPostBlogId()
     return mCurrentPostBlogId;
 }
 
-void PostEntry::setCurrentPostBlogId(int blog_id)
+void PostEntry::setCurrentPostBlogId( int blog_id )
 {
     mCurrentPostBlogId = blog_id;
 }
 
 BilboPost* PostEntry::currentPost()
 {
-    mCurrentPost->setContent(postBody());
+    mCurrentPost->setContent( postBody() );
     //mCurrentPost->setTitle(postTitle());
     //return (*mCurrentPost);
-	return (mCurrentPost);
+    return ( mCurrentPost );
 }
 
-void PostEntry::setCurrentPost(BilboPost post)
+void PostEntry::setCurrentPost( BilboPost post )
 {
-    mCurrentPost = new BilboPost(post);
-    this->setPostBody(mCurrentPost->content());
-    this->setPostTitle(mCurrentPost->title());
+    mCurrentPost = new BilboPost( post );
+    this->setPostBody( mCurrentPost->content() );
+    this->setPostTitle( mCurrentPost->title() );
 }
 
 Qt::LayoutDirection PostEntry::defaultLayoutDirection()
 {
-	return this->txtTitle->layoutDirection();
+    return this->txtTitle->layoutDirection();
 }
 
-void PostEntry::setDefaultLayoutDirection(Qt::LayoutDirection direction)
+void PostEntry::setDefaultLayoutDirection( Qt::LayoutDirection direction )
 {
-	this->editPostWidget->setLayoutDirection(direction);
-	this->txtTitle->setLayoutDirection(direction);
+    this->editPostWidget->setLayoutDirection( direction );
+    this->txtTitle->setLayoutDirection( direction );
 }
 
-void PostEntry::addMedia(const QString &url)
+void PostEntry::addMedia( const QString &url )
 {
 }
 
 PostEntry::~PostEntry()
 {
-	kDebug();
+    kDebug();
     delete mCurrentPost;
 }
 
-void PostEntry::setCurrentPostProperties(BilboPost post)
+void PostEntry::setCurrentPostProperties( BilboPost post )
 {
-	post.setTitle(txtTitle->text());
-	post.setContent(this->editPostWidget->htmlContent());
-	setCurrentPost(post);
+    post.setTitle( txtTitle->text() );
+    post.setContent( this->editPostWidget->htmlContent() );
+    setCurrentPost( post );
 }
 
 QMap< QString, BilboMedia * > & PostEntry::mediaList()
 {
-	return mMediaList;
+    return mMediaList;
 }
 
 bool PostEntry::uploadMediaFiles()
 {
-	bool result = false;
-	int numOfFilesToBeUploaded = 0;
-	Backend *b = new Backend(mCurrentPostBlogId, this);
-	QMap <QString, BilboMedia*>::iterator it = mMediaList.begin();
-	QMap <QString, BilboMedia*>::iterator endIt = mMediaList.end();
-	for( ; it!=endIt; ++it){
-// 		if(!it.value()->isUploaded()){
-		if(it.value()->isLocal()){
-			result = true;
-			connect(b, SIGNAL(sigMediaUploaded(BilboMedia*)), this, SLOT(sltMediaFileUploaded(BilboMedia*)));
-			connect(b, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString)));
-			connect(b, SIGNAL(sigMediaError(const QString&, BilboMedia*)), this, SLOT(sltMediaError(const QString&, BilboMedia*)));
-			b->uploadMedia(it.value());
-			++numOfFilesToBeUploaded;
-		}
-	}
-	if(result){
-		progress = new QProgressBar(this);
-		this->layout()->addWidget(progress);
-		progress->setMaximum(numOfFilesToBeUploaded);
-		progress->setValue( 0 );
-	}
-	isUploadingMediaFilesFailed = false;
-	return result;
+    bool result = false;
+    int numOfFilesToBeUploaded = 0;
+    Backend *b = new Backend( mCurrentPostBlogId, this );
+    QMap <QString, BilboMedia*>::iterator it = mMediaList.begin();
+    QMap <QString, BilboMedia*>::iterator endIt = mMediaList.end();
+    for ( ; it != endIt; ++it ) {
+//   if(!it.value()->isUploaded()){
+        if ( it.value()->isLocal() ) {
+            result = true;
+            connect( b, SIGNAL( sigMediaUploaded( BilboMedia* ) ), this, SLOT( sltMediaFileUploaded( BilboMedia* ) ) );
+            connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString ) ) );
+            connect( b, SIGNAL( sigMediaError( const QString&, BilboMedia* ) ), this, SLOT( sltMediaError( const QString&, BilboMedia* ) ) );
+            b->uploadMedia( it.value() );
+            ++numOfFilesToBeUploaded;
+        }
+    }
+    if ( result ) {
+        progress = new QProgressBar( this );
+        this->layout()->addWidget( progress );
+        progress->setMaximum( numOfFilesToBeUploaded );
+        progress->setValue( 0 );
+    }
+    isUploadingMediaFilesFailed = false;
+    return result;
 }
 
-void PostEntry::sltMediaFileUploaded(BilboMedia * media)
+void PostEntry::sltMediaFileUploaded( BilboMedia * media )
 {
-	kDebug();
-	progress->setValue(progress->value() + 1);
-	if(progress->value()>= progress->maximum()){
-		QTimer::singleShot(800, this, SLOT(sltDeleteProgressBar()));
-		if(!isUploadingMediaFilesFailed){
-            if(editPostWidget->updateMediaPaths())
+    kDebug();
+    progress->setValue( progress->value() + 1 );
+    if ( progress->value() >= progress->maximum() ) {
+        QTimer::singleShot( 800, this, SLOT( sltDeleteProgressBar() ) );
+        if ( !isUploadingMediaFilesFailed ) {
+            if ( editPostWidget->updateMediaPaths() )
                 publishPostAfterUploadMediaFiles();
             else
-                kDebug()<<"Updateing media pathes failed!";
-		}
-		sender()->deleteLater();
-	}
+                kDebug() << "Updateing media pathes failed!";
+        }
+        sender()->deleteLater();
+    }
 }
 
-void PostEntry::sltError(const QString & errMsg)
+void PostEntry::sltError( const QString & errMsg )
 {
-	kDebug();
-	KMessageBox::detailedSorry(this, i18n("An Error occurred on latest transaction."),errMsg);
-	if(progress){
-		QTimer::singleShot(500, this, SLOT(sltDeleteProgressBar()));
-	}
-	emit postPublishingDone(errMsg);
-	sender()->deleteLater();
+    kDebug();
+    KMessageBox::detailedSorry( this, i18n( "An Error occurred on latest transaction." ), errMsg );
+    if ( progress ) {
+        QTimer::singleShot( 500, this, SLOT( sltDeleteProgressBar() ) );
+    }
+    emit postPublishingDone( errMsg );
+    sender()->deleteLater();
 }
 
-void PostEntry::sltMediaError(const QString & errorMessage, BilboMedia * media)
+void PostEntry::sltMediaError( const QString & errorMessage, BilboMedia * media )
 {
-	kDebug();
-	isUploadingMediaFilesFailed = true;
-	QString name = media->name();
-	kDebug()<<" AN ERROR OCCURRED ON UPLOADING,\tError message is: "<<errorMessage;
+    kDebug();
+    isUploadingMediaFilesFailed = true;
+    QString name = media->name();
+    kDebug() << " AN ERROR OCCURRED ON UPLOADING,\tError message is: " << errorMessage;
 
-	KMessageBox::detailedSorry(this, i18n("Uploading media file %1 (Local Path: %2) failed", name, media->localUrl()),
-							    errorMessage, i18n("Uploading media file Failed!"));
-	if(progress){
-		QTimer::singleShot(500, this, SLOT(sltDeleteProgressBar()));
-	}
-	emit postPublishingDone(errorMessage);
-	sender()->deleteLater();
+    KMessageBox::detailedSorry( this, i18n( "Uploading media file %1 (Local Path: %2) failed", name, media->localUrl() ),
+                                errorMessage, i18n( "Uploading media file Failed!" ) );
+    if ( progress ) {
+        QTimer::singleShot( 500, this, SLOT( sltDeleteProgressBar() ) );
+    }
+    emit postPublishingDone( errorMessage );
+    sender()->deleteLater();
 }
 
-void PostEntry::publishPost(int blogId, BilboPost * postData)
+void PostEntry::publishPost( int blogId, BilboPost * postData )
 {
-	kDebug();
-	this->setCurrentPostProperties(*postData);
-	mCurrentPostBlogId = blogId;
-	if(!this->uploadMediaFiles())
-		publishPostAfterUploadMediaFiles();
+    kDebug();
+    this->setCurrentPostProperties( *postData );
+    mCurrentPostBlogId = blogId;
+    if ( !this->uploadMediaFiles() )
+        publishPostAfterUploadMediaFiles();
 }
 
 void PostEntry::publishPostAfterUploadMediaFiles()
 {
-	kDebug();
-	
-	progress = new QProgressBar(this);
-	this->layout()->addWidget(progress);
-	progress->setMaximum( 0 );
-	progress->setMinimum( 0 );
-	
-	Backend *b = new Backend(mCurrentPostBlogId);
-	connect(b, SIGNAL(sigPostPublished(int, BilboPost*)), this, SLOT(sltPostPublished(int, BilboPost*)));
-	connect(b, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString&)));
-	b->publishPost(mCurrentPost);
+    kDebug();
+
+    progress = new QProgressBar( this );
+    this->layout()->addWidget( progress );
+    progress->setMaximum( 0 );
+    progress->setMinimum( 0 );
+
+    Backend *b = new Backend( mCurrentPostBlogId );
+    connect( b, SIGNAL( sigPostPublished( int, BilboPost* ) ), this, SLOT( sltPostPublished( int, BilboPost* ) ) );
+    connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
+    b->publishPost( mCurrentPost );
 }
 
-void PostEntry::sltPostPublished(int blog_id, BilboPost *post )
+void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
 {
-	kDebug()<<"Post Id on server: "<< post->postId();
-	///FIXME This DB communication is un necessary! fix it
-// 	BilboBlog *b = DBMan::self()->getBlogInfo(blog_id);
-	QString blog_name="NOT SET";// = b->title();
-// 	delete b;
-	QString msg;
-	if(post->isPrivate()){
-		msg = i18n("New Draft with title \"%1\" saved successfully.", post->title());
-	}
-	else {
-		msg = i18n("New Post with title \"%1\" published successfully.", post->title());
-	}
-	KMessageBox::information(this, msg, "Successful");
-// 	if(KMessageBox::questionYesNo(this, msg, "Successful") != KMessageBox::Yes){
-// 		sltRemoveCurrentPostEntry();//FIXME this functionality doesn't work! fix it.
-// 	}
-	if(progress){
-		this->layout()->removeWidget(progress);
-		progress->deleteLater();
-	}
-// 	if(isPrivate){
-// 		msg = i18n("Draft saved successfully!");
-// 	} else {
-// 		msg = i18n("New post published successfully!");
-// 	}
-	emit postPublishingDone(QString());
-	sender()->deleteLater();
+    kDebug() << "Post Id on server: " << post->postId();
+    ///FIXME This DB communication is un necessary! fix it
+//  BilboBlog *b = DBMan::self()->getBlogInfo(blog_id);
+    QString blog_name = "NOT SET";// = b->title();
+//  delete b;
+    QString msg;
+    if ( post->isPrivate() ) {
+        msg = i18n( "New Draft with title \"%1\" saved successfully.", post->title() );
+    } else {
+        msg = i18n( "New Post with title \"%1\" published successfully.", post->title() );
+    }
+    KMessageBox::information( this, msg, "Successful" );
+//  if(KMessageBox::questionYesNo(this, msg, "Successful") != KMessageBox::Yes){
+//   sltRemoveCurrentPostEntry();//FIXME this functionality doesn't work! fix it.
+//  }
+    if ( progress ) {
+        this->layout()->removeWidget( progress );
+        progress->deleteLater();
+    }
+//  if(isPrivate){
+//   msg = i18n("Draft saved successfully!");
+//  } else {
+//   msg = i18n("New post published successfully!");
+//  }
+    emit postPublishingDone( QString() );
+    sender()->deleteLater();
 }
 
 void PostEntry::sltDeleteProgressBar()
 {
-	this->layout()->removeWidget(progress);
-	progress->deleteLater();
+    this->layout()->removeWidget( progress );
+    progress->deleteLater();
 }
 
 #include "postentry.moc"

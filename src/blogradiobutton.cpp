@@ -21,12 +21,12 @@
 
 #include "blogradiobutton.h"
 
-BlogRadioButton::BlogRadioButton(const QString& text, QWidget* parent): QRadioButton(text, parent)
+BlogRadioButton::BlogRadioButton( const QString& text, QWidget* parent ): QRadioButton( text, parent )
 {
 }
 
 
-BlogRadioButton::BlogRadioButton(QWidget* parent): QRadioButton(parent)
+BlogRadioButton::BlogRadioButton( QWidget* parent ): QRadioButton( parent )
 {
 }
 
@@ -40,7 +40,7 @@ int BlogRadioButton::blogId() const
     return mBlogId;
 }
 
-void BlogRadioButton::setBlogId(int blog_id)
+void BlogRadioButton::setBlogId( int blog_id )
 {
     mBlogId = blog_id;
 }

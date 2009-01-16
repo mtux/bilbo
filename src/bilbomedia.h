@@ -28,60 +28,60 @@
 /**
 Contains needed properties of each media object, like images and videos.
 
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 class QMimeData;
 class KIcon;
 class BilboMedia : public QObject
 {
-	Q_OBJECT
-	public:
-		///BilboMedia constructor
-		BilboMedia(QObject *parent=0);
-		
-		///BilboMedia destructor
-		~BilboMedia();
-		
-		int blogId() const;
-		void setBlogId(const int blog_id);
-		
-		int mediaId() const;
-		void setMediaId(const int media_id);
-		
+    Q_OBJECT
+public:
+    ///BilboMedia constructor
+    BilboMedia( QObject *parent = 0 );
+
+    ///BilboMedia destructor
+    ~BilboMedia();
+
+    int blogId() const;
+    void setBlogId( const int blog_id );
+
+    int mediaId() const;
+    void setMediaId( const int media_id );
+
 //         bool isUploaded() const;
-// 		void setUploaded(bool uploaded);
-		
-		bool isLocal() const;
-		void setLocal(bool is_local);
-		
-        QString localUrl() const;
-		void setLocalUrl(const QString &url);
-		
-        QString remoteUrl() const;
-		void setRemoteUrl(const QString &url);
-		
-        QString mimeType() const;
-		void setMimeType(const QString &type);
-		
-        QString name() const;
-		void setName(const QString &name);
-		
-		KIcon icon() const;
-		
-		quint16 checksum();
-		void setCheckSum(quint16 sum);
-		
-	private:
-		int mBlogId;
-		int mMediaId;
-// 		bool mIsUploaded;
-		bool mIsLocal;
-		QString mLocalUrl;
-		QString mRemoteUrl;
-		QString mMimeType;
-		QString mName;
-		quint16 mChecksum;
+//   void setUploaded(bool uploaded);
+
+    bool isLocal() const;
+    void setLocal( bool is_local );
+
+    QString localUrl() const;
+    void setLocalUrl( const QString &url );
+
+    QString remoteUrl() const;
+    void setRemoteUrl( const QString &url );
+
+    QString mimeType() const;
+    void setMimeType( const QString &type );
+
+    QString name() const;
+    void setName( const QString &name );
+
+    KIcon icon() const;
+
+    quint16 checksum();
+    void setCheckSum( quint16 sum );
+
+private:
+    int mBlogId;
+    int mMediaId;
+//   bool mIsUploaded;
+    bool mIsLocal;
+    QString mLocalUrl;
+    QString mRemoteUrl;
+    QString mMimeType;
+    QString mName;
+    quint16 mChecksum;
 };
 
 #endif

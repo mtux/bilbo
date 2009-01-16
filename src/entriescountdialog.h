@@ -27,20 +27,21 @@
 #include "ui_entriescountdialogbase.h"
 
 /**
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-class EntriesCountDialog: public KDialog{
-Q_OBJECT
+class EntriesCountDialog: public KDialog
+{
+    Q_OBJECT
 public:
-    EntriesCountDialog(QWidget *parent = 0);
-	
+    EntriesCountDialog( QWidget *parent = 0 );
+
 Q_SIGNALS:
-	void sigAccepted(int count);
-	
+    void sigAccepted( int count );
+
 protected Q_SLOTS:
-	void sltAccepted();
-    
+    void sltAccepted();
+
 private:
     Ui::EntriesCountDialogBase ui;
 };

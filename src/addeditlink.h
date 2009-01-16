@@ -30,27 +30,27 @@
 /**
 Implements a dialog to get user input for link parameters; address, name and target.
 
-	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
-	@author Golnaz Nilieh <g382nilieh@gmail.com>
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 
 class AddEditLink: public KDialog
 {
-	Q_OBJECT
-	public:
-		AddEditLink(QWidget *parent = 0);
-		void show(const QString& address = "", const QString& title = "", 
-				  const QString& target = "");
-		
-	Q_SIGNALS:
- 		void addLink( const QString& address, const QString& target, const QString& title);
-// 		void addLink( const QString& address );
-		
-	private Q_SLOTS:
-		void sltAccepted();
-		
-	private:
-		Ui::AddEditLinkBase ui;
+    Q_OBJECT
+public:
+    AddEditLink( QWidget *parent = 0 );
+    void show( const QString& address = "", const QString& title = "",
+               const QString& target = "" );
+
+Q_SIGNALS:
+    void addLink( const QString& address, const QString& target, const QString& title );
+//   void addLink( const QString& address );
+
+private Q_SLOTS:
+    void sltAccepted();
+
+private:
+    Ui::AddEditLinkBase ui;
 };
 
 #endif

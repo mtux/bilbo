@@ -27,57 +27,55 @@
 #include <kdialog.h>
 #include <kdebug.h>
 
-MediaListWidget::MediaListWidget(QWidget *parent): KListWidget(parent)
+MediaListWidget::MediaListWidget( QWidget *parent ): KListWidget( parent )
 {
-	actEdit = new KAction(i18n("Edit properties"),this);
-	connect(actEdit, SIGNAL(triggered( bool )), this, SLOT(sltEditProperties()));
-	actRemove = new KAction(i18n("Remove media"),this);
-	connect(actRemove, SIGNAL(triggered( bool )), this, SLOT(sltRemoveMedia()));
+    actEdit = new KAction( i18n( "Edit properties" ), this );
+    connect( actEdit, SIGNAL( triggered( bool ) ), this, SLOT( sltEditProperties() ) );
+    actRemove = new KAction( i18n( "Remove media" ), this );
+    connect( actRemove, SIGNAL( triggered( bool ) ), this, SLOT( sltRemoveMedia() ) );
 }
 
 MediaListWidget::~MediaListWidget()
 {
 }
 
-void MediaListWidget::contextMenuEvent(QContextMenuEvent *event)
+void MediaListWidget::contextMenuEvent( QContextMenuEvent *event )
 {
-	if (this->itemAt(event->pos()))
-	{
-		KMenu menu(this);
-		if (this->itemAt(event->pos())->type() == ImageType)
-		{
-			menu.addAction(actEdit);
-		}
-		menu.addAction(actRemove);
-		menu.exec(event->globalPos());
-	}
+    if ( this->itemAt( event->pos() ) ) {
+        KMenu menu( this );
+        if ( this->itemAt( event->pos() )->type() == ImageType ) {
+            menu.addAction( actEdit );
+        }
+        menu.addAction( actRemove );
+        menu.exec( event->globalPos() );
+    }
 }
 
 void MediaListWidget::sltEditProperties()
 {
-	QDialog *temp = new QDialog(this);
-	KDialog *dialog = new KDialog(this);
-	//ui.setupUi(dialog);
-	ui.setupUi(temp);
-	dialog->setMainWidget(temp);
-	dialog->setWindowTitle(temp->windowTitle());
-	dialog->resize(temp->width(), temp->height());
-	dialog->setWindowModality(Qt::WindowModal);
-	dialog->setAttribute( Qt::WA_DeleteOnClose );
-	connect(dialog, SIGNAL(okClicked()), this, SLOT(sltSetProperties()));
-	dialog->exec();
+    QDialog *temp = new QDialog( this );
+    KDialog *dialog = new KDialog( this );
+    //ui.setupUi(dialog);
+    ui.setupUi( temp );
+    dialog->setMainWidget( temp );
+    dialog->setWindowTitle( temp->windowTitle() );
+    dialog->resize( temp->width(), temp->height() );
+    dialog->setWindowModality( Qt::WindowModal );
+    dialog->setAttribute( Qt::WA_DeleteOnClose );
+    connect( dialog, SIGNAL( okClicked() ), this, SLOT( sltSetProperties() ) );
+    dialog->exec();
 }
 void MediaListWidget::sltSetProperties()
 {
-	Q_EMIT(sigSetProperties(this->currentRow(), ui.txtWidth->text(), 
-		   ui.txtHeight->text(), ui.txtTitle->text(), ui.txtAltText->text()));
-	kDebug() << "signal emmited" ;
+    Q_EMIT( sigSetProperties( this->currentRow(), ui.txtWidth->text(),
+                              ui.txtHeight->text(), ui.txtTitle->text(), ui.txtAltText->text() ) );
+    kDebug() << "signal emmited" ;
 }
 
 void MediaListWidget::sltRemoveMedia()
 {
-	kDebug() << this->currentRow();
-	Q_EMIT(sigRemoveMedia(this->currentRow()));
+    kDebug() << this->currentRow();
+    Q_EMIT( sigRemoveMedia( this->currentRow() ) );
 }
 
 #include "medialistwidget.moc"
