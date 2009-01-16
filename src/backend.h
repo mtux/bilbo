@@ -34,7 +34,7 @@ class BilboPost;
 class BilboMedia;
 // class KBlog::BlogMedia;
 /**
-Engine of application, communicate with plugins and UI.
+Engine of application.
 this is heart and brain of app. ;)
 
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
@@ -143,7 +143,7 @@ private:
 	KBlog::Blog *mBlog;
 	BilboBlog *bBlog;
 //     quint16 mChecksum;
-    QString mediaLocalUrl;
+//     QString mediaLocalUrl;
 	QList<Category> mCreatePostCategories;
 	QMap<QString, KBlog::BlogPost *> mSetPostCategoriesMap;
     QMap<KBlog::BlogMedia *, BilboMedia *> mPublishMediaMap;

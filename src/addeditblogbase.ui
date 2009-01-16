@@ -1,345 +1,332 @@
 <ui version="4.0" >
  <class>AddEditBlogBase</class>
- <widget class="QDialog" name="AddEditBlogBase" >
+ <widget class="KTabWidget" name="AddEditBlogBase" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>455</width>
-    <height>374</height>
+    <width>393</width>
+    <height>311</height>
    </rect>
   </property>
-  <property name="windowTitle" >
-   <string/>
+  <property name="currentIndex" >
+   <number>0</number>
   </property>
-  <layout class="QGridLayout" name="gridLayout" >
-   <item row="0" column="0" >
-    <widget class="KTabWidget" name="tabs" >
-     <property name="currentIndex" >
-      <number>0</number>
-     </property>
-     <widget class="QWidget" name="tabBasic" >
-      <attribute name="title" >
-       <string>Basic</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_2" >
-       <item row="0" column="0" colspan="3" >
-        <widget class="QLabel" name="label_4" >
-         <property name="text" >
-          <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+  <widget class="QWidget" name="tabBasic" >
+   <attribute name="title" >
+    <string>Basic</string>
+   </attribute>
+   <layout class="QGridLayout" name="gridLayout_2" >
+    <item row="0" column="0" colspan="3" >
+     <widget class="QLabel" name="label_4" >
+      <property name="sizePolicy" >
+       <sizepolicy vsizetype="MinimumExpanding" hsizetype="Preferred" >
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text" >
+       <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:10pt; font-weight:400; font-style:normal;">
+&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;">
 &lt;table border="0" style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
 &lt;tr>
 &lt;td style="border: none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&amp;amp;Configuring your blog account...&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;">&lt;span style=" font-size:9pt;">&amp;amp;Configuring your blog account...&lt;/span>&lt;/p>
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Please fill these fields, and hit the AutoConfigure button to retrieve your blog settings&lt;/p>
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">You can set more options on Advanced tab.&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
-         </property>
-         <property name="scaledContents" >
-          <bool>false</bool>
-         </property>
-         <property name="wordWrap" >
-          <bool>true</bool>
-         </property>
-         <property name="buddy" >
-          <cstring>txtUrl</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" colspan="2" >
-        <widget class="QLabel" name="lblTitle" >
-         <property name="font" >
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="styleSheet" >
-          <string notr="true" >color: rgb(40, 21, 255);</string>
-         </property>
-         <property name="frameShape" >
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="text" >
-          <string/>
-         </property>
-         <property name="alignment" >
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" >
-        <widget class="QLabel" name="label" >
-         <property name="text" >
-          <string>Blog/Homepage &amp;URL :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>txtUrl</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1" colspan="2" >
-        <widget class="KLineEdit" name="txtUrl" >
-         <property name="text" >
-          <string>http://</string>
-         </property>
-         <property name="showClearButton" stdset="0" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" >
-        <widget class="QLabel" name="label_2" >
-         <property name="text" >
-          <string>User&amp;name :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>txtUser</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1" colspan="2" >
-        <widget class="KLineEdit" name="txtUser" />
-       </item>
-       <item row="5" column="0" >
-        <widget class="QLabel" name="label_3" >
-         <property name="text" >
-          <string>&amp;Password :</string>
-         </property>
-         <property name="buddy" >
-          <cstring>txtPass</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1" colspan="2" >
-        <widget class="KLineEdit" name="txtPass" >
-         <property name="echoMode" >
-          <enum>QLineEdit::Password</enum>
-         </property>
-         <property name="urlDropsEnabled" >
-          <bool>false</bool>
-         </property>
-         <property name="showClearButton" stdset="0" >
-          <bool>true</bool>
-         </property>
-         <property name="passwordMode" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1" >
-        <spacer name="horizontalSpacer_2" >
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="6" column="2" >
-        <widget class="KPushButton" name="btnAutoConf" >
-         <property name="enabled" >
-          <bool>false</bool>
-         </property>
-         <property name="text" >
-          <string>&amp;Auto Configure</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0" colspan="3" >
-        <spacer name="verticalSpacer_2" >
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="2" column="0" >
-        <widget class="QLabel" name="label_9" >
-         <property name="text" >
-          <string>Your blog Title :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="3" >
-        <widget class="KSeparator" name="kseparator" />
-       </item>
-      </layout>
+      </property>
+      <property name="scaledContents" >
+       <bool>false</bool>
+      </property>
+      <property name="wordWrap" >
+       <bool>true</bool>
+      </property>
+      <property name="buddy" >
+       <cstring>txtUrl</cstring>
+      </property>
      </widget>
-     <widget class="QWidget" name="tabAdvanced" >
-      <attribute name="title" >
-       <string>Advanced</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_3" >
-       <item row="0" column="0" colspan="3" >
-        <widget class="QLabel" name="label_5" >
-         <property name="text" >
-          <string>&amp;Configuring your blog account...</string>
-         </property>
-         <property name="buddy" >
-          <cstring>txtUrl</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" >
-        <widget class="QLabel" name="label_6" >
-         <property name="text" >
-          <string comment="Name of the API which is used to communicate with Blog" >API :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" >
-        <widget class="KComboBox" name="comboApi" >
-         <item>
-          <property name="text" >
-           <string>Blogger 1.0 API</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>MetaWeblog API</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>MovableType API</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>MT for Wordpress API</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>GData</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="1" column="2" >
-        <spacer name="horizontalSpacer" >
-         <property name="orientation" >
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>195</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="2" column="0" >
-        <widget class="QLabel" name="label_7" >
-         <property name="text" >
-          <string>Blog ID :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" >
-        <widget class="KLineEdit" name="txtId" />
-       </item>
-       <item row="2" column="2" >
-        <widget class="KPushButton" name="btnFetch" >
-         <property name="maximumSize" >
-          <size>
-           <width>100</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text" >
-          <string comment="verb, fetch the blog id from the web" >Fetch ID</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1" >
-        <spacer name="verticalSpacer" >
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>20</width>
-           <height>130</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="3" column="0" >
-        <widget class="QLabel" name="label_8" >
-         <property name="lineWidth" >
-          <number>1</number>
-         </property>
-         <property name="text" >
-          <string comment="Default direction of text in the blog" >Text direction :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1" >
-        <widget class="KComboBox" name="comboDir" >
-         <item>
-          <property name="text" >
-           <string>Left to right</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Right to left</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-      </layout>
+    </item>
+    <item row="2" column="1" colspan="2" >
+     <widget class="QLabel" name="lblTitle" >
+      <property name="font" >
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet" >
+       <string notr="true" >color: rgb(40, 21, 255);</string>
+      </property>
+      <property name="frameShape" >
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="text" >
+       <string/>
+      </property>
+      <property name="alignment" >
+       <set>Qt::AlignCenter</set>
+      </property>
      </widget>
-    </widget>
-   </item>
-   <item row="1" column="0" >
-    <layout class="QHBoxLayout" name="horizontalLayout" >
-     <item>
-      <spacer name="horizontalSpacer_3" >
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="KPushButton" name="btnOk" >
-       <property name="enabled" >
-        <bool>false</bool>
-       </property>
+    </item>
+    <item row="3" column="0" >
+     <widget class="QLabel" name="label" >
+      <property name="text" >
+       <string>Blog/Homepage &amp;URL :</string>
+      </property>
+      <property name="buddy" >
+       <cstring>txtUrl</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1" colspan="2" >
+     <widget class="KLineEdit" name="txtUrl" >
+      <property name="text" >
+       <string>http://</string>
+      </property>
+      <property name="clickMessage" >
+       <string>http://YourHomePage.com</string>
+      </property>
+      <property name="showClearButton" stdset="0" >
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0" >
+     <widget class="QLabel" name="label_2" >
+      <property name="text" >
+       <string>User&amp;name :</string>
+      </property>
+      <property name="buddy" >
+       <cstring>txtUser</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1" colspan="2" >
+     <widget class="KLineEdit" name="txtUser" />
+    </item>
+    <item row="5" column="0" >
+     <widget class="QLabel" name="label_3" >
+      <property name="text" >
+       <string>&amp;Password :</string>
+      </property>
+      <property name="buddy" >
+       <cstring>txtPass</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1" colspan="2" >
+     <widget class="KLineEdit" name="txtPass" >
+      <property name="echoMode" >
+       <enum>QLineEdit::Password</enum>
+      </property>
+      <property name="urlDropsEnabled" >
+       <bool>false</bool>
+      </property>
+      <property name="showClearButton" stdset="0" >
+       <bool>true</bool>
+      </property>
+      <property name="passwordMode" >
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1" >
+     <spacer name="horizontalSpacer_2" >
+      <property name="orientation" >
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0" >
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="6" column="2" >
+     <widget class="KPushButton" name="btnAutoConf" >
+      <property name="enabled" >
+       <bool>false</bool>
+      </property>
+      <property name="text" >
+       <string>&amp;Auto Configure</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0" colspan="3" >
+     <spacer name="verticalSpacer_2" >
+      <property name="orientation" >
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType" >
+       <enum>QSizePolicy::Expanding</enum>
+      </property>
+      <property name="sizeHint" stdset="0" >
+       <size>
+        <width>20</width>
+        <height>0</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="0" >
+     <widget class="QLabel" name="label_9" >
+      <property name="font" >
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text" >
+       <string>Your blog Title is :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="3" >
+     <widget class="KSeparator" name="kseparator" />
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="tabAdvanced" >
+   <attribute name="title" >
+    <string>Advanced</string>
+   </attribute>
+   <layout class="QGridLayout" name="gridLayout_3" >
+    <item row="0" column="0" colspan="3" >
+     <widget class="QLabel" name="label_5" >
+      <property name="text" >
+       <string>&amp;Configuring your blog account...</string>
+      </property>
+      <property name="buddy" >
+       <cstring>txtUrl</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" >
+     <widget class="QLabel" name="label_6" >
+      <property name="text" >
+       <string comment="Name of the API which is used to communicate with Blog" >&amp;API :</string>
+      </property>
+      <property name="buddy" >
+       <cstring>comboApi</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1" >
+     <widget class="KComboBox" name="comboApi" >
+      <item>
        <property name="text" >
-        <string>OK</string>
+        <string>Blogger 1.0 API</string>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="KPushButton" name="btnCancel" >
+      </item>
+      <item>
        <property name="text" >
-        <string>Cancel</string>
+        <string>MetaWeblog API</string>
        </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-  </layout>
+      </item>
+      <item>
+       <property name="text" >
+        <string>MovableType API</string>
+       </property>
+      </item>
+      <item>
+       <property name="text" >
+        <string>MT for Wordpress API</string>
+       </property>
+      </item>
+      <item>
+       <property name="text" >
+        <string>GData</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="2" column="2" >
+     <spacer name="horizontalSpacer" >
+      <property name="orientation" >
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0" >
+       <size>
+        <width>195</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="3" column="0" >
+     <widget class="QLabel" name="label_7" >
+      <property name="text" >
+       <string>Blog &amp;ID :</string>
+      </property>
+      <property name="buddy" >
+       <cstring>txtId</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1" >
+     <widget class="KLineEdit" name="txtId" />
+    </item>
+    <item row="3" column="2" >
+     <widget class="KPushButton" name="btnFetch" >
+      <property name="maximumSize" >
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text" >
+       <string comment="verb, fetch the blog id from the web" >&amp;Fetch ID</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1" >
+     <spacer name="verticalSpacer" >
+      <property name="orientation" >
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0" >
+       <size>
+        <width>20</width>
+        <height>130</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="0" >
+     <widget class="QLabel" name="label_8" >
+      <property name="lineWidth" >
+       <number>1</number>
+      </property>
+      <property name="text" >
+       <string comment="Default direction of text in the blog" >Default text &amp;direction :</string>
+      </property>
+      <property name="buddy" >
+       <cstring>comboDir</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1" >
+     <widget class="KComboBox" name="comboDir" >
+      <item>
+       <property name="text" >
+        <string>Left to right</string>
+       </property>
+      </item>
+      <item>
+       <property name="text" >
+        <string>Right to left</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="3" >
+     <widget class="KSeparator" name="kseparator_2" />
+    </item>
+   </layout>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -374,47 +361,11 @@ p, li { white-space: pre-wrap; }
   <tabstop>txtUser</tabstop>
   <tabstop>txtPass</tabstop>
   <tabstop>btnAutoConf</tabstop>
-  <tabstop>btnOk</tabstop>
-  <tabstop>btnCancel</tabstop>
-  <tabstop>tabs</tabstop>
   <tabstop>comboApi</tabstop>
   <tabstop>txtId</tabstop>
   <tabstop>btnFetch</tabstop>
   <tabstop>comboDir</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>btnOk</sender>
-   <signal>clicked()</signal>
-   <receiver>AddEditBlogBase</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>300</x>
-     <y>319</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>217</x>
-     <y>314</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btnCancel</sender>
-   <signal>clicked()</signal>
-   <receiver>AddEditBlogBase</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>400</x>
-     <y>313</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>96</x>
-     <y>292</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

@@ -10,6 +10,12 @@
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout_2" >
+   <property name="margin" >
+    <number>1</number>
+   </property>
+   <property name="spacing" >
+    <number>1</number>
+   </property>
    <item row="0" column="0" >
     <layout class="QGridLayout" name="gridLayout" >
      <item row="0" column="0" >
@@ -22,8 +28,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>300</width>
-          <height>397</height>
+          <width>306</width>
+          <height>403</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -499,8 +505,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>300</width>
-          <height>397</height>
+          <width>238</width>
+          <height>323</height>
          </rect>
         </property>
         <attribute name="label" >

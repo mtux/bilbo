@@ -63,7 +63,7 @@ Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 	mBlog->setUrl(KUrl(bBlog->url()));
     mBlog->setBlogId(bBlog->blogid());
 	categoryListNotSet = false;
-    mediaLocalUrl= "";
+//     mediaLocalUrl= "";
     
     connect( mBlog, SIGNAL( error( KBlog::Blog::ErrorType, const QString& ) ),
             this, SLOT( error( KBlog::Blog::ErrorType, const QString& ) ) );
@@ -78,7 +78,7 @@ Backend::Backend(int blog_id, QObject* parent): QObject(parent)
 Backend::~Backend()
 {
     kDebug();
-    delete bBlog;
+    bBlog->deleteLater();
 }
 
 void Backend::getCategoryListFromServer()
@@ -90,8 +90,9 @@ void Backend::getCategoryListFromServer()
 				this, SLOT(categoriesListed(const QList< QMap< QString, QString > > &)));
 		tmp->listCategories();
     } else {
-		kDebug()<<"Blog API doesn't support getting Category list.";
-		QString tmp = i18n("Blog API doesn't support getting Category list.");
+        QString err = "Blog API doesn't support getting Category list.";
+		kDebug()<<err;
+		QString tmp = i18n(err.toLatin1().data());
 		error(KBlog::Blog::NotSupported, tmp);
 // 		emit sigError(tmp);
     }
@@ -101,18 +102,17 @@ void Backend::categoriesListed(const QList< QMap < QString , QString > > & categ
 {
 	kDebug()<<"Blog Id: "<< bBlog->id();
 	DBMan::self()->clearCategories(bBlog->id());
-	QString name, description, htmlUrl, rssUrl, categoryId, parentId;
-	const QMap<QString, QString> *category;
 
 	for ( int i = 0; i < categories.count(); ++i) {
-		category = &(categories.at(i));
+        QString name, description, htmlUrl, rssUrl, categoryId, parentId;
+        const QMap<QString, QString> &category = categories.at(i);
 
-		name = category->value("name", QString());
-		description = category->value("description", QString());
-		htmlUrl = category->value("htmlUrl", QString());
-		rssUrl = category->value("rssUrl", QString());
-		categoryId = category->value("categoryId", QString());
-		parentId = category->value("parentId", QString());
+		name = category.value("name", QString());
+		description = category.value("description", QString());
+		htmlUrl = category.value("htmlUrl", QString());
+		rssUrl = category.value("rssUrl", QString());
+		categoryId = category.value("categoryId", QString());
+		parentId = category.value("parentId", QString());
 		
 		DBMan::self()->addCategory(name, description, htmlUrl, rssUrl, categoryId, parentId, bBlog->id());
 	}
@@ -122,8 +122,8 @@ void Backend::categoriesListed(const QList< QMap < QString , QString > > & categ
 void Backend::getEntriesListFromServer(int count)
 {
 	kDebug()<<"Blog Id: "<< bBlog->id();
-	mBlog->listRecentPosts(count);
 	connect(mBlog, SIGNAL(listedRecentPosts(const QList<KBlog::BlogPost> & )), this, SLOT(entriesListed(const QList<KBlog::BlogPost >&)));
+	mBlog->listRecentPosts(count);
 }
 
 void Backend::entriesListed(const QList< KBlog::BlogPost > & posts)
@@ -237,7 +237,7 @@ void Backend::uploadMedia(BilboMedia * media)
         
         m->setData(data);
         m->setName(media->name());
-        this->mediaLocalUrl = media->localUrl();
+//         this->mediaLocalUrl = media->localUrl();
         
         media->setCheckSum( qChecksum(data.data(), data.count()) );
         

@@ -1,5 +1,5 @@
 include (KDE4Defaults)
-include_directories( ${KDE4_INCLUDES})
+include_directories( ${KDEPIMLIBS_INCLUDE_DIR} ${KDE4_INCLUDES})
 FIND_PACKAGE(KDE4) 
 SET(QT_USE_QTSQL 1) 
 SET(QT_USE_QTWEBKIT 1)
@@ -59,7 +59,7 @@ install( TARGETS bilbo DESTINATION ${BIN_INSTALL_DIR} )
 
 
 ########### install files ###############
-#//TODO: Add
+
 install( FILES ../bilbo.desktop  DESTINATION  ${XDG_APPS_INSTALL_DIR} )
 install( FILES bilbo.kcfg  DESTINATION  ${KCFG_INSTALL_DIR} )
 install( FILES bilboui.rc  DESTINATION  ${DATA_INSTALL_DIR}/bilbo )

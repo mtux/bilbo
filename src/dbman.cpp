@@ -202,16 +202,19 @@ bool DBMan::editBlog(int id, QString username, QString password, QString style_u
 	if(mWallet && mWallet->writePassword(tmp->url().url()+'_'+tmp->username(), password)==0)
 		kDebug()<<"New password stored to kde wallet";
 	tmp->deleteLater();
-	return q.exec();
+    bool res = q.exec();
+    if(!res){
+        kDebug()<<q.lastError().text();
+    }
+    return res;
 }
 
 bool DBMan::editBlog(BilboBlog & blog)
 {
 	QSqlQuery q;
 	q.prepare("UPDATE blog SET username=? , style_url=? , api_type=?, \
-               title=?, direction=? local_directory=? WHERE id=?");
+               title=?, direction=?, local_directory=? WHERE id=?");
 	q.addBindValue(blog.username());
-// 	q.addBindValue(blog.password());
 	q.addBindValue(blog.stylePath());
 	q.addBindValue(blog.api());
 	q.addBindValue(blog.title());
@@ -220,7 +223,11 @@ bool DBMan::editBlog(BilboBlog & blog)
 	q.addBindValue(blog.id());
 	if(mWallet && mWallet->writePassword(blog.url().url()+'_'+blog.username(), blog.password())==0)
 		kDebug()<<"Password stored to kde wallet";
-	return q.exec();
+    bool res = q.exec();
+    if(!res){
+        kDebug()<<q.lastError().text();
+    }
+	return res;
 }
 
 bool DBMan::removeBlog(int blog_id)
@@ -232,7 +239,11 @@ bool DBMan::removeBlog(int blog_id)
 	QSqlQuery q;
 	q.prepare("DELETE FROM blog WHERE id=?");
 	q.addBindValue(blog_id);
-	return q.exec();
+    bool res = q.exec();
+    if(!res){
+        kDebug()<<q.lastError().text();
+    }
+    return res;
 }
 
 int DBMan::addPost(QString postid, int blog_id, QString author, QString title, QString & content,
@@ -485,7 +496,11 @@ bool DBMan::removePost(int id)
 	QSqlQuery q;
 	q.prepare("DELETE FROM post WHERE id=?");
 	q.addBindValue(id);
-	return q.exec();
+    bool res = q.exec();
+    if(!res){
+        kDebug()<<q.lastError().text();
+    }
+    return res;
 }
 
 bool DBMan::clearPosts(int blog_id)
@@ -493,7 +508,11 @@ bool DBMan::clearPosts(int blog_id)
 	QSqlQuery q;
 	q.prepare("DELETE FROM post WHERE blog_id=?");
 	q.addBindValue(blog_id);
-	return q.exec();
+    bool res = q.exec();
+    if(!res){
+        kDebug()<<q.lastError().text();
+    }
+    return res;
 }
 
 int DBMan::addCategory(const QString &name, const QString &description, const QString &htmlUrl, 
@@ -521,7 +540,11 @@ bool DBMan::clearCategories(int blog_id)
 	QSqlQuery q;
 	q.prepare("DELETE FROM category WHERE blog_id=?");
 	q.addBindValue(blog_id);
-	return q.exec();
+    bool res = q.exec();
+    if(!res){
+        kDebug()<<q.lastError().text();
+    }
+    return res;
 }
 
 int DBMan::addFile(QString name, int blog_id, bool isUploaded, QString localUrl, QString remoteUrl)
@@ -545,7 +568,11 @@ bool DBMan::removeFile(int fileid)
 	QSqlQuery q;
 	q.prepare("DELETE FROM file WHERE fileid=?");
 	q.addBindValue(fileid);
-	return q.exec();
+    bool res = q.exec();
+    if(!res){
+        kDebug()<<q.lastError().text();
+    }
+    return res;
 }
 
 bool DBMan::clearFiles(int blog_id)
@@ -553,7 +580,11 @@ bool DBMan::clearFiles(int blog_id)
 	QSqlQuery q;
 	q.prepare("DELETE FROM file WHERE blog_id=?");
 	q.addBindValue(blog_id);
-	return q.exec();
+    bool res = q.exec();
+    if(!res){
+        kDebug()<<q.lastError().text();
+    }
+    return res;
 }
 
 QList< BilboBlog *> DBMan::listBlogs()

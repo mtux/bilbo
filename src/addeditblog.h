@@ -22,18 +22,18 @@
 #ifndef ADDEDITBLOG_H
 #define ADDEDITBLOG_H
 
-#include <QDialog>
+#include <KDialog>
 
 #include "ui_addeditblogbase.h"
 #include <kblog/blog.h>
 class BilboBlog;
-
+class KJob;
 
 /**
 	@author Mehrdad Momeny <mehrdad.momeny@gmail.com>
 	@author Golnaz Nilieh <g382nilieh@gmail.com>
  */
-class AddEditBlog: public QDialog, public Ui::AddEditBlogBase {
+class AddEditBlog: public KDialog {
 Q_OBJECT
 public:
     /**
@@ -41,10 +41,11 @@ public:
      * @param blog_id id of blog we will edit it, for adding a blog this should be "-1"
      * @param parent Parent
      */
-    AddEditBlog(int blog_id, QWidget *parent = 0);
+    AddEditBlog(int blog_id, QWidget *parent = 0, Qt::WFlags flags=0);
     ~AddEditBlog();
 	
 protected Q_SLOTS:
+    virtual void slotButtonClicked(int button);
 	void enableAutoConfBtn();
 	void enableOkButton( const QString & );
 	void autoConfigure();
@@ -61,11 +62,16 @@ protected Q_SLOTS:
     void sltRejected();
 	
     void sltReturnPressed();
+    
+    void gotHtml(KJob *);
+    void gotXmlRpcTest(KJob *job);
 Q_SIGNALS:
 	void sigBlogAdded(BilboBlog&);
 	void sigBlogEdited(BilboBlog&);
 	
 private:
+    Ui::AddEditBlogBase ui;
+    KTabWidget *mainW;
 	bool isNewBlog;
 	BilboBlog *bBlog;
 	KBlog::Blog *mBlog;
@@ -73,6 +79,8 @@ private:
 	QTimer* mFetchBlogIdTimer;
 	QTimer* mFetchAPITimer;
     bool isIdFetched;
+//     KPushButton *btnOk;
+//     KPushButton *btnCancel;
 };
 
 #endif

@@ -39,18 +39,12 @@ public:
 
     ~CatCheckBox();
 	
-// 	int catId();
-// 	void setCatId(int id);
-// 	
-// 	QString catTitle() const;
-// 	void setCatTitle(const QString& title);
-	
 	Category category() const;
 	void setCategory(const Category &category);
 	
-private:
+private:/*
 	int mCatId;
-	QString mCatTitle;
+	QString mCatTitle;*/
 	Category mCat;
 };
 
