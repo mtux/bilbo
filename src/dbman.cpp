@@ -128,7 +128,7 @@ bool DBMan::createDB()
 
     return ret;
 }
-
+/*
 int DBMan::addBlog( QString blogid, QString blog_url, QString username, QString password, QString style_url,
                     QString api, QString title, int direction, QString directory )
 {
@@ -151,7 +151,7 @@ int DBMan::addBlog( QString blogid, QString blog_url, QString username, QString 
         return q.lastInsertId().toInt();
     } else
         return -1;
-}
+}*/
 
 int DBMan::addBlog( BilboBlog & blog )
 {
@@ -177,16 +177,7 @@ int DBMan::addBlog( BilboBlog & blog )
         return -1;
 }
 
-/**
- * Edit a previously added blog
- * @param blogid it's not changed! but just for refer to blog!
- * @param username
- * @param password
- * @param style_url
- * @param api
- * @return
- */
-bool DBMan::editBlog( int id, QString username, QString password, QString style_url,
+/*bool DBMan::editBlog( int id, QString username, QString password, QString style_url,
                       QString api, QString title, int direction, QString directory )
 {
     QSqlQuery q;
@@ -209,7 +200,7 @@ bool DBMan::editBlog( int id, QString username, QString password, QString style_
         kDebug() << q.lastError().text();
     }
     return res;
-}
+}*/
 
 bool DBMan::editBlog( BilboBlog & blog )
 {
@@ -247,7 +238,7 @@ bool DBMan::removeBlog( int blog_id )
     }
     return res;
 }
-
+/*
 int DBMan::addPost( QString postid, int blog_id, QString author, QString title, QString & content,
                     QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed,
                     QString link, QString perma_link, QString summary, QString tags, QStringList categories,
@@ -297,7 +288,7 @@ int DBMan::addPost( QString postid, int blog_id, QString author, QString title, 
         ret = -1;
 
     return ret;
-}
+}*/
 
 int DBMan::addPost( const BilboPost & post, int blog_id )
 {
@@ -365,7 +356,7 @@ int DBMan::addPost( const BilboPost & post, int blog_id )
 
     return ret;
 }
-
+/*
 bool DBMan::editPost( int id, int blog_id, QString postid, QString author, QString title, QString & content,
                       QString c_time, QString m_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed,
                       QString link, QString perma_link, QString summary, QString tags, QStringList categories, int status )
@@ -422,7 +413,7 @@ bool DBMan::editPost( int id, int blog_id, QString postid, QString author, QStri
     }
 
     return true;
-}
+}*/
 
 bool DBMan::editPost( BilboPost & post, int blog_id )
 {

@@ -82,13 +82,13 @@ public:
     ///(BEGIN) Data Manipulation Functions:
 
     ///Blog:
-    int addBlog( QString blogid, QString blog_url, QString username, QString password, QString style_url,
-                 QString api, QString title, int direction, QString directory );
+//     int addBlog( QString blogid, QString blog_url, QString username, QString password, QString style_url,
+//                  QString api, QString title, int direction, QString directory );
 
     int addBlog( BilboBlog& blog );
 
-    bool editBlog( int id, QString username, QString password, QString style_url, QString api,
-                   QString title, int direction, QString directory );
+//     bool editBlog( int id, QString username, QString password, QString style_url, QString api,
+//                    QString title, int direction, QString directory );
 
     bool editBlog( BilboBlog& blog );
 
@@ -112,10 +112,10 @@ public:
      * @param tags
      * @return return post id in database (deffer with postid)
      */
-    int addPost( QString postid, int blog_id, QString author, QString title, QString &content,
-                 QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed,
-                 QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/,
-                 QStringList categories, int position );
+//     int addPost( QString postid, int blog_id, QString author, QString title, QString &content,
+//                  QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed,
+//                  QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/,
+//                  QStringList categories, int position );
 
     /**
      *
@@ -125,10 +125,10 @@ public:
      */
     int addPost( const BilboPost& post, int blog_id );
 
-    bool editPost( int id, int blog_id, QString postid, QString author, QString title, QString &content,
-                   QString c_time, QString m_time, bool is_private, bool is_comment_allowed,
-                   bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags,
-                   QStringList categories, int position );
+//     bool editPost( int id, int blog_id, QString postid, QString author, QString title, QString &content,
+//                    QString c_time, QString m_time, bool is_private, bool is_comment_allowed,
+//                    bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags,
+//                    QStringList categories, int position );
 
     bool editPost( BilboPost& post, int blog_id );
 
