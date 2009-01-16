@@ -56,14 +56,18 @@ void BilboMedia::setMediaId(const int media_id)
 	mMediaId = media_id;
 }
 
-bool BilboMedia::isUploaded() const
+// bool BilboMedia::isUploaded() const
+bool BilboMedia::isLocal() const
 {
-	return mIsUploaded;
+// 	return mIsUploaded;
+	return mIsLocal;
 }
 
-void BilboMedia::setUploded(bool uploaded)
+// void BilboMedia::setUploaded(bool uploaded)
+void BilboMedia::setLocal(bool is_local)
 {
-	mIsUploaded = uploaded;
+// 	mIsUploaded = uploaded;
+	mIsLocal = is_local;
 }
 
 QString BilboMedia::localUrl() const

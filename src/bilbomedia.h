@@ -49,8 +49,11 @@ class BilboMedia : public QObject
 		int mediaId() const;
 		void setMediaId(const int media_id);
 		
-        bool isUploaded() const;
-		void setUploded(bool uploaded);
+//         bool isUploaded() const;
+// 		void setUploaded(bool uploaded);
+		
+		bool isLocal() const;
+		void setLocal(bool is_local);
 		
         QString localUrl() const;
 		void setLocalUrl(const QString &url);
@@ -72,7 +75,8 @@ class BilboMedia : public QObject
 	private:
 		int mBlogId;
 		int mMediaId;
-		bool mIsUploaded;
+// 		bool mIsUploaded;
+		bool mIsLocal;
 		QString mLocalUrl;
 		QString mRemoteUrl;
 		QString mMimeType;

@@ -286,7 +286,7 @@ void Backend::mediaUploaded(KBlog::BlogMedia * media)
         Q_EMIT sigMediaError(tmp, m);
         return;
     }
-    m->setUploded(true);
+//     m->setUploaded(true);
 //     m->setLocalUrl(mediaLocalUrl);
 //     m->setBlogId(bBlog->id());
     m->setRemoteUrl(QUrl(media->url().url()).toString());
