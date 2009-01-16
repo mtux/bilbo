@@ -1404,7 +1404,8 @@ QString BilboEditor::htmlToRichtext(const QString& html)
 	return h;
 }
 
-const QString& BilboEditor::htmlContent()
+// const QString& BilboEditor::htmlContent()
+QString BilboEditor::htmlContent()
 {
 	// TODO move htmlExp definiton to BilboEditor constructor.
 // 	htmlExporter* htmlExp = new htmlExporter();
@@ -1441,7 +1442,8 @@ const QString& BilboEditor::htmlContent()
 // 	delete htmlExp;
 // 	delete builder;
 	
-	const QString& htmlContent = htmlEditor->toPlainText();
+// 	const QString& htmlContent = htmlEditor->toPlainText();
+    QString htmlContent = htmlEditor->toPlainText();
 	return htmlContent;
 // 	return htmlEditor->toPlainText();
 }
