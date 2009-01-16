@@ -76,7 +76,8 @@ class BilboEditor : public KTabWidget
 		 * then copies the content of htmlEditor into the variable mHtmlContent, and returns it.
 		 * @return a reference to an String which contains html text
 		 */
-		const QString& htmlContent();
+// 		const QString& htmlContent();
+        QString htmlContent();
 		
 		QMap <QString, BilboMedia*> * mediaList();
 		
