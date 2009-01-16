@@ -85,12 +85,12 @@ public:
 //     int addBlog( QString blogid, QString blog_url, QString username, QString password, QString style_url,
 //                  QString api, QString title, int direction, QString directory );
 
-    int addBlog( BilboBlog& blog );
+    int addBlog( const BilboBlog& blog );
 
 //     bool editBlog( int id, QString username, QString password, QString style_url, QString api,
 //                    QString title, int direction, QString directory );
 
-    bool editBlog( BilboBlog& blog );
+    bool editBlog( const BilboBlog& blog );
 
     bool removeBlog( int blog_id );
 
@@ -130,7 +130,7 @@ public:
 //                    bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags,
 //                    QStringList categories, int position );
 
-    bool editPost( BilboPost& post, int blog_id );
+    bool editPost( const BilboPost& post, int blog_id );
 
     bool removePost( int id );
 
@@ -143,7 +143,7 @@ public:
 
     ///File:
 //  int addFile(QString name, int blog_id, bool isUploaded, QString localUrl, QString remoteUrl);
-    int addFile( QString name, int blog_id, bool isLocal, QString localUrl, QString remoteUrl );
+    int addFile( const QString &name, int blog_id, bool isLocal, const QString &localUrl, const QString &remoteUrl );
     int addFile();
     bool removeFile( int fileid );
     bool clearFiles( int blog_id );

@@ -153,7 +153,7 @@ int DBMan::addBlog( QString blogid, QString blog_url, QString username, QString 
         return -1;
 }*/
 
-int DBMan::addBlog( BilboBlog & blog )
+int DBMan::addBlog( const BilboBlog & blog )
 {
     QSqlQuery q;
     q.prepare( "INSERT INTO blog (blogid, blog_url, username, style_url, api_type, title,\
@@ -202,7 +202,7 @@ int DBMan::addBlog( BilboBlog & blog )
     return res;
 }*/
 
-bool DBMan::editBlog( BilboBlog & blog )
+bool DBMan::editBlog( const BilboBlog & blog )
 {
     QSqlQuery q;
     q.prepare( "UPDATE blog SET username=? , style_url=? , api_type=?, \
@@ -415,7 +415,7 @@ bool DBMan::editPost( int id, int blog_id, QString postid, QString author, QStri
     return true;
 }*/
 
-bool DBMan::editPost( BilboPost & post, int blog_id )
+bool DBMan::editPost( const BilboPost & post, int blog_id )
 {
     QSqlQuery q;
     q.prepare( "UPDATE post SET blog_id=?, postid=?, author=?, title=?, content=?, c_time=?, m_time=?,\
@@ -539,7 +539,7 @@ bool DBMan::clearCategories( int blog_id )
 }
 
 // int DBMan::addFile(QString name, int blog_id, bool isUploaded, QString localUrl, QString remoteUrl)
-int DBMan::addFile( QString name, int blog_id, bool isLocal, QString localUrl, QString remoteUrl )
+int DBMan::addFile( const QString &name, int blog_id, bool isLocal, const QString &localUrl, const QString &remoteUrl )
 {
     QSqlQuery q;
 //  q.prepare("INSERT INTO file(name, blog_id, is_uploaded, local_url, remote_url) VALUES(?, ?, ?, ?, ?)");
