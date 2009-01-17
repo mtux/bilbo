@@ -150,7 +150,7 @@ void PostEntry::setCurrentPostProperties( BilboPost post )
 {
     post.setTitle( txtTitle->text() );
     post.setContent( this->editPostWidget->htmlContent() );
-    setCurrentPost( post );
+//     setCurrentPost( post );
 }
 
 QMap< QString, BilboMedia * > & PostEntry::mediaList()
@@ -193,10 +193,12 @@ void PostEntry::sltMediaFileUploaded( BilboMedia * media )
     if ( progress->value() >= progress->maximum() ) {
         QTimer::singleShot( 800, this, SLOT( sltDeleteProgressBar() ) );
         if ( !isUploadingMediaFilesFailed ) {
-            if ( editPostWidget->updateMediaPaths() )
+            if ( editPostWidget->updateMediaPaths() ) {
+                mCurrentPost->setContent( this->editPostWidget->htmlContent() );
                 publishPostAfterUploadMediaFiles();
-            else
+            } else {
                 kDebug() << "Updateing media pathes failed!";
+            }
         }
         sender()->deleteLater();
     }
