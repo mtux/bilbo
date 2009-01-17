@@ -1416,7 +1416,7 @@ QString BilboEditor::htmlContent()
 //
 //  KAbstractMarkupBuilder *builder = new KTextHTMLBuilder();
 //  KMarkupDirector md = KMarkupDirector(builder);
-    kDebug() << "enter editor output";
+    kDebug();
 
     if ( this->currentIndex() == 0 ) {
 

@@ -163,7 +163,7 @@ void Backend::publishPost( BilboPost * post )
         connect( gd, SIGNAL( createdPost( KBlog::BlogPost * ) ), this, SLOT( postPublished( KBlog::BlogPost * ) ) );
         gd->createPost( bp );
     }
-    delete post;
+//     delete post;
 }
 
 void Backend::postPublished( KBlog::BlogPost *post )

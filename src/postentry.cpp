@@ -68,6 +68,7 @@ void PostEntry::createUi()
 
 void PostEntry::sltTitleChanged( const QString& title )
 {
+    kDebug();
     mCurrentPost->setTitle( title );
     Q_EMIT sigTitleChanged( title );
 }
@@ -79,6 +80,7 @@ QString PostEntry::postTitle() const
 
 const QString& PostEntry::postBody()
 {
+    kDebug();
     const QString& str = this->editPostWidget->htmlContent();
     if ( !mCurrentPost ) {
         mCurrentPost = new BilboPost;
@@ -89,6 +91,7 @@ const QString& PostEntry::postBody()
 
 void PostEntry::setPostTitle( const QString & title )
 {
+    kDebug();
     this->txtTitle->setText( title );
     mCurrentPost->setTitle( title );
 }
@@ -107,11 +110,13 @@ int PostEntry::currentPostBlogId()
 
 void PostEntry::setCurrentPostBlogId( int blog_id )
 {
+    kDebug();
     mCurrentPostBlogId = blog_id;
 }
 
 BilboPost* PostEntry::currentPost()
 {
+    kDebug();
     mCurrentPost->setContent( postBody() );
     //mCurrentPost->setTitle(postTitle());
     //return (*mCurrentPost);
@@ -120,6 +125,7 @@ BilboPost* PostEntry::currentPost()
 
 void PostEntry::setCurrentPost( BilboPost post )
 {
+    kDebug();
     mCurrentPost = new BilboPost( post );
     this->setPostBody( mCurrentPost->content() );
     this->setPostTitle( mCurrentPost->title() );
@@ -132,6 +138,7 @@ Qt::LayoutDirection PostEntry::defaultLayoutDirection()
 
 void PostEntry::setDefaultLayoutDirection( Qt::LayoutDirection direction )
 {
+    kDebug();
     this->editPostWidget->setLayoutDirection( direction );
     this->txtTitle->setLayoutDirection( direction );
 }
@@ -148,6 +155,7 @@ PostEntry::~PostEntry()
 
 void PostEntry::setCurrentPostProperties( BilboPost post )
 {
+    kDebug();
     post.setTitle( txtTitle->text() );
     post.setContent( this->editPostWidget->htmlContent() );
 //     setCurrentPost( post );
@@ -160,6 +168,7 @@ QMap< QString, BilboMedia * > & PostEntry::mediaList()
 
 bool PostEntry::uploadMediaFiles()
 {
+    kDebug();
     bool result = false;
     int numOfFilesToBeUploaded = 0;
     Backend *b = new Backend( mCurrentPostBlogId, this );
@@ -272,21 +281,29 @@ void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
 //  if(KMessageBox::questionYesNo(this, msg, "Successful") != KMessageBox::Yes){
 //   sltRemoveCurrentPostEntry();//FIXME this functionality doesn't work! fix it.
 //  }
+    kDebug() << "check =1";
     if ( progress ) {
+        kDebug() << "check =2";
         this->layout()->removeWidget( progress );
+        kDebug() << "check =3";
         progress->deleteLater();
+        kDebug() << "check =4";
     }
 //  if(isPrivate){
 //   msg = i18n("Draft saved successfully!");
 //  } else {
 //   msg = i18n("New post published successfully!");
 //  }
+    kDebug() << "check =5";
     emit postPublishingDone( QString() );
+    kDebug() << "check =6";
     sender()->deleteLater();
+    kDebug() << "check =7";
 }
 
 void PostEntry::sltDeleteProgressBar()
 {
+    kDebug();
     this->layout()->removeWidget( progress );
     progress->deleteLater();
 }
