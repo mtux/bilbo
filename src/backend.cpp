@@ -269,7 +269,9 @@ void Backend::mediaUploaded( KBlog::BlogMedia * media )
 {
     kDebug() << "Blog Id: " << bBlog->id();
     BilboMedia * m = mPublishMediaMap[media];
+    kDebug() << "check = 1";
     mPublishMediaMap.remove( media );
+    kDebug() << "check = 2";
     if ( media->status() == KBlog::BlogMedia::Error ) {
         kError() << "Upload error! with this message: " << media->error();
         const QString tmp( i18n( "Uploading Media failed : %1", media->error() ) );
@@ -277,6 +279,7 @@ void Backend::mediaUploaded( KBlog::BlogMedia * media )
         return;
     }
     quint16 newChecksum = qChecksum( media->data().data(), media->data().count() );
+    kDebug() << "check = 3";
     if ( newChecksum != m->checksum() ) {
         kError() << "Check sum error: checksum of sent file: " << m->checksum() << " Checksum of recived file: " << newChecksum <<
         "Error: " << media->error() << endl;
@@ -284,10 +287,12 @@ void Backend::mediaUploaded( KBlog::BlogMedia * media )
         Q_EMIT sigMediaError( tmp, m );
         return;
     }
+    kDebug() << "check = 4";
 //     m->setUploaded(true);
 //     m->setLocalUrl(mediaLocalUrl);
 //     m->setBlogId(bBlog->id());
     m->setRemoteUrl( QUrl( media->url().url() ).toString() );
+    kDebug() << "check = 5";
 //     m->setMimeData(new QMimeData(media->mimetype()));
 //     m->setName(media->name());
     kDebug() << "Emitting sigMediaUploaded...";
