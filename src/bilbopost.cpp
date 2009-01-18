@@ -41,7 +41,7 @@ BilboPost::BilboPost()
     this->setTrackBackAllowed( true );
     this->setTitle( "" );
     this->setAuthor( "" );
-//     this->setPosition(Published);
+    this->mModifyTimeStamp = false;
     this->setId( -1 );
     this->setStatus( KBlog::BlogPost::New );
 }
@@ -73,33 +73,8 @@ void BilboPost::setAuthor( const QString &author )
 BilboPost::BilboPost( const KBlog::BlogPost &post )
         : KBlog::BlogPost( post )
 {
-//  this->setCreationDateTime(post.creationDateTime());
-//  this->setModificationDateTime(post.modificationDateTime());
-//  this->setLink(post.link());
-//  this->setPermaLink(post.permaLink());
-//  this->setCategories(post.categories());
-//  this->setCommentAllowed(post.isCommentAllowed());
-//  this->setError(post.error());
-//  this->setContent(post.content());
-//  this->setTags(post.tags());
-//  this->setMood(post.mood());
-//  this->setMusic(post.music());
-//  this->setPrivate(post.isPrivate());
-//  this->setStatus(post.status());
-//  this->setSummary(post.summary());
-//  this->setTrackBackAllowed(post.isTrackBackAllowed());
-//  this->setTitle(post.title());
+    this->mModifyTimeStamp = false;
 }
-
-// BilboPost::Position BilboPost::position() const
-// {
-//  return mPosition;
-// }
-//
-// void BilboPost::setPosition(const Position pos)
-// {
-//  mPosition = pos;
-// }
 
 KBlog::BlogPost * BilboPost::toKBlogPost()
 {
@@ -165,19 +140,19 @@ BilboPost::BilboPost( const BilboPost &post )
     this->setTrackBackAllowed( post.isTrackBackAllowed() );
     this->setTitle( post.title() );
     this->setAuthor( post.author() );
-//     this->setPosition(post.position());
+    this->setModifyTimeStamp( post.isModifyTimeStamp() );
     this->setId( post.id() );
     this->setStatus( post.status() );
 }
 
-bool BilboPost::isModifyTimeStamp()
+bool BilboPost::isModifyTimeStamp() const
 {
     return mModifyTimeStamp;
 }
 
-void BilboPost::setModifyTimeStamp( bool willModify )
+void BilboPost::setModifyTimeStamp( bool isModify )
 {
-    mModifyTimeStamp = willModify;
+    mModifyTimeStamp = isModify;
 }
 
 QList< Category > BilboPost::categoryList() const

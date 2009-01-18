@@ -80,9 +80,10 @@ Q_SIGNALS:
     void sigTitleChanged( const QString &title );
     /**
      *    This signal emitted when a post manipulation job e.g. Publishing a new post finished.
+     * @param isError If an error occurred on publishing this will be TRUE. Otherwise FLASE
      * @param customMessage A Custom message will be shown on StatusBar.
      */
-    void postPublishingDone( const QString &customMessage );
+    void postPublishingDone( bool isError, const QString &customMessage );
 protected slots:
     void sltMediaFileUploaded( BilboMedia *media );
     void sltError( const QString& errMsg );

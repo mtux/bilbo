@@ -120,6 +120,8 @@ BilboPost* PostEntry::currentPost()
 
 void PostEntry::setCurrentPost( BilboPost post )
 {
+    if(mCurrentPost)
+        delete mCurrentPost;
     mCurrentPost = new BilboPost( post );
     this->setPostBody( mCurrentPost->content() );
     this->setPostTitle( mCurrentPost->title() );
@@ -150,7 +152,9 @@ void PostEntry::setCurrentPostProperties( BilboPost post )
 {
     post.setTitle( txtTitle->text() );
     post.setContent( this->editPostWidget->htmlContent() );
-//     setCurrentPost( post );
+    if(mCurrentPost)
+        delete mCurrentPost;
+    mCurrentPost = new BilboPost(post);
 }
 
 QMap< QString, BilboMedia * > & PostEntry::mediaList()
@@ -207,11 +211,12 @@ void PostEntry::sltMediaFileUploaded( BilboMedia * media )
 void PostEntry::sltError( const QString & errMsg )
 {
     kDebug();
-    KMessageBox::detailedSorry( this, i18n( "An Error occurred on latest transaction." ), errMsg );
+    QString err = i18n( "An Error occurred on latest transaction.\n%1", errMsg );
     if ( progress ) {
-        QTimer::singleShot( 500, this, SLOT( sltDeleteProgressBar() ) );
+        sltDeleteProgressBar();
+//         QTimer::singleShot( 500, this, SLOT( sltDeleteProgressBar() ) );
     }
-    emit postPublishingDone( errMsg );
+    emit postPublishingDone( true, err );
     sender()->deleteLater();
 }
 
@@ -219,15 +224,13 @@ void PostEntry::sltMediaError( const QString & errorMessage, BilboMedia * media 
 {
     kDebug();
     isUploadingMediaFilesFailed = true;
-    QString name = media->name();
     kDebug() << " AN ERROR OCCURRED ON UPLOADING,\tError message is: " << errorMessage;
-
-    KMessageBox::detailedSorry( this, i18n( "Uploading media file %1 (Local Path: %2) failed", name, media->localUrl() ),
-                                errorMessage, i18n( "Uploading media file Failed!" ) );
+    QString err = i18n( "Uploading media file %1 failed.\n%3", media->name(), media->localUrl(), errorMessage);
     if ( progress ) {
-        QTimer::singleShot( 500, this, SLOT( sltDeleteProgressBar() ) );
+    sltDeleteProgressBar();
+//         QTimer::singleShot( 500, this, SLOT( sltDeleteProgressBar() ) );
     }
-    emit postPublishingDone( errorMessage );
+    emit postPublishingDone( true, err );
     sender()->deleteLater();
 }
 
@@ -268,21 +271,13 @@ void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
     } else {
         msg = i18n( "New Post with title \"%1\" published successfully.", post->title() );
     }
-    KMessageBox::information( this, msg, "Successful" );
-//  if(KMessageBox::questionYesNo(this, msg, "Successful") != KMessageBox::Yes){
-//   sltRemoveCurrentPostEntry();//FIXME this functionality doesn't work! fix it.
-//  }
+//     KMessageBox::information( this, msg, "Successful" );
     if ( progress ) {
         this->layout()->removeWidget( progress );
         progress->deleteLater();
     }
-//  if(isPrivate){
-//   msg = i18n("Draft saved successfully!");
-//  } else {
-//   msg = i18n("New post published successfully!");
-//  }
-    emit postPublishingDone( QString() );
-    sender()->deleteLater();
+    emit postPublishingDone( true, msg );
+    sender()->deleteLater(); //FIXME Check if this command needed or NOT -Mehrdad
 }
 
 void PostEntry::sltDeleteProgressBar()

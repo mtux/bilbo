@@ -281,7 +281,7 @@ void Backend::mediaUploaded( KBlog::BlogMedia * media )
     BilboMedia * m = mPublishMediaMap.value( media );
     kDebug() << "check = 1";
     if(!m){
-        kError()<<"ERROR! Media returned from KBlog doesn't exists on the Map!";
+        kError()<<"ERROR! Media returned from KBlog doesn't exist on the Map!";
         return;
     }
     mPublishMediaMap.remove( media );

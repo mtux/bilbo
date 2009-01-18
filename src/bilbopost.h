@@ -64,7 +64,7 @@ public:
     KBlog::BlogPost * toKBlogPost();
     QString toString() const;
 
-    bool isModifyTimeStamp();
+    bool isModifyTimeStamp() const;
     void setModifyTimeStamp( bool willModify );
 
     QList<Category> categoryList() const;

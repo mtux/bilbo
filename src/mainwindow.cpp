@@ -23,6 +23,7 @@
 #include <ktabwidget.h>
 #include <kstatusbar.h>
 #include <kaction.h>
+#include <KToggleAction>
 #include <kactioncollection.h>
 #include <kstandardaction.h>
 #include <kconfigdialog.h>
@@ -91,15 +92,16 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
 //     this->setWindowIcon(KIcon(":/media/bilbo.png"));
 //     readConfig();
     toolbox->setVisible( Settings::show_toolbox_on_start() );
-    if ( Settings::show_toolbox_on_start() ) {
-        actToggleToolboxVisible->setText( i18n( "Hide Toolbox" ) );
-    } else {
-        actToggleToolboxVisible->setText( i18n( "Show Toolbox" ) );
-    }
+    actToggleToolboxVisible->setChecked( Settings::show_toolbox_on_start() );
+//     if ( Settings::show_toolbox_on_start() ) {
+//         actToggleToolboxVisible->setText( i18n( "Hide Toolbox" ) );
+//     } else {
+//         actToggleToolboxVisible->setText( i18n( "Show Toolbox" ) );
+//     }
     setupSystemTray();
 
     connect( tabPosts, SIGNAL( currentChanged( int ) ), this, SLOT( sltActivePostChanged( int ) ) );
-    connect( toolbox, SIGNAL( sigEntrySelected( BilboPost * ) ), this, SLOT( sltNewPostSelected( BilboPost* ) ) );
+    connect( toolbox, SIGNAL( sigEntrySelected( BilboPost * ) ), this, SLOT( sltNewPostOpened( BilboPost* ) ) );
     connect( toolbox, SIGNAL( sigCurrentBlogChanged( int ) ), this, SLOT( sltCurrentBlogChanged( int ) ) );
     connect( toolbox, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
 
@@ -161,10 +163,10 @@ void MainWindow::setupActions()
     actionCollection()->addAction( QLatin1String( "delete_locally" ), actDeleteLocally );
 //  connect(actDeleteLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltDelLocally()));
 
-    actToggleToolboxVisible = new KAction( i18n( "Hide Toolbox" ), this );
+    actToggleToolboxVisible = new KToggleAction( i18n( "Show Toolbox" ), this );
     actionCollection()->addAction( QLatin1String( "toggle_toolbox" ), actToggleToolboxVisible );
     actToggleToolboxVisible->setShortcut( Qt::CTRL + Qt::Key_T );
-    connect( actToggleToolboxVisible, SIGNAL( triggered( bool ) ), this, SLOT( sltToggleToolboxVisible() ) );
+    connect( actToggleToolboxVisible, SIGNAL( toggled( bool ) ), this, SLOT( sltToggleToolboxVisible( bool ) ) );
 }
 
 void MainWindow::sltCreateNewPost()
@@ -176,18 +178,20 @@ void MainWindow::sltCreateNewPost()
     temp->setCurrentPostBlogId( toolbox->currentBlogId() );
 
 //  // FIXME these lines added to set direction for new posts, but it generates Segmentation fault at run time!
+    // What SegFault!? (I think ^its about previous codes! and need to test and remove!) -Mehrdad
     int tempId = toolbox->currentBlogId();
     if ( tempId != -1 ) {
         BilboBlog *tmp = DBMan::self()->getBlogInfo( tempId );
         temp->setDefaultLayoutDirection( tmp->direction() );
-        delete tmp;
+        tmp->deleteLater();
     }
-//
-    connect( temp, SIGNAL( sigTitleChanged( const QString& ) ), this, SLOT( sltPostTitleChanged( const QString& ) ) );
-    connect( temp, SIGNAL( postPublishingDone( const QString& ) ), this, SLOT( postManipulationDone( const QString& ) ) );
-// //  activePost=temp;
+
+    connect( temp, SIGNAL( sigTitleChanged( const QString& ) ),
+             this, SLOT( sltPostTitleChanged( const QString& ) ) );
+    connect( temp, SIGNAL( postPublishingDone( bool, const QString& ) ),
+             this, SLOT( postManipulationDone( bool, const QString& ) ) );
+
     tabPosts->setCurrentWidget( temp );
-    //sltActivePostChanged(tabPosts->currentIndex());
 
     if ( this->isVisible() == false ) {
         this->show();
@@ -209,9 +213,9 @@ void MainWindow::optionsPreferences()
     ui_prefs_base.setupUi( generalSettingsDlg );
     QWidget *editorSettingsDlg = new QWidget;
     ui_editorsettings_base.setupUi( editorSettingsDlg );
-    dialog->addPage( generalSettingsDlg, i18n( "General" ), "package_setting" );
-    dialog->addPage( editorSettingsDlg, i18n( "Editor" ), "package_setting" );
-    connect( dialog, SIGNAL( settingsChanged( QString ) ), this, SLOT( settingsChanged() ) );
+    dialog->addPage( generalSettingsDlg, i18n( "General" ), "configure" );
+    dialog->addPage( editorSettingsDlg, i18n( "Editor" ), "document-edit" );
+    connect( dialog, SIGNAL( settingsChanged( const QString& ) ), this, SLOT( settingsChanged() ) );
     dialog->setAttribute( Qt::WA_DeleteOnClose );
     dialog->show();
 }
@@ -223,7 +227,7 @@ void MainWindow::settingsChanged()
 void MainWindow::setupSystemTray()
 {
     systemTray = new SysTray( this );
-    systemTray->actionCollection()->addAction( "new_post", this->actNewPost );
+//     systemTray->actionCollection()->addAction( "new_post", this->actNewPost );
     systemTray->contextMenu()->addAction( this->actNewPost );
     systemTray->show();
 }
@@ -239,15 +243,16 @@ void MainWindow::sltPostTitleChanged( const QString& title )
     tabPosts->setTabText( tabPosts->currentIndex(), title );
 }
 
-void MainWindow::sltToggleToolboxVisible()
+void MainWindow::sltToggleToolboxVisible( bool isVisible )
 {
-    if ( toolbox->isVisible() ) {
-        toolboxDock->hide();
-        actToggleToolboxVisible->setText( i18n( "Show Toolbox" ) );
-    } else {
-        toolboxDock->show();
-        actToggleToolboxVisible->setText( i18n( "Hide Toolbox" ) );
-    }
+    toolboxDock->setVisible( isVisible );
+//     if ( toolbox->isVisible() ) {
+//         toolboxDock->hide();
+//         actToggleToolboxVisible->setText( i18n( "Show Toolbox" ) );
+//     } else {
+//         toolboxDock->show();
+//         actToggleToolboxVisible->setText( i18n( "Hide Toolbox" ) );
+//     }
 }
 
 void MainWindow::sltActivePostChanged( int index )
@@ -261,12 +266,8 @@ void MainWindow::sltActivePostChanged( int index )
 
     if (( prevActivePost != 0 ) && ( index != previousActivePostIndex ) ) {
         prevPostBlogId = prevActivePost->currentPostBlogId();
-        //QString tempTitle = prevActivePost->postTitle();
         toolbox->getFieldsValue( prevActivePost->currentPost() );
-//   prevActivePost->setCurrentPostProperties((*));
-        //prevActivePost->setPostTitle(tempTitle);
         prevActivePost->setCurrentPostBlogId( toolbox->currentBlogId() );
-        //tabPosts->setTabText(previousActivePostIndex, prevActivePost->postTitle());
     }
 
     if ( activePost != 0 ) {
@@ -280,8 +281,6 @@ void MainWindow::sltActivePostChanged( int index )
         }
         toolbox->setFieldsValue( activePost->currentPost() );
         previousActivePostIndex = index;
-        //sltPostTitleChanged( activePost->postTitle() );
-        //tabPosts->setTabText(tabPosts->currentIndex(),activePost->postTitle());
     } else {
         kError() << "ActivePost is NULL! tabPosts Current index is: " << tabPosts->currentIndex() ;
     }
@@ -322,21 +321,20 @@ void MainWindow::sltRemoveCurrentPostEntry()
 //     tabPosts->setCurrentIndex(previousActivePostIndex);
 }
 
-void MainWindow::sltNewPostSelected( BilboPost * newPost )
+void MainWindow::sltNewPostOpened( BilboPost * newPost )
 {
     kDebug();
     PostEntry *temp = new PostEntry( this );
     tabPosts->addTab( temp, newPost->title() );
-//     temp->setPostTitle(newPost->title());
-//     temp->setPostBody(newPost->content());
+
     temp->setCurrentPost( *newPost );
     temp->setCurrentPostBlogId( toolbox->currentBlogId() );
 
-    BilboBlog *tmp = DBMan::self()->getBlogInfo( toolbox->currentBlogId() );
-    temp->setDefaultLayoutDirection( tmp->direction() );
-    delete tmp;
+//     BilboBlog *tmp = DBMan::self()->getBlogInfo( toolbox->currentBlogId() );
+//     temp->setDefaultLayoutDirection( tmp->direction() );
+//     delete tmp;
+    ///^^^ FIXME I think we don't need this^, it's better to remain on the current state! :-/ Or maybe not :D -Mehrdad
 
-//     activePost=temp;
     tabPosts->setCurrentWidget( temp );
     connect( temp, SIGNAL( sigTitleChanged( const QString& ) ), this, SLOT( sltPostTitleChanged( const QString& ) ) );
 }
@@ -344,21 +342,16 @@ void MainWindow::sltNewPostSelected( BilboPost * newPost )
 void MainWindow::sltCurrentBlogChanged( int blog_id )
 {
     kDebug();
-    if ( blog_id == -1 ) {
+    if ( blog_id < 0 ) {
         kDebug() << "Blog id do not sets correctly";
         return;
     }
-    ///suggestion:
-    //this->activePost->setCurrentPostBlogId(blog_id);
 
-//     BilboBlog *tmp = __db->getBlogInfo(blog_id);
-//     this->centralWidget()->setLayoutDirection(tmp->direction());
-//     delete tmp;
     BilboBlog *tmp = DBMan::self()->getBlogInfo( blog_id );
     this->activePost->setDefaultLayoutDirection( tmp->direction() );
     this->activePost->setCurrentPostBlogId( blog_id );
     this->actPublish->setText( i18n( "Publish to \"%1\"", tmp->title() ) );
-    delete tmp;
+    tmp->deleteLater();
 }
 
 void MainWindow::sltSavePostLocally()
@@ -403,16 +396,13 @@ void MainWindow::sltSaveAsDraft()
         kDebug() << "Blog id not sets correctly.";
         return;
     }
-    Backend *b = new Backend( blog_id );
-    connect( b, SIGNAL( sigPostPublished( int, int, bool ) ), this, SLOT( sltPostPublished( int, int, bool ) ) );
-    connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
     BilboPost *post = new BilboPost;
-    toolbox->getFieldsValue( post );
     if ( activePost->postBody().isEmpty() || activePost->postTitle().isEmpty() ) {
         if ( KMessageBox::warningContinueCancel( this, i18n( "Your post title or body is empty!\n\
-                Are you sure of pubishing this post?" ) ) == KMessageBox::Cancel )
+Are you sure of pubishing this post?" ) ) == KMessageBox::Cancel )
             return;
     }
+    toolbox->getFieldsValue( post );
     post->setPrivate( true );
     activePost->publishPost( blog_id, post );
     statusBar()->showMessage( i18n( "Saving draft..." ) );
@@ -440,7 +430,7 @@ void MainWindow::writeConfigs()
 
 void MainWindow::keyReleaseEvent( QKeyEvent * event )
 {
-    if ( event->modifiers() == Qt::ControlModifier ) {
+    if ( event->modifiers() == Qt::CTRL ) {
         switch ( event->key() ) {
             case  Qt::Key_1:
                 toolbox->setCurrentPage( 0 );
@@ -464,13 +454,15 @@ void MainWindow::keyReleaseEvent( QKeyEvent * event )
     }
 }
 
-void MainWindow::postManipulationDone( const QString &customMessage )
+void MainWindow::postManipulationDone( bool isError, const QString &customMessage )
 {
     kDebug();
-    if ( customMessage.isEmpty() ) {
-        statusBar()->showMessage( i18n( "Done!" ) , STATUSTIMEOUT );
+    if(isError){
+        KMessageBox::detailedError(this, i18n("Uploading post failed"), customMessage);
     } else {
-        statusBar()->showMessage( customMessage , STATUSTIMEOUT );
+        if(KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?", customMessage)) != KMessageBox::No){
+            tabPosts->removePage(qobject_cast<QWidget*>(sender()));
+        }
     }
     this->unsetCursor();
     toolbox->unsetCursor();

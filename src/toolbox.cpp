@@ -517,7 +517,7 @@ void Toolbox::unCheckCatList()
 void Toolbox::setButtonsIcon()
 {
     btnBlogAdd->setIcon( KIcon( "list-add" ) );
-    btnBlogEdit->setIcon( KIcon( "edit-rename" ) );
+    btnBlogEdit->setIcon( KIcon( "document-edit" ) );
     btnBlogRemove->setIcon( KIcon( "list-remove" ) );
     btnEntriesReload->setIcon( KIcon( "view-refresh" ) );
     btnEntriesUpdate->setIcon( KIcon( "arrow-down" ) );
@@ -525,7 +525,7 @@ void Toolbox::setButtonsIcon()
     btnCatReload->setIcon( KIcon( "view-refresh" ) );
     btnCatAdd->setIcon( KIcon( "list-add" ) );
     btnMediaAdd->setIcon( KIcon( "list-add" ) );
-    btnMediaEdit->setIcon( KIcon( "edit-rename" ) );
+    btnMediaEdit->setIcon( KIcon( "document-edit" ) );
     btnMediaRemove->setIcon( KIcon( "list-remove" ) );
     ///TODO Add option for selecting only text or only Icon for Toolbox buttons!
     btnBlogAdd->setText( QString() );

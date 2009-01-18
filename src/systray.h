@@ -39,21 +39,9 @@ public:
 
     ~SysTray();
 
-protected Q_SLOTS:
-//  void sltHideShow();
-//  void sltActivated(QSystemTrayIcon::ActivationReason);
-
 private:
-//  void createActions();
 
-//  QMenu *trayMenu;
-
-//  QAction *actQuit;
     QAction *actNewPost;
-//  QAction *actHideShow;
-//  QAction *actAbout;
-
-//  MainWindow *bilbo;
 
 };
 

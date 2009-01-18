@@ -29,6 +29,7 @@
 
 class KTabWidget;
 class KAction;
+class KToggleAction;
 class QProgressBar;
 class QToolButton;
 class Toolbox;
@@ -59,10 +60,10 @@ protected slots:
 
     void sltUploadAllChanges();
     void sltPostTitleChanged( const QString& title );
-    void sltToggleToolboxVisible();
+    void sltToggleToolboxVisible( bool isVisible );
     void sltActivePostChanged( int tabIndex );
 
-    void sltNewPostSelected( BilboPost *newPost );
+    void sltNewPostOpened( BilboPost *newPost );
 
     void sltPublishPost();
 
@@ -80,7 +81,7 @@ protected slots:
 
 private slots:
     void optionsPreferences();
-    void postManipulationDone( const QString &customMessage );
+    void postManipulationDone( bool isError, const QString &customMessage );
 
 protected:
     void keyReleaseEvent( QKeyEvent * event );
@@ -112,7 +113,7 @@ private:
     KAction *actSaveDraft;
     KAction *actDeletePost;
     KAction *actDeleteLocally;
-    KAction *actToggleToolboxVisible;
+    KToggleAction *actToggleToolboxVisible;
     KAction *actSave;
 
     QToolButton *btnRemovePost;
