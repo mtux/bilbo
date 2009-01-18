@@ -91,6 +91,7 @@ signals:
     void sigCurrentBlogChanged( int blog_id );
     void sigEntrySelected( BilboPost *post );
     void sigError( const QString& );
+    void sigBusy( bool isBusy );
 
 private:
     QStringList selectedCategoriesTitle();
@@ -104,7 +105,7 @@ private:
     void unCheckCatList();
     void setButtonsIcon();
 
-    AddEditBlog *addEditBlogWindow;
+//     AddEditBlog *addEditBlogWindow;
     BlogRadioButton *blogToEdit;
     QDir blogToEditDir;
 //  BilboPost *currentPost;

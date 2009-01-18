@@ -52,7 +52,8 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
 {
     kDebug();
     previousActivePostIndex = -1;
-
+    busyNumber = 0;
+    progress = 0;
     tabPosts->setElideMode( Qt::ElideRight );///TODO make this Optional!
     setCentralWidget( tabPosts );
 
@@ -104,6 +105,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     connect( toolbox, SIGNAL( sigEntrySelected( BilboPost * ) ), this, SLOT( sltNewPostOpened( BilboPost* ) ) );
     connect( toolbox, SIGNAL( sigCurrentBlogChanged( int ) ), this, SLOT( sltCurrentBlogChanged( int ) ) );
     connect( toolbox, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
+    connect( toolbox, SIGNAL( sigBusy(bool) ), this, SLOT( slotBusy(bool) ));
 
 //     if(Settings::show_main_on_start())
 //         this->show();
@@ -480,6 +482,32 @@ bool MainWindow::queryExit()
     delete DBMan::self();
     this->deleteLater();
     return true;
+}
+
+void MainWindow::slotBusy(bool isBusy)
+{
+    kDebug()<<"isBusy="<<isBusy<<"\tbusyNumber="<<busyNumber;
+    if(isBusy){
+        this->setCursor(Qt::BusyCursor);
+        ++busyNumber;
+        if(!progress){
+            progress = new QProgressBar(statusBar());
+            progress->setMinimum( 0 );
+            progress->setMaximum( 0 );
+            statusBar()->addPermanentWidget(progress);
+        }
+    } else {
+        --busyNumber;
+        if( busyNumber < 1 ){
+            this->unsetCursor();
+            if(progress){
+                statusBar()->removeWidget(progress);
+                progress->deleteLater();
+                progress = 0;
+            }
+            busyNumber = 0;
+        }
+    }
 }
 
 #include "mainwindow.moc"
