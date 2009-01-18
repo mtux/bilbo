@@ -22,6 +22,8 @@
 #include "bilbopost.h"
 #include <QStringList>
 #include <kdatetime.h>
+#include <kdebug.h>
+
 BilboPost::BilboPost()
         : KBlog::BlogPost()
 {
@@ -48,6 +50,7 @@ BilboPost::BilboPost()
 
 BilboPost::~BilboPost()
 {
+    kDebug();
 }
 
 QString BilboPost::author() const

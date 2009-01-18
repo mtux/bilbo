@@ -163,7 +163,9 @@ void Backend::publishPost( BilboPost * post )
         connect( gd, SIGNAL( createdPost( KBlog::BlogPost * ) ), this, SLOT( postPublished( KBlog::BlogPost * ) ) );
         gd->createPost( bp );
     }
-    delete post;
+    
+// NOTE the line below commented, because after publishing a post, we display the content in the editor, and we should habe the post object so that the content be editable.
+//     delete post;
 }
 
 void Backend::postPublished( KBlog::BlogPost *post )

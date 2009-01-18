@@ -235,7 +235,8 @@ protected Q_SLOTS:
 
     void sltAddUnorderedList();
 
-    void sltSyncToolbar( const QTextCharFormat& f );
+//     void sltSyncToolbar( const QTextCharFormat& f );
+    void sltSyncToolbar();
 
     /*!
     Sets the content of the current tab  as other tabs' contents, to apply recent
@@ -311,9 +312,13 @@ private:
 //   QString *mHtmlContent;
 
     AddEditLink *linkDialog;
+    
     QTextCharFormat defaultCharFormat;
     //BilboTextCharFormat defaultCharFormat;
     QTextBlockFormat defaultBlockFormat;
+    QTextCharFormat lastCharFormat;
+    QTextBlockFormat lastBlockFormat;
+    
     QMap <QString, BilboMedia*> *mMediaList;
 //   QNetworkAccessManager *netManager;
     int prev_index;
