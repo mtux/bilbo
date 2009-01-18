@@ -641,8 +641,9 @@ void BilboEditor::createUi()
     lstMediaFiles->setDragDropMode( QAbstractItemView::NoDragDrop );
     lstMediaFiles->setMaximumHeight( 60 );
     connect( lstMediaFiles, SIGNAL( sigSetProperties( const int, const QString,
-                                    const QString, const QString, const QString ) ), this, SLOT( sltSetImageProperties(
-                                                const int, const QString, const QString, const QString, const QString ) ) );
+                                    const QString, const QString, const QString ) ), 
+            this, SLOT( sltSetImageProperties( const int, const QString, const QString, 
+                        const QString, const QString ) ) );
     connect( lstMediaFiles, SIGNAL( sigRemoveMedia( const int ) ), this, SLOT( sltRemoveMedia( const int ) ) );
 
     kDebug() << lstMediaFiles->iconSize() << "icon size";
@@ -654,8 +655,9 @@ void BilboEditor::createUi()
     vLayout->addWidget( label );
     vLayout->addWidget( lstMediaFiles );
 //  tabVisual->setLayout(vLayout);
-    connect( editor, SIGNAL( currentCharFormatChanged( const QTextCharFormat & ) ), this,
-             SLOT( sltSyncToolbar( const QTextCharFormat & ) ) );
+//     connect( editor, SIGNAL( currentCharFormatChanged( const QTextCharFormat & ) ), this,
+//              SLOT( sltSyncToolbar( const QTextCharFormat & ) ) );
+    connect( editor, SIGNAL( cursorPositionChanged() ), this, SLOT( sltSyncToolbar() ) );
 
     ///htmlEditor:
     htmlEditor = new QPlainTextEdit( tabHtml );
@@ -1289,20 +1291,51 @@ void BilboEditor::sltAddUnorderedList()
 //  }
 }
 
-void BilboEditor::sltSyncToolbar( const QTextCharFormat& f )
+// void BilboEditor::sltSyncToolbar( const QTextCharFormat& f )
+// {
+//     kDebug() << "char format changed";
+//     if ( f.fontWeight() == QFont::Bold ) {
+//         this->actBold->setChecked( true );
+//     } else {
+//         this->actBold->setChecked( false );
+//     }
+//     this->actItalic->setChecked( f.fontItalic() );
+//     this->actUnderline->setChecked( f.fontUnderline() );
+//     this->actStrikeout->setChecked( f.fontStrikeOut() );
+//     if ( f.fontFamily() == QString::fromLatin1( "Courier New,courier" ) ) {
+//         this->actCode->setChecked( true );
+//     } else {
+//         this->actCode->setChecked( false );
+//     }
+// }
+
+void BilboEditor::sltSyncToolbar()
 {
-    if ( f.fontWeight() == QFont::Bold ) {
-        this->actBold->setChecked( true );
-    } else {
-        this->actBold->setChecked( false );
+    if ( this->editor->textCursor().charFormat() != lastCharFormat ) {
+        lastCharFormat = this->editor->textCursor().charFormat();
+        
+        if ( lastCharFormat.fontWeight() == QFont::Bold ) {
+            this->actBold->setChecked( true );
+        } else {
+            this->actBold->setChecked( false );
+        }
+        this->actItalic->setChecked( lastCharFormat.fontItalic() );
+        this->actUnderline->setChecked( lastCharFormat.fontUnderline() );
+        this->actStrikeout->setChecked( lastCharFormat.fontStrikeOut() );
+        if ( lastCharFormat.fontFamily() == QString::fromLatin1( "Courier New,courier" ) ) {
+            this->actCode->setChecked( true );
+        } else {
+            this->actCode->setChecked( false );
+        }
     }
-    this->actItalic->setChecked( f.fontItalic() );
-    this->actUnderline->setChecked( f.fontUnderline() );
-    this->actStrikeout->setChecked( f.fontStrikeOut() );
-    if ( f.fontFamily() == QString::fromLatin1( "Courier New,courier" ) ) {
-        this->actCode->setChecked( true );
-    } else {
-        this->actCode->setChecked( false );
+    if ( this->editor->textCursor().blockFormat() != lastBlockFormat ) {
+        lastBlockFormat = this->editor->textCursor().blockFormat();
+        
+        if ( lastBlockFormat.layoutDirection() == Qt::RightToLeft ) {
+            this->actRightToLeft->setChecked( true );
+        } else {
+            this->actRightToLeft->setChecked( false );
+        }
     }
 }
 
@@ -1608,24 +1641,6 @@ void BilboEditor::useLocalImagePaths( QTextDocument* doc )
 
 bool BilboEditor::updateMediaPaths()
 {
-//  QTextBlock block;
-//  QTextBlock::iterator i;
-//  QTextCharFormat f;
-//  QTextCursor cursor;
-//
-//  if (this->currentIndex() == 0) {
-//   htmlExporter* htmlExp = new htmlExporter();
-//   htmlExp->setDefaultCharFormat(this->defaultCharFormat);
-//   htmlExp->setDefaultBlockFormat(this->defaultBlockFormat);
-//
-//   useRemoteMediaPaths();
-//   htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
-//   delete htmlExp;
-//
-//   block = editor->document()->firstBlock();
-//   i = block.begin();
-//  }
-
     int startIndex = 0;
     int endIndex;
     QString path;
