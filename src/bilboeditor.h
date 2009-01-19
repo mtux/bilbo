@@ -41,7 +41,8 @@ class KActionCollection;
 //class QToolBar;
 class KToolBar;
 class AddEditLink;
-class AddImageDialog;
+// class AddImageDialog;
+// class AddMediaDialog;
 class BilboMedia;
 class KListWidget;
 
@@ -218,17 +219,25 @@ protected Q_SLOTS:
      */
     void sltAddImage();
 
-    /**
-     * Puts the image with given url in the current cursor position, of the editor.
-     * @param url is the image url, it may be a path in local file system, or the image url on the web.
-     */
-    void sltSetImage( BilboMedia *media );
+    void sltSetImage( BilboMedia *media, const int width, const int height, 
+                 const QString title, const QString Alt_text );
 
-    void sltSetImageProperties( const int index, const QString width, const QString height,
+    void sltSetImageProperties( const int index, const int width, const int height,
                                 const QString title, const QString Alt_text );
 
 //   void sltRemoteImageReceived(const QTextCursor & cursor);
-
+    
+    /**
+     * Creates an instance of AddMediaDialog class,and opens it, to select a media file.
+     */
+    void sltAddMedia();
+    
+    /**
+     * Puts the given media object in the current cursor position, of the editor.
+     * @param media is a BilboMedia object, which contains media path, mimetype and other needed information about it.
+     */
+    void sltSetMedia( BilboMedia *media );
+    
     void sltRemoveMedia( const int index );
 
     void sltAddOrderedList();
@@ -306,6 +315,7 @@ private:
     KAction *actRemoveFormatting;
     KAction *actColorSelect;
     KAction *actAddImage;
+    KAction *actAddMedia;
     KAction *actOrderedList;
     KAction *actUnorderedList;
 

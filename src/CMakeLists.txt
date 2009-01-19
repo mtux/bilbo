@@ -27,6 +27,7 @@ set(bilbo_SRCS
  backend.cpp
  entriescountdialog.cpp
  multilinetextedit.cpp
+ addmediadialog.cpp
  addimagedialog.cpp
  bilbomedia.cpp
  addcategory.cpp
@@ -41,7 +42,7 @@ kde4_add_ui_files(
   addeditblogbase.ui
   addeditlinkbase.ui
   entriescountdialogbase.ui
-  addimagedialogbase.ui
+  addmediadialogbase.ui
   editimagebase.ui
   addcategorybase.ui
   settingsbase.ui

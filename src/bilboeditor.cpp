@@ -133,7 +133,7 @@ BilboEditor::~BilboEditor()
 //
 //
 //
-// //  tabVisual->layout()->addWidget(editor);//TODO!
+// //  tabVisual->layout()->addWidget(editor);
 // }
 //
 // void BilboEditor::createActions()
@@ -640,9 +640,9 @@ void BilboEditor::createUi()
     lstMediaFiles->setGridSize( QSize( 60, 48 ) );
     lstMediaFiles->setDragDropMode( QAbstractItemView::NoDragDrop );
     lstMediaFiles->setMaximumHeight( 60 );
-    connect( lstMediaFiles, SIGNAL( sigSetProperties( const int, const QString,
-                                    const QString, const QString, const QString ) ), 
-            this, SLOT( sltSetImageProperties( const int, const QString, const QString, 
+    connect( lstMediaFiles, SIGNAL( sigSetProperties( const int, const int,
+                                    const int, const QString, const QString ) ), 
+            this, SLOT( sltSetImageProperties( const int, const int, const int, 
                         const QString, const QString ) ) );
     connect( lstMediaFiles, SIGNAL( sigRemoveMedia( const int ) ), this, SLOT( sltRemoveMedia( const int ) ) );
 
@@ -779,7 +779,8 @@ void BilboEditor::createActions()
     barVisual->addSeparator();
 
     actNewParagraph = new KAction( KIcon( "new-paragraph" ), i18nc( "Inserts a new paragraph", "New Paragraph" ), this );
-    actNewParagraph->setShortcut( Qt::SHIFT + Qt::Key_Return );
+//     actNewParagraph->setShortcut( Qt::SHIFT + Qt::Key_Return );
+    actNewParagraph->setShortcut( Qt::Key_Return );
     actNewParagraph->setToolTip( i18nc
                                  ( "Inserts a new paragraph, and its shortcut is (Shift+Enter)",
                                    "New Paragraph (Shift+Enter)" ) );
@@ -829,6 +830,11 @@ void BilboEditor::createActions()
                                "Add Image" ), this );
     connect( actAddImage, SIGNAL( triggered( bool ) ), this, SLOT( sltAddImage() ) );
     barVisual->addAction( actAddImage );
+    
+    actAddMedia = new KAction( KIcon( "insert-media" ), 
+                               i18nc( "verb, to add a media file to the post", "Add Media" ), this );
+    connect( actAddMedia, SIGNAL( triggered( bool ) ), this, SLOT( sltAddMedia() ) );
+    barVisual->addAction( actAddMedia );
 
     barVisual->addSeparator();
 
@@ -1068,7 +1074,6 @@ void BilboEditor::sltAlignLeft()
 // //   editor->setAlignment();
 // }
 
-/// FIXME when textDirection is rtl, editor moves the text to the right side, but its alignment remains AlignLeft.
 void BilboEditor::sltChangeLayoutDirection()
 {
     kDebug();
@@ -1103,18 +1108,59 @@ void BilboEditor::sltChangeLayoutDirection()
 void BilboEditor::sltAddImage()
 {
     AddImageDialog *imageDialog = new AddImageDialog( this );
-    connect( imageDialog, SIGNAL( signalAddImage( BilboMedia * ) ), this, SLOT( sltSetImage( BilboMedia * ) ) );
+//     AddMediaDialog *imageDialog = new AddMediaDialog( this );
+//     connect( imageDialog, SIGNAL( signalAddMedia( BilboMedia * ) ), this, SLOT( sltSetImage( BilboMedia * ) ) );
+    connect( imageDialog, SIGNAL( sigAddImage( BilboMedia *, const int, const int, 
+             const QString, const QString ) ), this, SLOT( sltSetImage( BilboMedia *, 
+             const int, const int, const QString, const QString ) ) );
     imageDialog->exec();
 }
 
-/**
- * FIXME
- * it doesn't upload images to the blog, or add it to the database.
- * even for local images, preview tab can not show them yet.
- * TODO
- * use this slt to insert all needed media types.
- */
-void BilboEditor::sltSetImage( BilboMedia *media )
+void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int height, 
+                               const QString title, const QString Alt_text )
+{
+    QListWidgetItem *item;
+    kDebug();
+    
+    if ( media->mimeType().contains( "image" ) ) {
+        if ( mMediaList->contains( media->localUrl() ) ) {
+            //media is already added.
+        } else {
+            mMediaList->insert( media->localUrl(), media );
+            item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::ImageType );
+            QTextImageFormat imageFormat;
+            
+            imageFormat.setName( media->localUrl() );
+            if ( width != 0 ) {
+                imageFormat.setWidth( width );
+            }
+            if ( height != 0 ) {;
+                imageFormat.setHeight( height );
+            }
+            if ( !title.isEmpty() ) {
+                imageFormat.setProperty( BilboTextFormat::ImageTitle, QVariant( title ) );
+            }
+            if ( !Alt_text.isEmpty() ) {
+                imageFormat.setProperty( BilboTextFormat::ImageAlternateText, QVariant( Alt_text ) );
+            }
+            editor->textCursor().insertImage( imageFormat );
+            
+            item->setData( Qt::UserRole, QVariant( media->localUrl() ) );
+            item->setToolTip( media->name() );
+        }
+    }
+}
+
+void BilboEditor::sltAddMedia()
+{
+    AddMediaDialog *mediaDialog = new AddMediaDialog( this );
+//     AddMediaDialog *imageDialog = new AddMediaDialog( this );
+//     connect( imageDialog, SIGNAL( signalAddMedia( BilboMedia * ) ), this, SLOT( sltSetImage( BilboMedia * ) ) );
+    connect( mediaDialog, SIGNAL( sigAddMedia( BilboMedia * ) ), this, SLOT( sltSetMedia( BilboMedia * ) ) );
+    mediaDialog->exec();
+}
+
+void BilboEditor::sltSetMedia( BilboMedia *media )
 {
     QString url;
     QListWidgetItem *item;
@@ -1190,8 +1236,8 @@ void BilboEditor::sltSetImage( BilboMedia *media )
 //  }
 // }
 
-void BilboEditor::sltSetImageProperties( const int index, const QString width,
-        const QString height, const QString title, const QString Alt_text )
+void BilboEditor::sltSetImageProperties( const int index, const int width,
+        const int height, const QString title, const QString Alt_text )
 {
     this->editor->setFocus( Qt::OtherFocusReason );
     QString path = lstMediaFiles->item( index )->data( Qt::UserRole ).toString();
@@ -1209,11 +1255,11 @@ void BilboEditor::sltSetImageProperties( const int index, const QString width,
                 QTextImageFormat imgFormat = f.toImageFormat();
                 if ( imgFormat.name() == path ) {
                     kDebug() << "image exists";
-                    if ( !width.isEmpty() ) {
-                        imgFormat.setWidth( width.toDouble() );
+                    if ( width != 0 ) {
+                        imgFormat.setWidth( width );
                     }
-                    if ( !height.isEmpty() ) {
-                        imgFormat.setHeight( height.toDouble() );
+                    if ( height != 0 ) {
+                        imgFormat.setHeight( height );
                     }
                     if ( !title.isEmpty() ) {
                         imgFormat.setProperty( BilboTextFormat::ImageTitle, QVariant( title ) );
