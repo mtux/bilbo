@@ -18,58 +18,45 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
 #ifndef ADDIMAGEDIALOG_H
 #define ADDIMAGEDIALOG_H
 
-//#include <QDialog>
-#include <KDialog>
-//#include <KIO>
-#include <kio/jobclasses.h>
+#include <addmediadialog.h>
 
-#include "ui_addimagedialogbase.h"
+#include <ui_editimagebase.h>
 
+class QFrame;
 class BilboMedia;
 /**
-Implements a dialog to enter address of a local or remote image file.
+	@author 
+*/
 
- @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
- @author Golnaz Nilieh <g382nilieh@gmail.com>
- */
-// TODO change the class to support more than one type of media.
-// TODO use KDialog instead of QDialog.
-// now when using it default ok-cancel buttons appear on top right corner of the dialog window.
-
-class AddImageDialog: public KDialog
+class AddImageDialog : public AddMediaDialog
 {
     Q_OBJECT
 public:
-    /// AddImageDialog constructor.
-    /**
-     * Creates a new AddImageDialog instance, and opens it.
-     * @param parent is needed for QDialog constructor, which is the parent class of
-     * AddImageDialog.
-     */
-    AddImageDialog( QWidget *parent = 0 );
+    AddImageDialog(QWidget* parent);
 
-    /// AddImageDialog destructor.
     ~AddImageDialog();
-
+    
 Q_SIGNALS:
-    /**
-     * when the dialog is accepted, sends the selected image url to the caller function.
-     * @param url
-     */
-    void signalAddImage( BilboMedia *media );
+    void sigAddImage( BilboMedia *media, const int width, const int height, 
+                      const QString title, const QString Alt_text  );
 
+protected:
+    virtual void addOtherMediaAttributes();
+//     using AddMediaDialog::media;
+//     using AddMediaDialog::sltOkClicked;
+
+protected Q_SLOTS:
+    virtual void sltOkClicked();
+    virtual void sltRemoteFileCopied(KJob* job);
+    
 private:
-    Ui::AddImageDialogBase ui;
-    BilboMedia *media;
+    QFrame *editFrame;
+    QWidget *editImageWidget;
+    Ui::EditImageBase editImageWidgetUi;
 
-private Q_SLOTS:
-    void sltOkClicked();
-    void sltRemoteFileTypeFound( KIO::Job *job, const QString &type );
-    void sltRemoteFileCopied( KJob *job );
 };
 
 #endif

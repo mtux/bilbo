@@ -53,7 +53,7 @@ void MediaListWidget::contextMenuEvent( QContextMenuEvent *event )
 
 void MediaListWidget::sltEditProperties()
 {
-    QDialog *temp = new QDialog( this );
+    QWidget *temp = new QWidget( this );
     KDialog *dialog = new KDialog( this );
     //ui.setupUi(dialog);
     ui.setupUi( temp );
@@ -67,8 +67,8 @@ void MediaListWidget::sltEditProperties()
 }
 void MediaListWidget::sltSetProperties()
 {
-    Q_EMIT( sigSetProperties( this->currentRow(), ui.txtWidth->text(),
-                              ui.txtHeight->text(), ui.txtTitle->text(), ui.txtAltText->text() ) );
+    Q_EMIT( sigSetProperties( this->currentRow(), ui.spinboxWidth->value(),
+            ui.spinboxHeight->value(), ui.txtTitle->text(), ui.txtAltText->text() ) );
     kDebug() << "signal emmited" ;
 }
 

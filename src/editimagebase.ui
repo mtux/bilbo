@@ -1,12 +1,12 @@
 <ui version="4.0" >
  <class>EditImageBase</class>
- <widget class="QDialog" name="EditImageBase" >
+ <widget class="QWidget" name="EditImageBase" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>359</width>
-    <height>164</height>
+    <width>344</width>
+    <height>126</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -21,68 +21,66 @@
     </widget>
    </item>
    <item row="0" column="1" >
-    <widget class="KLineEdit" name="txtWidth" >
-     <property name="showClearButton" stdset="0" >
-      <bool>true</bool>
+    <widget class="KIntSpinBox" name="spinboxWidth" >
+     <property name="buttonSymbols" >
+      <enum>QAbstractSpinBox::UpDownArrows</enum>
+     </property>
+     <property name="suffix" >
+      <string> pixel</string>
+     </property>
+     <property name="maximum" >
+      <number>2000</number>
      </property>
     </widget>
    </item>
-   <item row="0" column="2" >
-    <widget class="QLabel" name="label1" >
-     <property name="text" >
-      <string>Pixels </string>
+   <item row="0" column="3" >
+    <widget class="KIntSpinBox" name="spinboxHeight" >
+     <property name="suffix" >
+      <string> pixel</string>
+     </property>
+     <property name="prefix" >
+      <string/>
+     </property>
+     <property name="maximum" >
+      <number>2000</number>
+     </property>
+     <property name="singleStep" >
+      <number>1</number>
      </property>
     </widget>
    </item>
    <item row="1" column="0" >
-    <widget class="QLabel" name="labelHeight" >
+    <widget class="QLabel" name="labelTitle" >
      <property name="text" >
-      <string comment="noun, height of the image in pixels." >Image height:</string>
+      <string>Image Title:</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1" >
-    <widget class="KLineEdit" name="txtHeight" >
-     <property name="showClearButton" stdset="0" >
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2" >
-    <widget class="QLabel" name="label2" >
-     <property name="text" >
-      <string>Pixels </string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0" >
-    <widget class="QLabel" name="labelAltText" >
-     <property name="text" >
-      <string comment="the alternative text which is displayed to the user, if the image can not be loaded." >Alternative text:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1" colspan="2" >
+   <item row="2" column="1" colspan="3" >
     <widget class="KLineEdit" name="txtAltText" >
      <property name="showClearButton" stdset="0" >
       <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="4" column="1" >
-    <widget class="KDialogButtonBox" name="kdialogbuttonbox" />
-   </item>
-   <item row="2" column="1" colspan="2" >
-    <widget class="KLineEdit" name="txtTitle" >
-     <property name="showClearButton" stdset="0" >
-      <bool>true</bool>
+   <item row="2" column="0" >
+    <widget class="QLabel" name="labelAltText" >
+     <property name="text" >
+      <string comment="the alternative text which is displayed to the user, if the image can not be loaded." >Alternative text:</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" >
-    <widget class="QLabel" name="labelTitle" >
+   <item row="0" column="2" >
+    <widget class="QLabel" name="labelHeight" >
      <property name="text" >
-      <string>Image Title:</string>
+      <string comment="noun, height of the image in pixels." >Image height:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="3" >
+    <widget class="KLineEdit" name="txtTitle" >
+     <property name="showClearButton" stdset="0" >
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -90,9 +88,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KDialogButtonBox</class>
-   <extends>QDialogButtonBox</extends>
-   <header>kdialogbuttonbox.h</header>
+   <class>KIntSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>knuminput.h</header>
   </customwidget>
   <customwidget>
    <class>KLineEdit</class>

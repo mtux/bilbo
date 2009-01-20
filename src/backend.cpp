@@ -164,7 +164,7 @@ void Backend::publishPost( BilboPost * post )
         gd->createPost( bp );
     }
     
-// NOTE the line below commented, because after publishing a post, we display the content in the editor, and we should habe the post object so that the content be editable.
+// NOTE the line below commented, because after publishing a post, we display the content in the editor, and we should habe the post object so that the content be editable. -Golnaz
 //     delete post;
 }
 

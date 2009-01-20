@@ -18,14 +18,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-//#include <QFileDialog>
 #include <kfiledialog.h>
 #include <kmessagebox.h>
-#include <kmimetype.h>
 #include <kdebug.h>
 #include <kio/job.h>
-#include <kio/netaccess.h>
 #include <kio/jobuidelegate.h>
 
 #include "addimagedialog.h"
@@ -33,101 +29,51 @@
 #include "global.h"
 #include "settings.h"
 
-AddImageDialog::AddImageDialog( QWidget *parent ) : KDialog( parent )
+AddImageDialog::AddImageDialog(QWidget* parent): AddMediaDialog(parent)
 {
-    QDialog *dialog = new QDialog( parent );
-    ui.setupUi( dialog );
     QStringList mimeFilter;
     mimeFilter << "image/gif" << "image/jpeg" << "image/png" ;
-    ui.kurlreqLocalUrl->fileDialog()->setMimeFilter( mimeFilter );
-    ui.kurlreqLocalUrl->fileDialog()->setWindowTitle( i18n( "Choose a file" ) );
-    dialog->setAttribute( Qt::WA_DeleteOnClose );
-    this->setMainWidget( dialog );
-    this->setWindowTitle( dialog->windowTitle() );
-    this->resize( dialog->width(), dialog->height() );
-    connect( this, SIGNAL( okClicked() ), this, SLOT( sltOkClicked() ) );
+    ui.kurlreqMediaUrl->fileDialog()->setMimeFilter( mimeFilter );
+    
+    editFrame = new QFrame(this);
+    editFrame->setFrameShape(QFrame::StyledPanel);
+    editFrame->setFrameShadow(QFrame::Raised);
+//     editImageWidget = new QWidget( this );
+//     editImageWidget = new QWidget( editFrame );
+    editImageWidgetUi.setupUi( editFrame );
+//     ui.gridLayout->addWidget( editImageWidget, 1, 0, 1, 2 );
+    ui.gridLayout_2->addWidget( editFrame, 1, 0, 3, 1 );
+//     ui.gridLayout->update();
+//     connect( this, SIGNAL( okClicked() ), this, SLOT( sltOkClicked() ) );
 }
+
 
 AddImageDialog::~AddImageDialog()
 {
 }
 
+
 void AddImageDialog::sltOkClicked()
 {
-    KUrl mediaUrl = ui.kurlreqLocalUrl->url();
-
-    if ( !mediaUrl.isEmpty() ) {
-        if ( mediaUrl.isValid() ) {
-            media = new BilboMedia();
-            QString name = mediaUrl.fileName();
-
-//  qDebug() << type;
-            media->setName( name );
-
-            if ( !mediaUrl.isLocalFile() ) {
-                if ( Settings::download_remote_media() ) {
-                    kDebug() << "download!";
-
-                    if ( KIO::NetAccess::exists( mediaUrl.url(), true, NULL ) ) {
-//       KTemporaryFile tmpFile;
-                        KUrl localUrl = KUrl( "file://" + __tempMediaDir + name );
-//       KUrl localUrl = KUrl(tempFile.fileName());
-                        KIO::Job*  copyJob = KIO::file_copy( mediaUrl, localUrl, -1, KIO::Overwrite );
-                        connect( copyJob, SIGNAL( result( KJob * ) ), this,
-                                 SLOT( sltRemoteFileCopied( KJob * ) ) );
-                    } else {
-                        KMessageBox::sorry( this, i18n( "The requested media file doesn't exist, or it isn't readable." ),
-                                            i18n( "File not found" ) );
-                        return;
-                    }
-                }
-                media->setRemoteUrl( mediaUrl.url() );
-//     media->setUploaded(true);
-                media->setLocal( false );
-
-                KIO::MimetypeJob* typeJob = KIO::mimetype( mediaUrl );
-                //KIO::TransferJob* tempJob = typeJob;
-                //KIO::TransferJob* tempJob = KIO::mimetype(mediaUrl,false);
-
-                connect( typeJob, SIGNAL( mimetype( KIO::Job *, const QString & ) ), this,  SLOT( sltRemoteFileTypeFound( KIO::Job *, const QString & ) ) );
-            } else {
-                bool copyResult = QFile::copy( mediaUrl.toLocalFile(), __tempMediaDir
-                                               + name );
-                if ( !copyResult ) {
-                    int ret = KMessageBox::questionYesNo( this, i18n( "This file is already  added to Bilbo temp directory, and won't be copied again.\nyou can save the file with different name and try again.\ndo you want to continue using the existing file?" ), i18n( "File already exists" ) );
-                    if ( ret == KMessageBox::No ) return;
-                }
-                media->setLocalUrl( __tempMediaDir + name );
-                media->setRemoteUrl( "file://" + __tempMediaDir + name );
-//     media->setUploded(false);
-                media->setLocal( true );
-
-                KMimeType::Ptr typePtr;
-                typePtr = KMimeType::findByUrl( mediaUrl, 0, true, false );
-                name = typePtr.data()->name();
-                kDebug() << name ;
-                media->setMimeType( name );
-
-                Q_EMIT signalAddImage( media );
-            }
-        } else {
-            KMessageBox::error( this, i18n( "The selected media address is an invalid url." ) );
+    kDebug() << "ok zadim :D";
+    AddMediaDialog::sltOkClicked();
+    
+    KUrl imageUrl = ui.kurlreqMediaUrl->url();
+    if ( !imageUrl.isEmpty() && imageUrl.isValid() && !imageUrl.isLocalFile() ) {
+        if ( Settings::download_remote_media() ) {
+            kDebug() << "download!";
+            
+            KUrl localUrl = KUrl( "file://" + __tempMediaDir + imageUrl.fileName() );
+            KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite );
+            connect( copyJob, SIGNAL( result( KJob * ) ), this, 
+                    SLOT( sltRemoteFileCopied( KJob * ) ) );
         }
     }
 }
 
-void AddImageDialog::sltRemoteFileTypeFound( KIO::Job *job, const QString &type )
+void AddImageDialog::sltRemoteFileCopied(KJob* job)
 {
-    kDebug() << type ;
-    media->setMimeType( type );
-    if ( !Settings::download_remote_media() ) {
-        media->setLocalUrl( media->remoteUrl() );
-        Q_EMIT signalAddImage( media );
-    }
-}
-
-void AddImageDialog::sltRemoteFileCopied( KJob *job )
-{
+//     AddMediaDialog::sltRemoteFileCopied(job);
     KIO::FileCopyJob *copyJob = dynamic_cast <KIO::FileCopyJob*>( job );
     if ( job->error() ) {
         copyJob->ui()->setWindow( this );
@@ -135,7 +81,20 @@ void AddImageDialog::sltRemoteFileCopied( KJob *job )
     } else {
         //KIO::FileCopyJob *copyJob = dynamic_cast <KIO::FileCopyJob*> (job);
         media->setLocalUrl( copyJob->destUrl().toLocalFile() );
-        Q_EMIT signalAddImage( media );
+        addOtherMediaAttributes();
+    }
+}
+
+void AddImageDialog::addOtherMediaAttributes()
+{
+    if ( media->mimeType().contains( "image" ) ) {
+        kDebug() << "emitting add image signal";
+        Q_EMIT sigAddImage( media, editImageWidgetUi.spinboxWidth->value(), 
+                            editImageWidgetUi.spinboxHeight->value(), 
+                            editImageWidgetUi.txtTitle->text(), 
+                            editImageWidgetUi.txtAltText->text() );
+    } else {
+        KMessageBox::error( this, i18n( "The selected media is not an image file, or its format isn't supported." ) );
     }
 }
 
