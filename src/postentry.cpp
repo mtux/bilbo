@@ -33,14 +33,13 @@
 PostEntry::PostEntry( QWidget *parent )
         : QFrame( parent )
 {
+    kDebug();
     createUi();
-//  mMediaList = new QMap<QString, BilboMedia*>();
     editPostWidget = new BilboEditor( this );
     editPostWidget->setMediaList( &mMediaList );
-//  editPostWidget->setMediaList(mMediaList);
     this->layout()->addWidget( editPostWidget );
     mCurrentPost = 0;
-
+    progress = 0;
     mCurrentPostBlogId = -1;
 }
 
@@ -82,10 +81,10 @@ const QString& PostEntry::postBody()
 {
     kDebug();
     const QString& str = this->editPostWidget->htmlContent();
-    if ( !mCurrentPost ) {
-        mCurrentPost = new BilboPost;
-    }
-    mCurrentPost->setContent( str );
+//     if ( !mCurrentPost ) {
+//         mCurrentPost = new BilboPost;
+//     }
+//     mCurrentPost->setContent( str );
     return str;
 }
 
@@ -118,8 +117,6 @@ BilboPost* PostEntry::currentPost()
 {
     kDebug();
     mCurrentPost->setContent( postBody() );
-    //mCurrentPost->setTitle(postTitle());
-    //return (*mCurrentPost);
     return ( mCurrentPost );
 }
 
@@ -155,7 +152,7 @@ PostEntry::~PostEntry()
     delete mCurrentPost;
 }
 
-void PostEntry::setCurrentPostProperties( BilboPost post )
+void PostEntry::setCurrentPostProperties( BilboPost &post )
 {
     kDebug();
     post.setTitle( txtTitle->text() );
@@ -183,7 +180,7 @@ bool PostEntry::uploadMediaFiles()
         if ( it.value()->isLocal() ) {
             result = true;
             connect( b, SIGNAL( sigMediaUploaded( BilboMedia* ) ), this, SLOT( sltMediaFileUploaded( BilboMedia* ) ) );
-            connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString ) ) );
+            connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
             connect( b, SIGNAL( sigMediaError( const QString&, BilboMedia* ) ), this, SLOT( sltMediaError( const QString&, BilboMedia* ) ) );
             b->uploadMedia( it.value() );
             ++numOfFilesToBeUploaded;
@@ -221,10 +218,7 @@ void PostEntry::sltError( const QString & errMsg )
 {
     kDebug();
     QString err = i18n( "An Error occurred on latest transaction.\n%1", errMsg );
-    if ( progress ) {
-        sltDeleteProgressBar();
-//         QTimer::singleShot( 500, this, SLOT( sltDeleteProgressBar() ) );
-    }
+    sltDeleteProgressBar();
     emit postPublishingDone( true, err );
     sender()->deleteLater();
 }
@@ -235,10 +229,7 @@ void PostEntry::sltMediaError( const QString & errorMessage, BilboMedia * media 
     isUploadingMediaFilesFailed = true;
     kDebug() << " AN ERROR OCCURRED ON UPLOADING,\tError message is: " << errorMessage;
     QString err = i18n( "Uploading media file %1 failed.\n%3", media->name(), media->localUrl(), errorMessage);
-    if ( progress ) {
     sltDeleteProgressBar();
-//         QTimer::singleShot( 500, this, SLOT( sltDeleteProgressBar() ) );
-    }
     emit postPublishingDone( true, err );
     sender()->deleteLater();
 }
@@ -281,26 +272,22 @@ void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
         msg = i18n( "New Post with title \"%1\" published successfully.", post->title() );
     }
 //     KMessageBox::information( this, msg, "Successful" );
-    kDebug() << "check =1";
     if ( progress ) {
-        kDebug() << "check =2";
         this->layout()->removeWidget( progress );
-        kDebug() << "check =3";
         progress->deleteLater();
-        kDebug() << "check =4";
     }
-    emit postPublishingDone( true, msg );
+    emit postPublishingDone( false, msg );
     sender()->deleteLater(); //FIXME Check if this command needed or NOT -Mehrdad
-    kDebug() << "check =5";
-    kDebug() << "check =6";
-    kDebug() << "check =7";
 }
 
 void PostEntry::sltDeleteProgressBar()
 {
     kDebug();
-    this->layout()->removeWidget( progress );
-    progress->deleteLater();
+    if(progress){
+        this->layout()->removeWidget( progress );
+        progress->deleteLater();
+    }
+    progress = 0;
 }
 
 #include "postentry.moc"
