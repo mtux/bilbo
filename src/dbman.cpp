@@ -109,10 +109,10 @@ bool DBMan::createDB()
         ret = false;
 
     ///files table
-//  if(!q.exec("CREATE TABLE file (fileid INTEGER PRIMARY KEY, name TEXT, blog_id NUMERIC, is_uploaded NUMERIC,\
-//       local_url TEXT, remote_url TEXT);"))
-    if ( !q.exec( "CREATE TABLE file (fileid INTEGER PRIMARY KEY, name TEXT, blog_id NUMERIC, is_local NUMERIC,\
-                  local_url TEXT, remote_url TEXT);" ) )
+    if( !q.exec( "CREATE TABLE file (fileid INTEGER PRIMARY KEY, name TEXT, blog_id NUMERIC, is_uploaded NUMERIC,\
+      local_url TEXT, remote_url TEXT);" ) )
+//     if ( !q.exec( "CREATE TABLE file (fileid INTEGER PRIMARY KEY, name TEXT, blog_id NUMERIC, is_local NUMERIC,\
+//                   local_url TEXT, remote_url TEXT);" ) )
         ret = false;
 
     ///connection bethween posts and categories
@@ -538,16 +538,16 @@ bool DBMan::clearCategories( int blog_id )
     return res;
 }
 
-// int DBMan::addFile(QString name, int blog_id, bool isUploaded, QString localUrl, QString remoteUrl)
-int DBMan::addFile( const QString &name, int blog_id, bool isLocal, const QString &localUrl, const QString &remoteUrl )
+int DBMan::addFile( QString name, int blog_id, bool isUploaded, QString localUrl, QString remoteUrl )
+// int DBMan::addFile( const QString &name, int blog_id, bool isLocal, const QString &localUrl, const QString &remoteUrl )
 {
     QSqlQuery q;
 //  q.prepare("INSERT INTO file(name, blog_id, is_uploaded, local_url, remote_url) VALUES(?, ?, ?, ?, ?)");
     q.prepare( "INSERT INTO file(name, blog_id, is_local, local_url, remote_url) VALUES(?, ?, ?, ?, ?)" );
     q.addBindValue( name );
     q.addBindValue( blog_id );
-//  q.addBindValue(isUploaded);
-    q.addBindValue( isLocal );
+    q.addBindValue( isUploaded );
+//     q.addBindValue( isLocal );
     q.addBindValue( localUrl );
     q.addBindValue( remoteUrl );
 

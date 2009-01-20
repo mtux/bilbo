@@ -49,11 +49,11 @@ public:
     int mediaId() const;
     void setMediaId( const int media_id );
 
-//         bool isUploaded() const;
-//   void setUploaded(bool uploaded);
+    bool isUploaded() const;
+    void setUploaded( bool uploaded );
 
-    bool isLocal() const;
-    void setLocal( bool is_local );
+//     bool isLocal() const;
+//     void setLocal( bool is_local );
 
     QString localUrl() const;
     void setLocalUrl( const QString &url );
@@ -75,8 +75,8 @@ public:
 private:
     int mBlogId;
     int mMediaId;
-//   bool mIsUploaded;
-    bool mIsLocal;
+    bool mIsUploaded;
+//     bool mIsLocal;
     QString mLocalUrl;
     QString mRemoteUrl;
     QString mMimeType;

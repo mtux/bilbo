@@ -308,6 +308,7 @@ void Backend::mediaUploaded( KBlog::BlogMedia * media )
     }
     kDebug() << "check = 4";
     m->setRemoteUrl( QUrl( media->url().url() ).toString() );
+    m->setUploaded( true );
     kDebug() << "check = 5";
     kDebug() << "Emitting sigMediaUploaded...";
     Q_EMIT sigMediaUploaded( m );

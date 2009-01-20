@@ -176,8 +176,8 @@ bool PostEntry::uploadMediaFiles()
     QMap <QString, BilboMedia*>::iterator it = mMediaList.begin();
     QMap <QString, BilboMedia*>::iterator endIt = mMediaList.end();
     for ( ; it != endIt; ++it ) {
-//   if(!it.value()->isUploaded()){
-        if ( it.value()->isLocal() ) {
+        if( !it.value()->isUploaded() ){
+//         if ( it.value()->isLocal() ) {
             result = true;
             connect( b, SIGNAL( sigMediaUploaded( BilboMedia* ) ), this, SLOT( sltMediaFileUploaded( BilboMedia* ) ) );
             connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );

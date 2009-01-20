@@ -92,8 +92,8 @@ void AddMediaDialog::sltOkClicked()
 //                     }
 //                 }
                 media->setRemoteUrl( mediaUrl.url() );
-//     media->setUploaded(true);
-                media->setLocal( false );
+                media->setUploaded( true );
+//                 media->setLocal( false );
 
                 KIO::MimetypeJob* typeJob = KIO::mimetype( mediaUrl );
                 //KIO::TransferJob* tempJob = typeJob;
@@ -109,8 +109,8 @@ void AddMediaDialog::sltOkClicked()
                 }
                 media->setLocalUrl( __tempMediaDir + name );
                 media->setRemoteUrl( "file://" + __tempMediaDir + name );
-//     media->setUploded(false);
-                media->setLocal( true );
+                media->setUploaded( false );
+//                 media->setLocal( true );
 
                 KMimeType::Ptr typePtr;
                 typePtr = KMimeType::findByUrl( mediaUrl, 0, true, false );
