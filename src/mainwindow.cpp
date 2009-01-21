@@ -329,13 +329,14 @@ void MainWindow::sltNewPostOpened( BilboPost * newPost )
     PostEntry *temp = new PostEntry( this );
     tabPosts->addTab( temp, newPost->title() );
 
-    temp->setCurrentPost( *newPost );
+    temp->setCurrentPost( newPost );
     temp->setCurrentPostBlogId( toolbox->currentBlogId() );
 
-//     BilboBlog *tmp = DBMan::self()->getBlogInfo( toolbox->currentBlogId() );
-//     temp->setDefaultLayoutDirection( tmp->direction() );
-//     delete tmp;
+    BilboBlog *tmp = DBMan::self()->getBlogInfo( toolbox->currentBlogId() );
+    temp->setDefaultLayoutDirection( tmp->direction() );
+    delete tmp;
     ///^^^ FIXME I think we don't need this^, it's better to remain on the current state! :-/ Or maybe not :D -Mehrdad
+    ///Yes! Of course we need it! :P -Mehrdad
 
     tabPosts->setCurrentWidget( temp );
     connect( temp, SIGNAL( sigTitleChanged( const QString& ) ), this, SLOT( sltPostTitleChanged( const QString& ) ) );

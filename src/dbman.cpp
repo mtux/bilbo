@@ -116,15 +116,26 @@ bool DBMan::createDB()
         ret = false;
 
     ///connection bethween posts and categories
-    if ( !q.exec( "CREATE TABLE post_cat (post_id INTEGER, cat_id INTEGER);" ) )
+    if ( !q.exec( "CREATE TABLE post_cat (blogId TEXT, postId TEXT, categoryId TEXT);" ) )
         ret = false;
 
+    ///connection bethween posts and media files
+    if ( !q.exec( "CREATE TABLE post_file (post_id INTEGER, file_id INTEGER);" ) )
+        ret = false;
 
-    ///this will implement using clearPosts() , clearCategories() and clearFiles() in application level!
-    q.exec( "CREATE TRIGGER delete_post AFTER DELETE ON post BEGIN DELETE from post_cat WHERE post_id=OLD.id; END" );
+    ///delete related informations on DB, On removing a post or a blog
+    q.exec( "CREATE TRIGGER delete_post AFTER DELETE ON post\
+            BEGIN\
+            DELETE from post_cat WHERE post_cat.postId=OLD.postid;\
+            DELETE from post_file WHERE post_file.post_id=OLD.id;\
+            END" );
     q.exec( "CREATE TRIGGER delete_blog AFTER DELETE ON blog \
-            BEGIN DELETE from category WHERE category.blog_id=OLD.id; DELETE from file WHERE file.blog_id=OLD.id;\
-            DELETE from post WHERE post.blog_id=OLD.id; END" );
+            BEGIN\
+            DELETE from category WHERE category.blog_id=OLD.id;\
+            DELETE from file WHERE file.blog_id=OLD.id;\
+            DELETE from post WHERE post.blog_id=OLD.id;\
+            END" );
+//     q.exec( "" );
 
     return ret;
 }
@@ -330,9 +341,9 @@ int DBMan::addPost( const BilboPost & post, int blog_id )
         int cat_count = post.categories().count();
         int i = 0;
         QSqlQuery q, q2;
-        int catid;
-        q.prepare( "SELECT catid FROM category WHERE name = ? AND blog_id= ?" );
-        q2.prepare( "INSERT INTO post_cat (post_id, cat_id) VALUES(?, ?)" );
+        QString catid;
+        q.prepare( "SELECT categoryId FROM category WHERE name = ? AND blog_id= ?" );
+        q2.prepare( "INSERT INTO post_cat (blogId, postId, categoryId) VALUES((SELECT blogid FROM blog where id=?), ?, ?)" );
         while ( i < cat_count ) {
             q.addBindValue( post.categories()[i] );
             q.addBindValue( blog_id );
@@ -340,8 +351,9 @@ int DBMan::addPost( const BilboPost & post, int blog_id )
                 kDebug() << "Cannot get category id for category " << post.categories()[i];
             else
                 if ( q.next() ) {
-                    catid = q.value( 0 ).toInt();
-                    q2.addBindValue( ret );
+                    catid = q.value( 0 ).toString();
+                    q2.addBindValue( blog_id );
+                    q2.addBindValue( post.postId() );
                     q2.addBindValue( catid );
                     if ( !q2.exec() ) {
                         kDebug() << "Cannot add Category " << catid << " to Post, SQL Error: " << q2.lastError().text();
@@ -456,28 +468,26 @@ bool DBMan::editPost( const BilboPost & post, int blog_id )
         kDebug() << "Cannot delete previouse categories.";
 
     ///Add new Categories:
-    if ( q.exec() ) {
-        int cat_count = post.categories().count();
-        int i = 0;
-        QSqlQuery q, q2;
-        q.prepare( "SELECT catid FROM category WHERE name = ? AND blog_id= ?" );
-        q2.prepare( "INSERT INTO post_cat (post_id, cat_id) VALUES(?, ?)" );
-        while ( i < cat_count ) {
-            q.addBindValue( post.categories()[i] );
-            q.addBindValue( blog_id );
-            if ( !q.exec() )
-                kDebug() << "Cannot get category id for category " << post.categories()[i];
-            else
-                if ( q.next() ) {
-                    q2.addBindValue( post.id() );
-                    q2.addBindValue( q.value( 0 ).toInt() );
-                    if ( !q2.exec() )
-                        kDebug() << "Cannot add Category " << post.categories()[i] <<
-                        " to Post, SQL Error: " << q2.lastError().text();
-                }
-        }
-    } else
-        kDebug() << "Cannot edit categories.";
+
+    int cat_count = post.categories().count();
+    QSqlQuery q1, q2;
+    q1.prepare( "SELECT categoryId FROM category WHERE name = ? AND blog_id= ?" );
+    q2.prepare( "INSERT INTO post_cat (blogId, postId, categoryId) VALUES((SELECT blogid FROM blog where id=?), ?, ?)" );
+    for (i = 0; i < cat_count; ++i ) {
+        q1.addBindValue( post.categories()[i] );
+        q1.addBindValue( blog_id );
+        if ( !q1.exec() )
+            kDebug() << "Cannot get category id for category " << post.categories()[i];
+        else
+            if ( q1.next() ) {
+                q2.addBindValue( blog_id );
+                q2.addBindValue( post.postId() );
+                q2.addBindValue( q1.value( 0 ).toString() );
+                if ( !q2.exec() )
+                    kDebug() << "Cannot add Category " << post.categories()[i] <<
+                    " to Post, SQL Error: " << q2.lastError().text();
+            }
+    }
 
     return true;
 }
@@ -550,6 +560,22 @@ int DBMan::addFile( QString name, int blog_id, bool isUploaded, QString localUrl
 //     q.addBindValue( isLocal );
     q.addBindValue( localUrl );
     q.addBindValue( remoteUrl );
+
+    if ( q.exec() )
+        return q.lastInsertId().toInt();
+    else
+        return -1;
+}
+
+int DBMan::addFile(const BilboMedia & file)
+{
+    QSqlQuery q;
+    q.prepare( "INSERT INTO file(name, blog_id, is_local, local_url, remote_url) VALUES(?, ?, ?, ?, ?)" );
+    q.addBindValue( file.name() );
+    q.addBindValue( file.blogId() );
+    q.addBindValue( file.isUploaded() );
+    q.addBindValue( file.localUrl() );
+    q.addBindValue( file.remoteUrl() );
 
     if ( q.exec() )
         return q.lastInsertId().toInt();
@@ -714,9 +740,10 @@ QList< BilboPost* > DBMan::listPosts( int blog_id )
             QSqlQuery q2;
             q2.prepare( "SELECT category.name, category.description, category.htmlUrl, category.rssUrl,\
                         category.categoryId, category.parentId\
-                        FROM category JOIN post_cat ON category.catid=post_cat.cat_id\
-                        WHERE post_cat.post_id = ?" );
-            q2.addBindValue( tmp->id() );
+                        FROM category JOIN post_cat ON category.categoryId=post_cat.categoryId\
+                        WHERE post_cat.postId = ? AND post_cat.blogId = ?" );
+            q2.addBindValue( tmp->postId() );
+            q2.addBindValue( blog_id );
             if ( q2.exec() )
                 while ( q2.next() ) {
                     Category cat;
@@ -743,7 +770,7 @@ BilboPost * DBMan::getPostInfo( int post_id )
     QSqlQuery q;
     BilboPost *tmp = new BilboPost();
     q.prepare( "SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed,\
-               is_trackback_allowed, link, perma_link, summary, tags, status FROM post WHERE id = ?" );
+               is_trackback_allowed, link, perma_link, summary, tags, status, blog_id FROM post WHERE id = ?" );
     q.addBindValue( post_id );
     if ( q.exec() ) {
         if ( q.next() ) {
@@ -764,15 +791,17 @@ BilboPost * DBMan::getPostInfo( int post_id )
             tmp->setSummary( q.value( 12 ).toString() );
             tmp->setTags( q.value( 13 ).toString().split( ',', QString::SkipEmptyParts ) );
             tmp->setStatus(( KBlog::BlogPost::Status ) q.value( 14 ).toInt() );
+            int blog_id = q.value( 15 ).toInt();
 
             ///get Category list:
             QList<Category> catList;
             QSqlQuery q2;
             q2.prepare( "SELECT category.name, category.description, category.htmlUrl, category.rssUrl,\
                         category.categoryId, category.parentId, category.blog_id\
-                        FROM category JOIN post_cat ON category.catid=post_cat.cat_id\
-                        WHERE post_cat.post_id = ?" );
-            q2.addBindValue( tmp->id() );
+                        FROM category JOIN post_cat ON category.categoryId=post_cat.categoryId\
+                        WHERE post_cat.postId = ? AND post_cat.blogId = (SELECT blogid FROM blog where id=?)" );
+            q2.addBindValue( tmp->postId() );
+            q2.addBindValue( blog_id );
             if ( q2.exec() )
                 while ( q2.next() ) {
                     Category cat;

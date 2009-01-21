@@ -22,7 +22,7 @@
 #ifndef DBMAN_H
 #define DBMAN_H
 #include <QtSql>
-
+#include "bilbomedia.h"
 #include "constants.h"
 class BilboBlog;
 class BilboPost;
@@ -144,6 +144,7 @@ public:
     ///File:
     int addFile( QString name, int blog_id, bool isUploaded, QString localUrl, QString remoteUrl );
 //     int addFile( const QString &name, int blog_id, bool isLocal, const QString &localUrl, const QString &remoteUrl );
+    int addFile( const BilboMedia& file );
     int addFile();
     bool removeFile( int fileid );
     bool clearFiles( int blog_id );

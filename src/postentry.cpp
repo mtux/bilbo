@@ -81,10 +81,10 @@ const QString& PostEntry::postBody()
 {
     kDebug();
     const QString& str = this->editPostWidget->htmlContent();
-//     if ( !mCurrentPost ) {
-//         mCurrentPost = new BilboPost;
-//     }
-//     mCurrentPost->setContent( str );
+    if ( !mCurrentPost ) {
+        mCurrentPost = new BilboPost;
+    }
+    mCurrentPost->setContent( str );
     return str;
 }
 
@@ -120,12 +120,17 @@ BilboPost* PostEntry::currentPost()
     return ( mCurrentPost );
 }
 
-void PostEntry::setCurrentPost( BilboPost post )
+void PostEntry::setCurrentPost( BilboPost *post )
 {
     kDebug();
     if(mCurrentPost)
         delete mCurrentPost;
-    mCurrentPost = new BilboPost( post );
+
+    if( post )
+        mCurrentPost = post;
+    else
+        mCurrentPost = new BilboPost;
+
     this->setPostBody( mCurrentPost->content() );
     this->setPostTitle( mCurrentPost->title() );
 }
@@ -152,14 +157,18 @@ PostEntry::~PostEntry()
     delete mCurrentPost;
 }
 
-void PostEntry::setCurrentPostProperties( BilboPost &post )
+void PostEntry::setCurrentPostProperties( BilboPost *post )
 {
     kDebug();
-    post.setTitle( txtTitle->text() );
-    post.setContent( this->editPostWidget->htmlContent() );
+    if(!post){
+        kDebug()<<"Passed post is NULL";
+        return;
+    }
+    post->setTitle( txtTitle->text() );
+    post->setContent( this->editPostWidget->htmlContent() );
     if(mCurrentPost)
         delete mCurrentPost;
-    mCurrentPost = new BilboPost(post);
+    mCurrentPost = post;
 }
 
 QMap< QString, BilboMedia * > & PostEntry::mediaList()
@@ -237,7 +246,7 @@ void PostEntry::sltMediaError( const QString & errorMessage, BilboMedia * media 
 void PostEntry::publishPost( int blogId, BilboPost * postData )
 {
     kDebug();
-    this->setCurrentPostProperties( *postData );
+    this->setCurrentPostProperties( postData );
     mCurrentPostBlogId = blogId;
     if ( !this->uploadMediaFiles() )
         publishPostAfterUploadMediaFiles();
