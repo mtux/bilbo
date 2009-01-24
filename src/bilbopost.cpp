@@ -27,6 +27,7 @@
 BilboPost::BilboPost()
         : KBlog::BlogPost()
 {
+    kDebug();
     this->setCreationDateTime( KDateTime::currentLocalDateTime() );
     this->setModificationDateTime( KDateTime::currentLocalDateTime() );
     this->setLink( KUrl() );
@@ -125,6 +126,7 @@ QString BilboPost::toString() const
 BilboPost::BilboPost( const BilboPost &post )
         : KBlog::BlogPost()
 {
+    kDebug();
     this->setCreationDateTime( post.creationDateTime() );
     this->setModificationDateTime( post.modificationDateTime() );
     this->setLink( post.link() );

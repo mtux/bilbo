@@ -54,8 +54,8 @@ public:
     void setCurrentPostBlogId( int blog_id );
 
     BilboPost* currentPost();
-    void setCurrentPost( BilboPost post = BilboPost() );
-    void setCurrentPostProperties( BilboPost &post );
+    void setCurrentPost( BilboPost *post = 0 );
+    void setCurrentPostProperties( BilboPost *post );
 
     Qt::LayoutDirection defaultLayoutDirection();
     void setDefaultLayoutDirection( Qt::LayoutDirection direction );
