@@ -21,7 +21,7 @@
 
 //#include <QDebug>
 #include <QtGui>
-//#include <QTabWidget>
+#include <QImage>
 #include <QTextCharFormat>
 #include <QWebView>
 // #include <QNetworkAccessManager>
@@ -37,6 +37,7 @@
 #include "bilboeditor.h"
 #include "dbman.h"
 #include "multilinetextedit.h"
+// #include <QTextBrowser>
 #include "addeditlink.h"
 #include "addimagedialog.h"
 #include "bilbomedia.h"
@@ -624,6 +625,7 @@ void BilboEditor::createUi()
     ///editor:
     //editor = new QTextEdit(0);
     editor = new MultiLineTextEdit( tabVisual );
+//     editor = new QTextBrowser( tabVisual );
     //editor = new BilboRichTextEdit(0);
     //barVisual = new QToolBar(0);
     barVisual = new KToolBar( tabVisual );
@@ -1048,6 +1050,15 @@ void BilboEditor::sltAlignRight()
 //  this->updateMediaPaths();
 //  kDebug() << "Updating Done";
 //  kDebug() << this->htmlContent();
+    
+//     QImage image;
+//     editor->document()->addResource(QTextDocument::ImageResource,
+//                       QUrl("http://i36.tinypic.com/2642i5i.jpg"), QVariant(image));
+//     editor->loadResource(QTextDocument::ImageResource,
+//                          QUrl("http://i36.tinypic.com/2642i5i.jpg"));
+//     editor->textCursor().insertImage("http://i36.tinypic.com/2642i5i.jpg");
+    
+    
     editor->setAlignment( Qt::AlignRight | Qt::AlignAbsolute );
     editor->setFocus( Qt::OtherFocusReason );
 }
@@ -1123,14 +1134,17 @@ void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int hei
     kDebug();
     
     if ( media->mimeType().contains( "image" ) ) {
-        if ( mMediaList->contains( media->localUrl() ) ) {
+//         if ( mMediaList->contains( media->localUrl() ) ) {
+        if ( mMediaList->contains( media->remoteUrl() ) ) {
             //media is already added.
         } else {
-            mMediaList->insert( media->localUrl(), media );
+//             mMediaList->insert( media->localUrl(), media );
+            mMediaList->insert( media->remoteUrl(), media );
             item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::ImageType );
             QTextImageFormat imageFormat;
             
-            imageFormat.setName( media->localUrl() );
+//             imageFormat.setName( media->localUrl() );
+            imageFormat.setName( media->remoteUrl() );
             if ( width != 0 ) {
                 imageFormat.setWidth( width );
             }
@@ -1145,7 +1159,8 @@ void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int hei
             }
             editor->textCursor().insertImage( imageFormat );
             
-            item->setData( Qt::UserRole, QVariant( media->localUrl() ) );
+//             item->setData( Qt::UserRole, QVariant( media->localUrl() ) );
+            item->setData( Qt::UserRole, QVariant( media->remoteUrl() ) );
             item->setToolTip( media->name() );
         }
     }
@@ -1164,29 +1179,15 @@ void BilboEditor::sltSetMedia( BilboMedia *media )
 {
     QString url;
     QListWidgetItem *item;
-// qDebug() << url;
-//   QImage *image = new QImage();
-//   editor->document()->addResource(QTextDocument::ImageResource, QUrl(url), QVariant(image));
-//  if ( media->isUploaded()) {
-//   kDebug() << "Remote";
-// //   url = media->remoteUrl();
-// //   QImage *image = new QImage(url);
-// //   editor->document()->addResource(QTextDocument::ImageResource, QUrl(url), QVariant(image));
-// //   editor->textCursor().insertImage(url);
-//
-//   url = media->localUrl();
-//
-// //   QNetworkRequest request = QNetworkRequest(QUrl(media->remoteUrl()));
-// //   QNetworkReply *reply = netManeger->get(request);
-// //   connect(reply, SIGNAL(finished()), this,
-// //     SLOT(sltRemoteImageReceived(editor->textCursor())));
-//
-//  } else {
-    if ( mMediaList->contains( media->localUrl() ) ) {
+
+//     if ( mMediaList->contains( media->localUrl() ) ) {
+    if ( mMediaList->contains( media->remoteUrl() ) ) {
         //media is already added.
     } else {
-        mMediaList->insert( media->localUrl(), media );
-        url = media->localUrl();
+//         mMediaList->insert( media->localUrl(), media );
+//         url = media->localUrl();
+        url = media->remoteUrl();
+        mMediaList->insert( url, media );
 
         if ( media->mimeType().contains( "image" ) ) {
             item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::ImageType );
@@ -1201,7 +1202,8 @@ void BilboEditor::sltSetMedia( BilboMedia *media )
             editor->textCursor().insertText( media->name(), f );
         }
         //url = media->localUrl();
-        item->setData( Qt::UserRole, QVariant( media->localUrl() ) );
+//         item->setData( Qt::UserRole, QVariant( media->localUrl() ) );
+        item->setData( Qt::UserRole, QVariant( url ) );
         item->setToolTip( media->name() );
     }
 //  }
@@ -1209,10 +1211,6 @@ void BilboEditor::sltSetMedia( BilboMedia *media )
     editor->setFocus( Qt::OtherFocusReason );
 }
 
-// void sltRemoteImageReceived(const QTextCursor & cursor)
-// {
-//
-// }
 // void BilboEditor::insertMedia(KBloggerMedia* media)
 // {
 //  kDebug();
@@ -1391,6 +1389,7 @@ void BilboEditor::sltSyncEditors( int index )
     // TODO move htmlExp definiton to BilboEditor constructor.
     kDebug();
     QTextDocument *doc = editor->document();
+//     QTextDocument *doc = new QTextDocument(editor);
 
     htmlExporter* htmlExp = new htmlExporter();
     htmlExp->setDefaultCharFormat( this->defaultCharFormat );
@@ -1400,27 +1399,21 @@ void BilboEditor::sltSyncEditors( int index )
 //  KMarkupDirector md = KMarkupDirector(builder);
 //
     if ( index == 0 ) {
-        ///Qt QTextEdit::setHtml() or QTextDocument::toHtml() convert <h1-5> tags to <span> tags
-
-//   doc = editor->document();
-        doc->setUndoRedoEnabled( false );
+//         doc->setUndoRedoEnabled( false );
         doc->clear();
         BilboTextHtmlImporter( doc, htmlEditor->toPlainText() ).import();
-        useLocalImagePaths( doc );
-        doc->setUndoRedoEnabled( true );
+//         useLocalImagePaths( doc );
+//         doc->setUndoRedoEnabled( true );
         kDebug() << doc->blockCount() << " has blocks";
-        kDebug() << editor->document()->toHtml() << "index=2" << endl;
+//         kDebug() << editor->document()->toHtml() << "index=2" << endl;
         editor->setTextCursor( QTextCursor( doc ) );
 
-        //editor->setTextOrHtml(htmlToRichtext(htmlEditor->toPlainText()));
-        //qDebug()<<htmlEditor->toPlainText()<<endl;
-        kDebug() << editor->document()->toHtml() << "index=0" << endl;
+//         kDebug() << editor->document()->toHtml() << "index=0" << endl;
         //editor->setTextOrHtml(htmlEditor->toPlainText());
     } else if ( index == 1 ) {
-        kDebug() << editor->document()->toHtml() << "index=1" << endl;
+//         kDebug() << editor->document()->toHtml() << "index=1" << endl;
         //kDebug() << editor->toHtml() << endl;
-        useRemoteImagePaths( doc );
-//   QTextDocument *doc = editor->document(); // editor is a QTextEdit
+// //         useRemoteImagePaths( doc );
 
 //   md.constructContent(doc);
 //   htmlEditor->setPlainText(builder->getResult());
@@ -1430,12 +1423,11 @@ void BilboEditor::sltSyncEditors( int index )
     } else {
         if ( prev_index == 1 ) {
             //editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
-//    doc = editor->document();
             doc->clear();
             BilboTextHtmlImporter( doc, htmlEditor->toPlainText() ).import();
         } else {
-            useRemoteImagePaths( doc );
-            htmlEditor->setPlainText( htmlExp->toHtml( editor->document() ) );
+// //             useRemoteImagePaths( doc );
+            htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
 //    htmlEditor->setPlainText(builder->getResult());
         }
         QString baseU = "http://bilbo.sourceforge.net";
@@ -1503,17 +1495,18 @@ QString BilboEditor::htmlContent()
         htmlExp->setDefaultCharFormat( this->defaultCharFormat );
         htmlExp->setDefaultBlockFormat( this->defaultBlockFormat );
 
-        QTextDocument *doc;
-        doc = editor->document()->clone( editor );
-        this->useRemoteImagePaths( doc );
-        htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
+//         QTextDocument *doc;
+//         doc = editor->document()->clone( editor );
+//         this->useRemoteImagePaths( doc );
+//         htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
+        htmlEditor->setPlainText( htmlExp->toHtml( editor->document() ) );
         kDebug() << "setting Plain text done";
 //   md.constructContent(doc);
 //   htmlEditor->setPlainText(builder->getResult());
 
         //htmlEditor->setPlainText(editor->textOrHtml());
         delete htmlExp;
-        delete doc;
+//         delete doc;
     }
 //  else if (this->currentIndex() == 1) {
 //   editor->setHtml(htmlToRichtext(htmlEditor->toPlainText()));
@@ -1533,22 +1526,17 @@ QString BilboEditor::htmlContent()
 
 void BilboEditor::setHtmlContent( const QString & content )
 {
-//  htmlExporter* htmlExp = new htmlExporter();
-    //this->editor->setHtml(content);
-//  editor->setTextOrHtml(htmlToRichtext(content));
     QTextDocument *doc = editor->document();
-    doc->setUndoRedoEnabled( false );
+//     doc->setUndoRedoEnabled( false );
     doc->clear();
-    BilboTextHtmlImporter( doc, content ).import();
-    doc->setUndoRedoEnabled( true );
-    editor->setTextCursor( QTextCursor( doc ) );
-    //this->htmlEditor->setPlainText(htmlExp->toHtml(editor->document()));
+    if ( !content.isEmpty() ) {
+        BilboTextHtmlImporter( doc, content ).import();
+    }
+//     doc->setUndoRedoEnabled( true );
+    this->editor->setTextCursor( QTextCursor( doc ) );
     //this->editor->setHtml(content);
     this->htmlEditor->setPlainText( content );
 
-//  delete htmlExp;
-
-    //this->htmlEditor->setPlainText(content);
     //editor->setTextOrHtml(htmlToRichtext(htmlEditor->toPlainText()));
 
     // FIXME at the end of the document, a new block should be inserted so that editor doesn't change old text direction, and new direction be applied only to newly inserted text.
@@ -1602,88 +1590,88 @@ void BilboEditor::setLayoutDirection( Qt::LayoutDirection direction )
     }
 }
 
-void BilboEditor::useRemoteImagePaths( QTextDocument* doc )
-{
-    QTextCharFormat f;
-    QTextCursor cursor;
-//  QTextBlock block = this->editor->document()->firstBlock();
-    QTextBlock block = doc->firstBlock();
-    QTextBlock::iterator i;
-    BilboMedia *tempMedia;
-    cursor = QTextCursor( doc );
+// void BilboEditor::useRemoteImagePaths( QTextDocument* doc )
+// {
+//     QTextCharFormat f;
+//     QTextCursor cursor;
+// //  QTextBlock block = this->editor->document()->firstBlock();
+//     QTextBlock block = doc->firstBlock();
+//     QTextBlock::iterator i;
+//     BilboMedia *tempMedia;
+//     cursor = QTextCursor( doc );
+// 
+//     do {
+//         for ( i = block.begin(); !( i.atEnd() ); ++i ) {
+//             kDebug() << "start iterating";
+//             f = i.fragment().charFormat();
+//             if ( f.isImageFormat() ) {
+//                 kDebug() << "is image format";
+//                 QTextImageFormat imgFormat = f.toImageFormat();
+// 
+//                 if ( mMediaList->contains( imgFormat.name() ) ) {
+//                     kDebug() << "image exists";
+//                     tempMedia = mMediaList->value( imgFormat.name() );
+//                     imgFormat.setName( tempMedia->remoteUrl() );
+// //      imgFormat.setProperty(BilboTextFormat::ImageLocalPath,
+// //             QVariant(tempMedia->localUrl()));
+// 
+// //      cursor = this->editor->textCursor();
+//                     cursor.setPosition( i.fragment().position() );
+//                     cursor.movePosition( QTextCursor::NextCharacter,
+//                                          QTextCursor::KeepAnchor, i.fragment().length() );
+//                     if ( cursor.hasSelection() ) {
+//                         cursor.mergeCharFormat( imgFormat );
+// //       this->editor->setTextCursor(cursor);
+//                     }
+//                 }
+//             }
+//         }
+//         block = block.next();
+//     } while ( block.isValid() );
+// }
 
-    do {
-        for ( i = block.begin(); !( i.atEnd() ); ++i ) {
-            kDebug() << "start iterating";
-            f = i.fragment().charFormat();
-            if ( f.isImageFormat() ) {
-                kDebug() << "is image format";
-                QTextImageFormat imgFormat = f.toImageFormat();
-
-                if ( mMediaList->contains( imgFormat.name() ) ) {
-                    kDebug() << "image exists";
-                    tempMedia = mMediaList->value( imgFormat.name() );
-                    imgFormat.setName( tempMedia->remoteUrl() );
-//      imgFormat.setProperty(BilboTextFormat::ImageLocalPath,
-//             QVariant(tempMedia->localUrl()));
-
-//      cursor = this->editor->textCursor();
-                    cursor.setPosition( i.fragment().position() );
-                    cursor.movePosition( QTextCursor::NextCharacter,
-                                         QTextCursor::KeepAnchor, i.fragment().length() );
-                    if ( cursor.hasSelection() ) {
-                        cursor.mergeCharFormat( imgFormat );
-//       this->editor->setTextCursor(cursor);
-                    }
-                }
-            }
-        }
-        block = block.next();
-    } while ( block.isValid() );
-}
-
-void BilboEditor::useLocalImagePaths( QTextDocument* doc )
-{
-    QTextCharFormat f;
-    QTextCursor cursor;
-//  QTextBlock block = this->editor->document()->firstBlock();
-    QTextBlock block = doc->firstBlock();
-    QTextBlock::iterator i;
-    cursor = QTextCursor( doc );
-    QMap <QString, BilboMedia*>::const_iterator c_i = mMediaList->constBegin();
-
-    do {
-        for ( i = block.begin(); !( i.atEnd() ); ++i ) {
-            kDebug() << "start iterating";
-            f = i.fragment().charFormat();
-            if ( f.isImageFormat() ) {
-                kDebug() << "is image format";
-                QTextImageFormat imgFormat = f.toImageFormat();
-
-                BilboMedia *tempMedia = c_i.value();
-                while ( tempMedia->remoteUrl() != imgFormat.name() ) {
-                    ++c_i;
-                    if ( c_i == mMediaList->constEnd() ) {
-                        c_i = mMediaList->constBegin();
-                    }
-                    tempMedia = c_i.value();
-                }
-
-                imgFormat.setName( tempMedia->localUrl() );
-
-                cursor = this->editor->textCursor();
-                cursor.setPosition( i.fragment().position() );
-                cursor.movePosition( QTextCursor::NextCharacter,
-                                     QTextCursor::KeepAnchor, i.fragment().length() );
-                if ( cursor.hasSelection() ) {
-                    cursor.mergeCharFormat( imgFormat );
-                    this->editor->setTextCursor( cursor );
-                }
-            }
-        }
-        block = block.next();
-    } while ( block.isValid() );
-}
+// void BilboEditor::useLocalImagePaths( QTextDocument* doc )
+// {
+//     QTextCharFormat f;
+//     QTextCursor cursor;
+// //  QTextBlock block = this->editor->document()->firstBlock();
+//     QTextBlock block = doc->firstBlock();
+//     QTextBlock::iterator i;
+//     cursor = QTextCursor( doc );
+//     QMap <QString, BilboMedia*>::const_iterator c_i = mMediaList->constBegin();
+// 
+//     do {
+//         for ( i = block.begin(); !( i.atEnd() ); ++i ) {
+//             kDebug() << "start iterating";
+//             f = i.fragment().charFormat();
+//             if ( f.isImageFormat() ) {
+//                 kDebug() << "is image format";
+//                 QTextImageFormat imgFormat = f.toImageFormat();
+// 
+//                 BilboMedia *tempMedia = c_i.value();
+//                 while ( tempMedia->remoteUrl() != imgFormat.name() ) {
+//                     ++c_i;
+//                     if ( c_i == mMediaList->constEnd() ) {
+//                         c_i = mMediaList->constBegin();
+//                     }
+//                     tempMedia = c_i.value();
+//                 }
+// 
+//                 imgFormat.setName( tempMedia->localUrl() );
+// 
+//                 cursor = this->editor->textCursor();
+//                 cursor.setPosition( i.fragment().position() );
+//                 cursor.movePosition( QTextCursor::NextCharacter,
+//                                      QTextCursor::KeepAnchor, i.fragment().length() );
+//                 if ( cursor.hasSelection() ) {
+//                     cursor.mergeCharFormat( imgFormat );
+//                     this->editor->setTextCursor( cursor );
+//                 }
+//             }
+//         }
+//         block = block.next();
+//     } while ( block.isValid() );
+// }
 
 bool BilboEditor::updateMediaPaths()
 {
@@ -1703,7 +1691,7 @@ bool BilboEditor::updateMediaPaths()
     while ( startIndex != -1 ) {
         startIndex = htmlContent.indexOf( "file://", startIndex );
         endIndex = htmlContent.indexOf( '\"', startIndex );
-        path = htmlContent.mid(( startIndex + 7 ), ( endIndex - startIndex - 7 ) );
+        path = htmlContent.mid( startIndex, ( endIndex - startIndex ) );
         kDebug() << path << "is found";
 
         if ( mMediaList->contains( path ) ) {

@@ -48,9 +48,9 @@ protected:
 //     using AddMediaDialog::media;
 //     using AddMediaDialog::sltOkClicked;
 
-protected Q_SLOTS:
-    virtual void sltOkClicked();
-    virtual void sltRemoteFileCopied(KJob* job);
+// protected Q_SLOTS:
+//     virtual void sltOkClicked();
+//     virtual void sltRemoteFileCopied(KJob* job);
     
 private:
     QFrame *editFrame;

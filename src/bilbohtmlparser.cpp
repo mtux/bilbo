@@ -491,7 +491,7 @@ QTextCharFormat BilboTextHtmlParserNode::charFormat() const
 
 QTextBlockFormat BilboTextHtmlParserNode::blockFormat() const
 {
-    kDebug();
+//     kDebug();
     QTextBlockFormat format;
 
     if ( alignment )
@@ -513,7 +513,7 @@ QTextBlockFormat BilboTextHtmlParserNode::blockFormat() const
 void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNode *parent, const BilboTextHtmlParser *parser )
 {
     // inherit properties from parent element
-    kDebug();
+//     kDebug();
     isAnchor = parent->isAnchor;
     fontItalic = parent->fontItalic;
     fontUnderline = parent->fontUnderline;
@@ -896,7 +896,7 @@ void BilboTextHtmlParserNode::applyCssDeclarations( const QVector<QCss::Declarat
 
 BilboTextHtmlParserNode *BilboTextHtmlParser::newNode( int parent )
 {
-    kDebug();
+//     kDebug();
     BilboTextHtmlParserNode *lastNode = &nodes.last();
     BilboTextHtmlParserNode *newNode = 0;
 
@@ -953,7 +953,7 @@ BilboTextHtmlParserNode *BilboTextHtmlParser::newNode( int parent )
 
 void BilboTextHtmlParser::parse( const QString &text, const QTextDocument *_resourceProvider )
 {
-    kDebug();
+//     kDebug();
     nodes.clear();
     nodes.resize( 1 );
     txt = text;
@@ -1024,7 +1024,7 @@ int BilboTextHtmlParser::bottomMargin( int i ) const
 // }
 void BilboTextHtmlParser::parse()
 {
-    kDebug();
+//     kDebug();
 
     BilboTextHtmlParserNode::WhiteSpaceMode wsm = BilboTextHtmlParserNode::WhiteSpaceNormal;
     while ( pos < len ) {
@@ -1063,7 +1063,7 @@ void BilboTextHtmlParser::parse()
 // parses a tag after "<"
 void BilboTextHtmlParser::parseTag()
 {
-    kDebug();
+//     kDebug();
     eatSpace();
 
     // handle comments and other exclamation mark declarations
@@ -1170,7 +1170,7 @@ void BilboTextHtmlParser::parseExclamationTag()
 
 void BilboTextHtmlParser::parseCloseTag()
 {
-    kDebug();
+//     kDebug();
     ++pos;
     QString tag = parseWord().toLower().trimmed();
     while ( pos < len ) {
@@ -1201,7 +1201,7 @@ void BilboTextHtmlParser::parseCloseTag()
 
 QString BilboTextHtmlParser::parseEntity()
 {
-    kDebug();
+//     kDebug();
     int recover = pos;
     QString entity;
     while ( pos < len ) {
@@ -1256,7 +1256,7 @@ error:
 // parses one word, possibly quoted, and returns it
 QString BilboTextHtmlParser::parseWord()
 {
-    kDebug();
+//     kDebug();
     QString word;
     if ( hasPrefix( QLatin1Char( '\"' ) ) ) { // double quotes
         ++pos;
@@ -1339,7 +1339,7 @@ static void setWidthAttribute( QTextLength *width, QString value )
 
 QStringList BilboTextHtmlParser::parseAttributes()
 {
-    kDebug();
+//     kDebug();
     QStringList attrs;
 
     while ( pos < len ) {
@@ -1366,7 +1366,7 @@ QStringList BilboTextHtmlParser::parseAttributes()
 
 void BilboTextHtmlParser::resolveParent()
 {
-    kDebug();
+//     kDebug();
     BilboTextHtmlParserNode *node = &nodes.last();
     int p = node->parent;
 
@@ -1433,7 +1433,7 @@ static void parseStyleAttribute( BilboTextHtmlParserNode *node, const QString &v
 
 void BilboTextHtmlParser::applyAttributes( const QStringList &attributes )
 {
-    kDebug();
+//     kDebug();
     // local state variable for qt3 textedit mode
     bool seenQt3Richtext = false;
     QString linkHref;

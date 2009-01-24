@@ -21,33 +21,27 @@
 
 //#include <QDebug>
 #include <QtGui>
+// #include <QNetworkAccessManager>
+// #include <QNetworkRequest>
+// #include <QNetworkReply>
+#include <kdebug.h>
+#include <kurl.h>
+#include <kio/job.h>
+#include <kio/netaccess.h>
+
 #include "multilinetextedit.h"
+#include "global.h"
 
 MultiLineTextEdit::MultiLineTextEdit( QWidget *parent ) : KRichTextEdit( parent )
 {
+//     netManager = new QNetworkAccessManager( this );
+//     connect( manager, SIGNAL( finished( QNetworkReply* ) ), this, 
+//              SLOT( sltReplyFinished( QNetworkReply* ) ) );
 }
 
 MultiLineTextEdit::~MultiLineTextEdit()
 {
 }
-
-// void MultiLineTextEdit::alignRight()
-// {
-//  if (this->textCursor().blockFormat().layoutDirection() == Qt::RightToLeft) {
-//   KRichTextEdit::alignLeft();
-//  } else {
-//   KRichTextEdit::alignRight();
-//  }
-// }
-//
-// void MultiLineTextEdit::alignLeft()
-// {
-//  if (this->textCursor().blockFormat().layoutDirection() == Qt::RightToLeft) {
-//   KRichTextEdit::alignRight();
-//  } else {
-//   KRichTextEdit::alignLeft();
-//  }
-// }
 
 void MultiLineTextEdit::keyPressEvent( QKeyEvent *event )
 {
@@ -64,5 +58,36 @@ void MultiLineTextEdit::keyPressEvent( QKeyEvent *event )
 
     }
 }
+
+QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
+{
+    kDebug() << "loadResource called for " << name.path();
+    if ( type == QTextDocument::ImageResource ) {
+
+        QByteArray data;
+        KUrl imageUrl = KUrl( name );
+        KUrl localUrl = KUrl( "file://" + __tempMediaDir + imageUrl.fileName() );
+        QFile file( localUrl.toLocalFile() );
+        
+        if ( !file.exists() ) {
+            KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite );
+            if ( !KIO::NetAccess::synchronousRun( copyJob, 0 ) ) {
+                kDebug() << "Copy job failed";
+                return QVariant();
+            }
+        }
+        
+        if ( file.open( QIODevice::ReadOnly ) ) {
+            data = file.readAll();
+        } else {
+            kDebug() << "Can not read data.";
+        }
+        return QVariant( data );
+
+    } else {
+        return KRichTextEdit::loadResource( type, name );
+    }
+}
+
 
 #include <multilinetextedit.moc>

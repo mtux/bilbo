@@ -130,11 +130,11 @@ void AddMediaDialog::sltRemoteFileTypeFound( KIO::Job *job, const QString &type 
 {
     kDebug() << type ;
     media->setMimeType( type );
-    if ( !Settings::download_remote_media() ) {
-        media->setLocalUrl( media->remoteUrl() );
+//     if ( !Settings::download_remote_media() ) {
+//         media->setLocalUrl( media->remoteUrl() );
 //         Q_EMIT signalAddMedia( media );
         addOtherMediaAttributes();
-    }
+//     }
 }
 
 // void AddMediaDialog::sltRemoteFileCopied( KJob *job )

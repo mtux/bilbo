@@ -48,7 +48,7 @@ BilboTextHtmlImporter::BilboTextHtmlImporter( QTextDocument *_doc, const QString
 
 void BilboTextHtmlImporter::import()
 {
-    kDebug();
+//     kDebug();
     cursor.beginEditBlock();
     bool hasBlock = true;
     bool forceBlockMerging = false;
@@ -350,7 +350,7 @@ void BilboTextHtmlImporter::import()
 // returns true if a block tag was closed
 bool BilboTextHtmlImporter::closeTag( int i )
 {
-    kDebug();
+//     kDebug();
     const BilboTextHtmlParserNode *closedNode = &at( i - 1 );
     const int endDepth = depth( i ) - 1;
     int depth = this->depth( i - 1 );
@@ -537,7 +537,7 @@ BilboTextHtmlImporter::Table BilboTextHtmlImporter::scanTable( int tableNodeIdx 
 
 void BilboTextHtmlImporter::appendBlock( const QTextBlockFormat &format, QTextCharFormat charFmt )
 {
-    kDebug();
+//     kDebug();
     if ( setNamedAnchorInNextOutput ) {
         charFmt.setAnchor( true );
         charFmt.setAnchorName( namedAnchor );

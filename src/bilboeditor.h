@@ -35,6 +35,7 @@ class QWebView;
 class QPlainTextEdit;
 // class QNetworkAccessManager;
 class MultiLineTextEdit;
+// class QTextBrowser;
 //class QAction;
 class KAction;
 class KActionCollection;
@@ -224,8 +225,6 @@ protected Q_SLOTS:
 
     void sltSetImageProperties( const int index, const int width, const int height,
                                 const QString title, const QString Alt_text );
-
-//   void sltRemoteImageReceived(const QTextCursor & cursor);
     
     /**
      * Creates an instance of AddMediaDialog class,and opens it, to select a media file.
@@ -275,8 +274,8 @@ private:
      */
     QString htmlToRichtext( const QString& html );
 
-    void useRemoteImagePaths( QTextDocument* doc );
-    void useLocalImagePaths( QTextDocument* doc );
+//     void useRemoteImagePaths( QTextDocument* doc );
+//     void useLocalImagePaths( QTextDocument* doc );
 
     QWidget *tabVisual;
     QWidget *tabHtml;
@@ -284,6 +283,7 @@ private:
 
     //QTextEdit *editor;
     MultiLineTextEdit *editor;
+//     QTextBrowser *editor;
     //BilboRichTextEdit *editor;
     //KRichTextEdit *editor;
     QPlainTextEdit *htmlEditor;

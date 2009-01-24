@@ -21,13 +21,13 @@
 #include <kfiledialog.h>
 #include <kmessagebox.h>
 #include <kdebug.h>
-#include <kio/job.h>
-#include <kio/jobuidelegate.h>
+// #include <kio/job.h>
+// #include <kio/jobuidelegate.h>
 
 #include "addimagedialog.h"
 #include "bilbomedia.h"
-#include "global.h"
-#include "settings.h"
+// #include "global.h"
+// #include "settings.h"
 
 AddImageDialog::AddImageDialog(QWidget* parent): AddMediaDialog(parent)
 {
@@ -53,37 +53,37 @@ AddImageDialog::~AddImageDialog()
 }
 
 
-void AddImageDialog::sltOkClicked()
-{
-    kDebug() << "ok zadim :D";
-    AddMediaDialog::sltOkClicked();
-    
-    KUrl imageUrl = ui.kurlreqMediaUrl->url();
-    if ( !imageUrl.isEmpty() && imageUrl.isValid() && !imageUrl.isLocalFile() ) {
-        if ( Settings::download_remote_media() ) {
-            kDebug() << "download!";
-            
-            KUrl localUrl = KUrl( "file://" + __tempMediaDir + imageUrl.fileName() );
-            KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite );
-            connect( copyJob, SIGNAL( result( KJob * ) ), this, 
-                    SLOT( sltRemoteFileCopied( KJob * ) ) );
-        }
-    }
-}
+// void AddImageDialog::sltOkClicked()
+// {
+//     kDebug() << "ok zadim :D";
+//     AddMediaDialog::sltOkClicked();
+//     
+//     KUrl imageUrl = ui.kurlreqMediaUrl->url();
+//     if ( !imageUrl.isEmpty() && imageUrl.isValid() && !imageUrl.isLocalFile() ) {
+//         if ( Settings::download_remote_media() ) {
+//             kDebug() << "download!";
+//             
+//             KUrl localUrl = KUrl( "file://" + __tempMediaDir + imageUrl.fileName() );
+//             KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite );
+//             connect( copyJob, SIGNAL( result( KJob * ) ), this, 
+//                     SLOT( sltRemoteFileCopied( KJob * ) ) );
+//         }
+//     }
+// }
 
-void AddImageDialog::sltRemoteFileCopied(KJob* job)
-{
-//     AddMediaDialog::sltRemoteFileCopied(job);
-    KIO::FileCopyJob *copyJob = dynamic_cast <KIO::FileCopyJob*>( job );
-    if ( job->error() ) {
-        copyJob->ui()->setWindow( this );
-        copyJob->ui()->showErrorMessage();
-    } else {
-        //KIO::FileCopyJob *copyJob = dynamic_cast <KIO::FileCopyJob*> (job);
-        media->setLocalUrl( copyJob->destUrl().toLocalFile() );
-        addOtherMediaAttributes();
-    }
-}
+// void AddImageDialog::sltRemoteFileCopied(KJob* job)
+// {
+// //     AddMediaDialog::sltRemoteFileCopied(job);
+//     KIO::FileCopyJob *copyJob = dynamic_cast <KIO::FileCopyJob*>( job );
+//     if ( job->error() ) {
+//         copyJob->ui()->setWindow( this );
+//         copyJob->ui()->showErrorMessage();
+//     } else {
+//         //KIO::FileCopyJob *copyJob = dynamic_cast <KIO::FileCopyJob*> (job);
+//         media->setLocalUrl( copyJob->destUrl().toLocalFile() );
+//         addOtherMediaAttributes();
+//     }
+// }
 
 void AddImageDialog::addOtherMediaAttributes()
 {

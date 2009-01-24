@@ -81,10 +81,10 @@ const QString& PostEntry::postBody()
 {
     kDebug();
     const QString& str = this->editPostWidget->htmlContent();
-//     if ( !mCurrentPost ) {
-//         mCurrentPost = new BilboPost;
-//     }
-//     mCurrentPost->setContent( str );
+    if ( !mCurrentPost ) {
+        mCurrentPost = new BilboPost;
+    }
+    mCurrentPost->setContent( str );
     return str;
 }
 

@@ -27,6 +27,9 @@
 //#include <QTextEdit>
 #include "krichtextedit.h"
 
+// class QNetwokAccessManager;
+// class QNetworkReply;
+
 //!Class MultiLineTextEdit Implements a TextEdit widget that supports new line charachters
 /*!
  @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
@@ -47,10 +50,6 @@ public:
     //!Implements the class destructor.
     ~MultiLineTextEdit();
 
-//  public Q_SLOTS:
-//   void alignRight();
-//   void alignLeft();
-
 protected:
 
     /*!
@@ -59,6 +58,13 @@ protected:
      * this function is defined virtual in parent class: KRichTextEdit.
      */
     void keyPressEvent( QKeyEvent *event );
+    virtual QVariant loadResource( int type, const QUrl & name );
+    
+// private:
+//     QNetworkAccessManager *netManager;
+//     
+// private Q_SLOTS:
+//     void sltReplyFinished( QNetworkReply *reply, const QUrl & name );
 };
 
 #endif
