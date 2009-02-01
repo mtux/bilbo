@@ -71,6 +71,7 @@ Toolbox::Toolbox( QWidget *parent )
     lblOptionsTrackBack->setVisible( false );
     txtOptionsTrackback->setVisible( false );
     btnCatAdd->setVisible( false );
+    btnEntriesUpdate->setVisible(false);
 }
 
 void Toolbox::sltAddBlog()

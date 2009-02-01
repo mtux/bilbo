@@ -32,6 +32,7 @@ class QLabel;
 class QHBoxLayout;
 class KLineEdit;
 class BilboMedia;
+class QProgressBar;
 /**
  * Post Entry Widget
  * contains Editor, and Title box.
