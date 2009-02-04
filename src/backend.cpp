@@ -90,7 +90,7 @@ void Backend::getCategoryListFromServer()
                  this, SLOT( categoriesListed( const QList< QMap< QString, QString > > & ) ) );
         tmp->listCategories();
     } else {
-        char * err = "Blog API doesn't support getting Category list.";
+        char err[] = "Blog API doesn't support getting Category list.";
         kDebug() << err;
         QString tmp = i18n( err );
         error( KBlog::Blog::NotSupported, tmp );

@@ -336,20 +336,20 @@ void Toolbox::sltCurrentBlogChanged( int blog_id )
     lstEntriesList->setLayoutDirection( ll );
 }
 
-void Toolbox::getFieldsValue( BilboPost *currentPost )
+void Toolbox::getFieldsValue( BilboPost &currentPost )
 {
     kDebug();
-    currentPost->setCategoryList( this->selectedCategories() );
-    currentPost->setTags( this->currentTags() );
-    currentPost->setModifyTimeStamp( this->chkOptionsTime->isChecked() );
-    if ( currentPost->status() == KBlog::BlogPost::New ) {
+    currentPost.setCategoryList( this->selectedCategories() );
+    currentPost.setTags( this->currentTags() );
+    currentPost.setModifyTimeStamp( this->chkOptionsTime->isChecked() );
+    if ( currentPost.status() == KBlog::BlogPost::New ) {
         if ( chkOptionsTime->isChecked() )
-            currentPost->setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
+            currentPost.setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
         else
-            currentPost->setModificationDateTime( KDateTime::currentLocalDateTime() );
+            currentPost.setModificationDateTime( KDateTime::currentLocalDateTime() );
     } else {
         if ( chkOptionsTime->isChecked() ) {
-            currentPost->setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
+            currentPost.setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
 //             currentPost->setCreationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
 //         } else {// It means do not change the currentPost Modification time!
 //             currentPost->setModificationDateTime( KDateTime::currentLocalDateTime() );
@@ -357,10 +357,10 @@ void Toolbox::getFieldsValue( BilboPost *currentPost )
         }
     }
 
-    currentPost->setPrivate(( comboOptionsStatus->currentIndex() == 1 ) ? true : false );
-    currentPost->setCommentAllowed( chkOptionsComments->isChecked() );
-    currentPost->setTrackBackAllowed( chkOptionsTrackback->isChecked() );
-    currentPost->setSummary( txtSummary->toPlainText() );
+    currentPost.setPrivate(( comboOptionsStatus->currentIndex() == 1 ) ? true : false );
+    currentPost.setCommentAllowed( chkOptionsComments->isChecked() );
+    currentPost.setTrackBackAllowed( chkOptionsTrackback->isChecked() );
+    currentPost.setSummary( txtSummary->toPlainText() );
 }
 
 void Toolbox::setFieldsValue( BilboPost* post )

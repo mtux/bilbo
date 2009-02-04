@@ -70,6 +70,10 @@ public:
     QList<Category> categoryList() const;
     void setCategoryList( const QList<Category> &list );
 
+    /**
+     * Set all properties of post to new one, instead of Title and Content!
+    */
+    void setProperties( const BilboPost& postProp );
 private:
     QString mAuthor;
     int mId;///id in DB

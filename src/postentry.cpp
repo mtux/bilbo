@@ -29,6 +29,7 @@
 #include "bilbopost.h"
 #include "bilbomedia.h"
 #include "backend.h"
+#include "dbman.h"
 
 PostEntry::PostEntry( QWidget *parent )
         : QFrame( parent )
@@ -38,7 +39,7 @@ PostEntry::PostEntry( QWidget *parent )
     editPostWidget = new BilboEditor( this );
     editPostWidget->setMediaList( &mMediaList );
     this->layout()->addWidget( editPostWidget );
-    mCurrentPost = 0;
+    mCurrentPost = new BilboPost;
     progress = 0;
     mCurrentPostBlogId = -1;
 }
@@ -120,16 +121,12 @@ BilboPost* PostEntry::currentPost()
     return ( mCurrentPost );
 }
 
-void PostEntry::setCurrentPost( BilboPost *post )
+void PostEntry::setCurrentPost( const BilboPost &post )
 {
     kDebug();
     if(mCurrentPost)
         delete mCurrentPost;
-
-    if( post )
-        mCurrentPost = post;
-    else
-        mCurrentPost = new BilboPost;
+    mCurrentPost = new BilboPost(post);
 
     this->setPostBody( mCurrentPost->content() );
     this->setPostTitle( mCurrentPost->title() );
@@ -157,18 +154,10 @@ PostEntry::~PostEntry()
     delete mCurrentPost;
 }
 
-void PostEntry::setCurrentPostProperties( BilboPost *post )
+void PostEntry::setCurrentPostProperties( const BilboPost &post )
 {
     kDebug();
-    if(!post){
-        kDebug()<<"Passed post is NULL";
-        return;
-    }
-    post->setTitle( txtTitle->text() );
-    post->setContent( this->editPostWidget->htmlContent() );
-    if(mCurrentPost)
-        delete mCurrentPost;
-    mCurrentPost = post;
+    mCurrentPost->setProperties( post );
 }
 
 QMap< QString, BilboMedia * > & PostEntry::mediaList()
@@ -243,10 +232,10 @@ void PostEntry::sltMediaError( const QString & errorMessage, BilboMedia * media 
     sender()->deleteLater();
 }
 
-void PostEntry::publishPost( int blogId, BilboPost * postData )
+void PostEntry::publishPost( int blogId, const BilboPost &postData )
 {
     kDebug();
-    this->setCurrentPostProperties( postData );
+    mCurrentPost->setProperties( postData );
     mCurrentPostBlogId = blogId;
     if ( !this->uploadMediaFiles() )
         publishPostAfterUploadMediaFiles();
@@ -297,6 +286,12 @@ void PostEntry::sltDeleteProgressBar()
         progress->deleteLater();
     }
     progress = 0;
+}
+
+void PostEntry::saveLocally()
+{
+//     mCurrentPost->setStatus(KBlog::BlogPost::New);
+    DBMan::self()->addPost(*currentPost(), currentPostBlogId());
 }
 
 #include "postentry.moc"
