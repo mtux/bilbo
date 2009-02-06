@@ -104,14 +104,16 @@ void AddMediaDialog::sltOkClicked()
                 addOtherMediaAttributes();
                 
             } else {
-                bool copyResult = QFile::copy( mediaUrl.toLocalFile(), __tempMediaDir
-                                               + name );
-                if ( !copyResult ) {
-                    int ret = KMessageBox::questionYesNo( this, i18n( "This file is already  added to Bilbo temp directory, and won't be copied again.\nyou can save the file with different name and try again.\ndo you want to continue using the existing file?" ), i18n( "File already exists" ) );
-                    if ( ret == KMessageBox::No ) return;
-                }
-                media->setLocalUrl( __tempMediaDir + name );
-                media->setRemoteUrl( "file://" + __tempMediaDir + name );
+//                 bool copyResult = QFile::copy( mediaUrl.toLocalFile(), __tempMediaDir
+//                                                + name );
+//                 if ( !copyResult ) {
+//                     int ret = KMessageBox::questionYesNo( this, i18n( "This file is already  added to Bilbo temp directory, and won't be copied again.\nyou can save the file with different name and try again.\ndo you want to continue using the existing file?" ), i18n( "File already exists" ) );
+//                     if ( ret == KMessageBox::No ) return;
+//                 }
+//                 media->setLocalUrl( __tempMediaDir + name );
+//                 media->setRemoteUrl( "file://" + __tempMediaDir + name );
+                media->setLocalUrl( mediaUrl.toLocalFile() );
+                media->setRemoteUrl( mediaUrl.url() );
                 media->setUploaded( false );
 //                 media->setLocal( true );
 
