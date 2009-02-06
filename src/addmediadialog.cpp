@@ -100,6 +100,9 @@ void AddMediaDialog::sltOkClicked()
                 //KIO::TransferJob* tempJob = KIO::mimetype(mediaUrl,false);
 
                 connect( typeJob, SIGNAL( mimetype( KIO::Job *, const QString & ) ), this,  SLOT( sltRemoteFileTypeFound( KIO::Job *, const QString & ) ) );
+                
+                addOtherMediaAttributes();
+                
             } else {
                 bool copyResult = QFile::copy( mediaUrl.toLocalFile(), __tempMediaDir
                                                + name );
@@ -117,6 +120,7 @@ void AddMediaDialog::sltOkClicked()
                 name = typePtr.data()->name();
                 kDebug() << name ;
                 media->setMimeType( name );
+                Q_EMIT sigMediaTypeFound( media );
 
                 addOtherMediaAttributes();
             }
@@ -133,7 +137,8 @@ void AddMediaDialog::sltRemoteFileTypeFound( KIO::Job *job, const QString &type 
 //     if ( !Settings::download_remote_media() ) {
 //         media->setLocalUrl( media->remoteUrl() );
 //         Q_EMIT signalAddMedia( media );
-        addOtherMediaAttributes();
+    Q_EMIT sigMediaTypeFound( media );
+//         addOtherMediaAttributes();
 //     }
 }
 

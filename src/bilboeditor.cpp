@@ -484,26 +484,25 @@ void BilboEditor::sltAddImage()
     connect( imageDialog, SIGNAL( sigAddImage( BilboMedia *, const int, const int, 
              const QString, const QString ) ), this, SLOT( sltSetImage( BilboMedia *, 
              const int, const int, const QString, const QString ) ) );
+    connect( imageDialog, SIGNAL( sigMediaTypeFound( BilboMedia * ) ), this, 
+             SLOT( sltMediaTypeFound( BilboMedia * ) ) );
     imageDialog->exec();
 }
 
 void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int height, 
                                const QString title, const QString Alt_text )
 {
-    QListWidgetItem *item;
+//     QListWidgetItem *item;
     kDebug();
     
-    if ( media->mimeType().contains( "image" ) ) {
-//         if ( mMediaList->contains( media->localUrl() ) ) {
-        if ( mMediaList->contains( media->remoteUrl() ) ) {
-            //media is already added.
-        } else {
-//             mMediaList->insert( media->localUrl(), media );
-            mMediaList->insert( media->remoteUrl(), media );
-            item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::ImageType );
+//     if ( media->mimeType().contains( "image" ) ) {
+//         if ( mMediaList->contains( media->remoteUrl() ) ) {
+//             //media is already added.
+//         } else {
+//             mMediaList->insert( media->remoteUrl(), media );
+//             item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::ImageType );
             QTextImageFormat imageFormat;
             
-//             imageFormat.setName( media->localUrl() );
             imageFormat.setName( media->remoteUrl() );
             if ( width != 0 ) {
                 imageFormat.setWidth( width );
@@ -519,11 +518,11 @@ void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int hei
             }
             editor->textCursor().insertImage( imageFormat );
             
-//             item->setData( Qt::UserRole, QVariant( media->localUrl() ) );
-            item->setData( Qt::UserRole, QVariant( media->remoteUrl() ) );
-            item->setToolTip( media->name() );
-        }
-    }
+//             item->setData( Qt::UserRole, QVariant( media->remoteUrl() ) );
+//             item->setToolTip( media->name() );
+//         }
+//     }
+            editor->setFocus( Qt::OtherFocusReason );
 }
 
 void BilboEditor::sltReloadImage( const QString imagePath )
@@ -568,42 +567,45 @@ void BilboEditor::sltAddMedia()
     AddMediaDialog *mediaDialog = new AddMediaDialog( this );
     
     connect( mediaDialog, SIGNAL( sigAddMedia( BilboMedia * ) ), this, SLOT( sltSetMedia( BilboMedia * ) ) );
+    connect( mediaDialog, SIGNAL( sigMediaTypeFound( BilboMedia * ) ), this, 
+             SLOT( sltMediaTypeFound( BilboMedia * ) ) );
     mediaDialog->exec();
 }
 
 void BilboEditor::sltSetMedia( BilboMedia *media )
 {
     QString url;
-    QListWidgetItem *item;
+//     QListWidgetItem *item;
+// 
+//     if ( mMediaList->contains( media->remoteUrl() ) ) {
+//         //media is already added.
+//     } else {
+    url = media->remoteUrl();
+//         mMediaList->insert( url, media );
+// 
+//         if ( media->mimeType().contains( "image" ) ) {
+//             item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::ImageType );
+//             QTextImageFormat imageFormat;
+//             imageFormat.setName( url );
+//             editor->textCursor().insertImage( imageFormat );
+//         } else {
+//             item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::OtherType );
+//             QTextCharFormat f;
+//             f.setAnchor( true );
+//             f.setAnchorHref( media->remoteUrl() );
+//             editor->textCursor().insertText( media->name(), f );
+//         }
+      
+        
+//         item->setData( Qt::UserRole, QVariant( url ) );
+//         item->setToolTip( media->name() );
+//     }
 
-//     if ( mMediaList->contains( media->localUrl() ) ) {
-    if ( mMediaList->contains( media->remoteUrl() ) ) {
-        //media is already added.
-    } else {
-//         mMediaList->insert( media->localUrl(), media );
-//         url = media->localUrl();
-        url = media->remoteUrl();
-        mMediaList->insert( url, media );
-
-        if ( media->mimeType().contains( "image" ) ) {
-            item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::ImageType );
-            QTextImageFormat imageFormat;
-            imageFormat.setName( url );
-            editor->textCursor().insertImage( imageFormat );
-        } else {
-            item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::OtherType );
-            QTextCharFormat f;
-            f.setAnchor( true );
-            f.setAnchorHref( media->remoteUrl() );
-            editor->textCursor().insertText( media->name(), f );
-        }
-        //url = media->localUrl();
-//         item->setData( Qt::UserRole, QVariant( media->localUrl() ) );
-        item->setData( Qt::UserRole, QVariant( url ) );
-        item->setToolTip( media->name() );
-    }
-//  }
-
+    QTextCharFormat f;
+    f.setAnchor( true );
+    f.setAnchorHref( media->remoteUrl() );
+    editor->textCursor().insertText( media->name(), f );
+    
     editor->setFocus( Qt::OtherFocusReason );
 }
 
@@ -704,6 +706,27 @@ void BilboEditor::sltRemoveMedia( const int index )
     QString text = this->editor->document()->toHtml();
     text.remove( QRegExp( removeString ) );
     this->editor->document()->setHtml( text );
+}
+
+void BilboEditor::sltMediaTypeFound( BilboMedia * media )
+{
+    QListWidgetItem *item;
+    
+    QString url = media->remoteUrl();
+    
+    if ( mMediaList->contains( url ) ) {
+        //media is already added.
+    } else {
+        mMediaList->insert( url, media );
+        
+        if ( media->mimeType().contains( "image" ) ) {
+            item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::ImageType );
+        } else {
+            item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::OtherType );
+        }
+        item->setData( Qt::UserRole, QVariant( url ) );
+        item->setToolTip( media->name() );
+    }
 }
 
 void BilboEditor::sltAddOrderedList()

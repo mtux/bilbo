@@ -46,50 +46,67 @@ MultiLineTextEdit::~MultiLineTextEdit()
 
 void MultiLineTextEdit::keyPressEvent( QKeyEvent *event )
 {
-    //qDebug("MultiLineTextEdit::keyPressEvent");
     int tempKey = event->key();
     if ( tempKey == Qt::Key_Return && event->modifiers() == Qt::ShiftModifier ) {
         this->textCursor().insertText( QString( QChar::LineSeparator ) );
         //qDebug() << "Enter Pressed" ;
 
     } else {
-        //dynamic_cast <QTextEdit*>(this) ->keyPressEvent(event);
-        //dynamic_cast <QWidget*>(this) ->keyPressEvent(event);
         KRichTextEdit::keyPressEvent( event );
-
     }
 }
 
 QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
 {
     kDebug() << "loadResource called for " << name.path();
-    if ( ( type == QTextDocument::ImageResource ) && ( name.scheme() != "file" ) ) {
+    if ( type == QTextDocument::ImageResource ) {
 
         QByteArray data;
         KUrl imageUrl = KUrl( name );
-        KUrl localUrl = KUrl( "file://" + __tempMediaDir + imageUrl.fileName() );
-        QFile file( localUrl.toLocalFile() );
+//         QFile file;
         
-        if ( !file.exists() ) {
-            if ( !downloadFinished.contains( imageUrl.url() ) ) {
-                downloadFinished.insert( imageUrl.url(), false);
-                KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite );
-//             if ( !KIO::NetAccess::synchronousRun( copyJob, 0 ) ) {
-//                 kDebug() << "Copy job failed";
-//                 return QVariant();
-//             }
-                connect( copyJob, SIGNAL( result( KJob * ) ), this, 
-                        SLOT( sltRemoteFileCopied( KJob * ) ) );
-//              return KRichTextEdit::loadResource( type, name );
+        if ( name.scheme() != "file" ) {
+            KUrl localUrl = KUrl( "file://" + __tempMediaDir + imageUrl.fileName() );
+//             QFile file( localUrl.toLocalFile() );
+            QFile file( localUrl.toLocalFile() );
+            
+            if ( !file.exists() ) {
+                if ( !downloadFinished.contains( imageUrl.url() ) ) {
+                    downloadFinished.insert( imageUrl.url(), false);
+                    KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite );
+    //             if ( !KIO::NetAccess::synchronousRun( copyJob, 0 ) ) {
+    //                 kDebug() << "Copy job failed";
+    //                 return QVariant();
+    //             }
+                    connect( copyJob, SIGNAL( result( KJob * ) ), this, 
+                            SLOT( sltRemoteFileCopied( KJob * ) ) );
+                }
+                return QVariant();
             }
-            return QVariant();
+            if ( file.open( QIODevice::ReadOnly ) ) {
+                data = file.readAll();
+            } else {
+                kDebug() << "Can not read data.";
+            }
+            
+        } else {
+            QFile file( imageUrl.toLocalFile() );
+            if ( !file.exists() ) {
+                kDebug() << "local file doesn't exist" ;
+                return QVariant();
+            }
+            if ( file.open( QIODevice::ReadOnly ) ) {
+                data = file.readAll();
+            } else {
+                kDebug() << "Can not read data.";
+            }
         }
         
-        if ( file.open( QIODevice::ReadOnly ) ) {
-            data = file.readAll();
-        } else {
-            kDebug() << "Can not read data.";
-        }
+//         if ( file.open( QIODevice::ReadOnly ) ) {
+//             data = file.readAll();
+//         } else {
+//             kDebug() << "Can not read data.";
+//         }
         return QVariant( data );
 
     } else {

@@ -240,6 +240,8 @@ protected Q_SLOTS:
     void sltSetMedia( BilboMedia *media );
     
     void sltRemoveMedia( const int index );
+    
+    void sltMediaTypeFound( BilboMedia *media );
 
     void sltAddOrderedList();
 
