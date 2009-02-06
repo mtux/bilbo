@@ -222,6 +222,8 @@ protected Q_SLOTS:
 
     void sltSetImage( BilboMedia *media, const int width, const int height, 
                  const QString title, const QString Alt_text );
+    
+    void sltReloadImage( const QString imagePath );
 
     void sltSetImageProperties( const int index, const int width, const int height,
                                 const QString title, const QString Alt_text );

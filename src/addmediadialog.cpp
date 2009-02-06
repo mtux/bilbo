@@ -95,7 +95,7 @@ void AddMediaDialog::sltOkClicked()
                 media->setUploaded( true );
 //                 media->setLocal( false );
 
-                KIO::MimetypeJob* typeJob = KIO::mimetype( mediaUrl );
+                KIO::MimetypeJob* typeJob = KIO::mimetype( mediaUrl, KIO::HideProgressInfo );
                 //KIO::TransferJob* tempJob = typeJob;
                 //KIO::TransferJob* tempJob = KIO::mimetype(mediaUrl,false);
 

@@ -28,6 +28,7 @@
 #include <kurl.h>
 #include <kio/job.h>
 #include <kio/netaccess.h>
+#include <kio/jobuidelegate.h>
 
 #include "multilinetextedit.h"
 #include "global.h"
@@ -62,7 +63,7 @@ void MultiLineTextEdit::keyPressEvent( QKeyEvent *event )
 QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
 {
     kDebug() << "loadResource called for " << name.path();
-    if ( type == QTextDocument::ImageResource ) {
+    if ( ( type == QTextDocument::ImageResource ) && ( name.scheme() != "file" ) ) {
 
         QByteArray data;
         KUrl imageUrl = KUrl( name );
@@ -70,11 +71,18 @@ QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
         QFile file( localUrl.toLocalFile() );
         
         if ( !file.exists() ) {
-            KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite );
-            if ( !KIO::NetAccess::synchronousRun( copyJob, 0 ) ) {
-                kDebug() << "Copy job failed";
-                return QVariant();
+            if ( !downloadFinished.contains( imageUrl.url() ) ) {
+                downloadFinished.insert( imageUrl.url(), false);
+                KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite );
+//             if ( !KIO::NetAccess::synchronousRun( copyJob, 0 ) ) {
+//                 kDebug() << "Copy job failed";
+//                 return QVariant();
+//             }
+                connect( copyJob, SIGNAL( result( KJob * ) ), this, 
+                        SLOT( sltRemoteFileCopied( KJob * ) ) );
+//              return KRichTextEdit::loadResource( type, name );
             }
+            return QVariant();
         }
         
         if ( file.open( QIODevice::ReadOnly ) ) {
@@ -89,5 +97,38 @@ QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
     }
 }
 
+
+void MultiLineTextEdit::sltRemoteFileCopied( KJob * job )
+{
+    KIO::FileCopyJob *copyJob = dynamic_cast <KIO::FileCopyJob*>( job );
+    
+    if ( job->error() ) {
+        copyJob->ui()->setWindow( this );
+        copyJob->ui()->showErrorMessage();
+    } else {
+        downloadFinished[ copyJob->srcUrl().url() ] = true;
+        Q_EMIT sigRemoteImageArrived( copyJob->srcUrl().url() );
+        kDebug() << copyJob->srcUrl().url() << " arrived.";
+    }
+}
+
+// GetImageThread::GetImageThread( KRichTextEdit *parent, const KUrl & image ) : QThread( parent )
+// {
+//     cursor = parent->textCursor();
+//     imageUrl = image;
+// }
+// 
+// GetImageThread::run()
+// {
+//     KUrl localUrl = KUrl( "file://" + __tempMediaDir + imageUrl.fileName() );
+//     KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite | KIO::HideProgressInfo );
+//     if ( !KIO::NetAccess::synchronousRun( copyJob, 0 ) ) {
+//         kDebug() << "Copy job failed";
+//         return;
+//     }
+//     QTextImageFormat f;
+//     f.setImageName( localUrl.url() );
+//     cursor
+// }
 
 #include <multilinetextedit.moc>
