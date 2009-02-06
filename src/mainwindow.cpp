@@ -176,7 +176,7 @@ void MainWindow::sltCreateNewPost()
     kDebug();
     PostEntry *temp = new PostEntry( this );
     tabPosts->addTab( temp, i18n( "Untitled" ) );
-    temp->setCurrentPost();
+//     temp->setCurrentPost();
     temp->setCurrentPostBlogId( toolbox->currentBlogId() );
 
 //  // FIXME these lines added to set direction for new posts, but it generates Segmentation fault at run time!
@@ -268,7 +268,7 @@ void MainWindow::sltActivePostChanged( int index )
 
     if (( prevActivePost != 0 ) && ( index != previousActivePostIndex ) ) {
         prevPostBlogId = prevActivePost->currentPostBlogId();
-        toolbox->getFieldsValue( prevActivePost->currentPost() );
+        toolbox->getFieldsValue( *prevActivePost->currentPost() );
         prevActivePost->setCurrentPostBlogId( toolbox->currentBlogId() );
     }
 
@@ -297,7 +297,7 @@ void MainWindow::sltPublishPost()
         kDebug() << "Blog id not sets correctly.";
         return;
     }
-    BilboPost *post = new BilboPost;
+    BilboPost post;
     toolbox->getFieldsValue( post );
     if ( activePost->postBody().isEmpty() || activePost->postTitle().isEmpty() ) {
         if ( KMessageBox::warningContinueCancel( this,
@@ -305,7 +305,7 @@ void MainWindow::sltPublishPost()
                                                ) == KMessageBox::Cancel )
             return;
     }
-    post->setPrivate( false );
+    post.setPrivate( false );
     activePost->publishPost( blog_id, post );
     statusBar()->showMessage( i18n( "publishing new post..." ) );
     this->setCursor( Qt::BusyCursor );
@@ -329,7 +329,7 @@ void MainWindow::sltNewPostOpened( BilboPost * newPost )
     PostEntry *temp = new PostEntry( this );
     tabPosts->addTab( temp, newPost->title() );
 
-    temp->setCurrentPost( newPost );
+    temp->setCurrentPost( *newPost );
     temp->setCurrentPostBlogId( toolbox->currentBlogId() );
 
     BilboBlog *tmp = DBMan::self()->getBlogInfo( toolbox->currentBlogId() );
@@ -399,14 +399,14 @@ void MainWindow::sltSaveAsDraft()
         kDebug() << "Blog id not sets correctly.";
         return;
     }
-    BilboPost *post = new BilboPost;
+    BilboPost post;
     if ( activePost->postBody().isEmpty() || activePost->postTitle().isEmpty() ) {
         if ( KMessageBox::warningContinueCancel( this, i18n( "Your post title or body is empty!\n\
 Are you sure of pubishing this post?" ) ) == KMessageBox::Cancel )
             return;
     }
     toolbox->getFieldsValue( post );
-    post->setPrivate( true );
+    post.setPrivate( true );
     activePost->publishPost( blog_id, post );
     statusBar()->showMessage( i18n( "Saving draft..." ) );
     this->setCursor( Qt::BusyCursor );

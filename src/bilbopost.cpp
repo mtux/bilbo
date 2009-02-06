@@ -175,3 +175,27 @@ void BilboPost::setCategoryList( const QList< Category > & list )
     }
     this->setCategories( cats );
 }
+
+void BilboPost::setProperties( const BilboPost& postProp )
+{
+    kDebug();
+    this->setCreationDateTime( postProp.creationDateTime() );
+    this->setModificationDateTime( postProp.modificationDateTime() );
+    this->setLink( postProp.link() );
+    this->setPermaLink( postProp.permaLink() );
+    this->setCategories( postProp.categories() );
+    this->setCategoryList( postProp.categoryList() );
+    this->setCommentAllowed( postProp.isCommentAllowed() );
+    this->setError( postProp.error() );
+    this->setTags( postProp.tags() );
+    this->setMood( postProp.mood() );
+    this->setMusic( postProp.music() );
+    this->setPrivate( postProp.isPrivate() );
+    this->setStatus( postProp.status() );
+    this->setSummary( postProp.summary() );
+    this->setTrackBackAllowed( postProp.isTrackBackAllowed() );
+    this->setAuthor( postProp.author() );
+    this->setModifyTimeStamp( postProp.isModifyTimeStamp() );
+    this->setId( postProp.id() );
+    this->setStatus( postProp.status() );
+}

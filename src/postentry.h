@@ -32,6 +32,7 @@ class QLabel;
 class QHBoxLayout;
 class KLineEdit;
 class BilboMedia;
+class QProgressBar;
 /**
  * Post Entry Widget
  * contains Editor, and Title box.
@@ -54,8 +55,8 @@ public:
     void setCurrentPostBlogId( int blog_id );
 
     BilboPost* currentPost();
-    void setCurrentPost( BilboPost *post = 0 );
-    void setCurrentPostProperties( BilboPost *post );
+    void setCurrentPost( const BilboPost &post );
+    void setCurrentPostProperties( const BilboPost &post );
 
     Qt::LayoutDirection defaultLayoutDirection();
     void setDefaultLayoutDirection( Qt::LayoutDirection direction );
@@ -71,7 +72,9 @@ public:
      */
     bool uploadMediaFiles();
 
-    void publishPost( int blogId, BilboPost *postData );
+    void publishPost( int blogId, const BilboPost &postData );
+
+    void saveLocally();
 Q_SIGNALS:
     /**
      * emitted when title of this entry changed.
@@ -84,7 +87,7 @@ Q_SIGNALS:
      * @param customMessage A Custom message will be shown on StatusBar.
      */
     void postPublishingDone( bool isError, const QString &customMessage );
-protected slots:
+protected Q_SLOTS:
     void sltMediaFileUploaded( BilboMedia *media );
     void sltError( const QString& errMsg );
     void sltMediaError( const QString &errorMessage, BilboMedia* media );

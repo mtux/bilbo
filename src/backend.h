@@ -140,8 +140,8 @@ Q_SIGNALS:
 
 private:
     QString errorTypeToString( KBlog::Blog::ErrorType type );
-    KBlog::Blog *mBlog;
-    BilboBlog *bBlog;
+    KBlog::Blog *mKBlog;
+    BilboBlog *mBBlog;
 //     quint16 mChecksum;
 //     QString mediaLocalUrl;
     QList<Category> mCreatePostCategories;
