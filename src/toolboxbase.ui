@@ -20,9 +20,6 @@
     <layout class="QGridLayout" name="gridLayout" >
      <item row="0" column="0" >
       <widget class="QToolBox" name="box" >
-       <property name="currentIndex" >
-        <number>4</number>
-       </property>
        <widget class="QWidget" name="pgBlogs" >
         <property name="geometry" >
          <rect>
@@ -608,7 +605,7 @@ p, li { white-space: pre-wrap; }
        </widget>
        <widget class="QWidget" name="pgNotes" >
         <attribute name="label" >
-         <string>Local entries</string>
+         <string>&amp;Local entries</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_3" >
          <item>

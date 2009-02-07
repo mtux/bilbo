@@ -62,6 +62,8 @@ Q_SIGNALS:
      * @param media
      */
     void sigAddMedia( BilboMedia *media );
+    
+    void sigMediaTypeFound( BilboMedia *media );
 
 protected:
     virtual void addOtherMediaAttributes();

@@ -95,20 +95,25 @@ void AddMediaDialog::sltOkClicked()
                 media->setUploaded( true );
 //                 media->setLocal( false );
 
-                KIO::MimetypeJob* typeJob = KIO::mimetype( mediaUrl );
+                KIO::MimetypeJob* typeJob = KIO::mimetype( mediaUrl, KIO::HideProgressInfo );
                 //KIO::TransferJob* tempJob = typeJob;
                 //KIO::TransferJob* tempJob = KIO::mimetype(mediaUrl,false);
 
                 connect( typeJob, SIGNAL( mimetype( KIO::Job *, const QString & ) ), this,  SLOT( sltRemoteFileTypeFound( KIO::Job *, const QString & ) ) );
+                
+                addOtherMediaAttributes();
+                
             } else {
-                bool copyResult = QFile::copy( mediaUrl.toLocalFile(), __tempMediaDir
-                                               + name );
-                if ( !copyResult ) {
-                    int ret = KMessageBox::questionYesNo( this, i18n( "This file is already  added to Bilbo temp directory, and won't be copied again.\nyou can save the file with different name and try again.\ndo you want to continue using the existing file?" ), i18n( "File already exists" ) );
-                    if ( ret == KMessageBox::No ) return;
-                }
-                media->setLocalUrl( __tempMediaDir + name );
-                media->setRemoteUrl( "file://" + __tempMediaDir + name );
+//                 bool copyResult = QFile::copy( mediaUrl.toLocalFile(), __tempMediaDir
+//                                                + name );
+//                 if ( !copyResult ) {
+//                     int ret = KMessageBox::questionYesNo( this, i18n( "This file is already  added to Bilbo temp directory, and won't be copied again.\nyou can save the file with different name and try again.\ndo you want to continue using the existing file?" ), i18n( "File already exists" ) );
+//                     if ( ret == KMessageBox::No ) return;
+//                 }
+//                 media->setLocalUrl( __tempMediaDir + name );
+//                 media->setRemoteUrl( "file://" + __tempMediaDir + name );
+                media->setLocalUrl( mediaUrl.toLocalFile() );
+                media->setRemoteUrl( mediaUrl.url() );
                 media->setUploaded( false );
 //                 media->setLocal( true );
 
@@ -117,6 +122,7 @@ void AddMediaDialog::sltOkClicked()
                 name = typePtr.data()->name();
                 kDebug() << name ;
                 media->setMimeType( name );
+                Q_EMIT sigMediaTypeFound( media );
 
                 addOtherMediaAttributes();
             }
@@ -133,7 +139,8 @@ void AddMediaDialog::sltRemoteFileTypeFound( KIO::Job *job, const QString &type 
 //     if ( !Settings::download_remote_media() ) {
 //         media->setLocalUrl( media->remoteUrl() );
 //         Q_EMIT signalAddMedia( media );
-        addOtherMediaAttributes();
+    Q_EMIT sigMediaTypeFound( media );
+//         addOtherMediaAttributes();
 //     }
 }
 

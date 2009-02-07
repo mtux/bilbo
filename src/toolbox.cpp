@@ -464,7 +464,7 @@ int Toolbox::currentBlogId()
 void Toolbox::sltEntrySelected( QListWidgetItem * item )
 {
     kDebug();
-    BilboPost *post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data( 32 ).toInt() );
+    BilboPost *post = DBMan::self()->getPostInfo( item->data( 32 ).toInt() );
 //     setFieldsValue(*post);
     kDebug() << "Emiting sigEntrySelected...";
     Q_EMIT sigEntrySelected( post );
@@ -521,9 +521,7 @@ void Toolbox::setButtonsIcon()
     btnEntriesCopyUrl->setIcon( KIcon( "edit-copy" ) );
     btnCatReload->setIcon( KIcon( "view-refresh" ) );
     btnCatAdd->setIcon( KIcon( "list-add" ) );
-    btnMediaAdd->setIcon( KIcon( "list-add" ) );
-    btnMediaEdit->setIcon( KIcon( "document-edit" ) );
-    btnMediaRemove->setIcon( KIcon( "list-remove" ) );
+    btnLocalRemove->setIcon( KIcon( "list-remove" ) );
     ///TODO Add option for selecting only text or only Icon for Toolbox buttons!
     btnBlogAdd->setText( QString() );
     btnBlogEdit->setText( QString() );
@@ -533,9 +531,7 @@ void Toolbox::setButtonsIcon()
     btnEntriesCopyUrl->setText( QString() );
     btnCatReload->setText( QString() );
     btnCatAdd->setText( QString() );
-    btnMediaAdd->setText( QString() );
-    btnMediaEdit->setText( QString() );
-    btnMediaRemove->setText( QString() );
+    btnLocalRemove->setText( QString() );
 }
 
 

@@ -29,6 +29,7 @@
 
 // class QNetwokAccessManager;
 // class QNetworkReply;
+class KJob;
 
 //!Class MultiLineTextEdit Implements a TextEdit widget that supports new line charachters
 /*!
@@ -49,6 +50,13 @@ public:
 
     //!Implements the class destructor.
     ~MultiLineTextEdit();
+    
+Q_SIGNALS:
+    /**
+     * when a remote image is downloaded from the web successfully, this signal is emmited.
+     * @param imagePath is the image url on the web.
+     */
+    void sigRemoteImageArrived( const QString imagePath );
 
 protected:
 
@@ -58,13 +66,42 @@ protected:
      * this function is defined virtual in parent class: KRichTextEdit.
      */
     void keyPressEvent( QKeyEvent *event );
+    /**
+     * If the name is the url of a remote image, looks for it in cache, and if it doesn't exist, starts downloading of it and returns an empty QVariant object.
+     * else if the image is local or has been downloaded before, returns image data as a
+     * QVariant object.
+     * 
+     * @param type is type of the resource. @see QTextDocument::ResourceType.
+     * @param name is the resource url.
+     * @return a QVariant object which contains resource data, if it could be found by 
+     * the function, else, it's an empty QVariant object.
+     */
     virtual QVariant loadResource( int type, const QUrl & name );
     
 // private:
 //     QNetworkAccessManager *netManager;
 //     
-// private Q_SLOTS:
+private Q_SLOTS:
 //     void sltReplyFinished( QNetworkReply *reply, const QUrl & name );
+    void sltRemoteFileCopied(KJob * job);
+    
+private:
+    QMap <QString, bool> downloadFinished;
 };
+
+// class GetImageThread : public QThread
+// {
+//     
+// public:
+//     GetImageThread( KRichTextEdit *parent = 0, const KUrl & image);
+// //     ~GetImageThread();
+//     
+// protected:
+//     virtual void run();
+//     
+// private:
+//     KUrl imageUrl;
+//     QTextCursor cursor;
+// };
 
 #endif
