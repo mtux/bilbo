@@ -360,34 +360,7 @@ void MainWindow::sltCurrentBlogChanged( int blog_id )
 void MainWindow::sltSavePostLocally()
 {
     kDebug();
-    int blog_id = toolbox->currentBlogId();
-    QDir blogDir;
-
-    if ( blog_id == -1 ) {
-        kDebug() << "no blogs selected";
-        blogDir = QDir( UNKNOWN_BLOG_DIR );
-    } else {
-        blogDir = QDir( DBMan::self()->getBlogInfo( blog_id )->localDirectory() );
-//   kDebug() << __db->getBlogInfo(blog_id)->localDirectory() << " " << blog_id;
-        if ( ! blogDir.exists() ) {
-            kDebug() << "error: no directory created for the selected blog";
-            statusBar()->showMessage( i18n( "error: no directory created for the selected blog." )
-                                      , STATUSTIMEOUT );
-            return;
-        }
-    }
-    QMap <QString, BilboMedia*>::const_iterator i =
-        activePost->mediaList().constBegin();
-    while ( i != activePost->mediaList().constEnd() ) {
-
-        if ( i.key().startsWith( __tempMediaDir ) ) {
-            kDebug() << blogDir.path();
-            QFile::copy( i.key(), blogDir.path() + '/' + i.value()->name() );
-        }
-        ++i;
-    }
-    statusBar()->showMessage( i18n( "Current post saved in \"%1\".", blogDir.path() ),
-                              STATUSTIMEOUT );
+    ///TODO
 }
 
 void MainWindow::sltSaveAsDraft()
@@ -463,7 +436,7 @@ void MainWindow::postManipulationDone( bool isError, const QString &customMessag
     if(isError){
         KMessageBox::detailedError(this, i18n("Uploading post failed"), customMessage);
     } else {
-        if(KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?", customMessage)) != KMessageBox::No){
+        if(KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?", customMessage)) != KMessageBox::Yes){
             tabPosts->removePage(qobject_cast<QWidget*>(sender()));
         }
     }

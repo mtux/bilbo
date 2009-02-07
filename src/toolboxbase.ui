@@ -21,7 +21,7 @@
      <item row="0" column="0" >
       <widget class="QToolBox" name="box" >
        <property name="currentIndex" >
-        <number>0</number>
+        <number>4</number>
        </property>
        <widget class="QWidget" name="pgBlogs" >
         <property name="geometry" >
@@ -160,8 +160,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>263</width>
-          <height>100</height>
+          <width>306</width>
+          <height>403</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -278,8 +278,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>219</width>
-          <height>89</height>
+          <width>306</width>
+          <height>403</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -400,113 +400,13 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="pgMedia" >
-        <property name="geometry" >
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>241</width>
-          <height>100</height>
-         </rect>
-        </property>
-        <attribute name="label" >
-         <string>&amp;Media files</string>
-        </attribute>
-        <layout class="QGridLayout" name="gridLayout_3" >
-         <item row="0" column="0" >
-          <widget class="KListWidget" name="lstMediaList" >
-           <property name="editTriggers" >
-            <set>QAbstractItemView::NoEditTriggers</set>
-           </property>
-           <property name="showDropIndicator" stdset="0" >
-            <bool>false</bool>
-           </property>
-           <property name="alternatingRowColors" >
-            <bool>true</bool>
-           </property>
-           <property name="selectionBehavior" >
-            <enum>QAbstractItemView::SelectRows</enum>
-           </property>
-           <property name="wordWrap" >
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" >
-          <layout class="QHBoxLayout" name="horizontalLayout_8" >
-           <item>
-            <spacer name="horizontalSpacer_8" >
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0" >
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="KPushButton" name="btnMediaAdd" >
-             <property name="toolTip" >
-              <string>Add a Media file to Blog</string>
-             </property>
-             <property name="text" >
-              <string>Add...</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="KPushButton" name="btnMediaEdit" >
-             <property name="enabled" >
-              <bool>false</bool>
-             </property>
-             <property name="toolTip" >
-              <string>Edit selected media file</string>
-             </property>
-             <property name="text" >
-              <string>Edit...</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="KPushButton" name="btnMediaRemove" >
-             <property name="enabled" >
-              <bool>false</bool>
-             </property>
-             <property name="toolTip" >
-              <string>Remove selected media file</string>
-             </property>
-             <property name="text" >
-              <string>Remove</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_9" >
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0" >
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
        <widget class="QWidget" name="pgOptions" >
         <property name="geometry" >
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>238</width>
-          <height>323</height>
+          <width>306</width>
+          <height>403</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -703,6 +603,62 @@ p, li { white-space: pre-wrap; }
             </size>
            </property>
           </spacer>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="pgNotes" >
+        <attribute name="label" >
+         <string>Local entries</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_3" >
+         <item>
+          <widget class="KListWidget" name="klistwidget" />
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout" >
+           <property name="spacing" >
+            <number>1</number>
+           </property>
+           <item>
+            <spacer name="horizontalSpacer_11" >
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="KPushButton" name="btnLocalRemove" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="toolTip" >
+              <string>Remove selected entry</string>
+             </property>
+             <property name="text" >
+              <string>Remove entry</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_10" >
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>

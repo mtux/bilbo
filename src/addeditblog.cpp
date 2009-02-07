@@ -427,14 +427,19 @@ void AddEditBlog::slotButtonClicked( int button )
         bBlog->setUrl( KUrl( ui.txtUrl->text() ) );
 
         KUrl url( bBlog->url() );
-        QString blogDir = DATA_DIR + url.host().replace( '/', '_' );
+        QString blogDir = DATA_DIR + "/media/";
 
         if ( isNewBlog ) {
-            if ( KStandardDirs::makeDir( blogDir ) ) {
+            if( !KStandardDirs::exists( blogDir ) ) {
+                if ( KStandardDirs::makeDir( blogDir ) ) {
+                } else {
+                    kDebug() << blogDir << " can't be created, as blogDir";
+                    KMessageBox::error(this, i18n( "Cannot create directory %1,\
+for storing media files for locally stored posts\nPlease check permissions or create it manually.",
+                                                  blogDir));
+                    return;
+                }
                 bBlog->setLocalDirectory( blogDir );
-            } else {
-                kDebug() << blogDir << " can't be created, as blogDir";
-                return;
             }
             int blog_id = DBMan::self()->addBlog( *bBlog );
             bBlog->setId( blog_id );
@@ -443,12 +448,12 @@ void AddEditBlog::slotButtonClicked( int button )
                 Q_EMIT sigBlogAdded( *bBlog );
             }
         } else {
-            QDir dir = QDir( bBlog->localDirectory() );
-            if ( dir.rename( dir.dirName(), url.host().replace( '/', '_' ) ) ) {
+//             QDir dir = QDir( bBlog->localDirectory() );
+//             if ( dir.rename( dir.dirName(), url.host().replace( '/', '_' ) ) ) {
                 bBlog->setLocalDirectory( blogDir );
-            } else {
-                kDebug() << "current blog directory can't be renamed to " << blogDir;
-            }
+//             } else {
+//                 kDebug() << "current blog directory can't be renamed to " << blogDir;
+//             }
             if ( DBMan::self()->editBlog( *bBlog ) ) {
                 kDebug() << "Emitting sigBlogEdited() ...";
                 Q_EMIT sigBlogEdited( *bBlog );

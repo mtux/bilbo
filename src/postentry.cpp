@@ -30,6 +30,9 @@
 #include "bilbomedia.h"
 #include "backend.h"
 #include "dbman.h"
+#include "global.h"
+#include <qt4/QtCore/QMap>
+#include <kio/job.h>
 
 PostEntry::PostEntry( QWidget *parent )
         : QFrame( parent )
@@ -179,7 +182,8 @@ bool PostEntry::uploadMediaFiles()
             result = true;
             connect( b, SIGNAL( sigMediaUploaded( BilboMedia* ) ), this, SLOT( sltMediaFileUploaded( BilboMedia* ) ) );
             connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
-            connect( b, SIGNAL( sigMediaError( const QString&, BilboMedia* ) ), this, SLOT( sltMediaError( const QString&, BilboMedia* ) ) );
+            connect( b, SIGNAL( sigMediaError( const QString&, BilboMedia* ) ),
+                     this, SLOT( sltMediaError( const QString&, BilboMedia* ) ) );
             b->uploadMedia( it.value() );
             ++numOfFilesToBeUploaded;
         }
@@ -226,7 +230,7 @@ void PostEntry::sltMediaError( const QString & errorMessage, BilboMedia * media 
     kDebug();
     isUploadingMediaFilesFailed = true;
     kDebug() << " AN ERROR OCCURRED ON UPLOADING,\tError message is: " << errorMessage;
-    QString err = i18n( "Uploading media file %1 failed.\n%3", media->name(), media->localUrl(), errorMessage);
+    QString err = i18n( "Uploading media file %1 failed.\n%3", media->name(), media->localUrl().prettyUrl(), errorMessage);
     sltDeleteProgressBar();
     emit postPublishingDone( true, err );
     sender()->deleteLater();
@@ -290,8 +294,29 @@ void PostEntry::sltDeleteProgressBar()
 
 void PostEntry::saveLocally()
 {
-//     mCurrentPost->setStatus(KBlog::BlogPost::New);
-    DBMan::self()->addPost(*currentPost(), currentPostBlogId());
+    kDebug();
+
+    QMap <QString, BilboMedia*>::const_iterator it = this->mediaList().constBegin();
+    while ( it != this->mediaList().constEnd() ) {
+        if ( !( it.value()->isUploaded() ) && !( it.key().startsWith( MEDIA_DIR ) ) ) {
+            QString baseName = it.value()->name();
+            QString desiredFileName = MEDIA_DIR + baseName;
+            int indexOfDot = baseName.indexOf('.', 0, Qt::CaseInsensitive);
+            QString newFileName = desiredFileName;
+            int i = 1;
+            while( KStandardDirs::exists( newFileName ) ){
+                baseName.insert(indexOfDot, QString::number(i));
+                newFileName = MEDIA_DIR + baseName;
+                baseName = it.value()->name();
+                ++i;
+            }
+            KIO::file_copy(it.value()->localUrl(), KUrl(newFileName));
+        }
+        ++it;
+    }
+
+//     DBMan::self()->addPost(*currentPost(), currentPostBlogId());
+///TODO Save Post
 }
 
 #include "postentry.moc"

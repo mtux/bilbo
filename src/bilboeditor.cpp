@@ -1135,16 +1135,16 @@ void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int hei
     
     if ( media->mimeType().contains( "image" ) ) {
 //         if ( mMediaList->contains( media->localUrl() ) ) {
-        if ( mMediaList->contains( media->remoteUrl() ) ) {
+        if ( mMediaList->contains( media->remoteUrl().url() ) ) {
             //media is already added.
         } else {
 //             mMediaList->insert( media->localUrl(), media );
-            mMediaList->insert( media->remoteUrl(), media );
+            mMediaList->insert( media->remoteUrl().url(), media );
             item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::ImageType );
             QTextImageFormat imageFormat;
             
 //             imageFormat.setName( media->localUrl() );
-            imageFormat.setName( media->remoteUrl() );
+            imageFormat.setName( media->remoteUrl().url() );
             if ( width != 0 ) {
                 imageFormat.setWidth( width );
             }
@@ -1181,12 +1181,12 @@ void BilboEditor::sltSetMedia( BilboMedia *media )
     QListWidgetItem *item;
 
 //     if ( mMediaList->contains( media->localUrl() ) ) {
-    if ( mMediaList->contains( media->remoteUrl() ) ) {
+   if ( mMediaList->contains( media->remoteUrl().url() ) ) {
         //media is already added.
     } else {
 //         mMediaList->insert( media->localUrl(), media );
 //         url = media->localUrl();
-        url = media->remoteUrl();
+        url = media->remoteUrl().url();
         mMediaList->insert( url, media );
 
         if ( media->mimeType().contains( "image" ) ) {
@@ -1198,7 +1198,7 @@ void BilboEditor::sltSetMedia( BilboMedia *media )
             item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::OtherType );
             QTextCharFormat f;
             f.setAnchor( true );
-            f.setAnchorHref( media->remoteUrl() );
+            f.setAnchorHref( media->remoteUrl().url() );
             editor->textCursor().insertText( media->name(), f );
         }
         //url = media->localUrl();
@@ -1697,7 +1697,7 @@ bool BilboEditor::updateMediaPaths()
         if ( mMediaList->contains( path ) ) {
 //    if (mMediaList->value(path)->isUploaded()) {
             htmlContent.replace( startIndex, ( endIndex - startIndex ),
-                                 mMediaList->value( path )->remoteUrl() );
+                                 mMediaList->value( path )->remoteUrl().url() );
             changed = true;
 //     if (this->currentIndex() == 0) {
 //      if (i.atEnd()) {
