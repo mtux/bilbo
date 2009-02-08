@@ -37,8 +37,6 @@ Constants.
 #define CONF_DB QString(DATA_DIR)+QString("/bilbo.db")
 //#define TEMP_MEDIA_DIR KStandardDirs::locateLocal("data", "bilbo/tempmedia/", true)
 #define UNKNOWN_BLOG_DIR KStandardDirs::locateLocal("data", "bilbo/Unknown Blog/", true)
-
-#define ChACHED_MEDIA_DIR KStandardDirs::locateLocal("cache", "bilbo/media/", true)
 #define STATUSTIMEOUT 5000
 
 

@@ -31,10 +31,8 @@
 #include <kio/jobuidelegate.h>
 
 #include "multilinetextedit.h"
-// #include "global.h"
-#include "constants.h"
+#include "global.h"
 
-QMap <QString, bool> MultiLineTextEdit::downloadFinished;
 MultiLineTextEdit::MultiLineTextEdit( QWidget *parent ) : KRichTextEdit( parent )
 {
 //     netManager = new QNetworkAccessManager( this );
@@ -44,11 +42,6 @@ MultiLineTextEdit::MultiLineTextEdit( QWidget *parent ) : KRichTextEdit( parent 
 
 MultiLineTextEdit::~MultiLineTextEdit()
 {
-}
-
-void MultiLineTextEdit::clearCache()
-{
-    downloadFinished.clear();
 }
 
 void MultiLineTextEdit::keyPressEvent( QKeyEvent *event )
@@ -73,7 +66,7 @@ QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
 //         QFile file;
         
         if ( name.scheme() != "file" ) {
-            KUrl localUrl = KUrl( "file://" + ChACHED_MEDIA_DIR + imageUrl.fileName() );
+            KUrl localUrl = KUrl( "file://" + __tempMediaDir + imageUrl.fileName() );
 //             QFile file( localUrl.toLocalFile() );
             QFile file( localUrl.toLocalFile() );
             

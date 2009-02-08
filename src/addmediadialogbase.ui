@@ -9,6 +9,9 @@
     <height>107</height>
    </rect>
   </property>
+  <property name="windowTitle" >
+   <string comment="Inset an image into the text" >Add Image</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout_2" >
    <property name="verticalSpacing" >
     <number>6</number>

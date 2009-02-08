@@ -49,7 +49,7 @@ AddMediaDialog::AddMediaDialog( QWidget *parent ) : KDialog( parent )
     
     dialog->setAttribute( Qt::WA_DeleteOnClose );
     this->setMainWidget( dialog );
-    this->setWindowTitle( "Attach media" );
+    this->setWindowTitle( dialog->windowTitle() );
     this->resize( dialog->width(), dialog->height() );
     connect( this, SIGNAL( okClicked() ), this, SLOT( sltOkClicked() ) );
     connect( ui.radiobtnLocalUrl, SIGNAL( toggled( bool ) ), this, 
