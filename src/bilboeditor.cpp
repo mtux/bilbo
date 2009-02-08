@@ -276,8 +276,8 @@ void BilboEditor::createActions()
     connect( actAddImage, SIGNAL( triggered( bool ) ), this, SLOT( sltAddImage() ) );
     barVisual->addAction( actAddImage );
     
-    actAddMedia = new KAction( KIcon( "insert-media" ), 
-                               i18nc( "verb, to add a media file to the post", "Add Media" ), this );
+    actAddMedia = new KAction( KIcon( "mail-attachment" ), 
+                               i18nc( "verb, to add a media file to the post as an attachment", "Attach Media" ), this );
     connect( actAddMedia, SIGNAL( triggered( bool ) ), this, SLOT( sltAddMedia() ) );
     barVisual->addAction( actAddMedia );
 

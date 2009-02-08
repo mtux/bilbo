@@ -46,6 +46,7 @@
 #include "settings.h"
 #include "systray.h"
 #include "bilboblog.h"
+#include "editorsettings.h"
 
 MainWindow::MainWindow(): KXmlGuiWindow(),
         tabPosts( new KTabWidget( this ) )
@@ -211,12 +212,14 @@ void MainWindow::optionsPreferences()
         return;
     }
     KConfigDialog *dialog = new KConfigDialog( this, "settings", Settings::self() );
-    QWidget *generalSettingsDlg = new QWidget;
+//     QWidget *generalSettingsDlg = new QWidget;
+    QWidget *generalSettingsDlg = new QWidget( dialog );
     ui_prefs_base.setupUi( generalSettingsDlg );
-    QWidget *editorSettingsDlg = new QWidget;
-    ui_editorsettings_base.setupUi( editorSettingsDlg );
+//     QWidget *editorSettingsDlg = new QWidget;
+//     ui_editorsettings_base.setupUi( editorSettingsDlg );
+    EditorSettings *editorSettingsDlg = new EditorSettings( dialog );
     dialog->addPage( generalSettingsDlg, i18n( "General" ), "configure" );
-    dialog->addPage( editorSettingsDlg, i18n( "Editor" ), "document-edit" );
+    dialog->addPage( editorSettingsDlg, i18n( "Editor" ), "accessories-text-editor" );
     connect( dialog, SIGNAL( settingsChanged( const QString& ) ), this, SLOT( settingsChanged() ) );
     dialog->setAttribute( Qt::WA_DeleteOnClose );
     dialog->show();
@@ -380,7 +383,7 @@ void MainWindow::sltSavePostLocally()
         activePost->mediaList().constBegin();
     while ( i != activePost->mediaList().constEnd() ) {
 
-        if ( i.key().startsWith( __tempMediaDir ) ) {
+        if ( i.key().startsWith( "file://" + ChACHED_MEDIA_DIR ) ) {
             kDebug() << blogDir.path();
             QFile::copy( i.key(), blogDir.path() + '/' + i.value()->name() );
         }

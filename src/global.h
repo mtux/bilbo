@@ -40,7 +40,7 @@ Global variables.
 
 extern int __currentBlogId;
 
-extern QString __tempMediaDir;
+// extern QString __tempMediaDir;
 
 // enum api_type { BLOGGER_API = 0,
 //  METAWEBLOG_API,
