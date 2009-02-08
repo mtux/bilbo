@@ -51,6 +51,8 @@ public:
     //!Implements the class destructor.
     ~MultiLineTextEdit();
     
+    static void clearCache();
+    
 Q_SIGNALS:
     /**
      * when a remote image is downloaded from the web successfully, this signal is emmited.
@@ -86,7 +88,7 @@ private Q_SLOTS:
     void sltRemoteFileCopied(KJob * job);
     
 private:
-    QMap <QString, bool> downloadFinished;
+    static QMap <QString, bool> downloadFinished;
 };
 
 // class GetImageThread : public QThread

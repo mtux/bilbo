@@ -18,38 +18,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <QDir>
 
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#include "editorsettings.h"
+#include "constants.h"
+#include "multilinetextedit.h"
 
-#include <kstandarddirs.h>
+EditorSettings::EditorSettings( QWidget *parent )
+    : QWidget( parent )
+{
+    setupUi( this );
+    btnClearCache->setIcon( KIcon( "edit-clear" ) );
+    connect( btnClearCache, SIGNAL( clicked( bool ) ), this, SLOT( sltClearCache() ) );
+}
 
-/**
-Constants.
- @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
- @author Golnaz Nilieh <g382nilieh@gmail.com>
- */
+EditorSettings::~EditorSettings()
+{
+}
 
-// #define VERSION "0.1"
-#define APPNAME "Bilbo Blogger"
-#define DATA_DIR KStandardDirs::locateLocal("data", "bilbo/")
-// #define CONF_PATH QString(CONF_DIR)+QString("/bilbo.conf")
-#define CONF_DB QString(DATA_DIR)+QString("/bilbo.db")
-//#define TEMP_MEDIA_DIR KStandardDirs::locateLocal("data", "bilbo/tempmedia/", true)
-#define UNKNOWN_BLOG_DIR KStandardDirs::locateLocal("data", "bilbo/Unknown Blog/", true)
-#define CACHED_MEDIA_DIR KStandardDirs::locateLocal("cache", "bilbo/media/", true)
-#define STATUSTIMEOUT 5000
+void EditorSettings::sltClearCache()
+{
+    QDir cacheDir( CACHED_MEDIA_DIR );
+    QStringListIterator i( cacheDir.entryList() );
+    while ( i.hasNext() ) {
+        cacheDir.remove( i.next() );
+    }
+    MultiLineTextEdit::clearCache();
+}
 
-
-struct Category {
-    QString name;
-    QString description;
-    QString htmlUrl;
-    QString rssUrl;
-    QString categoryId;
-    QString parentId;
-    int id;
-    int blog_id;
-};
-
-#endif
+#include "editorsettings.moc"

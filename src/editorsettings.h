@@ -18,38 +18,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef EDITORSETTINGS_H
+#define EDITORSETTINGS_H
 
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
-
-#include <kstandarddirs.h>
+#include <qwidget.h>
+#include <ui_editorsettingsbase.h>
 
 /**
-Constants.
  @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
  @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
+class EditorSettings : public QWidget, public Ui::EditorSettingsBase
+{
+    Q_OBJECT
+public:
+    EditorSettings( QWidget *parent = 0 );
 
-// #define VERSION "0.1"
-#define APPNAME "Bilbo Blogger"
-#define DATA_DIR KStandardDirs::locateLocal("data", "bilbo/")
-// #define CONF_PATH QString(CONF_DIR)+QString("/bilbo.conf")
-#define CONF_DB QString(DATA_DIR)+QString("/bilbo.db")
-//#define TEMP_MEDIA_DIR KStandardDirs::locateLocal("data", "bilbo/tempmedia/", true)
-#define UNKNOWN_BLOG_DIR KStandardDirs::locateLocal("data", "bilbo/Unknown Blog/", true)
-#define CACHED_MEDIA_DIR KStandardDirs::locateLocal("cache", "bilbo/media/", true)
-#define STATUSTIMEOUT 5000
+    ~EditorSettings();
+    
+// Q_SIGNALS:
+//     sigCacheCleared();
+    
+public Q_SLOTS:
+    void sltClearCache();
 
+// public:
+//     static QMap <QString, bool> downloadFinished;
 
-struct Category {
-    QString name;
-    QString description;
-    QString htmlUrl;
-    QString rssUrl;
-    QString categoryId;
-    QString parentId;
-    int id;
-    int blog_id;
 };
 
 #endif
