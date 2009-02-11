@@ -81,7 +81,7 @@ public:
 //   const QString& htmlContent();
     QString htmlContent();
 
-    QMap <QString, BilboMedia*> * mediaList();
+//     QMap <QString, BilboMedia*> * mediaList();
 
     /**
      * Retrieves default layout direction from default block format of the editor
@@ -163,7 +163,7 @@ protected Q_SLOTS:
     /*!
      * Creates a new paragraph in cursor position by adding <p> tags.
      */
-    void sltNewParagraph();
+//     void sltNewParagraph();
     /*!
     Changes Alignment of current paragraph into Right Alignment.
      */
@@ -223,7 +223,7 @@ protected Q_SLOTS:
     void sltSetImage( BilboMedia *media, const int width, const int height, 
                  const QString title, const QString Alt_text );
     
-    void sltReloadImage( const QString imagePath );
+    void sltReloadImage( const KUrl imagePath );
 
     void sltSetImageProperties( const int index, const int width, const int height,
                                 const QString title, const QString Alt_text );

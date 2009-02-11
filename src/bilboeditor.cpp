@@ -86,8 +86,10 @@ void BilboEditor::createUi()
     ///editor:
     //editor = new QTextEdit(0);
     editor = new MultiLineTextEdit( tabVisual );
-    connect( editor, SIGNAL( sigRemoteImageArrived( const QString ) ), this, 
-             SLOT( sltReloadImage( const QString ) ) );
+    connect( editor, SIGNAL( sigRemoteImageArrived( const KUrl ) ), this, 
+             SLOT( sltReloadImage( const KUrl ) ) );
+    connect( editor, SIGNAL( sigMediaTypeFound( BilboMedia* ) ), this, 
+             SLOT( sltMediaTypeFound( BilboMedia* ) ) );
 //     editor = new QTextBrowser( tabVisual );
     //editor = new BilboRichTextEdit(0);
     //barVisual = new QToolBar(0);
@@ -147,7 +149,7 @@ void BilboEditor::createUi()
 
     ///defaultBlockFormat
     defaultBlockFormat = editor->textCursor().blockFormat();
-
+    
     createActions();
 
 
@@ -223,14 +225,14 @@ void BilboEditor::createActions()
 
     barVisual->addSeparator();
 
-    actNewParagraph = new KAction( KIcon( "new-paragraph" ), i18nc( "Inserts a new paragraph", "New Paragraph" ), this );
-//     actNewParagraph->setShortcut( Qt::SHIFT + Qt::Key_Return );
-    actNewParagraph->setShortcut( Qt::Key_Return );
-    actNewParagraph->setToolTip( i18nc
-                                 ( "Inserts a new paragraph, and its shortcut is (Shift+Enter)",
-                                   "New Paragraph (Shift+Enter)" ) );
-    connect( actNewParagraph, SIGNAL( triggered( bool ) ), this, SLOT( sltNewParagraph() ) );
-    barVisual->addAction( actNewParagraph );
+//     actNewParagraph = new KAction( KIcon( "new-paragraph" ), i18nc( "Inserts a new paragraph", "New Paragraph" ), this );
+// //     actNewParagraph->setShortcut( Qt::SHIFT + Qt::Key_Return );
+//     actNewParagraph->setShortcut( Qt::Key_Return );
+//     actNewParagraph->setToolTip( i18nc
+//                                  ( "Inserts a new paragraph, and its shortcut is (Shift+Enter)",
+//                                    "New Paragraph (Shift+Enter)" ) );
+//     connect( actNewParagraph, SIGNAL( triggered( bool ) ), this, SLOT( sltNewParagraph() ) );
+//     barVisual->addAction( actNewParagraph );
 
     actAlignLeft = new KAction( KIcon( "format-justify-left" ), i18nc( "verb, to align text from left", "Align left" ), this );
     //actAlignLeft->setCheckable(true);
@@ -429,11 +431,11 @@ void BilboEditor::sltRemoveFormatting()
     editor->setFocus( Qt::OtherFocusReason );
 }
 
-void BilboEditor::sltNewParagraph()
-{
-    editor->textCursor().insertBlock( editor->textCursor().blockFormat(), editor->textCursor().charFormat() );
-    editor->setFocus( Qt::OtherFocusReason );
-}
+// void BilboEditor::sltNewParagraph()
+// {
+//     editor->textCursor().insertBlock( editor->textCursor().blockFormat(), editor->textCursor().charFormat() );
+//     editor->setFocus( Qt::OtherFocusReason );
+// }
 void BilboEditor::sltAlignRight()
 {
     editor->setAlignment( Qt::AlignRight | Qt::AlignAbsolute );
@@ -525,8 +527,10 @@ void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int hei
             editor->setFocus( Qt::OtherFocusReason );
 }
 
-void BilboEditor::sltReloadImage( const QString imagePath )
+void BilboEditor::sltReloadImage( const KUrl imagePath )
 {
+    QString path = imagePath.url();
+    
     if ( this->currentIndex() == 0 ) {
         
         this->editor->setFocus( Qt::OtherFocusReason );
@@ -541,9 +545,9 @@ void BilboEditor::sltReloadImage( const QString imagePath )
                 if ( f.isImageFormat() ) {
                     kDebug() << "is image format";
                     QTextImageFormat imgFormat = f.toImageFormat();
-                    if ( imgFormat.name() == imagePath ) {
+                    if ( imgFormat.name() == path ) {
                         kDebug() << "image exists";
-                        imgFormat.setName( imagePath );
+                        imgFormat.setName( path );
                         
     //                     cursor = this->editor->textCursor();
                         cursor.setPosition( i.fragment().position() );
@@ -560,6 +564,21 @@ void BilboEditor::sltReloadImage( const QString imagePath )
         } while ( block.isValid() );
     }
 //     editor->setLineWrapColumnOrWidth( editor->lineWrapColumnOrWidth() );
+    if ( mMediaList->contains( path ) ) {
+        QList < QListWidgetItem* > list;
+        list = lstMediaFiles->findItems( imagePath.fileName(), ( Qt::MatchFixedString | 
+                Qt::MatchCaseSensitive ) );
+        if ( list.isEmpty() ) {
+            kDebug() << "image isn't inserted";
+        } else {
+            for ( int i = 0; i < list.size(); i++ ) {
+                if ( list.at( i )->toolTip() == path ) {
+                    list.at( i )->setIcon( mMediaList->value( path )->icon() );
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void BilboEditor::sltAddMedia()
@@ -636,7 +655,8 @@ void BilboEditor::sltSetImageProperties( const int index, const int width,
         const int height, const QString title, const QString Alt_text )
 {
     this->editor->setFocus( Qt::OtherFocusReason );
-    QString path = lstMediaFiles->item( index )->data( Qt::UserRole ).toString();
+//     QString path = lstMediaFiles->item( index )->data( Qt::UserRole ).toString();
+    QString path = lstMediaFiles->item( index )->toolTip();
 
     QTextCharFormat f;
     QTextCursor cursor;
@@ -684,28 +704,59 @@ void BilboEditor::sltSetImageProperties( const int index, const int width,
 
 void BilboEditor::sltRemoveMedia( const int index )
 {
-    QString path = lstMediaFiles->item( index )->data( Qt::UserRole ).toString();
-    //lstMediaFiles->removeItemWidget(lstMediaFiles->item(index));
+    this->editor->setFocus( Qt::OtherFocusReason );
+//     QString path = lstMediaFiles->item( index )->data( Qt::UserRole ).toString();
+    QString path = lstMediaFiles->item( index )->toolTip();
     delete lstMediaFiles->item( index );
 
     kDebug() << path;
     BilboMedia *media = mMediaList->value( path );
-    QString removeString = "<";
-    if ( media->mimeType().contains( "image" ) ) {
-        removeString += "img([^(src=)]*)src=\"";
-        removeString += path;
-        removeString += "([^(/>)]*)/>";
-    } else {
-        removeString += "a([^(href=)]*)href=\"";
-        removeString += path;
-        removeString += "([^(</a>)]*)</a>";
-    }
-    int count = mMediaList->remove( path );
-    kDebug() << count;
-    //QRegExp removeExp(removeString);
-    QString text = this->editor->document()->toHtml();
-    text.remove( QRegExp( removeString ) );
-    this->editor->document()->setHtml( text );
+//     QString removeString = "<";
+//     if ( media->mimeType().contains( "image" ) ) {
+//         removeString += "img([^(src=)]*)src=\"";
+//         removeString += path;
+//         removeString += "([^(/>)]*)/>";
+//     } else {
+//         removeString += "a([^(href=)]*)href=\"";
+//         removeString += path;
+//         removeString += "([^(</a>)]*)</a>";
+//     }
+//     int count = mMediaList->remove( path );
+//     kDebug() << count;
+//     //QRegExp removeExp(removeString);
+//     QString text = this->editor->document()->toHtml();
+//     text.remove( QRegExp( removeString ) );
+//     this->editor->document()->setHtml( text );
+    QTextCharFormat f;
+    QTextCursor cursor;
+    QTextBlock block = this->editor->document()->firstBlock();
+    QTextBlock::iterator i;
+    do {
+        for ( i = block.begin(); !( i.atEnd() ); ++i ) {
+            kDebug() << "start iterating";
+            f = i.fragment().charFormat();
+            if ( ( f.isImageFormat() && f.toImageFormat().name() == path ) ||
+                  ( f.isAnchor() && f.anchorHref() == path ) )
+            {
+                kDebug() << "found";
+                cursor = this->editor->textCursor();
+                cursor.setPosition( i.fragment().position() );
+                cursor.movePosition( QTextCursor::NextCharacter,
+                                     QTextCursor::KeepAnchor, i.fragment().length() );
+                if ( cursor.hasSelection() ) {
+                    kDebug() << " mine hasSelection";
+                    cursor.removeSelectedText();
+                    kDebug() << "removed";
+                    i = block.begin();
+//                         this->editor->setTextCursor( cursor );
+                }
+            }
+        }
+        kDebug() << "to go next";
+        block = block.next();
+        kDebug() << "at next";
+        
+    } while ( block.isValid() );
 }
 
 void BilboEditor::sltMediaTypeFound( BilboMedia * media )
@@ -716,6 +767,7 @@ void BilboEditor::sltMediaTypeFound( BilboMedia * media )
     
     if ( mMediaList->contains( url ) ) {
         //media is already added.
+        delete media;
     } else {
         mMediaList->insert( url, media );
         
@@ -724,8 +776,9 @@ void BilboEditor::sltMediaTypeFound( BilboMedia * media )
         } else {
             item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::OtherType );
         }
-        item->setData( Qt::UserRole, QVariant( url ) );
-        item->setToolTip( media->name() );
+//         item->setData( Qt::UserRole, QVariant( url ) );
+//         item->setToolTip( media->remoteUrl() );
+        item->setToolTip( url );
     }
 }
 
@@ -904,7 +957,7 @@ QString BilboEditor::htmlContent()
 
 //  const QString& htmlContent = htmlEditor->toPlainText();
     QString htmlContent = htmlEditor->toPlainText();
-    kDebug() << htmlContent << " editor output";
+//     kDebug() << htmlContent << " editor output";
     return htmlContent;
 //  return htmlEditor->toPlainText();
 }
@@ -934,14 +987,15 @@ void BilboEditor::setHtmlContent( const QString & content )
 //  this->editor->textCursor().insertBlock();
 }
 
-QMap <QString, BilboMedia*> * BilboEditor::mediaList()
-{
-    return mMediaList;
-}
+// QMap <QString, BilboMedia*> * BilboEditor::mediaList()
+// {
+//     return mMediaList;
+// }
 
 void BilboEditor::setMediaList( QMap <QString, BilboMedia*> * list )
 {
     mMediaList = list;
+    editor->setMediaList( list );
 }
 // reason to remove:
 // this way, editor didn't generate html tags for default parameters, so no tag would be generated for rtl direction, if the default layout changed to rtl.

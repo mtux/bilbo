@@ -30,6 +30,7 @@
 // class QNetwokAccessManager;
 // class QNetworkReply;
 class KJob;
+class BilboMedia;
 
 //!Class MultiLineTextEdit Implements a TextEdit widget that supports new line charachters
 /*!
@@ -53,12 +54,16 @@ public:
     
     static void clearCache();
     
+    void setMediaList( QMap <QString, BilboMedia*> * list );
+    
 Q_SIGNALS:
     /**
      * when a remote image is downloaded from the web successfully, this signal is emmited.
      * @param imagePath is the image url on the web.
      */
-    void sigRemoteImageArrived( const QString imagePath );
+    void sigRemoteImageArrived( const KUrl imagePath );
+    
+    void sigMediaTypeFound( BilboMedia *media );
 
 protected:
 
@@ -89,6 +94,7 @@ private Q_SLOTS:
     
 private:
     static QMap <QString, bool> downloadFinished;
+    QMap <QString, BilboMedia*> *mMediaList;
 };
 
 // class GetImageThread : public QThread

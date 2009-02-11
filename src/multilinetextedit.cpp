@@ -29,10 +29,11 @@
 #include <kio/job.h>
 #include <kio/netaccess.h>
 #include <kio/jobuidelegate.h>
+#include <kmimetype.h>
 
 #include "multilinetextedit.h"
-// #include "global.h"
 #include "constants.h"
+#include "bilbomedia.h"
 
 QMap <QString, bool> MultiLineTextEdit::downloadFinished;
 MultiLineTextEdit::MultiLineTextEdit( QWidget *parent ) : KRichTextEdit( parent )
@@ -70,21 +71,17 @@ QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
 
         QByteArray data;
         KUrl imageUrl = KUrl( name );
-//         QFile file;
-        
+        QString imageUrlString = imageUrl.url();
+
         if ( name.scheme() != "file" ) {
             KUrl localUrl = KUrl( "file://" + CACHED_MEDIA_DIR + imageUrl.fileName() );
-//             QFile file( localUrl.toLocalFile() );
             QFile file( localUrl.toLocalFile() );
-            
+
             if ( !file.exists() ) {
                 if ( !downloadFinished.contains( imageUrl.url() ) ) {
                     downloadFinished.insert( imageUrl.url(), false);
                     KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite );
-    //             if ( !KIO::NetAccess::synchronousRun( copyJob, 0 ) ) {
-    //                 kDebug() << "Copy job failed";
-    //                 return QVariant();
-    //             }
+
                     connect( copyJob, SIGNAL( result( KJob * ) ), this, 
                             SLOT( sltRemoteFileCopied( KJob * ) ) );
                 }
@@ -96,8 +93,22 @@ QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
                 kDebug() << "Can not read data.";
             }
             
+            if ( !mMediaList->contains( imageUrlString ) ) {
+                BilboMedia *media = new BilboMedia();
+                media->setName( imageUrl.fileName() );
+                media->setRemoteUrl( imageUrlString );
+                media->setLocalUrl( localUrl.toLocalFile() );
+                media->setUploaded( true );
+            
+                KMimeType::Ptr typePtr;
+                typePtr = KMimeType::findByUrl( localUrl, 0, true, false );
+                media->setMimeType( typePtr.data()->name() );
+                Q_EMIT sigMediaTypeFound( media );
+            }
+
         } else {
             QFile file( imageUrl.toLocalFile() );
+            
             if ( !file.exists() ) {
                 kDebug() << "local file doesn't exist" ;
                 return QVariant();
@@ -107,13 +118,21 @@ QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
             } else {
                 kDebug() << "Can not read data.";
             }
+            
+            if ( !mMediaList->contains( imageUrlString ) ) {
+                BilboMedia *media = new BilboMedia();
+                media->setName( imageUrl.fileName() );
+                media->setRemoteUrl( imageUrlString );
+                media->setLocalUrl( imageUrl.toLocalFile() ); //NOTE may be omitted later.
+                media->setUploaded( false );
+                
+                KMimeType::Ptr typePtr;
+                typePtr = KMimeType::findByUrl( imageUrl, 0, true, false );
+                media->setMimeType( typePtr.data()->name() );
+                Q_EMIT sigMediaTypeFound( media );
+            }
         }
-        
-//         if ( file.open( QIODevice::ReadOnly ) ) {
-//             data = file.readAll();
-//         } else {
-//             kDebug() << "Can not read data.";
-//         }
+
         return QVariant( data );
 
     } else {
@@ -130,12 +149,33 @@ void MultiLineTextEdit::sltRemoteFileCopied( KJob * job )
         copyJob->ui()->setWindow( this );
         copyJob->ui()->showErrorMessage();
     } else {
-        downloadFinished[ copyJob->srcUrl().url() ] = true;
-        Q_EMIT sigRemoteImageArrived( copyJob->srcUrl().url() );
-        kDebug() << copyJob->srcUrl().url() << " arrived.";
+        QString srcPath = copyJob->srcUrl().url();
+        
+        if ( !mMediaList->contains( srcPath ) ) {
+            BilboMedia *media = new BilboMedia();
+            media->setName( copyJob->srcUrl().fileName() );
+            media->setRemoteUrl( srcPath );
+            media->setLocalUrl( copyJob->destUrl().toLocalFile() ); //NOTE may be omitted later.
+            media->setUploaded( true );
+            
+            KMimeType::Ptr typePtr;
+            typePtr = KMimeType::findByUrl( copyJob->destUrl(), 0, true, false );
+            media->setMimeType( typePtr.data()->name() );
+            Q_EMIT sigMediaTypeFound( media );
+        } else {
+            mMediaList->value( srcPath )->setLocalUrl( copyJob->destUrl().toLocalFile() );
+        }
+        
+        downloadFinished[ srcPath ] = true;
+        Q_EMIT sigRemoteImageArrived( copyJob->srcUrl() );
+        kDebug() << srcPath << " arrived.";
     }
 }
 
+void MultiLineTextEdit::setMediaList( QMap <QString, BilboMedia*> * list )
+{
+    mMediaList = list;
+}
 // GetImageThread::GetImageThread( KRichTextEdit *parent, const KUrl & image ) : QThread( parent )
 // {
 //     cursor = parent->textCursor();
