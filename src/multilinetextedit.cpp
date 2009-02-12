@@ -74,8 +74,13 @@ QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
         QString imageUrlString = imageUrl.url();
 
         if ( name.scheme() != "file" ) {
-            KUrl localUrl = KUrl( "file://" + CACHED_MEDIA_DIR + imageUrl.fileName() );
-            QFile file( localUrl.toLocalFile() );
+//             KUrl localUrl = KUrl( "file://" + CACHED_MEDIA_DIR + imageUrl.fileName() );
+            QString cacheFileName = name.host() + name.path();
+            cacheFileName.replace( QChar( '/' ), QChar( '.' ) );
+            
+            KUrl localUrl = KUrl( "file://" + CACHED_MEDIA_DIR + cacheFileName );
+//             QFile file( localUrl.toLocalFile() );
+            QFile file( CACHED_MEDIA_DIR + cacheFileName );
 
             if ( !file.exists() ) {
                 if ( !downloadFinished.contains( imageUrl.url() ) ) {

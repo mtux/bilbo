@@ -945,7 +945,8 @@ void htmlExporter::emitBlock( const QTextBlock &block )
             html += QLatin1Char( '>' );
         }
 
-        html += QLatin1String( "<li>" );
+//         html += QLatin1String( "<li>" );
+        html += QLatin1String( "<li " );
         /*
                 const QTextCharFormat blockFmt = formatDifference(defaultCharFormat, block.charFormat()).toCharFormat();
                 if (!blockFmt.properties().isEmpty()) {
@@ -984,11 +985,13 @@ void htmlExporter::emitBlock( const QTextBlock &block )
         html += QLatin1Char( '>' );
 
     } else {
-//   if (list) {
-//    html += QLatin1Char('>');
-//   }
-        //html += QLatin1String("<div");
-        html += QLatin1String( "<p" );
+        if (list) {
+//         html += QLatin1Char('>');
+//             html += QLatin1String( "<div" );
+        } else {
+            //html += QLatin1String("<div");
+            html += QLatin1String( "<p" );
+        }
         emitBlockAttributes( block );
         html += QLatin1Char( '>' );
     }
@@ -1013,9 +1016,11 @@ void htmlExporter::emitBlock( const QTextBlock &block )
 //          html += QLatin1String("<br />");//"</p>");
 //   }
         //html += QLatin1String("</div>");
-        html += QLatin1String( "</p>" );
+//         html += QLatin1String( "</p>" );
         if ( list ) {
             html += QLatin1String( "</li>" );
+        } else {
+            html += QLatin1String( "</p>" );
         }
     }
     // HACK html.replace( QRegExp("<br[\\s]*/>[\\n]*<br[\\s]*/>[\\n]*"),"<br />&nbsp;<br />" );
