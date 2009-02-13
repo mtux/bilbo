@@ -53,17 +53,21 @@ void MediaListWidget::contextMenuEvent( QContextMenuEvent *event )
 
 void MediaListWidget::sltEditProperties()
 {
-    QWidget *temp = new QWidget( this );
+//     QWidget *temp = new QWidget( this );
     KDialog *dialog = new KDialog( this );
+    QWidget *temp = new QWidget( dialog );
     //ui.setupUi(dialog);
     ui.setupUi( temp );
     dialog->setMainWidget( temp );
     dialog->setWindowTitle( temp->windowTitle() );
     dialog->resize( temp->width(), temp->height() );
     dialog->setWindowModality( Qt::WindowModal );
-    dialog->setAttribute( Qt::WA_DeleteOnClose );
+//     dialog->setAttribute( Qt::WA_DeleteOnClose );
     connect( dialog, SIGNAL( okClicked() ), this, SLOT( sltSetProperties() ) );
+    ui.spinboxWidth->setFocus();
+    
     dialog->exec();
+    dialog->deleteLater();
 }
 void MediaListWidget::sltSetProperties()
 {

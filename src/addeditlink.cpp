@@ -26,19 +26,21 @@
 AddEditLink::AddEditLink( QWidget *parent )
         : KDialog( parent )
 {
-    //QWidget *dialog = new QWidget;
-    QDialog *dialog = new QDialog( parent );
+    QWidget *dialog = new QWidget( this );
+//     QDialog *dialog = new QDialog( parent );
     ui.setupUi( dialog );
-    dialog->setAttribute( Qt::WA_DeleteOnClose );
+//     dialog->setAttribute( Qt::WA_DeleteOnClose );
     this->setMainWidget( dialog );
-    this->setWindowTitle( dialog->windowTitle() );
+//     this->setWindowTitle( i18nc( "verb, to insert a link into the text, or Modify an Ex", "Add Link" ) );
 
     //ui.label_2->hide();
     //ui.txtTitle->hide();
     //ui.comboTarget->hide();
     //ui.label_3->hide();
     this->resize( dialog->width(), dialog->height() );
+    
     connect( this, SIGNAL( accepted() ), this, SLOT( sltAccepted() ) );
+    ui.txtAddress->setFocus();
 }
 
 void AddEditLink::sltAccepted()
@@ -64,7 +66,9 @@ void AddEditLink::show( const QString& address, const QString& title, const QStr
     KDialog::show();
     if ( !address.isEmpty() ) {
         ui.txtAddress->setText( address );
-        this->setWindowTitle( i18nc( "verb, to edit link", "Edit Link" ) );
+        this->setWindowTitle( i18nc( "verb, to modify an existing link", "Edit Link" ) );
+    } else {
+        this->setWindowTitle( i18nc( "verb, to insert a link into the text", "Add Link" ) );
     }
     if ( !title.isEmpty() ) {
         ui.txtTitle->setText( title );

@@ -36,7 +36,8 @@
 
 AddMediaDialog::AddMediaDialog( QWidget *parent ) : KDialog( parent )
 {
-    QDialog *dialog = new QDialog( parent );
+//     QDialog *dialog = new QDialog( parent );
+    QWidget *dialog = new QWidget( this );
     ui.setupUi( dialog );
     
 //     QStringList mimeFilter;
@@ -47,7 +48,7 @@ AddMediaDialog::AddMediaDialog( QWidget *parent ) : KDialog( parent )
     ui.kurlreqMediaUrl->lineEdit()->setToolTip( i18n( "Type media path here." ) );
     ui.kurlreqMediaUrl->button()->setToolTip( i18n( "Browse" ) );
     
-    dialog->setAttribute( Qt::WA_DeleteOnClose );
+//     dialog->setAttribute( Qt::WA_DeleteOnClose );
     this->setMainWidget( dialog );
     this->setWindowTitle( "Attach media" );
     this->resize( dialog->width(), dialog->height() );
@@ -56,6 +57,8 @@ AddMediaDialog::AddMediaDialog( QWidget *parent ) : KDialog( parent )
              SLOT( sltMediaSourceChanged() ) );
     connect( ui.radiobtnRemoteUrl, SIGNAL( toggled( bool ) ), this, 
              SLOT( sltMediaSourceChanged() ) );
+    
+    ui.kurlreqMediaUrl->lineEdit()->setFocus();
 }
 
 AddMediaDialog::~AddMediaDialog()
