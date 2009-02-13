@@ -318,7 +318,7 @@ void PostEntry::saveLocally()
     }
     QMap <QString, BilboMedia*>::const_iterator it = this->mediaList().constBegin();
     while ( it != this->mediaList().constEnd() ) {
-        if ( !( it.value()->isUploaded() ) && !( it.key().startsWith( MEDIA_DIR ) ) ) {
+        if ( !( it.value()->isUploaded() ) && !( it.key().startsWith( MEDIA_DIR ) ) ) {//"file://" + CACHED_MEDIA_DIR
             QString baseName = it.value()->name();
             QString desiredFileName = MEDIA_DIR + baseName;
             int indexOfDot = baseName.indexOf('.', 0, Qt::CaseInsensitive);

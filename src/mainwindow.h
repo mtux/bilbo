@@ -54,9 +54,10 @@ public:
 
 signals:
     void mediaFilesUploaded( int count );
+    void settingsChanged();
+
 protected slots:
     void sltCreateNewPost();
-    void settingsChanged();
 
     void sltUploadAllChanges();
     void sltPostTitleChanged( const QString& title );
