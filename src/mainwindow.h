@@ -79,6 +79,11 @@ protected slots:
 
     void sltError( const QString &errorMessage );
 
+    /**
+    To open temporary posts and that posts are open at previous quit.
+    */
+    void loadTempPosts();
+
 private slots:
     void optionsPreferences();
     void postManipulationDone( bool isError, const QString &customMessage );

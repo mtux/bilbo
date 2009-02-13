@@ -833,9 +833,7 @@ void BilboEditor::sltSyncEditors( int index )
         QString baseU = "http://bilbo.sourceforge.net";
 //   QString baseU = "file://";
         if ( __currentBlogId > -1 ) {
-            BilboBlog *tmp = DBMan::self()->getBlogInfo( __currentBlogId );
-            baseU = tmp->blogUrl();
-            delete tmp;
+            baseU = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
         }
         preview->setHtml( htmlEditor->toPlainText(), QUrl( baseU ) );
     }

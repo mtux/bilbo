@@ -45,6 +45,7 @@ public:
     DBMan();
 
     ~DBMan();
+    enum LocalPostState {Local=0, Temp=1};
 
     /**
      * \brief Retrieve the instance of DataBase Manager.
@@ -65,57 +66,40 @@ public:
      */
     QList<BilboBlog*> listBlogs();
     QMap<QString, int> listBlogsTitle();///QString as Title, and int as blog_id
-    BilboBlog *getBlogInfo( QString title );
-    BilboBlog *getBlogInfo( int blog_id );
+    BilboBlog getBlogInfo( QString title );
+    BilboBlog getBlogInfo( int blog_id );
 
     QList<BilboPost*> listPosts( int blog_id );
     QMap< int, QString > listPostsTitle( int blog_id );///QString as Title, and int as post_id
-    BilboPost *getPostInfo( int post_id );
+    BilboPost getPostInfo( int post_id );
 
     QMap<QString, int> listCategoriesName( int blog_id );
     QList<Category> listCategories( int blog_id );
     QMap<QString, bool> listCategoriesId( int blog_id );
 
-
+    /**
+    Returns list of temporary posts, e.g. posts saved intervally or at application quit.
+    Map value (e.g. int) is blog id.
+    */
+    QMap<BilboPost*, int> listTempPosts();
+    /**
+    Returns list of locally saved posts.
+    Map value (e.g. int) is blog id.
+    */
+    QMap<BilboPost*, int> listLocalPosts();
     ///END
 
     ///(BEGIN) Data Manipulation Functions:
 
     ///Blog:
-//     int addBlog( QString blogid, QString blog_url, QString username, QString password, QString style_url,
-//                  QString api, QString title, int direction, QString directory );
 
     int addBlog( const BilboBlog& blog );
-
-//     bool editBlog( int id, QString username, QString password, QString style_url, QString api,
-//                    QString title, int direction, QString directory );
 
     bool editBlog( const BilboBlog& blog );
 
     bool removeBlog( int blog_id );
 
     ///Post:
-    /**
-     *
-     * @param postid
-     * @param blogid
-     * @param author
-     * @param title
-     * @param content
-     * @param c_time
-     * @param is_private
-     * @param is_comment_allowed
-     * @param is_trackback_allowed
-     * @param link
-     * @param perma_link
-     * @param summary
-     * @param tags
-     * @return return post id in database (deffer with postid)
-     */
-//     int addPost( QString postid, int blog_id, QString author, QString title, QString &content,
-//                  QString c_time, bool is_private, bool is_comment_allowed, bool is_trackback_allowed,
-//                  QString link, QString perma_link, QString summary, QString tags/*comma(,) separated list*/,
-//                  QStringList categories, int position );
 
     /**
      *
@@ -124,11 +108,6 @@ public:
      * @return return post id in database (deffer with postid)
      */
     int addPost( const BilboPost& post, int blog_id );
-
-//     bool editPost( int id, int blog_id, QString postid, QString author, QString title, QString &content,
-//                    QString c_time, QString m_time, bool is_private, bool is_comment_allowed,
-//                    bool is_trackback_allowed, QString link, QString perma_link, QString summary, QString tags,
-//                    QStringList categories, int position );
 
     bool editPost( const BilboPost& post, int blog_id );
 
@@ -143,12 +122,15 @@ public:
 
     ///File:
     int addFile( QString name, int blog_id, bool isUploaded, QString localUrl, QString remoteUrl );
-//     int addFile( const QString &name, int blog_id, bool isLocal, const QString &localUrl, const QString &remoteUrl );
     int addFile( const BilboMedia& file );
     int addFile();
     bool removeFile( int fileid );
     bool clearFiles( int blog_id );
 
+    int saveTemp_LocalEntry( const BilboPost& post, int blog_id, LocalPostState state );
+    bool removeLocalEntry( const BilboPost &post );
+    bool removeTempEntry( const BilboPost &post );
+    bool clearTempEntries();
     ///END
 
 private:

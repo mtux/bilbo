@@ -6,15 +6,21 @@
   <kcfgfile name="bilborc"/>
   <group name="Preferences">
     <entry name="show_main_on_start" type="Bool">
-	    <label>Show Bilbo Window on startup</label>
-	    <default>true</default>
+        <label>Show Bilbo Window on startup</label>
+        <default>true</default>
     </entry>
     <entry name="show_toolbox_on_start" hidden="true" type="Bool">
-	    <default>true</default>
+        <default>true</default>
     </entry>
+  </group>
+  <group name="Editor">
     <entry name="download_remote_media" type="Bool">
-	    <label>Download Remote media, to be visible in Visual Editor.</label>
-	    <default>true</default>
+        <label>Download Remote media, to be visible in Visual Editor.</label>
+        <default>true</default>
+    </entry>
+    <entry name="autosaveInterval" type="Int">
+        <label>Editor auto save interval :</label>
+        <default>5</default>
     </entry>
   </group>
 </kcfg>

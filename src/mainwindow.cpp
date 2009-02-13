@@ -84,11 +84,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     // toolbar position, icon size, etc.
     setupGUI();
 
-
-    sltCreateNewPost();
-    activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
-    previousActivePostIndex = 0;
-    toolbox->setFieldsValue( activePost->currentPost() );
+//     toolbox->setFieldsValue( activePost->currentPost() );
 
 //     this->setWindowIcon(KIcon(":/media/bilbo.png"));
 //     readConfig();
@@ -107,10 +103,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     connect( toolbox, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
     connect( toolbox, SIGNAL( sigBusy(bool) ), this, SLOT( slotBusy(bool) ));
 
-//     if(Settings::show_main_on_start())
-//         this->show();
-//     else
-//         this->hide();
+    QTimer::singleShot( 1000, this, SLOT( loadTempPosts() ) );
 }
 
 MainWindow::~MainWindow()
@@ -121,7 +114,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupActions()
 {
-    KStandardAction::quit( kapp, SLOT( quit() ), actionCollection() );
+    KStandardAction::quit( qApp, SLOT( quit() ), actionCollection() );
 
     KStandardAction::preferences( this, SLOT( optionsPreferences() ), actionCollection() );
 
@@ -171,6 +164,36 @@ void MainWindow::setupActions()
     connect( actToggleToolboxVisible, SIGNAL( toggled( bool ) ), this, SLOT( sltToggleToolboxVisible( bool ) ) );
 }
 
+void MainWindow::loadTempPosts()
+{
+    kDebug();
+    QMap<BilboPost*, int> tempList = DBMan::self()->listTempPosts();
+    int count = tempList.count();
+    if( count > 0 ){
+        QMap<BilboPost*, int>::ConstIterator it = tempList.constBegin();
+        QMap<BilboPost*, int>::ConstIterator endIt = tempList.constEnd();
+        int blog_id;
+        BilboPost post;
+        for( ; it != endIt; ++it ) {
+            blog_id = it.value();
+            post = (*it.key());
+            PostEntry *temp = new PostEntry( this );
+            tabPosts->addTab( temp, post.title() );
+            temp->setCurrentPost( post );
+            temp->setCurrentPostBlogId( blog_id );
+            temp->setDefaultLayoutDirection( DBMan::self()->getBlogInfo( blog_id ).direction() );
+            tabPosts->setCurrentWidget( temp );
+            connect( temp, SIGNAL( sigTitleChanged( const QString& ) ), this, SLOT( sltPostTitleChanged( const QString& ) ) );
+        }
+        toolbox->setCurrentBlog(blog_id);
+        toolbox->sltCurrentBlogChanged(blog_id);
+    } else {
+        sltCreateNewPost();
+    }
+    activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
+    previousActivePostIndex = 0;
+}
+
 void MainWindow::sltCreateNewPost()
 {
     kDebug();
@@ -183,9 +206,7 @@ void MainWindow::sltCreateNewPost()
     // What SegFault!? (I think ^its about previous codes! and need to test and remove!) -Mehrdad
     int tempId = toolbox->currentBlogId();
     if ( tempId != -1 ) {
-        BilboBlog *tmp = DBMan::self()->getBlogInfo( tempId );
-        temp->setDefaultLayoutDirection( tmp->direction() );
-        tmp->deleteLater();
+        temp->setDefaultLayoutDirection( DBMan::self()->getBlogInfo( tempId ).direction() );
     }
 
     connect( temp, SIGNAL( sigTitleChanged( const QString& ) ),
@@ -277,8 +298,7 @@ void MainWindow::sltActivePostChanged( int index )
         if ( activePostBlogId != -1 ) {
             if ( activePostBlogId != prevPostBlogId ) {
                 toolbox->setCurrentBlog( activePostBlogId );
-                toolbox->sltLoadCategoryListFromDB( activePostBlogId );
-                toolbox->sltLoadEntriesFromDB( activePostBlogId );
+                toolbox->sltCurrentBlogChanged( activePostBlogId );
             }
         }
         toolbox->setFieldsValue( activePost->currentPost() );
@@ -315,12 +335,17 @@ void MainWindow::sltPublishPost()
 void MainWindow::sltRemoveCurrentPostEntry()
 {
     kDebug();
+    DBMan::self()->removeTempEntry( *activePost->currentPost() );
 //     if(tabPosts->count()==1){
 //         sltCreateNewPost();
 //         previousActivePostIndex = 0;
 //     }
-    tabPosts->removeTab( tabPosts->currentIndex() );
+    tabPosts->currentWidget()->deleteLater();
+//     tabPosts->removeTab( tabPosts->currentIndex() );
 //     tabPosts->setCurrentIndex(previousActivePostIndex);
+    if( tabPosts->count() < 1 ) {
+        activePost = 0;
+    }
 }
 
 void MainWindow::sltNewPostOpened( BilboPost * newPost )
@@ -332,11 +357,7 @@ void MainWindow::sltNewPostOpened( BilboPost * newPost )
     temp->setCurrentPost( *newPost );
     temp->setCurrentPostBlogId( toolbox->currentBlogId() );
 
-    BilboBlog *tmp = DBMan::self()->getBlogInfo( toolbox->currentBlogId() );
-    temp->setDefaultLayoutDirection( tmp->direction() );
-    delete tmp;
-    ///^^^ FIXME I think we don't need this^, it's better to remain on the current state! :-/ Or maybe not :D -Mehrdad
-    ///Yes! Of course we need it! :P -Mehrdad
+    temp->setDefaultLayoutDirection( DBMan::self()->getBlogInfo( toolbox->currentBlogId() ).direction() );
 
     tabPosts->setCurrentWidget( temp );
     connect( temp, SIGNAL( sigTitleChanged( const QString& ) ), this, SLOT( sltPostTitleChanged( const QString& ) ) );
@@ -349,18 +370,19 @@ void MainWindow::sltCurrentBlogChanged( int blog_id )
         kDebug() << "Blog id do not sets correctly";
         return;
     }
-
-    BilboBlog *tmp = DBMan::self()->getBlogInfo( blog_id );
-    this->activePost->setDefaultLayoutDirection( tmp->direction() );
-    this->activePost->setCurrentPostBlogId( blog_id );
-    this->actPublish->setText( i18n( "Publish to \"%1\"", tmp->title() ) );
-    tmp->deleteLater();
+    if(activePost) {
+        BilboBlog tmp = DBMan::self()->getBlogInfo( blog_id );
+        this->activePost->setDefaultLayoutDirection( tmp.direction() );
+        this->activePost->setCurrentPostBlogId( blog_id );
+        this->actPublish->setText( i18n( "Publish to \"%1\"", tmp.title() ) );
+    }
 }
 
 void MainWindow::sltSavePostLocally()
 {
     kDebug();
-    ///TODO
+    activePost->saveLocally();
+    statusBar()->showMessage( i18n("Post saved locally") , 5000);
 }
 
 void MainWindow::sltSaveAsDraft()
@@ -452,9 +474,10 @@ bool MainWindow::queryClose()
 
 bool MainWindow::queryExit()
 {
+    kDebug();
     //TODO Save Current Open posts!
-    delete DBMan::self();
-    this->deleteLater();
+//     delete DBMan::self();
+//     this->deleteLater();
     return true;
 }
 
@@ -468,6 +491,7 @@ void MainWindow::slotBusy(bool isBusy)
             progress = new QProgressBar(statusBar());
             progress->setMinimum( 0 );
             progress->setMaximum( 0 );
+            progress->resize(progress->width(), statusBar()->height()-20);
             statusBar()->addPermanentWidget(progress);
         }
     } else {
