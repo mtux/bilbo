@@ -102,6 +102,11 @@ private:
     void setupActions();
     void setupSystemTray();
     void writeConfigs();
+    /**
+        Create a new post entry, 
+        and return pointer to it's widget (Actually return value is a PostEntry instance)
+    */
+    QWidget* createPostEntry(int blog_id, const BilboPost& post);
 
     Ui::SettingsBase ui_prefs_base;
     Ui::EditorSettingsBase ui_editorsettings_base;

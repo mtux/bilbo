@@ -53,6 +53,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
 {
     kDebug();
     previousActivePostIndex = -1;
+    activePost = 0;
     busyNumber = 0;
     progress = 0;
     tabPosts->setElideMode( Qt::ElideRight );///TODO make this Optional!
@@ -173,49 +174,23 @@ void MainWindow::loadTempPosts()
     if( count > 0 ){
         QMap<BilboPost*, int>::ConstIterator it = tempList.constBegin();
         QMap<BilboPost*, int>::ConstIterator endIt = tempList.constEnd();
-        int blog_id;
-        BilboPost post;
         for( ; it != endIt; ++it ) {
-            blog_id = it.value();
-            post = (*it.key());
-            PostEntry *temp = new PostEntry( this );
-            tabPosts->addTab( temp, post.title() );
-            temp->setCurrentPost( post );
-            temp->setCurrentPostBlogId( blog_id );
-            temp->setDefaultLayoutDirection( DBMan::self()->getBlogInfo( blog_id ).direction() );
-            tabPosts->setCurrentWidget( temp );
-            connect( temp, SIGNAL( sigTitleChanged( const QString& ) ), this, SLOT( sltPostTitleChanged( const QString& ) ) );
+            createPostEntry(it.value(), (*it.key()));
         }
-        toolbox->setCurrentBlog(blog_id);
-        toolbox->sltCurrentBlogChanged(blog_id);
     } else {
         sltCreateNewPost();
     }
-    activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
+//     activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
     previousActivePostIndex = 0;
+    if( activePost )
+        toolbox->setCurrentBlog(activePost->currentPostBlogId());
 }
 
 void MainWindow::sltCreateNewPost()
 {
     kDebug();
-    PostEntry *temp = new PostEntry( this );
-    tabPosts->addTab( temp, i18n( "Untitled" ) );
-//     temp->setCurrentPost();
-    temp->setCurrentPostBlogId( toolbox->currentBlogId() );
 
-//  // FIXME these lines added to set direction for new posts, but it generates Segmentation fault at run time!
-    // What SegFault!? (I think ^its about previous codes! and need to test and remove!) -Mehrdad
-    int tempId = toolbox->currentBlogId();
-    if ( tempId != -1 ) {
-        temp->setDefaultLayoutDirection( DBMan::self()->getBlogInfo( tempId ).direction() );
-    }
-
-    connect( temp, SIGNAL( sigTitleChanged( const QString& ) ),
-             this, SLOT( sltPostTitleChanged( const QString& ) ) );
-    connect( temp, SIGNAL( postPublishingDone( bool, const QString& ) ),
-             this, SLOT( postManipulationDone( bool, const QString& ) ) );
-
-    tabPosts->setCurrentWidget( temp );
+    tabPosts->setCurrentWidget( createPostEntry(toolbox->currentBlogId(), BilboPost()) );
 
     if ( this->isVisible() == false ) {
         this->show();
@@ -297,7 +272,6 @@ void MainWindow::sltActivePostChanged( int index )
         if ( activePostBlogId != -1 ) {
             if ( activePostBlogId != prevPostBlogId ) {
                 toolbox->setCurrentBlog( activePostBlogId );
-                toolbox->sltCurrentBlogChanged( activePostBlogId );
             }
         }
         toolbox->setFieldsValue( activePost->currentPost() );
@@ -350,16 +324,8 @@ void MainWindow::sltRemoveCurrentPostEntry()
 void MainWindow::sltNewPostOpened( BilboPost * newPost )
 {
     kDebug();
-    PostEntry *temp = new PostEntry( this );
-    tabPosts->addTab( temp, newPost->title() );
-
-    temp->setCurrentPost( *newPost );
-    temp->setCurrentPostBlogId( toolbox->currentBlogId() );
-
-    temp->setDefaultLayoutDirection( DBMan::self()->getBlogInfo( toolbox->currentBlogId() ).direction() );
-
-    tabPosts->setCurrentWidget( temp );
-    connect( temp, SIGNAL( sigTitleChanged( const QString& ) ), this, SLOT( sltPostTitleChanged( const QString& ) ) );
+    QWidget * w = createPostEntry(toolbox->currentBlogId(), *newPost);
+    tabPosts->setCurrentWidget( w );
 }
 
 void MainWindow::sltCurrentBlogChanged( int blog_id )
@@ -505,6 +471,26 @@ void MainWindow::slotBusy(bool isBusy)
             busyNumber = 0;
         }
     }
+}
+
+QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
+{
+    kDebug();
+    PostEntry *temp = new PostEntry( this );
+    tabPosts->addTab( temp, post.title() );
+    temp->setCurrentPost(post);
+    temp->setCurrentPostBlogId( blog_id );
+
+    if ( blog_id != -1 ) {
+        temp->setDefaultLayoutDirection( DBMan::self()->getBlogInfo( blog_id ).direction() );
+    }
+
+    connect( temp, SIGNAL( sigTitleChanged( const QString& ) ),
+             this, SLOT( sltPostTitleChanged( const QString& ) ) );
+    connect( temp, SIGNAL( postPublishingDone( bool, const QString& ) ),
+            this, SLOT( postManipulationDone( bool, const QString& ) ) );
+    connect( this, SIGNAL( settingsChanged() ), temp, SLOT( settingsChanged() ));
+    return temp;
 }
 
 #include "mainwindow.moc"
