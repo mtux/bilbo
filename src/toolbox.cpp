@@ -477,7 +477,7 @@ void Toolbox::setCurrentBlog( int blog_id )
     foreach( QAbstractButton *b, listBlogRadioButtons.buttons() ) {
         if ( qobject_cast<BlogRadioButton*>( b )->blogId() == blog_id ) {
             b->setChecked( true );
-            sltCurrentBlogChanged(blog_id);
+            emit sigCurrentBlogChanged(blog_id);
             break;
         }
     }

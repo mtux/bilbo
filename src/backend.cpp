@@ -27,12 +27,12 @@
 #include "dbman.h"
 
 #include <kurl.h>
-#include <kblog/blogger1.h>
-#include <kblog/gdata.h>
-#include <kblog/metaweblog.h>
-#include <kblog/movabletype.h>
-#include <kblog/wordpressbuggy.h>
-#include <kblog/blogmedia.h>
+#include <blogger1.h>
+#include <gdata.h>
+#include <metaweblog.h>
+#include <movabletype.h>
+#include <wordpressbuggy.h>
+#include <blogmedia.h>
 #include <kdebug.h>
 #include <KDE/KLocale>
 // #include <QMimeData>
