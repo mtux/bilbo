@@ -505,7 +505,7 @@ void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int hei
 //             item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::ImageType );
             QTextImageFormat imageFormat;
             
-            imageFormat.setName( media->remoteUrl() );
+            imageFormat.setName( media->remoteUrl().url() );
             if ( width != 0 ) {
                 imageFormat.setWidth( width );
             }
@@ -593,13 +593,13 @@ void BilboEditor::sltAddMedia()
 
 void BilboEditor::sltSetMedia( BilboMedia *media )
 {
-    QString url;
+//     QString url;
 //     QListWidgetItem *item;
 // 
 //     if ( mMediaList->contains( media->remoteUrl() ) ) {
 //         //media is already added.
 //     } else {
-    url = media->remoteUrl();
+//     url = media->remoteUrl();
 //         mMediaList->insert( url, media );
 // 
 //         if ( media->mimeType().contains( "image" ) ) {
@@ -622,7 +622,7 @@ void BilboEditor::sltSetMedia( BilboMedia *media )
 
     QTextCharFormat f;
     f.setAnchor( true );
-    f.setAnchorHref( media->remoteUrl() );
+            f.setAnchorHref( media->remoteUrl().url() );
     editor->textCursor().insertText( media->name(), f );
     
     editor->setFocus( Qt::OtherFocusReason );
@@ -762,15 +762,14 @@ void BilboEditor::sltRemoveMedia( const int index )
 void BilboEditor::sltMediaTypeFound( BilboMedia * media )
 {
     QListWidgetItem *item;
-    
-    QString url = media->remoteUrl();
+    QString url = media->remoteUrl().url();
     
     if ( mMediaList->contains( url ) ) {
         //media is already added.
         delete media;
     } else {
         mMediaList->insert( url, media );
-        
+
         if ( media->mimeType().contains( "image" ) ) {
             item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::ImageType );
         } else {
@@ -888,9 +887,7 @@ void BilboEditor::sltSyncEditors( int index )
         QString baseU = "http://bilbo.sourceforge.net";
 //   QString baseU = "file://";
         if ( __currentBlogId > -1 ) {
-            BilboBlog *tmp = DBMan::self()->getBlogInfo( __currentBlogId );
-            baseU = tmp->blogUrl();
-            delete tmp;
+            baseU = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
         }
         preview->setHtml( htmlEditor->toPlainText(), QUrl( baseU ) );
     }
@@ -1138,7 +1135,7 @@ bool BilboEditor::updateMediaPaths()
         if ( mMediaList->contains( path ) ) {
 //    if (mMediaList->value(path)->isUploaded()) {
             htmlContent.replace( startIndex, ( endIndex - startIndex ),
-                                 mMediaList->value( path )->remoteUrl() );
+                                 mMediaList->value( path )->remoteUrl().url() );
             changed = true;
 //     if (this->currentIndex() == 0) {
 //      if (i.atEnd()) {

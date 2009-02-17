@@ -24,10 +24,37 @@
 BilboBlog::BilboBlog( QObject *parent )
         : QObject( parent )
 {
+    mError = false;
+}
+
+BilboBlog::BilboBlog( const BilboBlog &blog, QObject *parent )
+        : QObject( parent )
+{
+    mUrl = blog.url();
+    mBlogid = blog.blogid();
+    mUsername = blog.username();
+    mPassword = blog.password();
+    mTitle = blog.title();
+    mStylePath = blog.stylePath();
+    mApi = blog.api();
+    mId = blog.id();
+    mDir = blog.direction();
+    mLocalDirectory = blog.localDirectory();
+    mError = blog.isError();
 }
 
 BilboBlog::~BilboBlog()
 {
+}
+
+bool BilboBlog::isError() const
+{
+    return mError;
+}
+
+void BilboBlog::setError(bool isError)
+{
+    mError = isError;
 }
 
 KUrl BilboBlog::url() const

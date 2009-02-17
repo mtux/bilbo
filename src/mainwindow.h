@@ -54,9 +54,10 @@ public:
 
 signals:
     void mediaFilesUploaded( int count );
+    void settingsChanged();
+
 protected slots:
     void sltCreateNewPost();
-    void settingsChanged();
 
     void sltUploadAllChanges();
     void sltPostTitleChanged( const QString& title );
@@ -79,6 +80,11 @@ protected slots:
 
     void sltError( const QString &errorMessage );
 
+    /**
+    To open temporary posts and that posts are open at previous quit.
+    */
+    void loadTempPosts();
+
 private slots:
     void optionsPreferences();
     void postManipulationDone( bool isError, const QString &customMessage );
@@ -96,6 +102,11 @@ private:
     void setupActions();
     void setupSystemTray();
     void writeConfigs();
+    /**
+        Create a new post entry, 
+        and return pointer to it's widget (Actually return value is a PostEntry instance)
+    */
+    QWidget* createPostEntry(int blog_id, const BilboPost& post);
 
     Ui::SettingsBase ui_prefs_base;
     Ui::EditorSettingsBase ui_editorsettings_base;

@@ -102,7 +102,7 @@ QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
                 BilboMedia *media = new BilboMedia();
                 media->setName( imageUrl.fileName() );
                 media->setRemoteUrl( imageUrlString );
-                media->setLocalUrl( localUrl.toLocalFile() );
+                media->setLocalUrl( localUrl );
                 media->setUploaded( true );
             
                 KMimeType::Ptr typePtr;
@@ -128,7 +128,7 @@ QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
                 BilboMedia *media = new BilboMedia();
                 media->setName( imageUrl.fileName() );
                 media->setRemoteUrl( imageUrlString );
-                media->setLocalUrl( imageUrl.toLocalFile() ); //NOTE may be omitted later.
+                media->setLocalUrl( imageUrl ); //NOTE may be omitted later.
                 media->setUploaded( false );
                 
                 KMimeType::Ptr typePtr;
@@ -160,7 +160,7 @@ void MultiLineTextEdit::sltRemoteFileCopied( KJob * job )
             BilboMedia *media = new BilboMedia();
             media->setName( copyJob->srcUrl().fileName() );
             media->setRemoteUrl( srcPath );
-            media->setLocalUrl( copyJob->destUrl().toLocalFile() ); //NOTE may be omitted later.
+            media->setLocalUrl( copyJob->destUrl() ); //NOTE may be omitted later.
             media->setUploaded( true );
             
             KMimeType::Ptr typePtr;
@@ -168,7 +168,7 @@ void MultiLineTextEdit::sltRemoteFileCopied( KJob * job )
             media->setMimeType( typePtr.data()->name() );
             Q_EMIT sigMediaTypeFound( media );
         } else {
-            mMediaList->value( srcPath )->setLocalUrl( copyJob->destUrl().toLocalFile() );
+            mMediaList->value( srcPath )->setLocalUrl( copyJob->destUrl() );
         }
         
         downloadFinished[ srcPath ] = true;

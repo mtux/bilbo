@@ -23,7 +23,7 @@
 #define BILBOMEDIA_H
 
 #include <QObject>
-#include <QString>
+#include <KUrl>
 
 /**
 Contains needed properties of each media object, like images and videos.
@@ -55,11 +55,11 @@ public:
 //     bool isLocal() const;
 //     void setLocal( bool is_local );
 
-    QString localUrl() const;
-    void setLocalUrl( const QString &url );
+    KUrl localUrl() const;
+    void setLocalUrl( const KUrl &url );
 
-    QString remoteUrl() const;
-    void setRemoteUrl( const QString &url );
+    KUrl remoteUrl() const;
+    void setRemoteUrl( const KUrl &url );
 
     QString mimeType() const;
     void setMimeType( const QString &type );
@@ -77,8 +77,8 @@ private:
     int mMediaId;
     bool mIsUploaded;
 //     bool mIsLocal;
-    QString mLocalUrl;
-    QString mRemoteUrl;
+    KUrl mLocalUrl;
+    KUrl mRemoteUrl;
     QString mMimeType;
     QString mName;
     quint16 mChecksum;

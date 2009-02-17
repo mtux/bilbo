@@ -33,6 +33,7 @@ class QHBoxLayout;
 class KLineEdit;
 class BilboMedia;
 class QProgressBar;
+class QTimer;
 /**
  * Post Entry Widget
  * contains Editor, and Title box.
@@ -87,6 +88,10 @@ Q_SIGNALS:
      * @param customMessage A Custom message will be shown on StatusBar.
      */
     void postPublishingDone( bool isError, const QString &customMessage );
+
+public Q_SLOTS:
+    void settingsChanged();
+
 protected Q_SLOTS:
     void sltMediaFileUploaded( BilboMedia *media );
     void sltError( const QString& errMsg );
@@ -96,6 +101,7 @@ protected Q_SLOTS:
 private Q_SLOTS:
     void sltTitleChanged( const QString& title );
     void sltDeleteProgressBar();
+    void saveTemporary();
 
 private:
     void createUi();
@@ -107,8 +113,8 @@ private:
     QHBoxLayout *horizontalLayout;
     QLabel *labelTitle;
     KLineEdit *txtTitle;
-//  QWidget *wPost;
-    BilboPost *mCurrentPost;
+    QTimer *mTimer;
+    BilboPost mCurrentPost;
     int mCurrentPostBlogId;
     QMap <QString, BilboMedia*> mMediaList;
 

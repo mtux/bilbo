@@ -27,12 +27,12 @@
 #include "dbman.h"
 
 #include <kurl.h>
-#include <kblog/blogger1.h>
-#include <kblog/gdata.h>
-#include <kblog/metaweblog.h>
-#include <kblog/movabletype.h>
-#include <kblog/wordpressbuggy.h>
-#include <kblog/blogmedia.h>
+#include <blogger1.h>
+#include <gdata.h>
+#include <metaweblog.h>
+#include <movabletype.h>
+#include <wordpressbuggy.h>
+#include <blogmedia.h>
 #include <kdebug.h>
 #include <KDE/KLocale>
 // #include <QMimeData>
@@ -40,7 +40,7 @@
 Backend::Backend( int blog_id, QObject* parent ): QObject( parent )
 {
     kDebug() << "with blog id: " << blog_id;
-    mBBlog = DBMan::self()->getBlogInfo( blog_id );
+    mBBlog = new BilboBlog( DBMan::self()->getBlogInfo( blog_id ) );
     switch ( mBBlog->api() ) {
         case BilboBlog::BLOGGER1_API:
             mKBlog = new KBlog::Blogger1( KUrl(), this );
@@ -214,11 +214,11 @@ void Backend::uploadMedia( BilboMedia * media )
             m->setMimetype( media->mimeType() );
 
             QByteArray data;
-            QFile file( media->localUrl() );
+            QFile file( media->localUrl().url() );
 
             if ( !file.open( QIODevice::ReadOnly ) ) {
                 kError() << "Cannot open file " << media->localUrl();
-                const QString tmp( i18n( "Uploading media failed : Cannot open file %1", media->localUrl() ) );
+                const QString tmp( i18n( "Uploading media failed : Cannot open file %1", media->localUrl().prettyUrl() ) );
                 kDebug() << "Emitting sigError ...";
                 Q_EMIT sigError( tmp );
                 return;
@@ -228,8 +228,8 @@ void Backend::uploadMedia( BilboMedia * media )
 
             if ( data.count() == 0 ) {
                 kError() << "Cannot read the media file, please check if it exists.";
-                const QString tmp( i18n( "Uploading media failed : Cannot read the media file, please check if it exists. path: %1",
-                                   media->localUrl() ) );
+                const QString tmp( i18n( "Uploading media failed : Cannot read the media file,\
+please check if it exists. path: %1", media->localUrl().prettyUrl() ) );
                 kDebug() << "Emitting sigError ...";
                 Q_EMIT sigError( tmp );
                 return;
@@ -243,7 +243,7 @@ void Backend::uploadMedia( BilboMedia * media )
             if ( media->checksum() == 0 ) {
                 kError() << "Media file checksum is zero";
                 const QString tmp( i18n( "Uploading media failed : Media file checksum is zero, please check file path. path: %1",
-                                   media->localUrl() ) );
+                                         media->localUrl().url() ) );
                 kDebug() << "Emitting sigError ...";
                 Q_EMIT sigError( tmp );
                 return;

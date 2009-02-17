@@ -35,15 +35,15 @@ BilboPost::BilboPost()
     this->setCategories( QStringList() );
     this->setCategoryList( QList<Category>() );
     this->setCommentAllowed( true );
-    this->setContent( "" );
+    this->setContent( QString() );
     this->setTags( QStringList() );
-    this->setMood( "" );
-    this->setMusic( "" );
+    this->setMood( QString() );
+    this->setMusic( QString() );
     this->setPrivate( false );
-    this->setSummary( "" );
+    this->setSummary( QString() );
     this->setTrackBackAllowed( true );
-    this->setTitle( "" );
-    this->setAuthor( "" );
+    this->setTitle( QString() );
+    this->setAuthor( QString() );
     this->mModifyTimeStamp = false;
     this->setId( -1 );
     this->setStatus( KBlog::BlogPost::New );
@@ -127,6 +127,7 @@ BilboPost::BilboPost( const BilboPost &post )
         : KBlog::BlogPost()
 {
     kDebug();
+    this->setPostId(post.postId());
     this->setCreationDateTime( post.creationDateTime() );
     this->setModificationDateTime( post.modificationDateTime() );
     this->setLink( post.link() );
@@ -186,7 +187,7 @@ void BilboPost::setProperties( const BilboPost& postProp )
     this->setCategories( postProp.categories() );
     this->setCategoryList( postProp.categoryList() );
     this->setCommentAllowed( postProp.isCommentAllowed() );
-    this->setError( postProp.error() );
+//     this->setError( postProp.error() );
     this->setTags( postProp.tags() );
     this->setMood( postProp.mood() );
     this->setMusic( postProp.music() );
@@ -196,6 +197,6 @@ void BilboPost::setProperties( const BilboPost& postProp )
     this->setTrackBackAllowed( postProp.isTrackBackAllowed() );
     this->setAuthor( postProp.author() );
     this->setModifyTimeStamp( postProp.isModifyTimeStamp() );
-    this->setId( postProp.id() );
+//     this->setId( postProp.id() );
     this->setStatus( postProp.status() );
 }

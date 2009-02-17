@@ -70,22 +70,22 @@ void BilboMedia::setUploaded( bool uploaded )
 //     mIsLocal = is_local;
 }
 
-QString BilboMedia::localUrl() const
+KUrl BilboMedia::localUrl() const
 {
     return mLocalUrl;
 }
 
-void BilboMedia::setLocalUrl( const QString& url )
+void BilboMedia::setLocalUrl( const KUrl& url )
 {
     mLocalUrl = url;
 }
 
-QString BilboMedia::remoteUrl() const
+KUrl BilboMedia::remoteUrl() const
 {
     return mRemoteUrl;
 }
 
-void BilboMedia::setRemoteUrl( const QString& url )
+void BilboMedia::setRemoteUrl( const KUrl& url )
 {
     mRemoteUrl = url;
 }
@@ -116,7 +116,7 @@ KIcon BilboMedia::icon() const
     QString type;
     type = this->mimeType();
     if ( type.contains( "image" ) && !this->localUrl().isEmpty() ) {
-        iconPic.load( this->localUrl() );
+        iconPic.load( this->localUrl().toLocalFile() );
 //   iconPic.scaled(64, 64, Qt::IgnoreAspectRatio);
         iconPic.scaledToHeight( 32 );
         if ( !iconPic.isNull() ) {

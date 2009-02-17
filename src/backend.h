@@ -25,7 +25,7 @@
 #include <QObject>
 #include <QMap>
 #include "constants.h"
-#include <kblog/blog.h>
+#include <blog.h>
 
 
 class KUrl;

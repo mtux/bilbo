@@ -41,6 +41,7 @@ public:
 
 //     BilboBlog(KUrl& server, QObject *parent=0);
     BilboBlog( QObject *parent = 0 );
+    BilboBlog( const BilboBlog &, QObject *parent = 0);
     ~BilboBlog();
 
     /**
@@ -70,6 +71,8 @@ public:
     void setDirection( const Qt::LayoutDirection );
     QString localDirectory() const;
     void setLocalDirectory( const QString& );
+    bool isError() const;
+    void setError(bool isError);
 
     /**
      * return Blog Actual Url!
@@ -91,6 +94,7 @@ private:
     int mId;//id in DB
     Qt::LayoutDirection mDir;
     QString mLocalDirectory;
+    bool mError;
 };
 
 #endif

@@ -20,6 +20,7 @@
  ***************************************************************************/
 
 #include "global.h"
+#include "dbman.h"
 #include <kdebug.h>
 #include <ktempdir.h>
 // Settings *__conf;
@@ -41,7 +42,6 @@ void global_init()
 void global_end()
 {
     kDebug();
-//  delete __conf;
-//  delete __db;
+    delete DBMan::self();
     delete dir;
 }

@@ -30,6 +30,13 @@
 #include "bilbomedia.h"
 #include "backend.h"
 #include "dbman.h"
+#include "global.h"
+#include <qt4/QtCore/QMap>
+#include <kio/job.h>
+#include "settings.h"
+#include <KApplication>
+
+#define MINUTE 60000
 
 PostEntry::PostEntry( QWidget *parent )
         : QFrame( parent )
@@ -39,9 +46,22 @@ PostEntry::PostEntry( QWidget *parent )
     editPostWidget = new BilboEditor( this );
     editPostWidget->setMediaList( &mMediaList );
     this->layout()->addWidget( editPostWidget );
-    mCurrentPost = new BilboPost;
+    mTimer = new QTimer(this);
+    mTimer->start(Settings::autosaveInterval() * MINUTE);
+    connect( mTimer, SIGNAL(timeout()), this, SLOT(saveTemporary()) );
+    connect( qApp, SIGNAL(aboutToQuit()), this, SLOT(saveTemporary()) );
     progress = 0;
     mCurrentPostBlogId = -1;
+}
+
+void PostEntry::settingsChanged()
+{
+    kDebug();
+    mTimer->setInterval(Settings::autosaveInterval() * MINUTE);
+    if(Settings::autosaveInterval())
+        mTimer->start();
+    else
+        mTimer->stop();
 }
 
 void PostEntry::createUi()
@@ -68,24 +88,24 @@ void PostEntry::createUi()
 
 void PostEntry::sltTitleChanged( const QString& title )
 {
-    kDebug();
-    mCurrentPost->setTitle( title );
+//     kDebug();
+    mCurrentPost.setTitle( title );
     Q_EMIT sigTitleChanged( title );
 }
 
 QString PostEntry::postTitle() const
 {
-    return mCurrentPost->title();
+    return mCurrentPost.title();
 }
 
 const QString& PostEntry::postBody()
 {
     kDebug();
     const QString& str = this->editPostWidget->htmlContent();
-    if ( !mCurrentPost ) {
-        mCurrentPost = new BilboPost;
-    }
-    mCurrentPost->setContent( str );
+//     if ( !mCurrentPost ) {
+//         mCurrentPost = new BilboPost;
+//     }
+    mCurrentPost.setContent( str );
     return str;
 }
 
@@ -93,13 +113,13 @@ void PostEntry::setPostTitle( const QString & title )
 {
     kDebug();
     this->txtTitle->setText( title );
-    mCurrentPost->setTitle( title );
+    mCurrentPost.setTitle( title );
 }
 
 void PostEntry::setPostBody( const QString & body )
 {
-    kDebug() << body;
-    mCurrentPost->setContent( body );
+    kDebug();
+    mCurrentPost.setContent( body );
     this->editPostWidget->setHtmlContent( body );
 }
 
@@ -117,19 +137,19 @@ void PostEntry::setCurrentPostBlogId( int blog_id )
 BilboPost* PostEntry::currentPost()
 {
     kDebug();
-    mCurrentPost->setContent( postBody() );
-    return ( mCurrentPost );
+    mCurrentPost.setContent( QString( postBody() ) );
+    return &mCurrentPost;
 }
 
 void PostEntry::setCurrentPost( const BilboPost &post )
 {
     kDebug();
-    if(mCurrentPost)
-        delete mCurrentPost;
-    mCurrentPost = new BilboPost(post);
-
-    this->setPostBody( mCurrentPost->content() );
-    this->setPostTitle( mCurrentPost->title() );
+//     if(mCurrentPost)
+//         delete mCurrentPost;
+    mCurrentPost = post;
+//     kDebug()<<"postId: "<<mCurrentPost.postId();
+    this->setPostBody( mCurrentPost.content() );
+    this->setPostTitle( mCurrentPost.title() );
 }
 
 Qt::LayoutDirection PostEntry::defaultLayoutDirection()
@@ -151,13 +171,13 @@ void PostEntry::addMedia( const QString &url )
 PostEntry::~PostEntry()
 {
     kDebug();
-    delete mCurrentPost;
+//     delete mCurrentPost;
 }
 
 void PostEntry::setCurrentPostProperties( const BilboPost &post )
 {
     kDebug();
-    mCurrentPost->setProperties( post );
+    mCurrentPost.setProperties( post );
 }
 
 QMap< QString, BilboMedia * > & PostEntry::mediaList()
@@ -179,7 +199,8 @@ bool PostEntry::uploadMediaFiles()
             result = true;
             connect( b, SIGNAL( sigMediaUploaded( BilboMedia* ) ), this, SLOT( sltMediaFileUploaded( BilboMedia* ) ) );
             connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
-            connect( b, SIGNAL( sigMediaError( const QString&, BilboMedia* ) ), this, SLOT( sltMediaError( const QString&, BilboMedia* ) ) );
+            connect( b, SIGNAL( sigMediaError( const QString&, BilboMedia* ) ),
+                     this, SLOT( sltMediaError( const QString&, BilboMedia* ) ) );
             b->uploadMedia( it.value() );
             ++numOfFilesToBeUploaded;
         }
@@ -202,7 +223,7 @@ void PostEntry::sltMediaFileUploaded( BilboMedia * media )
         QTimer::singleShot( 800, this, SLOT( sltDeleteProgressBar() ) );
         if ( !isUploadingMediaFilesFailed ) {
             if ( editPostWidget->updateMediaPaths() ) {
-                mCurrentPost->setContent( this->editPostWidget->htmlContent() );
+                mCurrentPost.setContent( this->editPostWidget->htmlContent() );
                 publishPostAfterUploadMediaFiles();
             } else {
                 kDebug() << "Updateing media pathes failed!";
@@ -226,7 +247,7 @@ void PostEntry::sltMediaError( const QString & errorMessage, BilboMedia * media 
     kDebug();
     isUploadingMediaFilesFailed = true;
     kDebug() << " AN ERROR OCCURRED ON UPLOADING,\tError message is: " << errorMessage;
-    QString err = i18n( "Uploading media file %1 failed.\n%3", media->name(), media->localUrl(), errorMessage);
+    QString err = i18n( "Uploading media file %1 failed.\n%3", media->name(), media->localUrl().prettyUrl(), errorMessage);
     sltDeleteProgressBar();
     emit postPublishingDone( true, err );
     sender()->deleteLater();
@@ -235,7 +256,7 @@ void PostEntry::sltMediaError( const QString & errorMessage, BilboMedia * media 
 void PostEntry::publishPost( int blogId, const BilboPost &postData )
 {
     kDebug();
-    mCurrentPost->setProperties( postData );
+    mCurrentPost.setProperties( postData );
     mCurrentPostBlogId = blogId;
     if ( !this->uploadMediaFiles() )
         publishPostAfterUploadMediaFiles();
@@ -253,7 +274,7 @@ void PostEntry::publishPostAfterUploadMediaFiles()
     Backend *b = new Backend( mCurrentPostBlogId );
     connect( b, SIGNAL( sigPostPublished( int, BilboPost* ) ), this, SLOT( sltPostPublished( int, BilboPost* ) ) );
     connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
-    b->publishPost( mCurrentPost );
+    b->publishPost( &mCurrentPost );
 }
 
 void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
@@ -290,8 +311,40 @@ void PostEntry::sltDeleteProgressBar()
 
 void PostEntry::saveLocally()
 {
-//     mCurrentPost->setStatus(KBlog::BlogPost::New);
-    DBMan::self()->addPost(*currentPost(), currentPostBlogId());
+    kDebug();
+    if(currentPost()->content().isEmpty()) {
+        if( KMessageBox::warningYesNo(this, i18n("Current post content is empty, are you sure of saving an empty post?")) == KMessageBox::NoExec )
+            return;
+    }
+    QMap <QString, BilboMedia*>::const_iterator it = this->mediaList().constBegin();
+    while ( it != this->mediaList().constEnd() ) {
+        if ( !( it.value()->isUploaded() ) && !( it.key().startsWith( MEDIA_DIR ) ) ) {//"file://" + CACHED_MEDIA_DIR
+            QString baseName = it.value()->name();
+            QString desiredFileName = MEDIA_DIR + baseName;
+            int indexOfDot = baseName.indexOf('.', 0, Qt::CaseInsensitive);
+            QString newFileName = desiredFileName;
+            int i = 1;
+            while( KStandardDirs::exists( newFileName ) ){
+                baseName.insert(indexOfDot, QString::number(i));
+                newFileName = MEDIA_DIR + baseName;
+                baseName = it.value()->name();
+                ++i;
+            }
+            KIO::file_copy(it.value()->localUrl(), KUrl(newFileName));
+        }
+        ++it;
+    }
+    mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry( mCurrentPost, mCurrentPostBlogId, DBMan::Local ) );
+}
+
+void PostEntry::saveTemporary()
+{
+    kDebug();
+    if( !currentPost()->content().isEmpty() ) {
+//         kDebug()<<"postId: "<<mCurrentPost.postId();
+        mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry(mCurrentPost, mCurrentPostBlogId, DBMan::Temp) );
+        kDebug()<<"Temporary saved";
+    }
 }
 
 #include "postentry.moc"

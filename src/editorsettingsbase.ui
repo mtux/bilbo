@@ -5,22 +5,29 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>315</width>
-    <height>76</height>
+    <width>361</width>
+    <height>84</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout" >
-   <item row="0" column="0" colspan="2" >
+   <item row="0" column="0" colspan="3" >
     <widget class="QCheckBox" name="kcfg_download_remote_media" >
      <property name="text" >
       <string>Download Remote media, to be visible in Visual Editor.</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" >
+   <item row="2" column="0" >
+    <widget class="KPushButton" name="btnClearCache" >
+     <property name="text" >
+      <string>Clear cached images</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="3" >
     <spacer name="verticalSpacer" >
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
@@ -33,12 +40,8 @@
      </property>
     </spacer>
    </item>
-   <item row="1" column="1" >
-    <widget class="KPushButton" name="btnClearCache" >
-     <property name="text" >
-      <string>Clear cached images</string>
-     </property>
-    </widget>
+   <item row="1" column="0" colspan="3" >
+    <widget class="KSeparator" name="kseparator" />
    </item>
   </layout>
  </widget>
@@ -47,6 +50,11 @@
    <class>KPushButton</class>
    <extends>QPushButton</extends>
    <header>kpushbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KSeparator</class>
+   <extends>QFrame</extends>
+   <header>kseparator.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

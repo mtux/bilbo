@@ -166,7 +166,8 @@ void Toolbox::sltReloadCategoryList()
     kDebug();
     QAbstractButton *btn = listBlogRadioButtons.checkedButton();
     if ( !btn ) {
-        KMessageBox::sorry( this, i18n( "There isn't any selected blog, you have to select a blog from Blogs page before asking for Category list" ) );
+        KMessageBox::sorry( this, i18n( "There isn't any selected blog, \
+you have to select a blog from Blogs page before asking for Category list" ) );
         return;
     }
 
@@ -187,7 +188,8 @@ void Toolbox::sltReloadEntries()
 {
     kDebug();
     if ( !listBlogRadioButtons.checkedButton() ) {
-        KMessageBox::sorry( this, i18n( "There isn't any selected blog, you have to select a blog from Blogs page before asking for Entries list" ) );
+        KMessageBox::sorry( this, i18n( "There isn't any selected blog, \
+you have to select a blog from Blogs page before asking for Entries list" ) );
         kDebug() << "There isn't any selected blog.";
         return;
     }
@@ -329,9 +331,7 @@ void Toolbox::sltCurrentBlogChanged( int blog_id )
     __currentBlogId = blog_id;
     sltLoadCategoryListFromDB( blog_id );
     sltLoadEntriesFromDB( blog_id );
-    BilboBlog *blog = DBMan::self()->getBlogInfo( blog_id );
-    Qt::LayoutDirection ll = blog->direction();
-    blog->deleteLater();
+    Qt::LayoutDirection ll = DBMan::self()->getBlogInfo( blog_id ).direction();
     frameCat->setLayoutDirection( ll );
     lstEntriesList->setLayoutDirection( ll );
 }
@@ -375,7 +375,7 @@ void Toolbox::setFieldsValue( BilboPost* post )
 
     setSelectedCategories( post->categories() );
     txtCatTags->setText( post->tags().join( ", " ) );
-    kDebug() << "Post status is: " << post->status();
+//     kDebug() << "Post status is: " << post->status();
     if ( post->status() == KBlog::BlogPost::New )
         comboOptionsStatus->setCurrentIndex( 2 );
     else if ( post->isPrivate() )
@@ -464,7 +464,7 @@ int Toolbox::currentBlogId()
 void Toolbox::sltEntrySelected( QListWidgetItem * item )
 {
     kDebug();
-    BilboPost *post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data( 32 ).toInt() );
+    BilboPost *post = new BilboPost( DBMan::self()->getPostInfo( item->data( 32 ).toInt() ) );
 //     setFieldsValue(*post);
     kDebug() << "Emiting sigEntrySelected...";
     Q_EMIT sigEntrySelected( post );
@@ -477,6 +477,7 @@ void Toolbox::setCurrentBlog( int blog_id )
     foreach( QAbstractButton *b, listBlogRadioButtons.buttons() ) {
         if ( qobject_cast<BlogRadioButton*>( b )->blogId() == blog_id ) {
             b->setChecked( true );
+            emit sigCurrentBlogChanged(blog_id);
             break;
         }
     }
@@ -493,9 +494,7 @@ void Toolbox::sltEntriesCopyUrl()
         KMessageBox::sorry( this, i18n( "There isn't any selected entry!\nIn order to use this function you have to select an entry first." ) );
         return;
     }
-    BilboPost *p = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data( 32 ).toInt() );
-    QApplication::clipboard()->setText( p->link().url() );
-    delete p;
+    QApplication::clipboard()->setText( DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data( 32 ).toInt() ).link().url() );
 }
 
 Toolbox::~Toolbox()
@@ -521,9 +520,7 @@ void Toolbox::setButtonsIcon()
     btnEntriesCopyUrl->setIcon( KIcon( "edit-copy" ) );
     btnCatReload->setIcon( KIcon( "view-refresh" ) );
     btnCatAdd->setIcon( KIcon( "list-add" ) );
-    btnMediaAdd->setIcon( KIcon( "list-add" ) );
-    btnMediaEdit->setIcon( KIcon( "document-edit" ) );
-    btnMediaRemove->setIcon( KIcon( "list-remove" ) );
+    btnLocalRemove->setIcon( KIcon( "list-remove" ) );
     ///TODO Add option for selecting only text or only Icon for Toolbox buttons!
     btnBlogAdd->setText( QString() );
     btnBlogEdit->setText( QString() );
@@ -533,9 +530,7 @@ void Toolbox::setButtonsIcon()
     btnEntriesCopyUrl->setText( QString() );
     btnCatReload->setText( QString() );
     btnCatAdd->setText( QString() );
-    btnMediaAdd->setText( QString() );
-    btnMediaEdit->setText( QString() );
-    btnMediaRemove->setText( QString() );
+    btnLocalRemove->setText( QString() );
 }
 
 
