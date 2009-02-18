@@ -46,7 +46,8 @@
 #include "settings.h"
 #include "systray.h"
 #include "bilboblog.h"
-#include "editorsettings.h"
+#include "multilinetextedit.h"
+// #include "editorsettings.h"
 
 MainWindow::MainWindow(): KXmlGuiWindow(),
         tabPosts( new KTabWidget( this ) )
@@ -164,6 +165,10 @@ void MainWindow::setupActions()
     actionCollection()->addAction( QLatin1String( "toggle_toolbox" ), actToggleToolboxVisible );
     actToggleToolboxVisible->setShortcut( Qt::CTRL + Qt::Key_T );
     connect( actToggleToolboxVisible, SIGNAL( toggled( bool ) ), this, SLOT( sltToggleToolboxVisible( bool ) ) );
+    
+    actClearImageCache = new KAction( KIcon( "edit-clear" ), i18n( "Clear cached images" ), this );
+    actionCollection()->addAction( QLatin1String( "clear_image_cache" ), actClearImageCache );
+    connect( actClearImageCache, SIGNAL( triggered( bool ) ), this, SLOT( sltClearCache() ) );
 }
 
 void MainWindow::loadTempPosts()
@@ -203,7 +208,7 @@ void MainWindow::optionsPreferences()
     //
     // compare the names of the widgets in the .ui file
     // to the names of the variables in the .kcfg file
-    //avoid to have 2 dialogs shown
+    //avoid having 2 dialogs shown
     if ( KConfigDialog::showDialog( "settings" ) )  {
         return;
     }
@@ -211,9 +216,9 @@ void MainWindow::optionsPreferences()
     QWidget *generalSettingsDlg = new QWidget;
 //     QWidget *generalSettingsDlg = new QWidget( dialog );
     ui_prefs_base.setupUi( generalSettingsDlg );
-//     QWidget *editorSettingsDlg = new QWidget;
-//     ui_editorsettings_base.setupUi( editorSettingsDlg );
-    EditorSettings *editorSettingsDlg = new EditorSettings( dialog );
+    QWidget *editorSettingsDlg = new QWidget;
+    ui_editorsettings_base.setupUi( editorSettingsDlg );
+//     EditorSettings *editorSettingsDlg = new EditorSettings( dialog );
     dialog->addPage( generalSettingsDlg, i18n( "General" ), "configure" );
     dialog->addPage( editorSettingsDlg, i18n( "Editor" ), "accessories-text-editor" );
     connect( dialog, SIGNAL( settingsChanged( const QString& ) ), this, SIGNAL( settingsChanged() ) );
@@ -491,6 +496,16 @@ QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
             this, SLOT( postManipulationDone( bool, const QString& ) ) );
     connect( this, SIGNAL( settingsChanged() ), temp, SLOT( settingsChanged() ));
     return temp;
+}
+
+void MainWindow::sltClearCache()
+{
+    QDir cacheDir( CACHED_MEDIA_DIR );
+    QStringListIterator i( cacheDir.entryList() );
+    while ( i.hasNext() ) {
+        cacheDir.remove( i.next() );
+    }
+    MultiLineTextEdit::clearCache();
 }
 
 #include "mainwindow.moc"

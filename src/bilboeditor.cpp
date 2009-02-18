@@ -133,6 +133,8 @@ void BilboEditor::createUi()
 
     ///preview:
     preview = new QWebView( tabPreview );
+//     preview->settings()->setUserStyleSheetUrl( QUrl( 
+//         "http://localhost/wp-content/themes/classic/" ) );
 //  barPreview = new QToolBar(0);
     QVBoxLayout *pLayout = new QVBoxLayout( tabPreview );
     pLayout->addWidget( preview );
@@ -367,6 +369,7 @@ void BilboEditor::sltFontSizeDecrease()
 void BilboEditor::sltAddEditLink()
 {
     linkDialog = new AddEditLink( this );
+    linkDialog->setAttribute( Qt::WA_DeleteOnClose );
     connect( linkDialog, SIGNAL( addLink( const QString&, const QString&, const QString& ) ),
              this, SLOT( sltSetLink( const QString&, const QString&, const QString& ) ) );
 //  connect(linkDialog, SIGNAL(addLink(const QString&)), this, SLOT(sltSetLink(QString)));
@@ -482,6 +485,7 @@ void BilboEditor::sltChangeLayoutDirection()
 void BilboEditor::sltAddImage()
 {
     AddImageDialog *imageDialog = new AddImageDialog( this );
+//     imageDialog->setAttribute( Qt::WA_DeleteOnClose );
     
     connect( imageDialog, SIGNAL( sigAddImage( BilboMedia *, const int, const int, 
              const QString, const QString ) ), this, SLOT( sltSetImage( BilboMedia *, 
@@ -581,9 +585,12 @@ void BilboEditor::sltReloadImage( const KUrl imagePath )
     }
 }
 
+///FIXME because AddMediaDialog gets files from remote server asyncronously, we can't delete the dialog when it's closed. try to find a good time for deleting it.
+
 void BilboEditor::sltAddMedia()
 {
     AddMediaDialog *mediaDialog = new AddMediaDialog( this );
+//     mediaDialog->setAttribute( Qt::WA_DeleteOnClose );
     
     connect( mediaDialog, SIGNAL( sigAddMedia( BilboMedia * ) ), this, SLOT( sltSetMedia( BilboMedia * ) ) );
     connect( mediaDialog, SIGNAL( sigMediaTypeFound( BilboMedia * ) ), this, 
@@ -627,29 +634,6 @@ void BilboEditor::sltSetMedia( BilboMedia *media )
     
     editor->setFocus( Qt::OtherFocusReason );
 }
-
-// void BilboEditor::insertMedia(KBloggerMedia* media)
-// {
-//  kDebug();
-//  if (!media) return;
-//  QString name = media->name();
-//  QString target;
-//  kDebug() << "media->url(): " << media->url();
-//  if ( media->url().isValid() ) {
-//         //it's an uploaded file
-//   target = media->url().url();
-//  } else {
-//         //it's a local file
-//   target = media->cachedFilename();
-//  }
-//
-//  if ( !media->mimetype().contains("image") ) {
-//   addLink(target, name);
-//  } else {
-//   QTextCursor cursor = visualTextEditor->textCursor();
-//   cursor.insertImage(target);
-//  }
-// }
 
 void BilboEditor::sltSetImageProperties( const int index, const int width,
         const int height, const QString title, const QString Alt_text )
@@ -710,7 +694,7 @@ void BilboEditor::sltRemoveMedia( const int index )
     delete lstMediaFiles->item( index );
 
     kDebug() << path;
-    BilboMedia *media = mMediaList->value( path );
+//     BilboMedia *media = mMediaList->value( path );
 //     QString removeString = "<";
 //     if ( media->mimeType().contains( "image" ) ) {
 //         removeString += "img([^(src=)]*)src=\"";
@@ -721,8 +705,8 @@ void BilboEditor::sltRemoveMedia( const int index )
 //         removeString += path;
 //         removeString += "([^(</a>)]*)</a>";
 //     }
-//     int count = mMediaList->remove( path );
-//     kDebug() << count;
+    int count = mMediaList->remove( path );
+    kDebug() << count;
 //     //QRegExp removeExp(removeString);
 //     QString text = this->editor->document()->toHtml();
 //     text.remove( QRegExp( removeString ) );
@@ -732,7 +716,8 @@ void BilboEditor::sltRemoveMedia( const int index )
     QTextBlock block = this->editor->document()->firstBlock();
     QTextBlock::iterator i;
     do {
-        for ( i = block.begin(); !( i.atEnd() ); ++i ) {
+        i = block.begin();
+        while ( !i.atEnd() ) {
             kDebug() << "start iterating";
             f = i.fragment().charFormat();
             if ( ( f.isImageFormat() && f.toImageFormat().name() == path ) ||
@@ -743,13 +728,22 @@ void BilboEditor::sltRemoveMedia( const int index )
                 cursor.setPosition( i.fragment().position() );
                 cursor.movePosition( QTextCursor::NextCharacter,
                                      QTextCursor::KeepAnchor, i.fragment().length() );
-                if ( cursor.hasSelection() ) {
-                    kDebug() << " mine hasSelection";
-                    cursor.removeSelectedText();
-                    kDebug() << "removed";
+//                 if ( cursor.hasSelection() ) {
+                
+                cursor.removeSelectedText();
+                kDebug() << "removed";
+                
+                ++i;
+                if (i.atEnd()) {
+                    break;
+                } else {
                     i = block.begin();
-//                         this->editor->setTextCursor( cursor );
                 }
+//                         this->editor->setTextCursor( cursor );
+//                 }
+            }
+            else {
+                ++i;
             }
         }
         kDebug() << "to go next";
@@ -764,6 +758,11 @@ void BilboEditor::sltMediaTypeFound( BilboMedia * media )
     QListWidgetItem *item;
     QString url = media->remoteUrl().url();
     
+//     AddMediaDialog *dialog;
+//     dialog = qobject_cast<AddMediaDialog*>( sender() );
+//     if ( dialog ) {
+//         delete dialog;
+//     }
     if ( mMediaList->contains( url ) ) {
         //media is already added.
         delete media;

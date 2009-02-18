@@ -15,6 +15,9 @@
     <Action name="delete_locally" />
     <Action name="delete_post" />
   </Menu>
+  <Menu name="settings"><text>Settings</text>
+    <Action name="clear_image_cache" />
+  </Menu>
 </MenuBar>
 <Toolbar name="postToolbar">
     <text>Post Toolbar</text>
