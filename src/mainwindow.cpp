@@ -100,7 +100,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     setupSystemTray();
 
     connect( tabPosts, SIGNAL( currentChanged( int ) ), this, SLOT( sltActivePostChanged( int ) ) );
-    connect( toolbox, SIGNAL( sigEntrySelected( BilboPost * ) ), this, SLOT( sltNewPostOpened( BilboPost* ) ) );
+    connect( toolbox, SIGNAL( sigEntrySelected( BilboPost &, int ) ), this, SLOT( sltNewPostOpened( BilboPost&, int ) ) );
     connect( toolbox, SIGNAL( sigCurrentBlogChanged( int ) ), this, SLOT( sltCurrentBlogChanged( int ) ) );
     connect( toolbox, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
     connect( toolbox, SIGNAL( sigBusy(bool) ), this, SLOT( slotBusy(bool) ));
@@ -321,10 +321,10 @@ void MainWindow::sltRemoveCurrentPostEntry()
     }
 }
 
-void MainWindow::sltNewPostOpened( BilboPost * newPost )
+void MainWindow::sltNewPostOpened( BilboPost &newPost, int blog_id )
 {
     kDebug();
-    QWidget * w = createPostEntry(toolbox->currentBlogId(), *newPost);
+    QWidget * w = createPostEntry( blog_id, newPost );
     tabPosts->setCurrentWidget( w );
 }
 
@@ -336,17 +336,19 @@ void MainWindow::sltCurrentBlogChanged( int blog_id )
         return;
     }
     if(activePost) {
-        BilboBlog tmp = DBMan::self()->getBlogInfo( blog_id );
-        this->activePost->setDefaultLayoutDirection( tmp.direction() );
+        BilboBlog *tmp = toolbox->blogList().value( blog_id );
+        this->activePost->setDefaultLayoutDirection( tmp->direction() );
         this->activePost->setCurrentPostBlogId( blog_id );
-        this->actPublish->setText( i18n( "Publish to \"%1\"", tmp.title() ) );
+        this->actPublish->setText( i18n( "Publish to \"%1\"", tmp->title() ) );
     }
 }
 
 void MainWindow::sltSavePostLocally()
 {
     kDebug();
+    toolbox->getFieldsValue(*activePost->currentPost());
     activePost->saveLocally();
+    toolbox->reloadLocalPosts();
     statusBar()->showMessage( i18n("Post saved locally") , 5000);
 }
 
@@ -482,7 +484,7 @@ QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
     temp->setCurrentPostBlogId( blog_id );
 
     if ( blog_id != -1 ) {
-        temp->setDefaultLayoutDirection( DBMan::self()->getBlogInfo( blog_id ).direction() );
+        temp->setDefaultLayoutDirection( toolbox->blogList().value( blog_id )->direction() );
     }
 
     connect( temp, SIGNAL( sigTitleChanged( const QString& ) ),

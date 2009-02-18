@@ -47,6 +47,7 @@ public:
     ~DBMan();
     enum LocalPostState {Local=0, Temp=1};
 
+    QString lastErrorText();
     /**
      * \brief Retrieve the instance of DataBase Manager.
      *
@@ -86,7 +87,8 @@ public:
     Returns list of locally saved posts.
     Map value (e.g. int) is blog id.
     */
-    QMap<BilboPost*, int> listLocalPosts();
+    QList<QVariantMap> listLocalPosts();
+    BilboPost localEntry(int local_id);
     ///END
 
     ///(BEGIN) Data Manipulation Functions:
@@ -129,6 +131,7 @@ public:
 
     int saveTemp_LocalEntry( const BilboPost& post, int blog_id, LocalPostState state );
     bool removeLocalEntry( const BilboPost &post );
+    bool removeLocalEntry( int local_id );
     bool removeTempEntry( const BilboPost &post );
     bool clearTempEntries();
     ///END
@@ -139,6 +142,7 @@ private:
     bool connectDB();
     static DBMan* mSelf;
     KWallet::Wallet* mWallet;
+    QString mLastErrorText;
 };
 
 #endif

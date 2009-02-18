@@ -58,15 +58,8 @@ public:
     int currentBlogId();
     void setCurrentBlog( int blog_id );
     void setCurrentPage( int index );
-//  void setCurrentPost(BilboPost* post);
-
-    //QMap<QString, int> listBlogs;///Contain Blog title(QString) and Blog_id(int)
-    QButtonGroup listBlogRadioButtons;
-
-// QMap<QString, int> listCategories;///Contain Category name(QString) and Category id(int)
-    QList<CatCheckBox*> listCategoryCheckBoxes;
-
-// QMap<QString, int> listEntries;///Contain Post title(QString) and Post id(int)
+    QMap<int, BilboBlog*> & blogList();
+//     void addLocalPostToList(QVariantMap data);
 
 public slots:
     void sltAddBlog();
@@ -85,11 +78,13 @@ public slots:
     void resetFields();
     void sltEntrySelected( QListWidgetItem *item );
     void sltEntriesCopyUrl();
-    //void sltSetCurrentPost(BilboPost* post);
+    void sltLocalEntrySelected( int row, int column );
+    void reloadLocalPosts();
+    void sltRemoveLocalEntry();
 
 signals:
     void sigCurrentBlogChanged( int blog_id );
-    void sigEntrySelected( BilboPost *post );
+    void sigEntrySelected( BilboPost &post, int blog_id );
     void sigError( const QString& );
     void sigBusy( bool isBusy );
 
@@ -105,7 +100,9 @@ private:
     void unCheckCatList();
     void setButtonsIcon();
 
-//     AddEditBlog *addEditBlogWindow;
+    QButtonGroup listBlogRadioButtons;
+    QList<CatCheckBox*> listCategoryCheckBoxes;
+    QMap<int, BilboBlog*> mBlogList;
     BlogRadioButton *blogToEdit;
     QDir blogToEditDir;
 //  BilboPost *currentPost;

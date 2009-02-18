@@ -64,7 +64,7 @@ protected slots:
     void sltToggleToolboxVisible( bool isVisible );
     void sltActivePostChanged( int tabIndex );
 
-    void sltNewPostOpened( BilboPost *newPost );
+    void sltNewPostOpened( BilboPost &newPost, int blog_id );
 
     void sltPublishPost();
 

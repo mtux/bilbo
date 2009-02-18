@@ -279,7 +279,7 @@ void PostEntry::publishPostAfterUploadMediaFiles()
 
 void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
 {
-    kDebug() << "Post Id on server: " << post->postId();
+    kDebug() << "BlogId: " << blog_id << "Post Id on server: " << post->postId();
     ///FIXME This DB communication is un necessary! fix it
 //  BilboBlog *b = DBMan::self()->getBlogInfo(blog_id);
     QString blog_name = "NOT SET";// = b->title();
@@ -313,27 +313,29 @@ void PostEntry::saveLocally()
 {
     kDebug();
     if(currentPost()->content().isEmpty()) {
-        if( KMessageBox::warningYesNo(this, i18n("Current post content is empty, are you sure of saving an empty post?")) == KMessageBox::NoExec )
+        if( KMessageBox::warningYesNo(this, i18n("Current post content is empty, \
+are you sure of saving an empty post?")) == KMessageBox::NoExec )
             return;
     }
-    QMap <QString, BilboMedia*>::const_iterator it = this->mediaList().constBegin();
-    while ( it != this->mediaList().constEnd() ) {
-        if ( !( it.value()->isUploaded() ) && !( it.key().startsWith( MEDIA_DIR ) ) ) {//"file://" + CACHED_MEDIA_DIR
-            QString baseName = it.value()->name();
-            QString desiredFileName = MEDIA_DIR + baseName;
-            int indexOfDot = baseName.indexOf('.', 0, Qt::CaseInsensitive);
-            QString newFileName = desiredFileName;
-            int i = 1;
-            while( KStandardDirs::exists( newFileName ) ){
-                baseName.insert(indexOfDot, QString::number(i));
-                newFileName = MEDIA_DIR + baseName;
-                baseName = it.value()->name();
-                ++i;
-            }
-            KIO::file_copy(it.value()->localUrl(), KUrl(newFileName));
-        }
-        ++it;
-    }
+//     QMap <QString, BilboMedia*>::const_iterator it = this->mediaList().constBegin();
+//     while ( it != this->mediaList().constEnd() ) {
+//         if ( !( it.value()->isUploaded() ) && !( it.key().startsWith( MEDIA_DIR ) ) ) {//"file://" + CACHED_MEDIA_DIR
+//             QString baseName = it.value()->name();
+//             QString desiredFileName = MEDIA_DIR + baseName;
+//             int indexOfDot = baseName.indexOf('.', 0, Qt::CaseInsensitive);
+//             QString newFileName = desiredFileName;
+//             int i = 1;
+//             while( KStandardDirs::exists( newFileName ) ){
+//                 baseName.insert(indexOfDot, QString::number(i));
+//                 newFileName = MEDIA_DIR + baseName;
+//                 baseName = it.value()->name();
+//                 ++i;
+//             }
+//             KIO::file_copy(it.value()->localUrl(), KUrl(newFileName));
+//         }
+//         ++it;
+//     }
+    ///^ Removed, so from now the media files aren't moved to anywhere. -Mehrdad
     mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry( mCurrentPost, mCurrentPostBlogId, DBMan::Local ) );
 }
 
