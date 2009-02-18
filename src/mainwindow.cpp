@@ -152,14 +152,6 @@ void MainWindow::setupActions()
     actSaveDraft->setShortcut( Qt::CTRL + Qt::SHIFT + Qt::Key_S );
     connect( actSaveDraft, SIGNAL( triggered( bool ) ), this, SLOT( sltSaveAsDraft() ) );
 
-    actDeletePost = new KAction( KIcon( "edit-delete" ), i18n( "Delete from Server" ), this );
-    actionCollection()->addAction( QLatin1String( "delete_post" ), actDeletePost );
-//  connect(actDeletePost,SIGNAL(triggered( bool )),activePost,SLOT(sltDelPost()));
-
-    actDeleteLocally = new KAction( KIcon( "edit-delete" ), i18n( "Delete Locally" ), this );
-    actionCollection()->addAction( QLatin1String( "delete_locally" ), actDeleteLocally );
-//  connect(actDeleteLocally,SIGNAL(triggered( bool )),activePost,SLOT(sltDelLocally()));
-
     actToggleToolboxVisible = new KToggleAction( i18n( "Show Toolbox" ), this );
     actionCollection()->addAction( QLatin1String( "toggle_toolbox" ), actToggleToolboxVisible );
     actToggleToolboxVisible->setShortcut( Qt::CTRL + Qt::Key_T );

@@ -73,6 +73,7 @@ public slots:
     void sltReloadEntries();
     void sltGetEntriesCount( int );
     void sltLoadEntriesFromDB( int blog_id );
+    void sltRemoveSelectedEntryFromServer();
     void sltCurrentPageChanged( int );
     void sltCurrentBlogChanged( int blog_id );
     void resetFields();
@@ -88,6 +89,9 @@ signals:
     void sigError( const QString& );
     void sigBusy( bool isBusy );
 
+protected slots:
+    void slotPostRemoved( int blog_id, const BilboPost &post );
+
 private:
     QStringList selectedCategoriesTitle();
     QList<Category> selectedCategories();
@@ -96,7 +100,6 @@ private:
     void setSelectedCategories( const QList<int>& );
     QStringList currentTags();
     void clearCatList();
-    void clearEntriesList();
     void unCheckCatList();
     void setButtonsIcon();
 

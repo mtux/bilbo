@@ -157,8 +157,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>306</width>
-          <height>403</height>
+          <width>346</width>
+          <height>386</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -228,6 +228,13 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="text" >
               <string>Copy &amp;URL</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="KPushButton" name="btnEntriesRemove" >
+             <property name="text" >
+              <string>Remove</string>
              </property>
             </widget>
            </item>

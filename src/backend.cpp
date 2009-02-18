@@ -68,7 +68,8 @@ Backend::Backend( int blog_id, QObject* parent ): QObject( parent )
              this, SLOT( error( KBlog::Blog::ErrorType, const QString& ) ) );
     connect( mKBlog, SIGNAL( errorPost( KBlog::Blog::ErrorType, const QString &, KBlog::BlogPost* ) ),
              this, SLOT( error( KBlog::Blog::ErrorType, const QString& ) ) );
-    connect( mKBlog, SIGNAL( errorComment( KBlog::Blog::ErrorType, const QString &, KBlog::BlogPost*, KBlog::BlogComment* ) ),
+    connect( mKBlog, SIGNAL( errorComment( KBlog::Blog::ErrorType, const QString &, KBlog::BlogPost*,
+                                           KBlog::BlogComment* ) ),
              this, SLOT( error( KBlog::Blog::ErrorType, const QString& ) ) );
     connect( mKBlog, SIGNAL( errorMedia( KBlog::Blog::ErrorType, const QString &, KBlog::BlogMedia* ) ),
              this, SLOT( error( KBlog::Blog::ErrorType, const QString& ) ) );
@@ -160,7 +161,7 @@ void Backend::publishPost( BilboPost * post )
         mKBlog->createPost( bp );
     }
 
-// NOTE the line below commented, because after publishing a post, we display the content in the editor, and we should habe the post object so that the content be editable. -Golnaz
+// NOTE the line below commented, because after publishing a post, we display the content in the editor, and we should have the post object so that the content be editable. -Golnaz
 //     delete post;
 }
 
@@ -316,6 +317,28 @@ void Backend::modifyPost( BilboPost * post )
 
 void Backend::postModified( KBlog::BlogPost * post )
 {
+}
+
+void Backend::removePost( BilboPost &post )
+{
+    kDebug() << "Blog Id: " << mBBlog->id();
+
+    KBlog::BlogPost *bp = post.toKBlogPost();
+    connect( mKBlog, SIGNAL( removedPost(KBlog::BlogPost*)),
+             this, SLOT( slotPostRemoved(KBlog::BlogPost*)) );
+    mKBlog->removePost( bp );
+}
+
+void Backend::slotPostRemoved( KBlog::BlogPost *post )
+{
+    if(!post) {
+        kDebug()<<"post returned from server is NULL";
+        return;
+    }
+    if( !DBMan::self()->removePost(mBBlog->id(), post->postId()) ) {
+        kDebug()<<"cannot remove post from database, error: "<<DBMan::self()->lastErrorText();
+    }
+    emit sigPostRemoved(mBBlog->id(), BilboPost(*post));
 }
 
 void Backend::error( KBlog::Blog::ErrorType type, const QString & errorMessage )

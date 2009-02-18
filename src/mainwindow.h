@@ -123,8 +123,6 @@ private:
     KAction *actPublish;
     KAction *actSaveLocally;
     KAction *actSaveDraft;
-    KAction *actDeletePost;
-    KAction *actDeleteLocally;
     KToggleAction *actToggleToolboxVisible;
     KAction *actSave;
 

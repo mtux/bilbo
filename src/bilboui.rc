@@ -11,9 +11,6 @@
     <Separator />
     <Action name="save_locally" />
     <Action name="save_draft" />
-    <Separator />
-    <Action name="delete_locally" />
-    <Action name="delete_post" />
   </Menu>
 </MenuBar>
 <Toolbar name="postToolbar">

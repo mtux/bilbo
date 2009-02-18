@@ -67,6 +67,7 @@ Toolbox::Toolbox( QWidget *parent )
     connect( lstEntriesList, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ),
              this, SLOT( sltEntrySelected( QListWidgetItem* ) ) );
     connect( btnEntriesCopyUrl, SIGNAL( clicked( bool ) ), this, SLOT( sltEntriesCopyUrl() ) );
+    connect( btnEntriesRemove, SIGNAL( clicked(bool) ), this, SLOT( sltRemoveSelectedEntryFromServer() ) );
 
     connect( localEntriesTable, SIGNAL( cellDoubleClicked(int,int) ),
              this, SLOT(sltLocalEntrySelected(int,int)) );
@@ -105,7 +106,6 @@ void Toolbox::sltEditBlog()
     addEditBlogWindow->show();
 }
 
-// TODO remove the blog media directory
 void Toolbox::sltRemoveBlog()
 {
     kDebug();
@@ -114,11 +114,15 @@ void Toolbox::sltRemoveBlog()
         KMessageBox::sorry( this, i18n( "There isn't any selected blog, you have to select a blog first." ) );
         return;
     }
+    if(KMessageBox::warningYesNo(this, i18n("Are you sure of removing selected blog?")) 
+        == KMessageBox::NoExec)
+        return;
+
     DBMan::self()->removeBlog( qobject_cast<BlogRadioButton*>( btn )->blogId() );
 //     listBlogs.remove(listBlogRadioButtons.checkedButton()->text());
     listBlogRadioButtons.removeButton( btn );
     btn->deleteLater();
-    clearEntriesList();
+    lstEntriesList->clear();
     clearCatList();
     txtCatTags->clear();
     sltSetCurrentBlog();
@@ -255,7 +259,7 @@ void Toolbox::sltLoadEntriesFromDB( int blog_id )
         kDebug() << "Blog Id doesn't set correctly";
         return;
     }
-    clearEntriesList();
+    lstEntriesList->clear();
     QMap<int, QString> listEntries;
     listEntries = DBMan::self()->listPostsTitle( blog_id );
     QMap<int, QString>::const_iterator endIt = listEntries.constEnd();
@@ -294,6 +298,24 @@ void Toolbox::sltLoadCategoryListFromDB( int blog_id )
     emit sigBusy( false );
 }
 
+void Toolbox::sltRemoveSelectedEntryFromServer()
+{
+    BilboPost post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data(32).toInt() );
+    Backend *b = new Backend(currentBlogId(), this);
+    connect(b, SIGNAL(sigPostRemoved(int,const BilboPost&)), this, SLOT(slotPostRemoved(int,const BilboPost&)) );
+    b->removePost(post);
+    statusbar->showMessage( i18n( "Removing post..." ) );
+}
+
+void Toolbox::slotPostRemoved( int blog_id, const BilboPost &post )
+{
+    KMessageBox::information( this, i18n( "Post with title \"%1\" removed from \"%2\".",
+                                          post.title(), mBlogList.value(blog_id)->title() ) );
+    sltLoadEntriesFromDB( blog_id );
+    statusbar->showMessage( i18n( "Post removed" ), STATUSTIMEOUT );
+    sender()->deleteLater();
+}
+
 void Toolbox::resetFields()
 {
     kDebug();
@@ -316,12 +338,6 @@ void Toolbox::clearCatList()
         cat->deleteLater();
     }
     listCategoryCheckBoxes.clear();
-}
-
-void Toolbox::clearEntriesList()
-{
-    kDebug();
-    lstEntriesList->clear();
 }
 
 void Toolbox::sltCurrentBlogChanged( int blog_id )
@@ -529,6 +545,7 @@ void Toolbox::setButtonsIcon()
     btnEntriesReload->setIcon( KIcon( "view-refresh" ) );
     btnEntriesUpdate->setIcon( KIcon( "arrow-down" ) );
     btnEntriesCopyUrl->setIcon( KIcon( "edit-copy" ) );
+    btnEntriesRemove->setIcon( KIcon( "list-remove" ) );
     btnCatReload->setIcon( KIcon( "view-refresh" ) );
     btnCatAdd->setIcon( KIcon( "list-add" ) );
     btnLocalRemove->setIcon( KIcon( "list-remove" ) );
@@ -539,6 +556,7 @@ void Toolbox::setButtonsIcon()
     btnEntriesReload->setText( QString() );
     btnEntriesUpdate->setText( QString() );
     btnEntriesCopyUrl->setText( QString() );
+    btnEntriesRemove->setText( QString() );
     btnCatReload->setText( QString() );
     btnCatAdd->setText( QString() );
     btnLocalRemove->setText( QString() );
@@ -583,6 +601,10 @@ void Toolbox::sltRemoveLocalEntry()
     kDebug();
     if(localEntriesTable->selectedItems().count() > 0) {
         int local_id = localEntriesTable->item(0, localEntriesTable->currentRow())->data(32).toInt();
+        if( KMessageBox::warningYesNo(this, i18n("Are you sure of removing selected local entry?")) 
+            == KMessageBox::NoExec )
+            return;
+
         if( DBMan::self()->removeLocalEntry(local_id) ) {
             localEntriesTable->removeRow(localEntriesTable->currentRow());
         } else {

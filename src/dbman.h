@@ -114,6 +114,7 @@ public:
     bool editPost( const BilboPost& post, int blog_id );
 
     bool removePost( int id );
+    bool removePost( int blog_id, QString postId);
 
     bool clearPosts( int blog_id );
 

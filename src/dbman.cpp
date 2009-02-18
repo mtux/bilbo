@@ -314,7 +314,8 @@ bool DBMan::editPost( const BilboPost & post, int blog_id )
     q.addBindValue( blog_id );
 
     if ( !q.exec() ) {
-        kDebug()<<"Modifying post failed, SQL ERROR: "<<q.lastError().text();
+        mLastErrorText = q.lastError().text();
+        kDebug()<<"Modifying post failed, SQL ERROR: "<< mLastErrorText;
         return false;
     }
 
@@ -324,7 +325,7 @@ bool DBMan::editPost( const BilboPost & post, int blog_id )
     qd.addBindValue(post.postId());
     qd.addBindValue(blog_id);
     if ( !qd.exec() )
-        kDebug() << "Cannot delete previouse categories.";
+        kDebug() << "Cannot delete previous categories.";
 
     ///Add new Categories:
 
@@ -356,7 +357,22 @@ bool DBMan::removePost( int id )
     q.addBindValue( id );
     bool res = q.exec();
     if ( !res ) {
-        kDebug() << q.lastError().text();
+        mLastErrorText = q.lastError().text();
+        kDebug() << mLastErrorText;
+    }
+    return res;
+}
+
+bool DBMan::removePost( int blog_id, QString postId)
+{
+    QSqlQuery q;
+    q.prepare( "DELETE FROM post WHERE blog_id=? AND postId=?" );
+    q.addBindValue( blog_id );
+    q.addBindValue( postId );
+    bool res = q.exec();
+    if ( !res ) {
+        mLastErrorText = q.lastError().text();
+        kDebug() << mLastErrorText;
     }
     return res;
 }

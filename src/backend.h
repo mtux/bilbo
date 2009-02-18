@@ -81,6 +81,12 @@ public:
      */
     void modifyPost( BilboPost *post );
 
+    /**
+     * Remove an existing post from server
+     * @param post post to remove.
+     */
+    void removePost( BilboPost &post );
+
     void setPostCategories( const QString postId, const QMap<QString, bool> &categoriesList );
 
 protected Q_SLOTS:
@@ -92,7 +98,7 @@ protected Q_SLOTS:
     void error( KBlog::Blog::ErrorType type, const QString &errorMessage );
     void sltMediaError( KBlog::Blog::ErrorType type, const QString &errorMessage, KBlog::BlogMedia *media );
     void postCategoriesSetted( const QString &postId );
-
+    void slotPostRemoved( KBlog::BlogPost *post );
 
 Q_SIGNALS:
     /**
@@ -128,6 +134,11 @@ Q_SIGNALS:
      * @param isPrivate
      */
     void sigPostModified( int blog_id, BilboPost *post );
+
+    /**
+     * this signal is emitted when a post removed successfully.
+     */
+    void sigPostRemoved( int blog_id, const BilboPost &post);
 
     /**
      * this signal emitted when an error occured on current transaction.
