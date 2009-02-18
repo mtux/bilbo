@@ -17,33 +17,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" >
-    <widget class="QLabel" name="label" >
-     <property name="text" >
-      <string>Editor auto save interval :</string>
-     </property>
-     <property name="alignment" >
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1" >
-    <widget class="KIntSpinBox" name="kcfg_autosaveInterval" >
-     <property name="specialValueText" >
-      <string>Disbaled</string>
-     </property>
-     <property name="suffix" >
-      <string> minute</string>
-     </property>
-     <property name="maximum" >
-      <number>60</number>
-     </property>
-     <property name="value" >
-      <number>5</number>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0" colspan="2" >
+   <item row="1" column="0" colspan="2" >
     <spacer name="verticalSpacer" >
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
@@ -60,13 +34,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
- <customwidgets>
-  <customwidget>
-   <class>KIntSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>knuminput.h</header>
-  </customwidget>
- </customwidgets>
  <includes>
   <include location="local" >kcolorbutton.h</include>
  </includes>

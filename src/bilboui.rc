@@ -12,6 +12,9 @@
     <Action name="save_locally" />
     <Action name="save_draft" />
   </Menu>
+  <Menu name="settings"><text>Settings</text>
+    <Action name="clear_image_cache" />
+  </Menu>
 </MenuBar>
 <Toolbar name="postToolbar">
     <text>Post Toolbar</text>

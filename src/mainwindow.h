@@ -84,6 +84,7 @@ protected slots:
     To open temporary posts and that posts are open at previous quit.
     */
     void loadTempPosts();
+    void sltClearCache();
 
 private slots:
     void optionsPreferences();
@@ -125,6 +126,7 @@ private:
     KAction *actSaveDraft;
     KToggleAction *actToggleToolboxVisible;
     KAction *actSave;
+    KAction *actClearImageCache;
 
     QToolButton *btnRemovePost;
     int previousActivePostIndex;
