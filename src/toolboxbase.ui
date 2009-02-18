@@ -604,12 +604,43 @@ p, li { white-space: pre-wrap; }
         </layout>
        </widget>
        <widget class="QWidget" name="pgNotes" >
+        <property name="geometry" >
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>306</width>
+          <height>403</height>
+         </rect>
+        </property>
         <attribute name="label" >
          <string>&amp;Local entries</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_3" >
          <item>
-          <widget class="KListWidget" name="klistwidget" />
+          <widget class="QTableWidget" name="localEntriesTable" >
+           <property name="editTriggers" >
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="showDropIndicator" stdset="0" >
+            <bool>false</bool>
+           </property>
+           <property name="selectionMode" >
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior" >
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <column>
+            <property name="text" >
+             <string>Title</string>
+            </property>
+           </column>
+           <column>
+            <property name="text" >
+             <string>Blog</string>
+            </property>
+           </column>
+          </widget>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout" >
@@ -631,9 +662,6 @@ p, li { white-space: pre-wrap; }
            </item>
            <item>
             <widget class="KPushButton" name="btnLocalRemove" >
-             <property name="enabled" >
-              <bool>false</bool>
-             </property>
              <property name="toolTip" >
               <string>Remove selected entry</string>
              </property>

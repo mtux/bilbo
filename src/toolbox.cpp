@@ -60,7 +60,7 @@ Toolbox::Toolbox( QWidget *parent )
 
     connect( btnCatReload, SIGNAL( clicked() ), this, SLOT( sltReloadCategoryList() ) );
     connect( btnEntriesReload, SIGNAL( clicked() ), this, SLOT( sltReloadEntries() ) );
-//     connect( box, SIGNAL( currentChanged( int ) ), this, SLOT( sltCurrentPageChanged( int ) ) );//Replaced with next statment!
+
     connect( this, SIGNAL( sigCurrentBlogChanged( int ) ), this, SLOT( sltCurrentBlogChanged( int ) ) );
     connect( &listBlogRadioButtons, SIGNAL( buttonClicked( int ) ), this, SLOT( sltSetCurrentBlog() ) );
 
@@ -68,10 +68,16 @@ Toolbox::Toolbox( QWidget *parent )
              this, SLOT( sltEntrySelected( QListWidgetItem* ) ) );
     connect( btnEntriesCopyUrl, SIGNAL( clicked( bool ) ), this, SLOT( sltEntriesCopyUrl() ) );
 
+    connect( localEntriesTable, SIGNAL( cellDoubleClicked(int,int) ),
+             this, SLOT(sltLocalEntrySelected(int,int)) );
+    connect( btnLocalRemove, SIGNAL( clicked( bool ) ) , this, SLOT( sltRemoveLocalEntry() ) );
+
     lblOptionsTrackBack->setVisible( false );
     txtOptionsTrackback->setVisible( false );
     btnCatAdd->setVisible( false );
     btnEntriesUpdate->setVisible(false);
+
+    QTimer::singleShot(1000, this, SLOT(reloadLocalPosts()));
 }
 
 void Toolbox::sltAddBlog()
@@ -121,6 +127,7 @@ void Toolbox::sltRemoveBlog()
 void Toolbox::sltBlogAdded( BilboBlog &addedBlog )
 {
     kDebug();
+    mBlogList[ addedBlog.id() ] = new BilboBlog(addedBlog, this);
     BlogRadioButton *a = new BlogRadioButton( addedBlog.title() );
     a->setToolTip( addedBlog.blogUrl() );
     a->setBlogId( addedBlog.id() );
@@ -129,13 +136,13 @@ void Toolbox::sltBlogAdded( BilboBlog &addedBlog )
     a->setChecked( true );
     sltReloadCategoryList();
     sltSetCurrentBlog();
-//  KStandardDirs::makeDir(DATA_DIR + addedBlog.title());
 
 }
 
 void Toolbox::sltBlogEdited( BilboBlog &editedBlog )
 {
     kDebug();
+    mBlogList[ editedBlog.id() ] = new BilboBlog(editedBlog, this);
     blogToEdit->setText( editedBlog.title() );
     blogToEdit->setToolTip( editedBlog.blogUrl() );
     blogToEdit->setChecked( true );
@@ -150,9 +157,11 @@ void Toolbox::reloadBlogList()
         delete ab;
     }
     listBlogRadioButtons.buttons().clear();
+    mBlogList.clear();
     QList<BilboBlog*> listBlogs = DBMan::self()->listBlogs();
     int count = listBlogs.count();
     for ( int i = 0; i < count; ++i ) {
+        mBlogList [ listBlogs[i]->id() ] = listBlogs[i];
         BlogRadioButton *rb = new BlogRadioButton( listBlogs[i]->title(), this );
         rb->setBlogId( listBlogs[i]->id() );
         rb->setToolTip( listBlogs[i]->blogUrl() );
@@ -331,7 +340,7 @@ void Toolbox::sltCurrentBlogChanged( int blog_id )
     __currentBlogId = blog_id;
     sltLoadCategoryListFromDB( blog_id );
     sltLoadEntriesFromDB( blog_id );
-    Qt::LayoutDirection ll = DBMan::self()->getBlogInfo( blog_id ).direction();
+    Qt::LayoutDirection ll = mBlogList.value(blog_id)->direction();
     frameCat->setLayoutDirection( ll );
     lstEntriesList->setLayoutDirection( ll );
 }
@@ -464,15 +473,17 @@ int Toolbox::currentBlogId()
 void Toolbox::sltEntrySelected( QListWidgetItem * item )
 {
     kDebug();
-    BilboPost *post = new BilboPost( DBMan::self()->getPostInfo( item->data( 32 ).toInt() ) );
 //     setFieldsValue(*post);
+    BilboPost post = DBMan::self()->getPostInfo( item->data( 32 ).toInt() );
     kDebug() << "Emiting sigEntrySelected...";
-    Q_EMIT sigEntrySelected( post );
+    Q_EMIT sigEntrySelected( post, currentBlogId() );
 }
 
 void Toolbox::setCurrentBlog( int blog_id )
 {
     kDebug();
+    if(currentBlogId() == blog_id)
+        return;
 //     QString blogTitle = listBlogs.key(blog_id);
     foreach( QAbstractButton *b, listBlogRadioButtons.buttons() ) {
         if ( qobject_cast<BlogRadioButton*>( b )->blogId() == blog_id ) {
@@ -533,5 +544,53 @@ void Toolbox::setButtonsIcon()
     btnLocalRemove->setText( QString() );
 }
 
+QMap<int, BilboBlog*> & Toolbox::blogList()
+{
+    return mBlogList;
+}
+
+void Toolbox::reloadLocalPosts()
+{
+    kDebug();
+    localEntriesTable->clearContents();
+    localEntriesTable->setRowCount(0);
+    QList<QVariantMap> localList = DBMan::self()->listLocalPosts();
+//     QList<QVariantMap>::ConstIterator it = localList.constBegin();
+//     QList<QVariantMap>::ConstIterator endIt = localList.constEnd();
+    int count = localList.count();
+    kDebug()<<count;
+    for (int i=0; i < count; ++i){
+        int newRow = localEntriesTable->rowCount();
+        localEntriesTable->insertRow(newRow);
+        QTableWidgetItem *item1 = new QTableWidgetItem( localList[i].value( "post_title" ).toString() );
+        item1->setData(32, localList[i].value( "local_id" ).toInt());//Post_id
+        localEntriesTable->setItem( newRow, 0, item1 );
+        QTableWidgetItem *item2 = new QTableWidgetItem( localList[i].value( "blog_title" ).toString() );
+        item2->setData(32, localList[i].value( "blog_id" ).toInt());//blog_id
+        localEntriesTable->setItem( newRow, 1, item2 );
+    }
+}
+
+void Toolbox::sltLocalEntrySelected( int row, int column )
+{
+    kDebug()<<"Emitting sigEntrySelected...";
+    BilboPost post = DBMan::self()->localEntry(localEntriesTable->item(row, 0)->data(32).toInt());
+    emit sigEntrySelected( post, localEntriesTable->item(row, 1)->data(32).toInt() );
+}
+
+void Toolbox::sltRemoveLocalEntry()
+{
+    kDebug();
+    if(localEntriesTable->selectedItems().count() > 0) {
+        int local_id = localEntriesTable->item(0, localEntriesTable->currentRow())->data(32).toInt();
+        if( DBMan::self()->removeLocalEntry(local_id) ) {
+            localEntriesTable->removeRow(localEntriesTable->currentRow());
+        } else {
+            KMessageBox::detailedError(this, i18n("Cannot remove selected local entry!"), DBMan::self()->lastErrorText());
+        }
+    } else {
+        KMessageBox::sorry(this, i18n("You have to select at least one entry from list."));
+    }
+}
 
 #include "toolbox.moc"
