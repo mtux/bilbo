@@ -10,7 +10,6 @@
     <Action name="publish_post" />
     <Separator />
     <Action name="save_locally" />
-    <Action name="save_draft" />
   </Menu>
   <Menu name="settings"><text>Settings</text>
     <Action name="clear_image_cache" />
@@ -20,9 +19,7 @@
     <text>Post Toolbar</text>
     <Action name="new_post" />
     <Action name="save_locally" />
-    <Action name="save_draft" />
     <Action name="publish_post" />
-    <!--<Action name="upload_all" />-->
     <Action name="add_blog" />
 </Toolbar>
 </kpartgui>

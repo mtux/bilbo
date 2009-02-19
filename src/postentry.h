@@ -62,8 +62,6 @@ public:
     Qt::LayoutDirection defaultLayoutDirection();
     void setDefaultLayoutDirection( Qt::LayoutDirection direction );
 
-    void addMedia( const QString &url );
-
     QMap <QString, BilboMedia*> & mediaList();
 
     /**
@@ -73,7 +71,7 @@ public:
      */
     bool uploadMediaFiles();
 
-    void publishPost( int blogId, const BilboPost &postData );
+    void publishPost ( int blogId, const BilboPost &postData );
 
     void saveLocally();
 Q_SIGNALS:
@@ -119,6 +117,7 @@ private:
     QMap <QString, BilboMedia*> mMediaList;
 
     bool isUploadingMediaFilesFailed;
+    bool isNewPost;
 };
 
 #endif

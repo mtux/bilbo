@@ -94,7 +94,6 @@ protected Q_SLOTS:
     void entriesListed( const QList< KBlog::BlogPost > &posts );
     void postPublished( KBlog::BlogPost *post );
     void mediaUploaded( KBlog::BlogMedia *media );
-    void postModified( KBlog::BlogPost *post );
     void error( KBlog::Blog::ErrorType type, const QString &errorMessage );
     void sltMediaError( KBlog::Blog::ErrorType type, const QString &errorMessage, KBlog::BlogMedia *media );
     void postCategoriesSetted( const QString &postId );
@@ -114,10 +113,9 @@ Q_SIGNALS:
     void sigEntriesListFetched( int blog_id );
 
     /**
-     * Emits when a post published and added to Database.
+     * This signal is emitted when a post published/modified and added/edited to Database.
      * @param blog_id blog id.
-     * @param post_id post id in Database.
-        * @param isPrivate show if this post was draft!
+     * @param post The post has been saved.
      */
     void sigPostPublished( int blog_id, BilboPost *post );
 
@@ -126,14 +124,6 @@ Q_SIGNALS:
      * @param media Uploaded media Object.
      */
     void sigMediaUploaded( BilboMedia *media );
-
-    /**
-     * This signal emitted when a modifying successed, and updated in database.
-     * @param blog_id
-     * @param post_id
-     * @param isPrivate
-     */
-    void sigPostModified( int blog_id, BilboPost *post );
 
     /**
      * this signal is emitted when a post removed successfully.

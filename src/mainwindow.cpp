@@ -71,7 +71,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     btnRemovePost->setIcon( KIcon( "tab-close" ) );
     btnRemovePost->setToolTip( i18n( "Remove current post" ) );
     tabPosts->setCornerWidget( btnRemovePost, Qt::TopRightCorner );
-    connect( btnRemovePost, SIGNAL( clicked( bool ) ), this, SLOT( sltRemoveCurrentPostEntry() ) );
+    connect( btnRemovePost, SIGNAL( clicked( bool ) ), this, SLOT( sltRemovePostEntry() ) );
 
     // then, setup our actions
     setupActions();
@@ -135,7 +135,7 @@ void MainWindow::setupActions()
     actionCollection()->addAction( QLatin1String( "upload_all" ), actUploadAll );
     connect( actUploadAll, SIGNAL( triggered( bool ) ), this, SLOT( sltUploadAllChanges() ) );
 
-    actPublish = new KAction( KIcon( "arrow-up" ), i18n( "Publish" ), this );
+    actPublish = new KAction( KIcon( "arrow-up" ), i18n( "Submit to ..." ), this );
     actionCollection()->addAction( QLatin1String( "publish_post" ), actPublish );
     connect( actPublish, SIGNAL( triggered( bool ) ), this, SLOT( sltPublishPost() ) );
 
@@ -148,10 +148,10 @@ void MainWindow::setupActions()
     actSaveLocally->setShortcut( Qt::CTRL + Qt::Key_S );
     connect( actSaveLocally, SIGNAL( triggered( bool ) ), this, SLOT( sltSavePostLocally() ) );
 
-    actSaveDraft = new KAction( KIcon( "document-save-as" ), i18n( "Save as Draft" ), this );
-    actionCollection()->addAction( QLatin1String( "save_draft" ), actSaveDraft );
-    actSaveDraft->setShortcut( Qt::CTRL + Qt::SHIFT + Qt::Key_S );
-    connect( actSaveDraft, SIGNAL( triggered( bool ) ), this, SLOT( sltSaveAsDraft() ) );
+//     actSaveDraft = new KAction( KIcon( "document-save-as" ), i18n( "Save as Draft" ), this );
+//     actionCollection()->addAction( QLatin1String( "save_draft" ), actSaveDraft );
+//     actSaveDraft->setShortcut( Qt::CTRL + Qt::SHIFT + Qt::Key_S );
+//     connect( actSaveDraft, SIGNAL( triggered( bool ) ), this, SLOT( sltSaveAsDraft() ) );
 
     actToggleToolboxVisible = new KToggleAction( i18n( "Show Toolbox" ), this );
     actionCollection()->addAction( QLatin1String( "toggle_toolbox" ), actToggleToolboxVisible );
@@ -291,26 +291,29 @@ void MainWindow::sltPublishPost()
     toolbox->getFieldsValue( post );
     if ( activePost->postBody().isEmpty() || activePost->postTitle().isEmpty() ) {
         if ( KMessageBox::warningContinueCancel( this,
-                i18n( "Your post title or body is empty!\nAre you sure of pubishing this post?" )
+                i18n( "Your post title or body is empty!\nAre you sure of sending this post?" )
                                                ) == KMessageBox::Cancel )
             return;
     }
-    post.setPrivate( false );
+//     post.setPrivate( false );
     activePost->publishPost( blog_id, post );
-    statusBar()->showMessage( i18n( "publishing new post..." ) );
+    statusBar()->showMessage( i18n( "sending new post..." ) );
     this->setCursor( Qt::BusyCursor );
     toolbox->setCursor( Qt::BusyCursor );
 }
 
-void MainWindow::sltRemoveCurrentPostEntry()
+void MainWindow::sltRemovePostEntry( PostEntry *widget )
 {
     kDebug();
-    DBMan::self()->removeTempEntry( *activePost->currentPost() );
+    if( !widget ) {
+        widget = activePost;
+    }
+    DBMan::self()->removeTempEntry( *widget->currentPost() );
 //     if(tabPosts->count()==1){
 //         sltCreateNewPost();
 //         previousActivePostIndex = 0;
 //     }
-    tabPosts->currentWidget()->deleteLater();
+    widget->close();
 //     tabPosts->removeTab( tabPosts->currentIndex() );
 //     tabPosts->setCurrentIndex(previousActivePostIndex);
     if( tabPosts->count() < 1 ) {
@@ -336,7 +339,7 @@ void MainWindow::sltCurrentBlogChanged( int blog_id )
         BilboBlog *tmp = toolbox->blogList().value( blog_id );
         this->activePost->setDefaultLayoutDirection( tmp->direction() );
         this->activePost->setCurrentPostBlogId( blog_id );
-        this->actPublish->setText( i18n( "Publish to \"%1\"", tmp->title() ) );
+        this->actPublish->setText( i18n( "Submit to \"%1\" as ... ", tmp->title() ) );
     }
 }
 
@@ -349,28 +352,28 @@ void MainWindow::sltSavePostLocally()
     statusBar()->showMessage( i18n("Post saved locally") , 5000);
 }
 
-void MainWindow::sltSaveAsDraft()
-{
-    kDebug();
-    int blog_id = toolbox->currentBlogId();
-    if ( blog_id == -1 ) {
-        KMessageBox::sorry( this, i18n( "You have to select a blog to save this post as draft on it." ) );
-        kDebug() << "Blog id not sets correctly.";
-        return;
-    }
-    BilboPost post;
-    if ( activePost->postBody().isEmpty() || activePost->postTitle().isEmpty() ) {
-        if ( KMessageBox::warningContinueCancel( this, i18n( "Your post title or body is empty!\n\
-Are you sure of pubishing this post?" ) ) == KMessageBox::Cancel )
-            return;
-    }
-    toolbox->getFieldsValue( post );
-    post.setPrivate( true );
-    activePost->publishPost( blog_id, post );
-    statusBar()->showMessage( i18n( "Saving draft..." ) );
-    this->setCursor( Qt::BusyCursor );
-    toolbox->setCursor( Qt::BusyCursor );
-}
+// void MainWindow::sltSaveAsDraft()
+// {
+//     kDebug();
+//     int blog_id = toolbox->currentBlogId();
+//     if ( blog_id == -1 ) {
+//         KMessageBox::sorry( this, i18n( "You have to select a blog to save this post as draft on it." ) );
+//         kDebug() << "Blog id not sets correctly.";
+//         return;
+//     }
+//     BilboPost post;
+//     if ( activePost->postBody().isEmpty() || activePost->postTitle().isEmpty() ) {
+//         if ( KMessageBox::warningContinueCancel( this, i18n( "Your post title or body is empty!\n\
+// Are you sure of pubishing this post?" ) ) == KMessageBox::Cancel )
+//             return;
+//     }
+//     toolbox->getFieldsValue( post );
+//     post.setPrivate( true );
+//     activePost->publishPost( blog_id, post );
+//     statusBar()->showMessage( i18n( "Saving draft..." ) );
+//     this->setCursor( Qt::BusyCursor );
+//     toolbox->setCursor( Qt::BusyCursor );
+// }
 
 void MainWindow::sltError( const QString & errorMessage )
 {
@@ -423,7 +426,7 @@ void MainWindow::postManipulationDone( bool isError, const QString &customMessag
         KMessageBox::detailedError(this, i18n("Uploading post failed"), customMessage);
     } else {
         if(KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?", customMessage)) != KMessageBox::Yes){
-            tabPosts->removePage(qobject_cast<QWidget*>(sender()));
+            sltRemovePostEntry(qobject_cast<PostEntry*>(sender()));
         }
     }
     this->unsetCursor();
@@ -476,6 +479,7 @@ QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
 {
     kDebug();
     PostEntry *temp = new PostEntry( this );
+    temp->setAttribute( Qt::WA_DeleteOnClose );
     tabPosts->addTab( temp, post.title() );
     temp->setCurrentPost(post);
     temp->setCurrentPostBlogId( blog_id );
