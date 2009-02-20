@@ -395,6 +395,7 @@ void Toolbox::setFieldsValue( BilboPost* post )
     //delete currentPost;
     if ( post == 0 ) {
         resetFields();
+        kDebug()<<"post is NULL";
         return;
     }
 

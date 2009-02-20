@@ -141,12 +141,17 @@ Q_SIGNALS:
 
 private:
     QString errorTypeToString( KBlog::Blog::ErrorType type );
+    /**
+     * This function is called after a post published fine, to insert it to DB and emit sigPostPublished.
+     */
+    void savePostInDbAndEmitResult( KBlog::BlogPost *post );
     KBlog::Blog *mKBlog;
     BilboBlog *mBBlog;
 //     quint16 mChecksum;
 //     QString mediaLocalUrl;
     QList<Category> mCreatePostCategories;
     QMap<QString, KBlog::BlogPost *> mSetPostCategoriesMap;
+//     QMap<KBlog::BlogPost *, BilboPost *> mSubmitPostMap;
     QMap<KBlog::BlogMedia *, BilboMedia *> mPublishMediaMap;
     bool categoryListNotSet;
 };
