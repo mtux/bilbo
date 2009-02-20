@@ -144,22 +144,18 @@ void Backend::publishPost( BilboPost * post )
     kDebug() << "Blog Id: " << mBBlog->id();
 
     KBlog::BlogPost *bp = post->toKBlogPost();
+    connect( mKBlog, SIGNAL( createdPost( KBlog::BlogPost * ) ),
+             this, SLOT( postPublished( KBlog::BlogPost * ) ) );
 
     if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
-//         KBlog::WordpressBuggy *wp = dynamic_cast<KBlog::WordpressBuggy*>( mKBlog );
-        connect( mKBlog, SIGNAL( createdPost( KBlog::BlogPost * ) ), this, SLOT( postPublished( KBlog::BlogPost * ) ) );
         if ( post->categories().count() > 1 ) {
             mCreatePostCategories = post->categoryList();
             bp->categories().clear();
             categoryListNotSet = true;
             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
         }
-        mKBlog->createPost( bp );
-    } else {
-//         KBlog::Blogger1 *b1 = dynamic_cast<KBlog::Blogger1*>( mKBlog );
-        connect( mKBlog, SIGNAL( createdPost( KBlog::BlogPost * ) ), this, SLOT( postPublished( KBlog::BlogPost * ) ) );
-        mKBlog->createPost( bp );
     }
+    mKBlog->createPost( bp );
 
 // NOTE the line below commented, because after publishing a post, we display the content in the editor, and we should have the post object so that the content be editable. -Golnaz
 //     delete post;
@@ -169,13 +165,14 @@ void Backend::postPublished( KBlog::BlogPost *post )
 {
     kDebug() << "Blog Id: " << mBBlog->id();
     if ( post->status() == KBlog::BlogPost::Error ) {
-        kDebug() << "Publishing Failed";
-        const QString tmp( i18n( "Publishing post failed : %1" ).arg( post->error() ) );
+        kDebug() << "Publishing/Modifying Failed";
+        const QString tmp( i18n( "Publishing/Modifying post failed : %1" ).arg( post->error() ) );
         kDebug() << "Emitting sigError...";
         Q_EMIT sigError( tmp );
         return;
     }
     if ( categoryListNotSet ) {
+        categoryListNotSet = false;
         mSetPostCategoriesMap[ post->postId()] = post;
         QMap<QString, bool> cats;
         int count = mCreatePostCategories.count();
@@ -186,7 +183,12 @@ void Backend::postPublished( KBlog::BlogPost *post )
         setPostCategories( post->postId(), cats );
     } else {
         BilboPost *pp = new BilboPost( *post );
-        int post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
+        int post_id;
+        if(post->status() == KBlog::BlogPost::Modified) {
+            post_id = DBMan::self()->editPost( *pp, mBBlog->id() );
+        } else {
+            post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
+        }
         if ( post_id != -1 ) {
             pp->setId( post_id );
             pp->setPrivate( post->isPrivate() );
@@ -313,10 +315,20 @@ void Backend::mediaUploaded( KBlog::BlogMedia * media )
 
 void Backend::modifyPost( BilboPost * post )
 {
-}
+    kDebug() << "Blog Id: " << mBBlog->id();
 
-void Backend::postModified( KBlog::BlogPost * post )
-{
+    KBlog::BlogPost *bp = post->toKBlogPost();
+    connect( mKBlog, SIGNAL( modifiedPost(KBlog::BlogPost*)),
+             this, SLOT( postPublished(KBlog::BlogPost*)) );
+    if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
+        if ( post->categories().count() > 1 ) {
+            mCreatePostCategories = post->categoryList();
+            bp->categories().clear();
+            categoryListNotSet = true;
+            kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
+        }
+    }
+        mKBlog->modifyPost( bp );
 }
 
 void Backend::removePost( BilboPost &post )
@@ -361,7 +373,8 @@ void Backend::setPostCategories( const QString postId, const QMap< QString, bool
     }
     if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
         KBlog::MovableType *mt = qobject_cast<KBlog::MovableType*>( mKBlog );
-        connect( mt, SIGNAL( settedPostCategories( const QString & ) ), this, SLOT( postCategoriesSetted( const QString& ) ) );
+        connect( mt, SIGNAL( settedPostCategories( const QString & ) ),
+                 this, SLOT( postCategoriesSetted( const QString& ) ) );
         mt->setPostCategories( postId, categoriesList );
     } else {
         kDebug() << "Blog API doesn't support setting post categories the api type is: " << mBBlog->api();
@@ -376,7 +389,12 @@ void Backend::postCategoriesSetted( const QString &postId )
     KBlog::BlogPost *post = mSetPostCategoriesMap[ postId ];
     BilboPost *pp = new BilboPost( *post );
     mSetPostCategoriesMap.remove( postId );
-    int post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
+    int post_id;
+    if(post->status() == KBlog::BlogPost::Modified) {
+        post_id = DBMan::self()->editPost( *pp, mBBlog->id() );
+    } else {
+        post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
+    }
     if ( post_id != -1 ) {
         pp->setPrivate( post->isPrivate() );
         pp->setId( post_id );

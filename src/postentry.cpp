@@ -31,6 +31,7 @@
 #include "backend.h"
 #include "dbman.h"
 #include "global.h"
+#include "sendtoblogdialog.h"
 #include <qt4/QtCore/QMap>
 #include <kio/job.h>
 #include "settings.h"
@@ -164,10 +165,6 @@ void PostEntry::setDefaultLayoutDirection( Qt::LayoutDirection direction )
     this->txtTitle->setLayoutDirection( direction );
 }
 
-void PostEntry::addMedia( const QString &url )
-{
-}
-
 PostEntry::~PostEntry()
 {
     kDebug();
@@ -217,7 +214,7 @@ bool PostEntry::uploadMediaFiles()
 
 void PostEntry::sltMediaFileUploaded( BilboMedia * media )
 {
-    kDebug();
+    kDebug()<<media->name();
     progress->setValue( progress->value() + 1 );
     if ( progress->value() >= progress->maximum() ) {
         QTimer::singleShot( 800, this, SLOT( sltDeleteProgressBar() ) );
@@ -256,16 +253,33 @@ void PostEntry::sltMediaError( const QString & errorMessage, BilboMedia * media 
 void PostEntry::publishPost( int blogId, const BilboPost &postData )
 {
     kDebug();
-    mCurrentPost.setProperties( postData );
-    mCurrentPostBlogId = blogId;
-    if ( !this->uploadMediaFiles() )
-        publishPostAfterUploadMediaFiles();
+    bool isNew = false;
+    if(mCurrentPost.status() == BilboPost::New)
+        isNew = true;
+    SendToBlogDialog *dia = new SendToBlogDialog( isNew, postData.isPrivate(), this);
+    dia->setAttribute(Qt::WA_DeleteOnClose, false);
+    if( dia->exec() == KDialog::Accepted ) {
+        mCurrentPost.setProperties( postData );
+        mCurrentPostBlogId = blogId;
+
+        if(dia->isNew())
+            isNewPost = true;
+        else
+            isNewPost = false;
+
+        if(dia->isPrivate())
+            mCurrentPost.setPrivate(true);
+        else
+            mCurrentPost.setPrivate(false);
+
+        if ( !this->uploadMediaFiles() )
+            publishPostAfterUploadMediaFiles();
+    }
 }
 
 void PostEntry::publishPostAfterUploadMediaFiles()
 {
     kDebug();
-
     progress = new QProgressBar( this );
     this->layout()->addWidget( progress );
     progress->setMaximum( 0 );
@@ -274,7 +288,10 @@ void PostEntry::publishPostAfterUploadMediaFiles()
     Backend *b = new Backend( mCurrentPostBlogId );
     connect( b, SIGNAL( sigPostPublished( int, BilboPost* ) ), this, SLOT( sltPostPublished( int, BilboPost* ) ) );
     connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
-    b->publishPost( &mCurrentPost );
+    if(isNewPost)
+        b->publishPost( &mCurrentPost );
+    else
+        b->modifyPost( &mCurrentPost );
 }
 
 void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
@@ -286,9 +303,11 @@ void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
 //  delete b;
     QString msg;
     if ( post->isPrivate() ) {
-        msg = i18n( "New Draft with title \"%1\" saved successfully.", post->title() );
+        msg = i18n( "Draft with title \"%1\" saved successfully.", post->title() );
+    } else if(post->status() == BilboPost::Modified){
+        msg = i18n( "Post with title \"%1\" modified successfully.", post->title() );
     } else {
-        msg = i18n( "New Post with title \"%1\" published successfully.", post->title() );
+        msg = i18n( "Post with title \"%1\" published successfully.", post->title() );
     }
 //     KMessageBox::information( this, msg, "Successful" );
     if ( progress ) {
