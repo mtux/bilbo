@@ -90,6 +90,8 @@ void BilboEditor::createUi()
              SLOT( sltReloadImage( const KUrl ) ) );
     connect( editor, SIGNAL( sigMediaTypeFound( BilboMedia* ) ), this, 
              SLOT( sltMediaTypeFound( BilboMedia* ) ) );
+//     editor->document()->setDefaultStyleSheet( "p {text-align: right;}" );
+//     editor->setStyleSheet("QTextEdit {direction: rtl}");
 //     editor = new QTextBrowser( tabVisual );
     //editor = new BilboRichTextEdit(0);
     //barVisual = new QToolBar(0);
@@ -724,23 +726,21 @@ void BilboEditor::sltRemoveMedia( const int index )
                   ( f.isAnchor() && f.anchorHref() == path ) )
             {
                 kDebug() << "found";
+                
                 cursor = this->editor->textCursor();
                 cursor.setPosition( i.fragment().position() );
                 cursor.movePosition( QTextCursor::NextCharacter,
                                      QTextCursor::KeepAnchor, i.fragment().length() );
-//                 if ( cursor.hasSelection() ) {
-                
-                cursor.removeSelectedText();
-                kDebug() << "removed";
-                
                 ++i;
                 if (i.atEnd()) {
+                    cursor.removeSelectedText();
+                    kDebug() << "removed";
                     break;
                 } else {
+                    cursor.removeSelectedText();
+                    kDebug() << "removed";
                     i = block.begin();
                 }
-//                         this->editor->setTextCursor( cursor );
-//                 }
             }
             else {
                 ++i;
@@ -864,7 +864,7 @@ void BilboEditor::sltSyncEditors( int index )
 //         kDebug() << editor->document()->toHtml() << "index=0" << endl;
         //editor->setTextOrHtml(htmlEditor->toPlainText());
     } else if ( index == 1 ) {
-//         kDebug() << editor->document()->toHtml() << "index=1" << endl;
+        kDebug() << editor->document()->toHtml() << "index=1" << endl;
         //kDebug() << editor->toHtml() << endl;
 // //         useRemoteImagePaths( doc );
 
@@ -962,6 +962,7 @@ QString BilboEditor::htmlContent()
 
 void BilboEditor::setHtmlContent( const QString & content )
 {
+    
     QTextDocument *doc = editor->document();
 //     doc->setUndoRedoEnabled( false );
     doc->clear();
@@ -1011,12 +1012,7 @@ void BilboEditor::setLayoutDirection( Qt::LayoutDirection direction )
     QTextBlockFormat f = editor->textCursor().blockFormat();
     f.setLayoutDirection( direction );
     editor->textCursor().mergeBlockFormat( f );
-//  QTextOption o;
-//
-//  o = editor->document()->defaultTextOption();
-//  o.setAlignment(Qt::AlignRight);
-//  o.setTextDirection(Qt::RightToLeft);
-//  editor->document()->setDefaultTextOption(o);
+
     if ( f.hasProperty( QTextBlockFormat::BlockAlignment ) ) {
         kDebug() << "has Alignment";
     }
@@ -1025,6 +1021,12 @@ void BilboEditor::setLayoutDirection( Qt::LayoutDirection direction )
     } else {
         this->actRightToLeft->setChecked( true );
     }
+//     kDebug() << editor->document()->defaultStyleSheet();
+//     if( direction == Qt::LeftToRight ) {
+//         editor->document()->setDefaultStyleSheet( "p {text-align: left}" );
+//     } else {
+//         editor->document()->setDefaultStyleSheet( "p {text-align: right}" );
+//     }
 }
 
 // void BilboEditor::useRemoteImagePaths( QTextDocument* doc )
