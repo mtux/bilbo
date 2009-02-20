@@ -28,6 +28,7 @@
 #include <blog.h>
 class BilboBlog;
 class KJob;
+class WaitWidget;
 
 /**
  @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
@@ -59,9 +60,6 @@ protected Q_SLOTS:
     void handleFetchAPITimeout();
     void handleFetchError( KBlog::Blog::ErrorType type, const QString& errorMsg );
 
-    void sltAccepted();
-    void sltRejected();
-
     void sltReturnPressed();
 
     void gotHtml( KJob * );
@@ -71,6 +69,8 @@ Q_SIGNALS:
     void sigBlogEdited( BilboBlog& );
 
 private:
+    void showWaitWidget( QString text );
+    void hideWaitWidget();
     Ui::AddEditBlogBase ui;
     KTabWidget *mainW;
     bool isNewBlog;
@@ -80,8 +80,7 @@ private:
     QTimer* mFetchBlogIdTimer;
     QTimer* mFetchAPITimer;
     bool isIdFetched;
-//     KPushButton *btnOk;
-//     KPushButton *btnCancel;
+    WaitWidget *wait;
 };
 
 #endif
