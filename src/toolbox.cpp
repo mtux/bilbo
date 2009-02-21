@@ -593,7 +593,7 @@ void Toolbox::reloadLocalPosts()
 void Toolbox::sltLocalEntrySelected( int row, int column )
 {
     kDebug()<<"Emitting sigEntrySelected...";
-    BilboPost post = DBMan::self()->localEntry(localEntriesTable->item(row, 0)->data(32).toInt());
+    BilboPost post = DBMan::self()->localPost(localEntriesTable->item(row, 0)->data(32).toInt());
     emit sigEntrySelected( post, localEntriesTable->item(row, 1)->data(32).toInt() );
 }
 

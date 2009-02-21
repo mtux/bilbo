@@ -123,7 +123,8 @@ void Backend::categoriesListed( const QList< QMap < QString , QString > > & cate
 void Backend::getEntriesListFromServer( int count )
 {
     kDebug() << "Blog Id: " << mBBlog->id();
-    connect( mKBlog, SIGNAL( listedRecentPosts( const QList<KBlog::BlogPost> & ) ), this, SLOT( entriesListed( const QList<KBlog::BlogPost >& ) ) );
+    connect( mKBlog, SIGNAL( listedRecentPosts( const QList<KBlog::BlogPost> & ) ),
+             this, SLOT( entriesListed( const QList<KBlog::BlogPost >& ) ) );
     mKBlog->listRecentPosts( count );
 }
 
@@ -439,7 +440,7 @@ QString Backend::errorTypeToString( KBlog::Blog::ErrorType type )
             errType = i18n( "Not Supported Error: " );
             break;
         default:
-            errType = i18n( "Unknown Error type: " );
+            errType = i18n( "Unknown Error: " );
     };
     return errType;
 }

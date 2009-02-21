@@ -88,7 +88,7 @@ public:
     Map value (e.g. int) is blog id.
     */
     QList<QVariantMap> listLocalPosts();
-    BilboPost localEntry(int local_id);
+    BilboPost localPost(int local_id);
     ///END
 
     ///(BEGIN) Data Manipulation Functions:
