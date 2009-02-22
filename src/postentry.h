@@ -24,7 +24,7 @@
 
 #include <QFrame>
 #include "bilbopost.h"
-class BilboPost;
+
 class BilboEditor;
 class QWidget;
 class QGridLayout;
@@ -65,7 +65,7 @@ public:
     QMap <QString, BilboMedia*> & mediaList();
 
     /**
-     *    Will Upload media files not uploaded yet, and return true if there's any file to upload
+     * Will Upload media files not uploaded yet, and return true if there's any file to upload
      * and False if there isn't any file!
      * @return True if there's any file to upload, otherwise false.
      */
@@ -81,7 +81,7 @@ Q_SIGNALS:
      */
     void sigTitleChanged( const QString &title );
     /**
-     *    This signal emitted when a post manipulation job e.g. Publishing a new post finished.
+     * This signal emitted when a post manipulation job e.g. Publishing a new post finished.
      * @param isError If an error occurred on publishing this will be TRUE. Otherwise FLASE
      * @param customMessage A Custom message will be shown on StatusBar.
      */

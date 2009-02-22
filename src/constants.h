@@ -33,23 +33,11 @@ Constants.
 // #define VERSION "0.1"
 #define APPNAME "Bilbo Blogger"
 #define DATA_DIR KStandardDirs::locateLocal("data", "bilbo/")
-// #define CONF_PATH QString(CONF_DIR)+QString("/bilbo.conf")
 #define CONF_DB QString(DATA_DIR)+QString("/bilbo.db")
 #define MEDIA_DIR KStandardDirs::locateLocal("data", "bilbo/media/", true)
 #define UNKNOWN_BLOG_DIR KStandardDirs::locateLocal("data", "bilbo/Unknown Blog/", true)
 #define CACHED_MEDIA_DIR KStandardDirs::locateLocal("cache", "bilbo/media/", true)
 #define STATUSTIMEOUT 5000
 
-
-struct Category {
-    QString name;
-    QString description;
-    QString htmlUrl;
-    QString rssUrl;
-    QString categoryId;
-    QString parentId;
-    int id;
-    int blog_id;
-};
 
 #endif

@@ -26,7 +26,6 @@
 #include <KMessageBox>
 #include "postentry.h"
 #include "bilboeditor.h"
-#include "bilbopost.h"
 #include "bilbomedia.h"
 #include "backend.h"
 #include "dbman.h"

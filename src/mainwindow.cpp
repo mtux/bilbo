@@ -59,9 +59,12 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     progress = 0;
     tabPosts->setElideMode( Qt::ElideRight );///TODO make this Optional!
     setCentralWidget( tabPosts );
+//     this->setDockOptions( QMainWindow::ForceTabbedDocks);
 
     toolbox = new Toolbox( this );
-    toolboxDock = new QDockWidget( i18n( "Post properties" ), this );
+    toolboxDock = new QDockWidget( i18n( "Toolbox" ), this );
+    toolboxDock->setAllowedAreas( Qt::RightDockWidgetArea | Qt::LeftDockWidgetArea );
+    toolboxDock->setFeatures( QDockWidget::AllDockWidgetFeatures );
     toolboxDock->setObjectName( "dock_toolbox" );
     toolbox->setObjectName( "toolbox" );
     toolboxDock->setWidget( toolbox );
@@ -92,7 +95,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
 //     this->setWindowIcon(KIcon(":/media/bilbo.png"));
 //     readConfig();
     toolbox->setVisible( Settings::show_toolbox_on_start() );
-    actToggleToolboxVisible->setChecked( Settings::show_toolbox_on_start() );
+    actionCollection()->action("toggle_toolbox")->setChecked( Settings::show_toolbox_on_start() );
 //     if ( Settings::show_toolbox_on_start() ) {
 //         actToggleToolboxVisible->setText( i18n( "Hide Toolbox" ) );
 //     } else {
@@ -121,29 +124,29 @@ void MainWindow::setupActions()
 
     KStandardAction::preferences( this, SLOT( optionsPreferences() ), actionCollection() );
 
-    // custom menu and menu item - the slot is in the class bilboView
-    actNewPost = new KAction( KIcon( "document-new" ), i18n( "New Post" ), this );
+    // custom menu and menu item
+    KAction *actNewPost = new KAction( KIcon( "document-new" ), i18n( "New Post" ), this );
     actionCollection()->addAction( QLatin1String( "new_post" ), actNewPost );
     actNewPost->setShortcut( Qt::CTRL + Qt::Key_N );
     connect( actNewPost, SIGNAL( triggered( bool ) ), this, SLOT( sltCreateNewPost() ) );
 
-    actAddBlog = new KAction( KIcon( "list-add" ), i18n( "Add Blog" ), this );
+    KAction *actAddBlog = new KAction( KIcon( "list-add" ), i18n( "Add Blog" ), this );
     actionCollection()->addAction( QLatin1String( "add_blog" ), actAddBlog );
     connect( actAddBlog, SIGNAL( triggered( bool ) ), toolbox, SLOT( sltAddBlog() ) );
 
-    actUploadAll = new KAction( KIcon( "arrow-up-double" ), i18n( "Upload All Changes" ), this );
-    actionCollection()->addAction( QLatin1String( "upload_all" ), actUploadAll );
-    connect( actUploadAll, SIGNAL( triggered( bool ) ), this, SLOT( sltUploadAllChanges() ) );
+//     actUploadAll = new KAction( KIcon( "arrow-up-double" ), i18n( "Upload All Changes" ), this );
+//     actionCollection()->addAction( QLatin1String( "upload_all" ), actUploadAll );
+//     connect( actUploadAll, SIGNAL( triggered( bool ) ), this, SLOT( sltUploadAllChanges() ) );
 
-    actPublish = new KAction( KIcon( "arrow-up" ), i18n( "Submit to ..." ), this );
+    KAction *actPublish = new KAction( KIcon( "arrow-up" ), i18n( "Submit to ..." ), this );
     actionCollection()->addAction( QLatin1String( "publish_post" ), actPublish );
     connect( actPublish, SIGNAL( triggered( bool ) ), this, SLOT( sltPublishPost() ) );
 
-    actSave = new KAction( KIcon( "document-save" ), i18n( "Save" ), this );
-    actionCollection()->addAction( QLatin1String( "save" ), actSave );
-    connect( actSave, SIGNAL( triggered( bool ) ), this, SLOT( sltSavePostLocally() ) );
+//     actSave = new KAction( KIcon( "document-save" ), i18n( "Save" ), this );
+//     actionCollection()->addAction( QLatin1String( "save" ), actSave );
+//     connect( actSave, SIGNAL( triggered( bool ) ), this, SLOT( sltSavePostLocally() ) );
 
-    actSaveLocally = new KAction( KIcon( "document-save" ), i18n( "Save Locally" ), this );
+    KAction *actSaveLocally = new KAction( KIcon( "document-save" ), i18n( "Save Locally" ), this );
     actionCollection()->addAction( QLatin1String( "save_locally" ), actSaveLocally );
     actSaveLocally->setShortcut( Qt::CTRL + Qt::Key_S );
     connect( actSaveLocally, SIGNAL( triggered( bool ) ), this, SLOT( sltSavePostLocally() ) );
@@ -153,14 +156,19 @@ void MainWindow::setupActions()
 //     actSaveDraft->setShortcut( Qt::CTRL + Qt::SHIFT + Qt::Key_S );
 //     connect( actSaveDraft, SIGNAL( triggered( bool ) ), this, SLOT( sltSaveAsDraft() ) );
 
-    actToggleToolboxVisible = new KToggleAction( i18n( "Show Toolbox" ), this );
+    KToggleAction *actToggleToolboxVisible = new KToggleAction( i18n( "Show Toolbox" ), this );
     actionCollection()->addAction( QLatin1String( "toggle_toolbox" ), actToggleToolboxVisible );
     actToggleToolboxVisible->setShortcut( Qt::CTRL + Qt::Key_T );
     connect( actToggleToolboxVisible, SIGNAL( toggled( bool ) ), this, SLOT( sltToggleToolboxVisible( bool ) ) );
-    
-    actClearImageCache = new KAction( KIcon( "edit-clear" ), i18n( "Clear cached images" ), this );
+
+    KAction *actClearImageCache = new KAction( KIcon( "edit-clear" ), i18n( "Clear cached images" ), this );
     actionCollection()->addAction( QLatin1String( "clear_image_cache" ), actClearImageCache );
     connect( actClearImageCache, SIGNAL( triggered( bool ) ), this, SLOT( sltClearCache() ) );
+
+    KAction *actHide = new KAction( KIcon( "dialog-close" ), i18n( "Hide Bilbo Window" ), this );
+    actionCollection()->addAction( QLatin1String( "hide_mainwin" ), actHide );
+    actHide->setShortcut( Qt::Key_Escape );
+    connect( actHide, SIGNAL( triggered( bool ) ), this, SLOT( hide() ) );
 }
 
 void MainWindow::loadTempPosts()
@@ -222,7 +230,7 @@ void MainWindow::setupSystemTray()
 {
     systemTray = new SysTray( this );
 //     systemTray->actionCollection()->addAction( "new_post", this->actNewPost );
-    systemTray->contextMenu()->addAction( this->actNewPost );
+    systemTray->contextMenu()->addAction( actionCollection()->action("new_post") );
     systemTray->show();
 }
 
@@ -336,7 +344,7 @@ void MainWindow::sltCurrentBlogChanged( int blog_id )
         BilboBlog *tmp = toolbox->blogList().value( blog_id );
         this->activePost->setDefaultLayoutDirection( tmp->direction() );
         this->activePost->setCurrentPostBlogId( blog_id );
-        this->actPublish->setText( i18n( "Submit to \"%1\" as ... ", tmp->title() ) );
+        actionCollection()->action("publish_post")->setText( i18n( "Submit to \"%1\" as ... ", tmp->title() ) );
     }
 }
 
@@ -354,6 +362,7 @@ void MainWindow::sltError( const QString & errorMessage )
     kDebug() << "Error message: " << errorMessage;
     KMessageBox::detailedError( this, i18n( "An error ocurred on latest transaction " ), errorMessage );
     statusBar()->clearMessage();
+    slotBusy(false);
     this->unsetCursor();
     toolbox->unsetCursor();
 }
@@ -434,7 +443,7 @@ void MainWindow::slotBusy(bool isBusy)
             progress = new QProgressBar(statusBar());
             progress->setMinimum( 0 );
             progress->setMaximum( 0 );
-            progress->resize(progress->width(), statusBar()->height()-20);
+            progress->setFixedSize(250, 17);
             statusBar()->addPermanentWidget(progress);
         }
     } else {

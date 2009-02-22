@@ -28,7 +28,7 @@
 // #include <kurl.h>
 // #include <kdatetime.h>
 #include <blogpost.h>
-#include "constants.h"
+#include "category.h"
 class QUrl;
 class QDateTime;
 class KUrl;

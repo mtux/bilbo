@@ -24,6 +24,7 @@
 #include <QtSql>
 #include "bilbomedia.h"
 #include "constants.h"
+#include "category.h"
 class BilboBlog;
 class BilboPost;
 namespace KWallet

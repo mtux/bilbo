@@ -25,7 +25,7 @@
 #include <QDockWidget>
 #include <QtGui>
 #include <QDir>
-#include "constants.h"
+#include "category.h"
 #include "ui_toolboxbase.h"
 
 class KStatusBar;

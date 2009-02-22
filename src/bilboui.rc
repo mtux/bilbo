@@ -3,6 +3,7 @@
 <MenuBar>
   <Menu name="file"><text>File</text>
       <Action name="toggle_toolbox" />
+      <Action name="hide_mainwin" />
   </Menu>
   <Menu name="post"><text>Post</text>
     <Action name="new_post" />
