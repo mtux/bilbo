@@ -182,19 +182,21 @@ void Backend::postPublished( KBlog::BlogPost *post )
 //         kDebug()<<"there's "<<count<< " categories to send."<<"\t numbers: "<<cats.count()<<" are:"<<cats.keys();
         setPostCategories( post->postId(), cats );
     } else {
-        BilboPost *pp = new BilboPost( *post );
-        int post_id;
-        if(post->status() == KBlog::BlogPost::Modified) {
-            post_id = DBMan::self()->editPost( *pp, mBBlog->id() );
-        } else {
-            post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
-        }
-        if ( post_id != -1 ) {
-            pp->setId( post_id );
-            pp->setPrivate( post->isPrivate() );
-            kDebug() << "Emiteding sigPostPublished...";
-            Q_EMIT sigPostPublished( mBBlog->id(), pp );
-        }
+        savePostInDbAndEmitResult( post );
+//         BilboPost *pp = new BilboPost( *post );
+// //         kDebug()<<pp->toString();
+//         int post_id;
+//         if(post->status() == KBlog::BlogPost::Modified) {
+//             post_id = DBMan::self()->editPost( *pp, mBBlog->id() );
+//         } else {
+//             post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
+//         }
+//         if ( post_id != -1 ) {
+//             pp->setId( post_id );
+//             pp->setPrivate( post->isPrivate() );
+//             kDebug() << "Emiteding sigPostPublished...";
+//             Q_EMIT sigPostPublished( mBBlog->id(), pp );
+//         }
     }
 }
 
@@ -387,21 +389,23 @@ void Backend::postCategoriesSetted( const QString &postId )
 {
     kDebug();
     KBlog::BlogPost *post = mSetPostCategoriesMap[ postId ];
-    BilboPost *pp = new BilboPost( *post );
+    savePostInDbAndEmitResult( post );
+//     BilboPost *pp = new BilboPost( *post );
+//     kDebug()<<pp->toString();
     mSetPostCategoriesMap.remove( postId );
-    int post_id;
-    if(post->status() == KBlog::BlogPost::Modified) {
-        post_id = DBMan::self()->editPost( *pp, mBBlog->id() );
-    } else {
-        post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
-    }
-    if ( post_id != -1 ) {
-        pp->setPrivate( post->isPrivate() );
-        pp->setId( post_id );
-        kDebug() << "Emitting sigPostPublished ...";
-        Q_EMIT sigPostPublished( mBBlog->id(), pp );
-    }
-    delete post;
+//     int post_id;
+//     if(post->status() == KBlog::BlogPost::Modified) {
+//         post_id = DBMan::self()->editPost( *pp, mBBlog->id() );
+//     } else {
+//         post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
+//     }
+//     if ( post_id != -1 ) {
+// //         pp->setPrivate( post->isPrivate() );
+//         pp->setId( post_id );
+//         kDebug() << "Emitting sigPostPublished ...";
+//         Q_EMIT sigPostPublished( mBBlog->id(), pp );
+//     }
+//     delete post;
 }
 
 void Backend::sltMediaError( KBlog::Blog::ErrorType type, const QString & errorMessage, KBlog::BlogMedia * media )
@@ -438,6 +442,24 @@ QString Backend::errorTypeToString( KBlog::Blog::ErrorType type )
             errType = i18n( "Unknown Error type: " );
     };
     return errType;
+}
+
+void Backend::savePostInDbAndEmitResult( KBlog::BlogPost *post )
+{
+    BilboPost *pp = new BilboPost( *post );
+    int post_id;
+    if(post->status() == KBlog::BlogPost::Modified) {
+        post_id = DBMan::self()->editPost( *pp, mBBlog->id() );
+    } else {
+        post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
+    }
+    if ( post_id != -1 ) {
+        pp->setPrivate( post->isPrivate() );
+        pp->setId( post_id );
+        kDebug() << "Emitting sigPostPublished ...";
+        Q_EMIT sigPostPublished( mBBlog->id(), pp );
+    }
+    delete post;
 }
 
 #include "backend.moc"

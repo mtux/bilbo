@@ -264,18 +264,16 @@ void MainWindow::sltActivePostChanged( int index )
         prevActivePost->setCurrentPostBlogId( toolbox->currentBlogId() );
     }
 
-    if ( activePost != 0 ) {
+    if ( index >= 0 ) {
         activePostBlogId = activePost->currentPostBlogId();
-        if ( activePostBlogId != -1 ) {
-            if ( activePostBlogId != prevPostBlogId ) {
+        if ( activePostBlogId != -1 && activePostBlogId != prevPostBlogId ) {
                 toolbox->setCurrentBlog( activePostBlogId );
-            }
         }
         toolbox->setFieldsValue( activePost->currentPost() );
-        previousActivePostIndex = index;
     } else {
         kError() << "ActivePost is NULL! tabPosts Current index is: " << tabPosts->currentIndex() ;
     }
+    previousActivePostIndex = index;
 }
 
 void MainWindow::sltPublishPost()
@@ -309,13 +307,12 @@ void MainWindow::sltRemovePostEntry( PostEntry *widget )
         widget = activePost;
     }
     DBMan::self()->removeTempEntry( *widget->currentPost() );
-//     if(tabPosts->count()==1){
+    widget->close();
+
+//     if( tabPosts->count() == 0 ){
 //         sltCreateNewPost();
 //         previousActivePostIndex = 0;
 //     }
-    widget->close();
-//     tabPosts->removeTab( tabPosts->currentIndex() );
-//     tabPosts->setCurrentIndex(previousActivePostIndex);
     if( tabPosts->count() < 1 ) {
         activePost = 0;
     }
@@ -351,29 +348,6 @@ void MainWindow::sltSavePostLocally()
     toolbox->reloadLocalPosts();
     statusBar()->showMessage( i18n("Post saved locally") , 5000);
 }
-
-// void MainWindow::sltSaveAsDraft()
-// {
-//     kDebug();
-//     int blog_id = toolbox->currentBlogId();
-//     if ( blog_id == -1 ) {
-//         KMessageBox::sorry( this, i18n( "You have to select a blog to save this post as draft on it." ) );
-//         kDebug() << "Blog id not sets correctly.";
-//         return;
-//     }
-//     BilboPost post;
-//     if ( activePost->postBody().isEmpty() || activePost->postTitle().isEmpty() ) {
-//         if ( KMessageBox::warningContinueCancel( this, i18n( "Your post title or body is empty!\n\
-// Are you sure of pubishing this post?" ) ) == KMessageBox::Cancel )
-//             return;
-//     }
-//     toolbox->getFieldsValue( post );
-//     post.setPrivate( true );
-//     activePost->publishPost( blog_id, post );
-//     statusBar()->showMessage( i18n( "Saving draft..." ) );
-//     this->setCursor( Qt::BusyCursor );
-//     toolbox->setCursor( Qt::BusyCursor );
-// }
 
 void MainWindow::sltError( const QString & errorMessage )
 {
@@ -425,9 +399,11 @@ void MainWindow::postManipulationDone( bool isError, const QString &customMessag
     if(isError){
         KMessageBox::detailedError(this, i18n("Uploading post failed"), customMessage);
     } else {
-        if(KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?", customMessage)) != KMessageBox::Yes){
+        if(KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?",
+            customMessage)) != KMessageBox::Yes){
             sltRemovePostEntry(qobject_cast<PostEntry*>(sender()));
         }
+        toolbox->sltLoadEntriesFromDB(toolbox->currentBlogId());
     }
     this->unsetCursor();
     toolbox->unsetCursor();
@@ -480,7 +456,6 @@ QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
     kDebug();
     PostEntry *temp = new PostEntry( this );
     temp->setAttribute( Qt::WA_DeleteOnClose );
-    tabPosts->addTab( temp, post.title() );
     temp->setCurrentPost(post);
     temp->setCurrentPostBlogId( blog_id );
 
@@ -493,6 +468,8 @@ QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
     connect( temp, SIGNAL( postPublishingDone( bool, const QString& ) ),
             this, SLOT( postManipulationDone( bool, const QString& ) ) );
     connect( this, SIGNAL( settingsChanged() ), temp, SLOT( settingsChanged() ));
+
+    tabPosts->addTab( temp, post.title() );
     return temp;
 }
 

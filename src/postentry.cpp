@@ -256,7 +256,7 @@ void PostEntry::publishPost( int blogId, const BilboPost &postData )
     bool isNew = false;
     if(mCurrentPost.status() == BilboPost::New)
         isNew = true;
-    SendToBlogDialog *dia = new SendToBlogDialog( isNew, postData.isPrivate(), this);
+    SendToBlogDialog *dia = new SendToBlogDialog( isNew, mCurrentPost.isPrivate(), this);
     dia->setAttribute(Qt::WA_DeleteOnClose, false);
     if( dia->exec() == KDialog::Accepted ) {
         mCurrentPost.setProperties( postData );
@@ -302,16 +302,17 @@ void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
     QString blog_name = "NOT SET";// = b->title();
 //  delete b;
     QString msg;
-    if ( post->isPrivate() ) {
+    mCurrentPost = (*post);
+    if ( mCurrentPost.isPrivate() ) {
         msg = i18n( "Draft with title \"%1\" saved successfully.", post->title() );
-    } else if(post->status() == BilboPost::Modified){
+    } else if(mCurrentPost.status() == BilboPost::Modified){
         msg = i18n( "Post with title \"%1\" modified successfully.", post->title() );
     } else {
         msg = i18n( "Post with title \"%1\" published successfully.", post->title() );
     }
 //     KMessageBox::information( this, msg, "Successful" );
     if ( progress ) {
-        this->layout()->removeWidget( progress );
+//         this->layout()->removeWidget( progress );
         progress->deleteLater();
     }
     emit postPublishingDone( false, msg );

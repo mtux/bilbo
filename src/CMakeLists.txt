@@ -36,6 +36,7 @@ set(bilbo_SRCS
  blogradiobutton.cpp
  catcheckbox.cpp
  sendtoblogdialog.cpp
+ waitwidget.cpp
 #bilborichtextedit.cpp
 )
 
@@ -51,6 +52,7 @@ kde4_add_ui_files(
   settingsbase.ui
   editorsettingsbase.ui
   sendtoblogbase.ui
+  waitwidgetbase.ui
 )
 
 kde4_add_kcfg_files( bilbo_SRCS settings.kcfgc)

@@ -118,7 +118,8 @@ QString BilboPost::toString() const
     ret += "\nTags: " + tags().join( "," );
     ret += "\nCategories: " + categories().join( "," );
     ret += "\nCreation Date Time: " + creationDateTime().toString();
-
+    ret += "\nStatus: " + QString::number(status());
+    ret += "\nIsPrivate: " + QVariant(isPrivate()).toString();
     ret += "\n******* End Post Info ********\n";
     return ret;
 }
@@ -191,12 +192,11 @@ void BilboPost::setProperties( const BilboPost& postProp )
     this->setTags( postProp.tags() );
     this->setMood( postProp.mood() );
     this->setMusic( postProp.music() );
-    this->setPrivate( postProp.isPrivate() );
-    this->setStatus( postProp.status() );
+//     this->setPrivate( postProp.isPrivate() );
+//     this->setStatus( postProp.status() );
     this->setSummary( postProp.summary() );
     this->setTrackBackAllowed( postProp.isTrackBackAllowed() );
     this->setAuthor( postProp.author() );
     this->setModifyTimeStamp( postProp.isModifyTimeStamp() );
 //     this->setId( postProp.id() );
-    this->setStatus( postProp.status() );
 }
