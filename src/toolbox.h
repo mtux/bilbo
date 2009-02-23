@@ -74,7 +74,6 @@ public slots:
     void sltGetEntriesCount( int );
     void sltLoadEntriesFromDB( int blog_id );
     void sltRemoveSelectedEntryFromServer();
-    void sltCurrentPageChanged( int );
     void sltCurrentBlogChanged( int blog_id );
     void resetFields();
     void sltEntrySelected( QListWidgetItem *item );

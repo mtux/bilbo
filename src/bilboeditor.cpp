@@ -61,6 +61,8 @@ BilboEditor::BilboEditor( QWidget *parent )
         : KTabWidget( parent )
 {
     createUi();
+    connect(editor, SIGNAL(textChanged()), this, SIGNAL(textChanged()));
+    connect(htmlEditor, SIGNAL(textChanged()), this, SIGNAL(textChanged()));
     editor->setFocus();
 //  netManager = new QNetworkAccessManager(this);
 }

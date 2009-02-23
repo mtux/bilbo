@@ -47,7 +47,7 @@
 #include "systray.h"
 #include "bilboblog.h"
 #include "multilinetextedit.h"
-// #include "editorsettings.h"
+#define TIMEOUT 5000
 
 MainWindow::MainWindow(): KXmlGuiWindow(),
         tabPosts( new KTabWidget( this ) )
@@ -58,6 +58,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     busyNumber = 0;
     progress = 0;
     tabPosts->setElideMode( Qt::ElideRight );///TODO make this Optional!
+    tabPosts->setTabCloseActivatePrevious( true );
     setCentralWidget( tabPosts );
 //     this->setDockOptions( QMainWindow::ForceTabbedDocks);
 
@@ -295,15 +296,8 @@ void MainWindow::sltPublishPost()
     }
     BilboPost post;
     toolbox->getFieldsValue( post );
-    if ( activePost->postBody().isEmpty() || activePost->postTitle().isEmpty() ) {
-        if ( KMessageBox::warningContinueCancel( this,
-                i18n( "Your post title or body is empty!\nAre you sure of sending this post?" )
-                                               ) == KMessageBox::Cancel )
-            return;
-    }
 //     post.setPrivate( false );
     activePost->publishPost( blog_id, post );
-    statusBar()->showMessage( i18n( "sending new post..." ) );
     this->setCursor( Qt::BusyCursor );
     toolbox->setCursor( Qt::BusyCursor );
 }
@@ -354,7 +348,6 @@ void MainWindow::sltSavePostLocally()
     toolbox->getFieldsValue(*activePost->currentPost());
     activePost->saveLocally();
     toolbox->reloadLocalPosts();
-    statusBar()->showMessage( i18n("Post saved locally") , 5000);
 }
 
 void MainWindow::sltError( const QString & errorMessage )
@@ -477,6 +470,10 @@ QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
     connect( temp, SIGNAL( postPublishingDone( bool, const QString& ) ),
             this, SLOT( postManipulationDone( bool, const QString& ) ) );
     connect( this, SIGNAL( settingsChanged() ), temp, SLOT( settingsChanged() ));
+    connect( temp, SIGNAL( showStatusMessage(QString,bool)),
+             this, SLOT(slotShowStatusMessage(QString,bool)));
+//     connect( temp, SIGNAL( postModified() ), this, SLOT(slotPostModified()) );
+//     connect( temp, SIGNAL( postSavedLocally() ), this, SLOT( slotPostSaved() ) );
 
     tabPosts->addTab( temp, post.title() );
     return temp;
@@ -491,5 +488,24 @@ void MainWindow::sltClearCache()
     }
     MultiLineTextEdit::clearCache();
 }
+
+void MainWindow::slotShowStatusMessage(const QString &message, bool isPermanent)
+{
+    statusBar()->showMessage(message, (isPermanent ? 0 : TIMEOUT));
+}
+
+// void MainWindow::slotPostModified()
+// {
+//     kDebug();
+//     int index = tabPosts->indexOf(qobject_cast< QWidget* >(sender()));
+//     tabPosts->setTabIcon(index, KIcon("document-save"));
+// }
+// 
+// void MainWindow::slotPostSaved()
+// {
+//     kDebug();
+//     int index = tabPosts->indexOf(qobject_cast< QWidget* >(sender()));
+//     tabPosts->setTabIcon(index, KIcon());
+// }
 
 #include "mainwindow.moc"

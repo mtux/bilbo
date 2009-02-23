@@ -47,17 +47,15 @@ public:
     PostEntry( QWidget *parent );
     ~PostEntry();
     QString postTitle() const;
-    const QString& postBody();
 
     void setPostTitle( const QString &title );
-    void setPostBody( const QString &body );
+    void setPostBody( const QString &content, const QString &additionalContent=QString() );
 
     int currentPostBlogId();
     void setCurrentPostBlogId( int blog_id );
 
     BilboPost* currentPost();
     void setCurrentPost( const BilboPost &post );
-    void setCurrentPostProperties( const BilboPost &post );
 
     Qt::LayoutDirection defaultLayoutDirection();
     void setDefaultLayoutDirection( Qt::LayoutDirection direction );
@@ -74,6 +72,7 @@ public:
     void publishPost ( int blogId, const BilboPost &postData );
 
     void saveLocally();
+
 Q_SIGNALS:
     /**
      * emitted when title of this entry changed.
@@ -86,6 +85,26 @@ Q_SIGNALS:
      * @param customMessage A Custom message will be shown on StatusBar.
      */
     void postPublishingDone( bool isError, const QString &customMessage );
+
+    /**
+     * This signal is emitted when the post contents (Title or content) is modified!
+     */
+    void postModified();
+
+    /**
+     * This signal is emitted when the post is saved temporarily!
+     */
+    void postSavedTemporary();
+
+    void postSavedLocally();
+
+    /**
+     * To show a message on statusBar
+     * @param message Message to be shown
+     * @param isPermanent If it's true the message will not have a timeout!
+     *  so it will be shown until next message arrived
+     */
+    void showStatusMessage( const QString& message, bool isPermanent);
 
 public Q_SLOTS:
     void settingsChanged();
@@ -100,10 +119,12 @@ private Q_SLOTS:
     void sltTitleChanged( const QString& title );
     void sltDeleteProgressBar();
     void saveTemporary();
+    void slotPostModified();
 
 private:
     void createUi();
     void publishPostAfterUploadMediaFiles();
+    void setCurrentPostFromEditor();
 
     QProgressBar *progress;
     BilboEditor *editPostWidget;
@@ -118,6 +139,8 @@ private:
 
     bool isUploadingMediaFilesFailed;
     bool isNewPost;
+//     bool mIsModified;
+    bool isPostContentModified;
 };
 
 #endif

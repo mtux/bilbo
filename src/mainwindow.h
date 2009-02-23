@@ -90,6 +90,7 @@ private slots:
     void optionsPreferences();
     void postManipulationDone( bool isError, const QString &customMessage );
     void slotBusy( bool isBusy );
+    void slotShowStatusMessage(const QString &message, bool isPermanent);
 
 protected:
     void keyReleaseEvent( QKeyEvent * event );

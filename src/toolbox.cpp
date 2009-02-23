@@ -237,21 +237,6 @@ void Toolbox::sltSetCurrentBlog()
     emit sigCurrentBlogChanged( id );
 }
 
-void Toolbox::sltCurrentPageChanged( int index )
-{///FIXME It's clear and not used! maybe it's better to remove it! -Mehrdad
-//  kDebug();
-    if ( !listBlogRadioButtons.checkedButton() )
-        return;
-    switch ( index ) {
-        case 1:
-//   sltLoadEntriesFromDB(listBlogs.value(currentBlog->text(), -1));
-            break;
-        case 2:
-//   sltLoadCategoryListFromDB(listBlogs.value(currentBlog->text(), -1));
-            break;
-    }
-}
-
 void Toolbox::sltLoadEntriesFromDB( int blog_id )
 {
     kDebug();
@@ -260,13 +245,15 @@ void Toolbox::sltLoadEntriesFromDB( int blog_id )
         return;
     }
     lstEntriesList->clear();
-    QMap<int, QString> listEntries;
-    listEntries = DBMan::self()->listPostsTitle( blog_id );
-    QMap<int, QString>::const_iterator endIt = listEntries.constEnd();
-    QMap<int, QString>::const_iterator it = listEntries.constBegin();
-    for ( ; it != endIt; ++it ) {
-        QListWidgetItem *lstItem = new QListWidgetItem( it.value() );
-        lstItem->setData( 32, it.key() );
+    QList<QVariantMap> listEntries;
+    listEntries = DBMan::self()->listPostsInfo( blog_id );
+    int count = listEntries.count();
+    for ( int i=0; i < count; ++i ) {
+        QListWidgetItem *lstItem = new QListWidgetItem( listEntries[i].value("title").toString() );
+        lstItem->setToolTip(listEntries[i].value("m_time").toDateTime().toString());
+        if(listEntries[i].value("is_private").toBool())
+            lstItem->setForeground(QBrush(Qt::blue));
+        lstItem->setData( 32, listEntries[i].value("id").toInt() );
         lstEntriesList->addItem( lstItem );
     }
     statusbar->showMessage( i18n( "Entries list received." ), STATUSTIMEOUT );
@@ -300,11 +287,15 @@ void Toolbox::sltLoadCategoryListFromDB( int blog_id )
 
 void Toolbox::sltRemoveSelectedEntryFromServer()
 {
-    BilboPost post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data(32).toInt() );
-    Backend *b = new Backend(currentBlogId(), this);
-    connect(b, SIGNAL(sigPostRemoved(int,const BilboPost&)), this, SLOT(slotPostRemoved(int,const BilboPost&)) );
-    b->removePost(post);
-    statusbar->showMessage( i18n( "Removing post..." ) );
+    if( KMessageBox::warningYesNoCancel(this, i18n( "Removing a post from your blog is not undoable!\
+\nAre you sure of remoing post with title \"%1\" from your blog?", lstEntriesList->currentItem()->text() ))
+    == KMessageBox::Yes) {
+        BilboPost post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data(32).toInt() );
+        Backend *b = new Backend(currentBlogId(), this);
+        connect(b, SIGNAL(sigPostRemoved(int,const BilboPost&)), this, SLOT(slotPostRemoved(int,const BilboPost&)) );
+        b->removePost(post);
+        statusbar->showMessage( i18n( "Removing post..." ) );
+    }
 }
 
 void Toolbox::slotPostRemoved( int blog_id, const BilboPost &post )
@@ -593,6 +584,7 @@ void Toolbox::reloadLocalPosts()
 void Toolbox::sltLocalEntrySelected( int row, int column )
 {
     kDebug()<<"Emitting sigEntrySelected...";
+    Q_UNUSED(column);
     BilboPost post = DBMan::self()->localPost(localEntriesTable->item(row, 0)->data(32).toInt());
     emit sigEntrySelected( post, localEntriesTable->item(row, 1)->data(32).toInt() );
 }

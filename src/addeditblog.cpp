@@ -306,6 +306,7 @@ void AddEditBlog::fetchedBlogId( const QList< QMap < QString , QString > > & lis
 void AddEditBlog::fetchedProfileId( const QString &id )
 {
     kDebug();
+    Q_UNUSED(id);
     mFetchProfileIdTimer->deleteLater();
     connect( dynamic_cast<KBlog::GData*>( mBlog ), SIGNAL( listedBlogs( const QList<QMap<QString, QString> >& ) ),
              this, SLOT( fetchedBlogId( const QList<QMap<QString, QString> >& ) ) );

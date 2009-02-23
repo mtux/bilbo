@@ -30,7 +30,7 @@ Constants.
  @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 
-// #define VERSION "0.1"
+#define VERSION "0.1"
 #define APPNAME "Bilbo Blogger"
 #define DATA_DIR KStandardDirs::locateLocal("data", "bilbo/")
 #define CONF_DB QString(DATA_DIR)+QString("/bilbo.db")

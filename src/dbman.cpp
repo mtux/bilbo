@@ -919,6 +919,27 @@ QMap< int, QString > DBMan::listPostsTitle( int blog_id )
     return list;
 }
 
+QList<QVariantMap> DBMan::listPostsInfo( int blog_id )
+{
+    QList<QVariantMap> list;
+    QSqlQuery q;
+    q.prepare( "SELECT title, id, m_time, is_private FROM post WHERE blog_id = ? ORDER BY m_time DESC" );
+    q.addBindValue( blog_id );
+    if ( q.exec() ) {
+        while ( q.next() ) {
+            QVariantMap entry;
+            entry[ "title" ] = q.value( 0 ).toString();
+            entry[ "id" ] = q.value( 1 ).toInt();
+            entry[ "m_time" ] = q.value( 2 ).toDateTime();
+            entry[ "is_private" ] = q.value( 3 ).toBool();
+            list.append(entry);
+        }
+    } else
+        kDebug() << "Cannot get list of posts for blog with id " << blog_id;
+
+    return list;
+}
+
 QMap< QString, int > DBMan::listCategoriesName( int blog_id )
 {
     QMap< QString, int > list;
