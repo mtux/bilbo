@@ -23,6 +23,7 @@
 #include "qtextlist.h"
 #include "kdebug.h"
 #include "bilbotextformat.h"
+// #include <QTextLength>
 
 BilboTextHtmlImporter::BilboTextHtmlImporter( QTextDocument *_doc, const QString &_html, const QTextDocument *resourceProvider )
         : indent( 0 ), setNamedAnchorInNextOutput( false ), doc( _doc ), containsCompleteDoc( false )
@@ -191,6 +192,16 @@ void BilboTextHtmlImporter::import()
             appendBlock( blockFormat );
             hasBlock = false;
             continue;
+        } else if ( node->id == Html_comment_more ) {  ///my code
+
+            QTextBlockFormat blockFormat;
+            blockFormat.setProperty( BilboTextFormat::IsHtmlTagSign, true );
+            blockFormat.setProperty( QTextFormat::BlockTrailingHorizontalRulerWidth, 
+             QTextLength( QTextLength::PercentageLength, 80 ) );
+
+            appendBlock( blockFormat );
+            hasBlock = false;
+            continue;   ///my code
         }
 
         if ( node->isBlock ) {

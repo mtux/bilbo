@@ -80,6 +80,7 @@ enum BilboTextHTMLElements {
     Html_img,
     Html_br,
     Html_hr,
+    Html_comment_more,      ///my code
 
     Html_sub,
     Html_sup,
@@ -228,6 +229,8 @@ uint displayMode :
 
     WhiteSpaceMode wsm;
 
+    bool isHtmlTagSign;  ///my code
+
     inline bool isNotSelfNesting() const {
         return id == Html_p || id == Html_li;
     }
@@ -254,7 +257,8 @@ uint displayMode :
     }
 
     inline bool mayNotHaveChildren() const {
-        return id == Html_img || id == Html_hr || id == Html_br;
+//         return id == Html_img || id == Html_hr || id == Html_br;
+        return id == Html_img || id == Html_hr || id == Html_br || id == Html_comment_more ;
     }
 
     void initializeProperties( const BilboTextHtmlParserNode *parent, const BilboTextHtmlParser *parser );
@@ -335,7 +339,8 @@ protected:
     void parse();
     void parseTag();
     void parseCloseTag();
-    void parseExclamationTag();
+//     void parseExclamationTag();
+    bool parseExclamationTag();         ///my code
     QString parseEntity();
     QString parseWord();
     void resolveParent();
