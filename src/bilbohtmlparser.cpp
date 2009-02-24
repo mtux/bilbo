@@ -316,6 +316,7 @@ static QChar resolveEntity( const QString &entity )
 }
 
 static const BilboTextHtmlElement elements[Html_NumElements] = {
+    { "!--more--",  Html_comment_more,  BilboTextHtmlElement::DisplayInline },
     { "a",          Html_a,          BilboTextHtmlElement::DisplayInline },
     { "address",    Html_address,    BilboTextHtmlElement::DisplayInline },
     { "b",          Html_b,          BilboTextHtmlElement::DisplayInline },
@@ -372,7 +373,7 @@ static const BilboTextHtmlElement elements[Html_NumElements] = {
     { "tt",         Html_tt,         BilboTextHtmlElement::DisplayInline },
     { "u",          Html_u,          BilboTextHtmlElement::DisplayInline },
     { "ul",         Html_ul,         BilboTextHtmlElement::DisplayBlock },
-    { "var",        Html_var,        BilboTextHtmlElement::DisplayInline },
+    { "var",        Html_var,        BilboTextHtmlElement::DisplayInline }
 };
 
 static bool operator<( const QString &str, const BilboTextHtmlElement &e )
@@ -390,8 +391,11 @@ static const BilboTextHtmlElement *lookupElement( const QString &element )
     const BilboTextHtmlElement *start = &elements[0];
     const BilboTextHtmlElement *end = &elements[Html_NumElements];
     const BilboTextHtmlElement *e = qBinaryFind( start, end, element );
-    if ( e == end )
+    if ( e == end ) {
+        kDebug() << "not found";
         return 0;
+    }
+    kDebug() << "found";
     return e;
 }
 
@@ -431,8 +435,8 @@ BilboTextHtmlParserNode::BilboTextHtmlParserNode()
         alignment( 0 ), verticalAlignment( QTextCharFormat::AlignNormal ),
         listStyle( QTextListFormat::ListStyleUndefined ), imageWidth( -1 ), imageHeight( -1 ),
         tableBorder( 0 ), tableCellRowSpan( 1 ), tableCellColSpan( 1 ), tableCellSpacing( 2 ),
-        tableCellPadding( 0 ), cssBlockIndent( 0 ), cssListIndent( 0 ), text_indent( 0 ),
-        wsm( WhiteSpaceModeUndefined )
+        tableCellPadding( 0 ), cssBlockIndent( 0 ), cssListIndent( 0 ), text_indent( 0 ), 
+        wsm( WhiteSpaceModeUndefined ), isHtmlTagSign( false )
 {
     margin[BilboTextHtmlParser::MarginLeft] = 0;
     margin[BilboTextHtmlParser::MarginRight] = 0;
@@ -709,6 +713,8 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
         default:
             break;
     }
+
+    isHtmlTagSign = parent->isHtmlTagSign;          ///my code
 
     if ( fontPointSize != oldFontPointSize )
         hasFontPointSize = true;
@@ -1066,14 +1072,20 @@ void BilboTextHtmlParser::parseTag()
 //     kDebug();
     eatSpace();
 
+    bool tagClosed = false;
+
     // handle comments and other exclamation mark declarations
     if ( hasPrefix( QLatin1Char( '!' ) ) ) {
-        parseExclamationTag();
-        if ( nodes.last().wsm != BilboTextHtmlParserNode::WhiteSpacePre
-                && nodes.last().wsm != BilboTextHtmlParserNode::WhiteSpacePreWrap
-                && !textEditMode )
-            eatSpace();
-        return;
+//         parseExclamationTag();
+        if ( parseExclamationTag() ) {
+            if ( nodes.last().wsm != BilboTextHtmlParserNode::WhiteSpacePre
+                    && nodes.last().wsm != BilboTextHtmlParserNode::WhiteSpacePreWrap
+                    && !textEditMode )
+                eatSpace();
+            return;
+        } else {
+            tagClosed = true;
+        }
     }
 
     // if close tag just close
@@ -1099,6 +1111,7 @@ void BilboTextHtmlParser::parseTag()
 
     // parse tag name
     node->tag = parseWord().toLower();
+    kDebug() << node->tag;
 
     const BilboTextHtmlElement *elem = ::lookupElement( node->tag );
     if ( elem ) {
@@ -1108,6 +1121,7 @@ void BilboTextHtmlParser::parseTag()
     } else {
         node->id = -1;
     }
+    kDebug() << node->id;
 
     node->isListItem = ( node->id == Html_li );
     node->isListStart = ( node->id == Html_ol || node->id == Html_ul );
@@ -1125,7 +1139,7 @@ void BilboTextHtmlParser::parseTag()
     applyAttributes( node->attributes );
 
     // finish tag
-    bool tagClosed = false;
+//     bool tagClosed = false;
     while ( pos < len && txt.at( pos ) != QLatin1Char( '>' ) ) {
         if ( txt.at( pos ) == QLatin1Char( '/' ) )
             tagClosed = true;
@@ -1149,12 +1163,18 @@ void BilboTextHtmlParser::parseTag()
 
 // parses a tag beginning with "!"
 // parses a tag beginning with "!"
-void BilboTextHtmlParser::parseExclamationTag()
+bool BilboTextHtmlParser::parseExclamationTag()
 {
     ++pos;
     if ( hasPrefix( QLatin1Char( '-' ), 1 ) && hasPrefix( QLatin1Char( '-' ), 2 ) ) {
-        pos += 3;
+//         pos += 3;
+        pos += 2;       ///my code
         // eat comments
+        if ( pos == txt.indexOf( QLatin1String( "more" ), pos ) ) { ///my code
+            pos-=3;     ///my code
+            return false;       ///my code
+        }
+        pos++;      ///my code
         int end = txt.indexOf( QLatin1String( "-->" ), pos );
         pos = ( end >= 0 ? end + 3 : len );
     } else {
@@ -1165,6 +1185,7 @@ void BilboTextHtmlParser::parseExclamationTag()
                 break;
         }
     }
+    return true;
 }
 
 
@@ -1571,6 +1592,10 @@ void BilboTextHtmlParser::applyAttributes( const QStringList &attributes )
                 else if ( key == QLatin1String( "type" ) )
                     linkType = value;
                 break;
+            case Html_comment_more:             ///my code
+                node->isHtmlTagSign = true;         ///my code
+//                 setWidthAttribute( &node->width, QLatin1String( "80%" ) );
+                break;      ///my code
             default:
                 break;
         }

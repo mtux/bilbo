@@ -30,6 +30,7 @@
  @author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 // class BilboTextCharFormat : public QTextCharFormat
+
 class BilboTextFormat
 {
     //Q_OBJECT
@@ -48,6 +49,8 @@ public:
         /// Image properties
         ImageTitle = 0x100020,
         ImageAlternateText = 0x100021,
+        
+        IsHtmlTagSign = 0x100031,
     };
 //   enum TargetStyle {
 //    OpenInCurrentWindow = 1,
