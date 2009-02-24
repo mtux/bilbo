@@ -119,6 +119,8 @@ public:
     bool updateMediaPaths();
 //   KActionCollection *visualEditorActions;
 
+Q_SIGNALS:
+    void textChanged();
 protected Q_SLOTS:
     /*!
     Changes Italic style of current format.

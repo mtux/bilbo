@@ -23,7 +23,7 @@
 #define CATCHECKBOX_H
 
 #include <QCheckBox>
-#include "constants.h"
+#include "category.h"
 /**
 Extend QCheckBox to add property needed for Category checkboxes.
 

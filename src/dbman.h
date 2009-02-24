@@ -24,6 +24,7 @@
 #include <QtSql>
 #include "bilbomedia.h"
 #include "constants.h"
+#include "category.h"
 class BilboBlog;
 class BilboPost;
 namespace KWallet
@@ -72,6 +73,7 @@ public:
 
     QList<BilboPost*> listPosts( int blog_id );
     QMap< int, QString > listPostsTitle( int blog_id );///QString as Title, and int as post_id
+    QList<QVariantMap> listPostsInfo( int blog_id );
     BilboPost getPostInfo( int post_id );
 
     QMap<QString, int> listCategoriesName( int blog_id );
@@ -88,7 +90,7 @@ public:
     Map value (e.g. int) is blog id.
     */
     QList<QVariantMap> listLocalPosts();
-    BilboPost localEntry(int local_id);
+    BilboPost localPost(int local_id);
     ///END
 
     ///(BEGIN) Data Manipulation Functions:

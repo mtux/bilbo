@@ -90,6 +90,7 @@ private slots:
     void optionsPreferences();
     void postManipulationDone( bool isError, const QString &customMessage );
     void slotBusy( bool isBusy );
+    void slotShowStatusMessage(const QString &message, bool isPermanent);
 
 protected:
     void keyReleaseEvent( QKeyEvent * event );
@@ -118,15 +119,15 @@ private:
     SysTray *systemTray;
     KTabWidget *tabPosts;
 
-    KAction *actAddBlog;
-    KAction *actUploadAll;
-    KAction *actNewPost;
-    KAction *actPublish;
-    KAction *actSaveLocally;
-    KAction *actSaveDraft;
-    KToggleAction *actToggleToolboxVisible;
-    KAction *actSave;
-    KAction *actClearImageCache;
+//     KAction *actAddBlog;
+//     KAction *actUploadAll;
+//     KAction *actNewPost;
+//     KAction *actPublish;
+//     KAction *actSaveLocally;
+//     KAction *actSaveDraft;
+//     KToggleAction *actToggleToolboxVisible;
+//     KAction *actSave;
+//     KAction *actClearImageCache;
 
     QToolButton *btnRemovePost;
     int previousActivePostIndex;

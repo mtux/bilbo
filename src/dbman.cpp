@@ -242,14 +242,15 @@ int DBMan::addPost( const BilboPost & post, int blog_id )
 {
     kDebug() << "Adding post with title: " << post.title() << " to Blog " << blog_id;
     QSqlQuery q;
-    q.prepare( "INSERT INTO post (postid, blog_id, author, title, content, c_time, m_time, is_private,\
-               is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags, status)\
-               VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+    q.prepare( "INSERT INTO post (postid, blog_id, author, title, content, text_more, c_time, m_time,\
+               is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary,\
+               tags, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
     q.addBindValue( post.postId() );
     q.addBindValue( blog_id );
     q.addBindValue( post.author() );
     q.addBindValue( post.title() );
     q.addBindValue( post.content() );
+    q.addBindValue( post.additionalContent() );
     q.addBindValue( post.creationDateTime().toString( KDateTime::ISODate ) );
     q.addBindValue( post.creationDateTime().toString( KDateTime::ISODate ) );
     q.addBindValue( post.isPrivate() );
@@ -293,12 +294,13 @@ bool DBMan::editPost( const BilboPost & post, int blog_id )
 {
     kDebug();
     QSqlQuery q;
-    q.prepare( "UPDATE post SET author=?, title=?, content=?, c_time=?, m_time=?,\
+    q.prepare( "UPDATE post SET author=?, title=?, content=?, text_more=?, c_time=?, m_time=?,\
                is_private=?, is_comment_allowed=?, is_trackback_allowed=?, link=?, perma_link=?, summary=?,\
                tags=?, status=? WHERE postid=? AND blog_id=?" );
     q.addBindValue( post.author() );
     q.addBindValue( post.title() );
     q.addBindValue( post.content() );
+    q.addBindValue( post.additionalContent() );
     q.addBindValue( post.creationDateTime().toString( KDateTime::ISODate ) );
     q.addBindValue( post.modificationDateTime().toString( KDateTime::ISODate ) );
     q.addBindValue( post.isPrivate() );
@@ -499,13 +501,14 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
         if(post.id() == -1){
             ///Add new post to temp_post
             q.prepare( "INSERT OR REPLACE INTO "+ postTable +" (postid, blog_id, author, title, content,\
-            c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link,\
-            summary, tags, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+            text_more, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link,\
+            summary, tags, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
             q.addBindValue( post.postId() );
             q.addBindValue( blog_id );
             q.addBindValue( post.author() );
             q.addBindValue( post.title() );
             q.addBindValue( post.content() );
+            q.addBindValue( post.additionalContent() );
             q.addBindValue( post.creationDateTime().toString( KDateTime::ISODate ) );
             q.addBindValue( post.creationDateTime().toString( KDateTime::ISODate ) );
             q.addBindValue( post.isPrivate() );
@@ -526,15 +529,16 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
         } else {
             ///Update post, with id!
             q.prepare( "INSERT OR REPLACE INTO "+ postTable +" (local_id, postid, blog_id, author, title,\
-            content, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link,\
+            content, text_more, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link,\
             perma_link, summary, tags, status)\
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
             q.addBindValue( post.id() );
             q.addBindValue( post.postId() );
             q.addBindValue( blog_id );
             q.addBindValue( post.author() );
             q.addBindValue( post.title() );
             q.addBindValue( post.content() );
+            q.addBindValue( post.additionalContent() );
             q.addBindValue( post.creationDateTime().toString( KDateTime::ISODate ) );
             q.addBindValue( post.creationDateTime().toString( KDateTime::ISODate ) );
             q.addBindValue( post.isPrivate() );
@@ -554,15 +558,17 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
             }
         }
     } else {///Post is already created at "Post" table and has a valid id, postId and blog_id. So, local_id is useless here
-        q.prepare( "INSERT OR REPLACE INTO "+ postTable +" (id, postid, blog_id, author, title, content, c_time, m_time, is_private,\
+        q.prepare( "INSERT OR REPLACE INTO "+ postTable +" (id, postid, blog_id, author, title,\
+        content, text_more, c_time, m_time, is_private,\
         is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags, status)\
-        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
         q.addBindValue( post.id() );
         q.addBindValue( post.postId() );
         q.addBindValue( blog_id );
         q.addBindValue( post.author() );
         q.addBindValue( post.title() );
         q.addBindValue( post.content() );
+        q.addBindValue( post.additionalContent() );
         q.addBindValue( post.creationDateTime().toString( KDateTime::ISODate ) );
         q.addBindValue( post.creationDateTime().toString( KDateTime::ISODate ) );
         q.addBindValue( post.isPrivate() );
@@ -783,7 +789,7 @@ QList< BilboPost* > DBMan::listPosts( int blog_id )
     QList<BilboPost *> list;
     QSqlQuery q;
     q.prepare( "SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed,\
-               is_trackback_allowed, link, perma_link, summary, tags, status\
+               is_trackback_allowed, link, perma_link, summary, tags, status, text_more\
                FROM post WHERE blog_id = ? ORDER BY m_time DESC" );
     q.addBindValue( blog_id );
     if ( q.exec() ) {
@@ -804,6 +810,7 @@ QList< BilboPost* > DBMan::listPosts( int blog_id )
             tmp->setSummary( q.value( 12 ).toString() );
             tmp->setTags( q.value( 13 ).toString().split( ',', QString::SkipEmptyParts ) );
             tmp->setStatus(( KBlog::BlogPost::Status ) q.value( 14 ).toInt() );
+            tmp->setAdditionalContent( q.value( 15 ).toString() );
 
             ///get Category list:
             QList<Category> catList;
@@ -840,7 +847,8 @@ BilboPost DBMan::getPostInfo( int post_id )
     QSqlQuery q;
     BilboPost tmp;
     q.prepare( "SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed,\
-               is_trackback_allowed, link, perma_link, summary, tags, status, blog_id FROM post WHERE id = ?" );
+               is_trackback_allowed, link, perma_link, summary, tags, status, blog_id, text_more\
+               FROM post WHERE id = ?" );
     q.addBindValue( post_id );
     if ( q.exec() ) {
         if ( q.next() ) {
@@ -862,6 +870,7 @@ BilboPost DBMan::getPostInfo( int post_id )
             tmp.setTags( q.value( 13 ).toString().split( ',', QString::SkipEmptyParts ) );
             tmp.setStatus(( KBlog::BlogPost::Status ) q.value( 14 ).toInt() );
             int blog_id = q.value( 15 ).toInt();
+            tmp.setAdditionalContent(  q.value( 16 ).toString() );
 
             ///get Category list:
             QList<Category> catList;
@@ -903,6 +912,27 @@ QMap< int, QString > DBMan::listPostsTitle( int blog_id )
     if ( q.exec() ) {
         while ( q.next() ) {
             list.insert( q.value( 1 ).toInt(), q.value( 0 ).toString() );
+        }
+    } else
+        kDebug() << "Cannot get list of posts for blog with id " << blog_id;
+
+    return list;
+}
+
+QList<QVariantMap> DBMan::listPostsInfo( int blog_id )
+{
+    QList<QVariantMap> list;
+    QSqlQuery q;
+    q.prepare( "SELECT title, id, m_time, is_private FROM post WHERE blog_id = ? ORDER BY m_time DESC" );
+    q.addBindValue( blog_id );
+    if ( q.exec() ) {
+        while ( q.next() ) {
+            QVariantMap entry;
+            entry[ "title" ] = q.value( 0 ).toString();
+            entry[ "id" ] = q.value( 1 ).toInt();
+            entry[ "m_time" ] = q.value( 2 ).toDateTime();
+            entry[ "is_private" ] = q.value( 3 ).toBool();
+            list.append(entry);
         }
     } else
         kDebug() << "Cannot get list of posts for blog with id " << blog_id;
@@ -1057,7 +1087,7 @@ QList<QVariantMap> DBMan::listLocalPosts()
     return list;
 }
 
-BilboPost DBMan::localEntry(int local_id)
+BilboPost DBMan::localPost(int local_id)
 {
     QSqlQuery q;
     BilboPost tmp;
@@ -1073,6 +1103,7 @@ BilboPost DBMan::localEntry(int local_id)
             tmp.setAuthor( q.value( 4 ).toString() );
             tmp.setTitle( q.value( 5 ).toString() );
             tmp.setContent( q.value( 6 ).toString() );
+            tmp.setAdditionalContent( q.value( 7 ).toString() );
             tmp.setCreationDateTime( KDateTime::fromString( q.value( 8 ).toString(), KDateTime::ISODate ) );
             tmp.setModificationDateTime( KDateTime::fromString( q.value( 9 ).toString(), KDateTime::ISODate ) );
             tmp.setPrivate( q.value( 10 ).toBool() );

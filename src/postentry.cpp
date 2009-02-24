@@ -26,7 +26,6 @@
 #include <KMessageBox>
 #include "postentry.h"
 #include "bilboeditor.h"
-#include "bilbopost.h"
 #include "bilbomedia.h"
 #include "backend.h"
 #include "dbman.h"
@@ -53,6 +52,10 @@ PostEntry::PostEntry( QWidget *parent )
     connect( qApp, SIGNAL(aboutToQuit()), this, SLOT(saveTemporary()) );
     progress = 0;
     mCurrentPostBlogId = -1;
+//     mIsModified = false;
+    isPostContentModified = false;
+    connect( editPostWidget, SIGNAL(textChanged()), this, SLOT(slotPostModified()) );
+//     connect( txtTitle, SIGNAL(textChanged(QString)), this, SLOT(slotPostModified()) );
 }
 
 void PostEntry::settingsChanged()
@@ -89,7 +92,6 @@ void PostEntry::createUi()
 
 void PostEntry::sltTitleChanged( const QString& title )
 {
-//     kDebug();
     mCurrentPost.setTitle( title );
     Q_EMIT sigTitleChanged( title );
 }
@@ -99,17 +101,6 @@ QString PostEntry::postTitle() const
     return mCurrentPost.title();
 }
 
-const QString& PostEntry::postBody()
-{
-    kDebug();
-    const QString& str = this->editPostWidget->htmlContent();
-//     if ( !mCurrentPost ) {
-//         mCurrentPost = new BilboPost;
-//     }
-    mCurrentPost.setContent( str );
-    return str;
-}
-
 void PostEntry::setPostTitle( const QString & title )
 {
     kDebug();
@@ -117,11 +108,20 @@ void PostEntry::setPostTitle( const QString & title )
     mCurrentPost.setTitle( title );
 }
 
-void PostEntry::setPostBody( const QString & body )
+void PostEntry::setPostBody( const QString & content, const QString &additionalContent )
 {
     kDebug();
+    QString body;
+    if(additionalContent.isEmpty()) {
+        body = content;
+    } else {
+        body = content + "<!--more-->" + additionalContent;
+    }
     mCurrentPost.setContent( body );
     this->editPostWidget->setHtmlContent( body );
+    isPostContentModified = false;
+    connect( editPostWidget, SIGNAL(textChanged()), this, SLOT(slotPostModified()) );
+//     connect( txtTitle, SIGNAL(textChanged(QString)), this, SLOT(slotPostModified()) );
 }
 
 int PostEntry::currentPostBlogId()
@@ -135,10 +135,21 @@ void PostEntry::setCurrentPostBlogId( int blog_id )
     mCurrentPostBlogId = blog_id;
 }
 
+void PostEntry::setCurrentPostFromEditor()
+{
+    if( isPostContentModified ) {
+        kDebug();
+        const QString& str = this->editPostWidget->htmlContent();
+        mCurrentPost.setContent( str );
+        isPostContentModified = false;
+        connect( editPostWidget, SIGNAL(textChanged()), this, SLOT(slotPostModified()) );
+    }
+}
+
 BilboPost* PostEntry::currentPost()
 {
     kDebug();
-    mCurrentPost.setContent( QString( postBody() ) );
+    setCurrentPostFromEditor();
     return &mCurrentPost;
 }
 
@@ -149,7 +160,7 @@ void PostEntry::setCurrentPost( const BilboPost &post )
 //         delete mCurrentPost;
     mCurrentPost = post;
 //     kDebug()<<"postId: "<<mCurrentPost.postId();
-    this->setPostBody( mCurrentPost.content() );
+    this->setPostBody( mCurrentPost.content(), mCurrentPost.additionalContent() );
     this->setPostTitle( mCurrentPost.title() );
 }
 
@@ -169,12 +180,6 @@ PostEntry::~PostEntry()
 {
     kDebug();
 //     delete mCurrentPost;
-}
-
-void PostEntry::setCurrentPostProperties( const BilboPost &post )
-{
-    kDebug();
-    mCurrentPost.setProperties( post );
 }
 
 QMap< QString, BilboMedia * > & PostEntry::mediaList()
@@ -253,6 +258,13 @@ void PostEntry::sltMediaError( const QString & errorMessage, BilboMedia * media 
 void PostEntry::publishPost( int blogId, const BilboPost &postData )
 {
     kDebug();
+    setCurrentPostFromEditor();
+    if ( mCurrentPost.content().isEmpty() || mCurrentPost.title().isEmpty() ) {
+        if ( KMessageBox::warningContinueCancel( this,
+            i18n( "Your post title or body is empty!\nAre you sure of submiting this post?" )
+            ) == KMessageBox::Cancel )
+            return;
+    }
     bool isNew = false;
     if(mCurrentPost.status() == BilboPost::New)
         isNew = true;
@@ -262,15 +274,25 @@ void PostEntry::publishPost( int blogId, const BilboPost &postData )
         mCurrentPost.setProperties( postData );
         mCurrentPostBlogId = blogId;
 
-        if(dia->isNew())
-            isNewPost = true;
-        else
-            isNewPost = false;
-
-        if(dia->isPrivate())
+        QString msgType;
+        if(dia->isPrivate()) {
+            msgType =  i18nc("Post status, e.g Draft or Published Post", "draft");
             mCurrentPost.setPrivate(true);
-        else
+        } else {
+            msgType =  i18nc("Post status, e.g Draft or Published Post", "post");
             mCurrentPost.setPrivate(false);
+        }
+
+        QString statusMsg;
+        if(dia->isNew()) {
+            statusMsg = i18n("Submiting new %1...", msgType);
+            isNewPost = true;
+        } else {
+            statusMsg = i18n("Modifying %1...", msgType);
+            isNewPost = false;
+        }
+
+        emit showStatusMessage(statusMsg, true);
 
         if ( !this->uploadMediaFiles() )
             publishPostAfterUploadMediaFiles();
@@ -297,10 +319,7 @@ void PostEntry::publishPostAfterUploadMediaFiles()
 void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
 {
     kDebug() << "BlogId: " << blog_id << "Post Id on server: " << post->postId();
-    ///FIXME This DB communication is un necessary! fix it
-//  BilboBlog *b = DBMan::self()->getBlogInfo(blog_id);
-    QString blog_name = "NOT SET";// = b->title();
-//  delete b;
+    DBMan::self()->removeTempEntry(mCurrentPost);
     QString msg;
     mCurrentPost = (*post);
     if ( mCurrentPost.isPrivate() ) {
@@ -355,18 +374,31 @@ are you sure of saving an empty post?")) == KMessageBox::NoExec )
 //         }
 //         ++it;
 //     }
-    ///^ Removed, so from now the media files aren't moved to anywhere. -Mehrdad
+    ///^ Removed, so the media files don't moved to anywhere. -Mehrdad
     mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry( mCurrentPost, mCurrentPostBlogId, DBMan::Local ) );
+    emit postSavedLocally();
+    emit showStatusMessage(i18n( "Post saved locally." ), false);
+//     connect( editPostWidget, SIGNAL(textChanged()), this, SLOT(slotPostModified()) );
+//     connect( txtTitle, SIGNAL(textChanged(QString)), this, SLOT(slotPostModified()) );
 }
 
 void PostEntry::saveTemporary()
 {
     kDebug();
     if( !currentPost()->content().isEmpty() ) {
-//         kDebug()<<"postId: "<<mCurrentPost.postId();
         mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry(mCurrentPost, mCurrentPostBlogId, DBMan::Temp) );
+        emit postSavedTemporary();
         kDebug()<<"Temporary saved";
     }
+}
+
+void PostEntry::slotPostModified()
+{
+    kDebug();
+    disconnect( editPostWidget, SIGNAL(textChanged()), this, SLOT(slotPostModified()) );
+//         disconnect( txtTitle, SIGNAL(textChanged(QString)), this, SLOT(slotPostModified()) );
+    emit postModified();
+    isPostContentModified = true;
 }
 
 #include "postentry.moc"

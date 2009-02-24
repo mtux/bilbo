@@ -25,7 +25,7 @@
 #include <QDockWidget>
 #include <QtGui>
 #include <QDir>
-#include "constants.h"
+#include "category.h"
 #include "ui_toolboxbase.h"
 
 class KStatusBar;
@@ -74,7 +74,6 @@ public slots:
     void sltGetEntriesCount( int );
     void sltLoadEntriesFromDB( int blog_id );
     void sltRemoveSelectedEntryFromServer();
-    void sltCurrentPageChanged( int );
     void sltCurrentBlogChanged( int blog_id );
     void resetFields();
     void sltEntrySelected( QListWidgetItem *item );

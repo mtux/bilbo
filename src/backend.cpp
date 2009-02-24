@@ -57,7 +57,7 @@ Backend::Backend( int blog_id, QObject* parent ): QObject( parent )
         case BilboBlog::WORDPRESSBUGGY_API:
             mKBlog = new KBlog::WordpressBuggy( KUrl(), this );
     }
-
+    mKBlog->setUserAgent(APPNAME, VERSION);
     mKBlog->setUsername( mBBlog->username() );
     mKBlog->setPassword( mBBlog->password() );
     mKBlog->setUrl( KUrl( mBBlog->url() ) );
@@ -123,7 +123,8 @@ void Backend::categoriesListed( const QList< QMap < QString , QString > > & cate
 void Backend::getEntriesListFromServer( int count )
 {
     kDebug() << "Blog Id: " << mBBlog->id();
-    connect( mKBlog, SIGNAL( listedRecentPosts( const QList<KBlog::BlogPost> & ) ), this, SLOT( entriesListed( const QList<KBlog::BlogPost >& ) ) );
+    connect( mKBlog, SIGNAL( listedRecentPosts( const QList<KBlog::BlogPost> & ) ),
+             this, SLOT( entriesListed( const QList<KBlog::BlogPost >& ) ) );
     mKBlog->listRecentPosts( count );
 }
 
@@ -153,6 +154,11 @@ void Backend::publishPost( BilboPost * post )
             bp->categories().clear();
             categoryListNotSet = true;
             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
+        }
+        QStringList content = post->content().split("<!--more-->");
+        if( content.count() == 2 ) {
+            bp->setContent(content[0]);
+            bp->setAdditionalContent( content[1] );
         }
     }
     mKBlog->createPost( bp );
@@ -329,6 +335,11 @@ void Backend::modifyPost( BilboPost * post )
             categoryListNotSet = true;
             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
         }
+        QStringList content = post->content().split("<!--more-->");
+        if( content.count() > 0 )
+            bp->setContent(content[0]);
+        if( content.count() > 1 )
+            bp->setAdditionalContent( content[1] );
     }
         mKBlog->modifyPost( bp );
 }
@@ -439,7 +450,7 @@ QString Backend::errorTypeToString( KBlog::Blog::ErrorType type )
             errType = i18n( "Not Supported Error: " );
             break;
         default:
-            errType = i18n( "Unknown Error type: " );
+            errType = i18n( "Unknown Error: " );
     };
     return errType;
 }

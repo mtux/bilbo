@@ -30,20 +30,20 @@ BilboPost::BilboPost()
     kDebug();
     this->setCreationDateTime( KDateTime::currentLocalDateTime() );
     this->setModificationDateTime( KDateTime::currentLocalDateTime() );
-    this->setLink( KUrl() );
-    this->setPermaLink( KUrl() );
-    this->setCategories( QStringList() );
-    this->setCategoryList( QList<Category>() );
+//     this->setLink( KUrl() );
+//     this->setPermaLink( KUrl() );
+//     this->setCategories( QStringList() );
+//     this->setCategoryList( QList<Category>() );
     this->setCommentAllowed( true );
-    this->setContent( QString() );
-    this->setTags( QStringList() );
-    this->setMood( QString() );
-    this->setMusic( QString() );
+//     this->setContent( QString() );
+//     this->setTags( QStringList() );
+//     this->setMood( QString() );
+//     this->setMusic( QString() );
     this->setPrivate( false );
-    this->setSummary( QString() );
+//     this->setSummary( QString() );
     this->setTrackBackAllowed( true );
-    this->setTitle( QString() );
-    this->setAuthor( QString() );
+//     this->setTitle( QString() );
+//     this->setAuthor( QString() );
     this->mModifyTimeStamp = false;
     this->setId( -1 );
     this->setStatus( KBlog::BlogPost::New );
@@ -101,6 +101,7 @@ KBlog::BlogPost * BilboPost::toKBlogPost()
     pp->setLink( this->link() );
     pp->setPermaLink( this->permaLink() );
     pp->setStatus( this->status() );
+    pp->setAdditionalContent( this->additionalContent() );
 
     return pp;
 }
@@ -115,6 +116,7 @@ QString BilboPost::toString() const
     ret += QString( "\nID: " ) + postId();
     ret += QString( "\nTitle: " ) + title();
     ret += QString( "\nContent: " ) + content();
+    ret += "\nAdditionalContent: " + additionalContent();
     ret += "\nTags: " + tags().join( "," );
     ret += "\nCategories: " + categories().join( "," );
     ret += "\nCreation Date Time: " + creationDateTime().toString();
@@ -150,6 +152,7 @@ BilboPost::BilboPost( const BilboPost &post )
     this->setModifyTimeStamp( post.isModifyTimeStamp() );
     this->setId( post.id() );
     this->setStatus( post.status() );
+    this->setAdditionalContent( post.additionalContent() );
 }
 
 bool BilboPost::isModifyTimeStamp() const

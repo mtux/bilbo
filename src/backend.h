@@ -24,7 +24,7 @@
 
 #include <QObject>
 #include <QMap>
-#include "constants.h"
+#include "category.h"
 #include <blog.h>
 
 

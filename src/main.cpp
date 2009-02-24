@@ -32,11 +32,11 @@
 static const char description[] =
     I18N_NOOP( "A KDE Blogging client." );
 
-static const char version[] = "0.2";
+// static const char version[] = "0.2";
 
 int main( int argc, char *argv[] )
 {
-    KAboutData about( "bilbo", 0, ki18n( "Bilbo Blogger" ), version, ki18n( description ),
+    KAboutData about( "bilbo", 0, ki18n( "Bilbo Blogger" ), VERSION, ki18n( description ),
                       KAboutData::License_GPL_V3, ki18n( "(C) 2008-2009 Bilbo Developers" ),
                       KLocalizedString(), "http://bilbo.sourceforge.net",
                       "https://bugs.launchpad.net/bilbo" );
