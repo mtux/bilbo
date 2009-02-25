@@ -99,60 +99,80 @@ bool DBMan::createDB()
     QSqlQuery q;
     ///Blog table!
     if ( !q.exec( "CREATE TABLE blog (id INTEGER PRIMARY KEY, blogid TEXT, blog_url TEXT, username TEXT,\
-                  style_url TEXT, api_type TEXT, title TEXT, direction TEXT, local_directory TEXT)" ) )
+                  style_url TEXT, api_type TEXT, title TEXT, direction TEXT, local_directory TEXT)" ) ) {
         ret = false;
+        mLastErrorText = q.lastError().text();
+    }
 
     ///posts table!
     if ( !q.exec( "CREATE TABLE post (id INTEGER PRIMARY KEY, postid TEXT NOT NULL, blog_id NUMERIC NOT NULL,\
                   author TEXT, slug TEXT, post_password TEXT, title TEXT, content TEXT, text_more TEXT,\
                   c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC,\
                   is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT,\
-                  status NUMERIC, UNIQUE(postid, blog_id));" ) )
+                  status NUMERIC, UNIQUE(postid, blog_id));" ) ) {
         ret = false;
+        mLastErrorText = q.lastError().text();
+    }
 
     ///categories table!
     if ( !q.exec( "CREATE TABLE category (catid INTEGER PRIMARY KEY, name TEXT NOT NULL,\
                   description TEXT, htmlUrl TEXT, rssUrl TEXT, categoryId TEXT, parentId TEXT,\
-                  blog_id NUMERIC NOT NULL, UNIQUE(name,blog_id));" ) )
+                  blog_id NUMERIC NOT NULL, UNIQUE(name,blog_id));" ) ) {
         ret = false;
+        mLastErrorText = q.lastError().text();
+    }
 
     ///files table
     if( !q.exec( "CREATE TABLE file (fileid INTEGER PRIMARY KEY, name TEXT, blog_id NUMERIC, is_uploaded NUMERIC,\
-      local_url TEXT, remote_url TEXT);" ) )
+        local_url TEXT, remote_url TEXT);" ) ) {
         ret = false;
+        mLastErrorText = q.lastError().text();
+    }
 
     ///connection bethween posts and categories
     if ( !q.exec( "CREATE TABLE post_cat (blogId TEXT NOT NULL, postId TEXT NOT NULL,\
-                   categoryId TEXT NOT NULL, UNIQUE(blogId,postId,categoryId));" ) )
+        categoryId TEXT NOT NULL, UNIQUE(blogId,postId,categoryId));" ) ) {
         ret = false;
+        mLastErrorText = q.lastError().text();
+    }
 
     ///connection bethween posts and media files
-    if ( !q.exec( "CREATE TABLE post_file (post_id INTEGER, file_id INTEGER);" ) )
+    if ( !q.exec( "CREATE TABLE post_file (post_id INTEGER, file_id INTEGER);" ) ) {
         ret = false;
+        mLastErrorText = q.lastError().text();
+    }
 
     ///local posts table
     if( !q.exec( "CREATE TABLE local_post (local_id INTEGER PRIMARY KEY, id INTEGER UNIQUE, postid TEXT, blog_id NUMERIC,\
         author TEXT, slug TEXT, post_password TEXT, title TEXT, content TEXT, text_more TEXT,\
         c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC,\
         is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT,\
-        status NUMERIC);" ) )
+        status NUMERIC);" ) ) {
         ret = false;
+        mLastErrorText = q.lastError().text();
+    }
 
     ///Connection between local_posts and categories
-    if( !q.exec( "CREATE TABLE local_post_cat (local_id INT, categoryId TEXT);" ) )
+    if( !q.exec( "CREATE TABLE local_post_cat (local_id INT, categoryId TEXT);" ) ) {
         ret = false;
+        mLastErrorText = q.lastError().text();
+    }
 
     ///temporary posts table
     if( !q.exec( "CREATE TABLE temp_post (local_id INTEGER PRIMARY KEY, id INTEGER UNIQUE, postid TEXT, blog_id NUMERIC,\
                  author TEXT, slug TEXT, post_password TEXT, title TEXT, content TEXT, text_more TEXT,\
                  c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC,\
                  is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT,\
-                 status NUMERIC);" ) )
+                 status NUMERIC);" ) ) {
         ret = false;
+        mLastErrorText = q.lastError().text();
+    }
 
     ///Connection between temp_posts and categories
-    if( !q.exec( "CREATE TABLE temp_post_cat (local_id INT, categoryId TEXT);" ) )
+    if( !q.exec( "CREATE TABLE temp_post_cat (local_id INT, categoryId TEXT);" ) ) {
         ret = false;
+        mLastErrorText = q.lastError().text();
+    }
 
     ///delete related informations on DB, On removing a post or a blog
     q.exec( "CREATE TRIGGER delete_post AFTER DELETE ON post\
@@ -198,8 +218,10 @@ int DBMan::addBlog( const BilboBlog & blog )
         if ( mWallet && mWallet->writePassword( blog.url().url() + '_' + blog.username(), blog.password() ) == 0 )
             kDebug() << "Password stored to kde wallet";
         return q.lastInsertId().toInt();
-    } else
+    } else {
+        mLastErrorText = q.lastError().text();
         return -1;
+    }
 }
 
 bool DBMan::editBlog( const BilboBlog & blog )
@@ -218,6 +240,7 @@ bool DBMan::editBlog( const BilboBlog & blog )
         kDebug() << "Password stored to kde wallet";
     bool res = q.exec();
     if ( !res ) {
+        mLastErrorText = q.lastError().text();
         kDebug() << q.lastError().text();
     }
     return res;
@@ -233,6 +256,7 @@ bool DBMan::removeBlog( int blog_id )
     q.addBindValue( blog_id );
     bool res = q.exec();
     if ( !res ) {
+        mLastErrorText = q.lastError().text();
         kDebug() << q.lastError().text();
     }
     return res;
@@ -279,10 +303,12 @@ int DBMan::addPost( const BilboPost & post, int blog_id )
                 q2.addBindValue(blog_id);
                 if ( !q2.exec() ) {
                     kDebug() << "Cannot add one of categories to Post, SQL Error: " << q2.lastError().text();
+                    mLastErrorText = q.lastError().text();
                 }
             }
         }
     } else {
+        mLastErrorText = q.lastError().text();
         kDebug() << "Cannot Add post to database!\n\tSQL Error: " << q.lastError().text();
         ret = -1;
     }
@@ -326,8 +352,10 @@ bool DBMan::editPost( const BilboPost & post, int blog_id )
     qd.prepare( "DELETE FROM post_cat WHERE postId=? AND blogId=(SELECT blogid FROM blog where id=?)" );
     qd.addBindValue(post.postId());
     qd.addBindValue(blog_id);
-    if ( !qd.exec() )
+    if ( !qd.exec() ) {
+        mLastErrorText = qd.lastError().text();
         kDebug() << "Cannot delete previous categories.";
+    }
 
     ///Add new Categories:
 
@@ -344,6 +372,7 @@ bool DBMan::editPost( const BilboPost & post, int blog_id )
             q2.addBindValue(post.categories()[i]);
             q2.addBindValue(blog_id);
             if ( !q2.exec() ) {
+                mLastErrorText = q2.lastError().text();
                 kDebug() << "Cannot add one of categories to Post, SQL Error: " << q2.lastError().text();
             }
         }
@@ -386,6 +415,7 @@ bool DBMan::clearPosts( int blog_id )
     q.addBindValue( blog_id );
     bool res = q.exec();
     if ( !res ) {
+        mLastErrorText = q.lastError().text();
         kDebug() << q.lastError().text();
     }
     return res;
@@ -407,8 +437,10 @@ int DBMan::addCategory( const QString &name, const QString &description, const Q
 
     if ( q.exec() )
         return q.lastInsertId().toInt();
-    else
+    else {
+        mLastErrorText = q.lastError().text();
         return -1;
+    }
 }
 
 bool DBMan::clearCategories( int blog_id )
@@ -418,6 +450,7 @@ bool DBMan::clearCategories( int blog_id )
     q.addBindValue( blog_id );
     bool res = q.exec();
     if ( !res ) {
+        mLastErrorText = q.lastError().text();
         kDebug() << q.lastError().text();
     }
     return res;
@@ -438,8 +471,10 @@ int DBMan::addFile( QString name, int blog_id, bool isUploaded, QString localUrl
 
     if ( q.exec() )
         return q.lastInsertId().toInt();
-    else
+    else {
+        mLastErrorText = q.lastError().text();
         return -1;
+    }
 }
 
 int DBMan::addFile(const BilboMedia & file)
@@ -454,8 +489,10 @@ int DBMan::addFile(const BilboMedia & file)
 
     if ( q.exec() )
         return q.lastInsertId().toInt();
-    else
+    else {
+        mLastErrorText = q.lastError().text();
         return -1;
+    }
 }
 
 bool DBMan::removeFile( int fileid )
@@ -465,6 +502,7 @@ bool DBMan::removeFile( int fileid )
     q.addBindValue( fileid );
     bool res = q.exec();
     if ( !res ) {
+        mLastErrorText = q.lastError().text();
         kDebug() << q.lastError().text();
     }
     return res;
@@ -477,6 +515,7 @@ bool DBMan::clearFiles( int blog_id )
     q.addBindValue( blog_id );
     bool res = q.exec();
     if ( !res ) {
+        mLastErrorText = q.lastError().text();
         kDebug() << q.lastError().text();
     }
     return res;
@@ -523,6 +562,7 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
             if ( q.exec() ) {
                 localId = postId = q.lastInsertId().toInt();
             } else {
+                mLastErrorText = q.lastError().text();
                 kDebug() << "Cannot Add new local post to database!\n\tSQL Error: " << q.lastError().text();
                 return -1;
             }
@@ -553,6 +593,7 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
             if ( q.exec() ) {
                 localId = postId = q.lastInsertId().toInt();
             } else {
+                mLastErrorText = q.lastError().text();
                 kDebug() << "Cannot Add new local post to database!\n\tSQL Error: " << q.lastError().text();
                 return -1;
             }
@@ -584,6 +625,7 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
             postId = post.id();
             localId = q.lastInsertId().toInt();
         } else {
+            mLastErrorText = q.lastError().text();
             kDebug() << "Cannot Add or Edit local post to database!\n\tSQL Error: " << q.lastError().text();
             return -1;
         }
@@ -593,8 +635,10 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
     QSqlQuery qd;
     qd.prepare( "DELETE FROM " + postCatTable + " WHERE local_id=?" );
     qd.addBindValue( localId );
-    if ( !qd.exec() )
+    if ( !qd.exec() ) {
+        mLastErrorText = q.lastError().text();
         kDebug() << "Cannot delete previouse categories.";
+    }
 
     ///Add new Categories:
     ///Using post_id or if it's empty local_id for postId
@@ -609,6 +653,7 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
             q2.addBindValue(post.categories()[i]);
             q2.addBindValue(blog_id);
             if ( !q2.exec() ) {
+                mLastErrorText = q.lastError().text();
                 kDebug() << "Cannot add one of categories to Post, SQL Error: " << q2.lastError().text();
             }
 //             kDebug()<<"category "<<post.categories()[i] <<" added.";
@@ -661,6 +706,7 @@ bool DBMan::removeTempEntry( const BilboPost &post )
     q.addBindValue( post.id() );
     bool res = q.exec();
     if ( !res ) {
+        mLastErrorText = q.lastError().text();
         kDebug() << q.lastError().text();
     }
     kDebug()<<"Id: "<<post.id()<<"\tStatus: "<<post.status();
@@ -673,6 +719,7 @@ bool DBMan::clearTempEntries()
     QSqlQuery q;
     bool res = q.exec( "DELETE FROM temp_post" );
     if ( !res ) {
+        mLastErrorText = q.lastError().text();
         kDebug() << q.lastError().text();
     }
     return res;
@@ -683,28 +730,31 @@ QList< BilboBlog *> DBMan::listBlogs()
 {
     QList<BilboBlog *> list;
     QSqlQuery q;
-    q.exec( "SELECT id, blogid, blog_url, username, style_url, api_type, title,\
-            direction, local_directory FROM blog" );
-    while ( q.next() ) {
-        BilboBlog *tmp = new BilboBlog;
-        tmp->setId( q.value( 0 ).toInt() );
-        tmp->setBlogId( q.value( 1 ).toString() );
-        tmp->setUrl( QUrl( q.value( 2 ).toString() ) );
-        tmp->setUsername( q.value( 3 ).toString() );
-//   tmp->setPassword (q.value(4).toString());
-        tmp->setStylePath( q.value( 4 ).toString() );
-        tmp->setApi(( BilboBlog::ApiType )q.value( 5 ).toInt() );
-        tmp->setTitle( q.value( 6 ).toString() );
-        tmp->setDirection(( Qt::LayoutDirection )q.value( 7 ).toInt() );
-        tmp->setLocalDirectory( q.value( 8 ).toString() );
-        QString buffer;
-        if ( mWallet && mWallet->readPassword( tmp->url().url() + '_' + tmp->username() , buffer ) == 0 && !buffer.isEmpty() ) {
-            tmp->setPassword( buffer );
-            kDebug() << "Password loaded from kde wallet.";
+    if (q.exec( "SELECT id, blogid, blog_url, username, style_url, api_type, title,\
+            direction, local_directory FROM blog" ) ) {
+        while ( q.next() ) {
+            BilboBlog *tmp = new BilboBlog;
+            tmp->setId( q.value( 0 ).toInt() );
+            tmp->setBlogId( q.value( 1 ).toString() );
+            tmp->setUrl( QUrl( q.value( 2 ).toString() ) );
+            tmp->setUsername( q.value( 3 ).toString() );
+    //   tmp->setPassword (q.value(4).toString());
+            tmp->setStylePath( q.value( 4 ).toString() );
+            tmp->setApi(( BilboBlog::ApiType )q.value( 5 ).toInt() );
+            tmp->setTitle( q.value( 6 ).toString() );
+            tmp->setDirection(( Qt::LayoutDirection )q.value( 7 ).toInt() );
+            tmp->setLocalDirectory( q.value( 8 ).toString() );
+            QString buffer;
+            if ( mWallet && mWallet->readPassword( tmp->url().url() + '_' + tmp->username() , buffer )
+                == 0 && !buffer.isEmpty() ) {
+                tmp->setPassword( buffer );
+                kDebug() << "Password loaded from kde wallet.";
+            }
+            list.append( tmp );
         }
-        list.append( tmp );
+    } else {
+        mLastErrorText = q.lastError().text();
     }
-
     return list;
 }
 
@@ -712,9 +762,12 @@ QMap< QString, int > DBMan::listBlogsTitle()
 {
     QMap< QString, int > list;
     QSqlQuery q;
-    q.exec( "SELECT title, id FROM blog" );
-    while ( q.next() ) {
-        list[q.value( 0 ).toString()] = q.value( 1 ).toInt();
+    if( q.exec( "SELECT title, id FROM blog" ) ) {
+        while ( q.next() ) {
+            list[q.value( 0 ).toString()] = q.value( 1 ).toInt();
+        }
+    } else {
+        mLastErrorText = q.lastError().text();
     }
     return list;
 }
@@ -727,7 +780,7 @@ BilboBlog DBMan::getBlogInfo( QString title )
                direction, local_directory \
                FROM blog WHERE title = ?" );
     q.addBindValue( title );
-    if ( q.exec() )
+    if ( q.exec() ) {
         if ( q.next() ) {
             b.setId( q.value( 0 ).toInt() );
             b.setBlogId( q.value( 1 ).toString() );
@@ -746,7 +799,12 @@ BilboBlog DBMan::getBlogInfo( QString title )
                 kDebug() << "Password loaded from kde wallet.";
             }
             return b;
+        } else {
+            mLastErrorText = i18n( "There isn't any blog with requested title." );
         }
+    } else {
+        mLastErrorText = q.lastError().text();
+    }
     b.setError(true);
     return b;
 }
@@ -778,7 +836,11 @@ BilboBlog DBMan::getBlogInfo( int blog_id )
                 kDebug() << "Password loaded from kde wallet.";
             }
             return b;
+        } else {
+            mLastErrorText = i18n( "There isn't any blog with requested ID." );
         }
+    } else {
+        mLastErrorText = q.lastError().text();
     }
     b.setError(true);
     return b;
@@ -821,7 +883,7 @@ QList< BilboPost* > DBMan::listPosts( int blog_id )
                         WHERE post_cat.postId = ? AND post_cat.blogId = (SELECT blogid FROM blog where id=?)" );
             q2.addBindValue( tmp->postId() );
             q2.addBindValue( blog_id );
-            if ( q2.exec() )
+            if ( q2.exec() ) {
                 while ( q2.next() ) {
                     Category cat;
                     cat.blog_id = blog_id;
@@ -833,12 +895,16 @@ QList< BilboPost* > DBMan::listPosts( int blog_id )
                     cat.parentId = q2.value( 5 ).toString();
                     catList.append( cat );
                 }
+            } else {
+                mLastErrorText = q2.lastError().text();
+            }
             tmp->setCategoryList( catList );
             list.append( tmp );
         }
-    } else
-        kDebug() << "Cannot get list of posts for blog with id " << blog_id;
-
+    } else {
+        mLastErrorText = q.lastError().text();
+        kDebug() << "Cannot get list of posts for blog with id " << blog_id << "error: "<< mLastErrorText;
+    }
     return list;
 }
 
@@ -881,7 +947,7 @@ BilboPost DBMan::getPostInfo( int post_id )
                         WHERE post_cat.postId = ? AND post_cat.blogId = (SELECT blogid FROM blog where id=?)" );
             q2.addBindValue( tmp.postId() );
             q2.addBindValue( blog_id );
-            if ( q2.exec() )
+            if ( q2.exec() ) {
                 while ( q2.next() ) {
                     Category cat;
                     cat.blog_id = q2.value( 6 ).toInt();
@@ -893,9 +959,17 @@ BilboPost DBMan::getPostInfo( int post_id )
                     cat.parentId = q2.value( 5 ).toString();
                     catList.append( cat );
                 }
+            } else {
+                mLastErrorText = q2.lastError().text();
+            }
             tmp.setCategoryList( catList );
+        } else {
+            mLastErrorText = i18n( "There isn't any post with requested ID" );
+            kDebug() << "There isn't any post with id: " << post_id;
+            tmp.setStatus(KBlog::BlogPost::Error);
         }
     } else {
+        mLastErrorText = q.lastError().text();
         kDebug() << "Cannot get post with id " << post_id;
         tmp.setStatus(KBlog::BlogPost::Error);
     }
@@ -913,9 +987,10 @@ QMap< int, QString > DBMan::listPostsTitle( int blog_id )
         while ( q.next() ) {
             list.insert( q.value( 1 ).toInt(), q.value( 0 ).toString() );
         }
-    } else
+    } else {
+        mLastErrorText = q.lastError().text();
         kDebug() << "Cannot get list of posts for blog with id " << blog_id;
-
+    }
     return list;
 }
 
@@ -934,9 +1009,10 @@ QList<QVariantMap> DBMan::listPostsInfo( int blog_id )
             entry[ "is_private" ] = q.value( 3 ).toBool();
             list.append(entry);
         }
-    } else
+    } else {
+        mLastErrorText = q.lastError().text();
         kDebug() << "Cannot get list of posts for blog with id " << blog_id;
-
+    }
     return list;
 }
 
@@ -950,9 +1026,10 @@ QMap< QString, int > DBMan::listCategoriesName( int blog_id )
         while ( q.next() ) {
             list[q.value( 0 ).toString()] = q.value( 1 ).toInt();
         }
-    } else
+    } else {
+        mLastErrorText = q.lastError().text();
         kDebug() << "Cannot get list of categories for blog with id " << blog_id;
-
+    }
     return list;
 }
 
@@ -976,9 +1053,10 @@ QList< Category > DBMan::listCategories( int blog_id )
             c.parentId = q.value( 6 ).toString();
             list.append( c );
         }
-    } else
+    } else {
+        mLastErrorText = q.lastError().text();
         kDebug() << "Cannot get list of categories for blog with id " << blog_id;
-
+    }
     return list;
 }
 
@@ -993,9 +1071,10 @@ QMap< QString, bool > DBMan::listCategoriesId( int blog_id )
         while ( q.next() ) {
             list.insert( q.value( 0 ).toString(), false );
         }
-    } else
+    } else {
+        mLastErrorText = q.lastError().text();
         kDebug() << "Cannot get list of categories for blog with id " << blog_id;
-
+    }
     return list;
 }
 
@@ -1056,12 +1135,14 @@ QMap<BilboPost*, int> DBMan::listTempPosts()
                 tmp->setCategoryList( catList );
                 list.insert( tmp, blog_id);
             } else {
+                mLastErrorText = q2.lastError().text();
                 kDebug()<<"Cannot get categories list of a post. SQL Error: "<< q2.lastError().text();
             }
         }
-    } else
+    } else {
+        mLastErrorText = q.lastError().text();
         kDebug() << "Cannot get list of temporary posts, SQL Error: "<< q.lastError().text();
-
+    }
     return list;
 }
 
@@ -1081,9 +1162,10 @@ QList<QVariantMap> DBMan::listLocalPosts()
             entry[ "blog_title" ] = q.value( 3 ).toString();
             list.append(entry);
         }
-    } else
+    } else {
+        mLastErrorText = q.lastError().text();
         kDebug() << "Cannot get list of local posts. SQL Error: "<< q.lastError().text();
-
+    }
     return list;
 }
 
@@ -1142,13 +1224,16 @@ BilboPost DBMan::localPost(int local_id)
                 }
                 tmp.setCategoryList( catList );
             } else {
+                mLastErrorText = q2.lastError().text();
                 kDebug()<<"Cannot get categories list of local post. SQL Error: "<< q2.lastError().text();
             }
         } else {
+            mLastErrorText = i18n( "there isn't any local post with requested ID " );
             kDebug()<<"there isn't any local post with local_id "<<local_id;
         }
-    } else
+    } else {
+        mLastErrorText = q.lastError().text();
         kDebug() << "Cannot get local post. SQL Error: "<< q.lastError().text();
-
+    }
     return tmp;
 }
