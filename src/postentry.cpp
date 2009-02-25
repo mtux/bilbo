@@ -48,14 +48,19 @@ PostEntry::PostEntry( QWidget *parent )
     this->layout()->addWidget( editPostWidget );
     mTimer = new QTimer(this);
     mTimer->start(Settings::autosaveInterval() * MINUTE);
-    connect( mTimer, SIGNAL(timeout()), this, SLOT(saveTemporary()) );
-    connect( qApp, SIGNAL(aboutToQuit()), this, SLOT(saveTemporary()) );
+    connect( mTimer, SIGNAL(timeout()), this, SLOT( saveTemporary() ) );
+    connect( qApp, SIGNAL(aboutToQuit()), this, SLOT( slotQuit() ) );
     progress = 0;
     mCurrentPostBlogId = -1;
 //     mIsModified = false;
     isPostContentModified = false;
     connect( editPostWidget, SIGNAL(textChanged()), this, SLOT(slotPostModified()) );
 //     connect( txtTitle, SIGNAL(textChanged(QString)), this, SLOT(slotPostModified()) );
+}
+
+void PostEntry::slotQuit()
+{
+    saveTemporary(true);
 }
 
 void PostEntry::settingsChanged()
@@ -115,7 +120,8 @@ void PostEntry::setPostBody( const QString & content, const QString &additionalC
     if(additionalContent.isEmpty()) {
         body = content;
     } else {
-        body = content + "<!--more-->" + additionalContent;
+        body = content + "</p><!--more--><p>" + additionalContent;
+        mCurrentPost.setAdditionalContent(QString());
     }
     mCurrentPost.setContent( body );
     this->editPostWidget->setHtmlContent( body );
@@ -382,10 +388,10 @@ are you sure of saving an empty post?")) == KMessageBox::NoExec )
 //     connect( txtTitle, SIGNAL(textChanged(QString)), this, SLOT(slotPostModified()) );
 }
 
-void PostEntry::saveTemporary()
+void PostEntry::saveTemporary( bool force )
 {
     kDebug();
-    if( !currentPost()->content().isEmpty() && isPostContentModified ) {
+    if( isPostContentModified || ( !currentPost()->content().isEmpty() && force ) ) {
         mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry(mCurrentPost, mCurrentPostBlogId, DBMan::Temp) );
         emit postSavedTemporary();
         kDebug()<<"Temporary saved";

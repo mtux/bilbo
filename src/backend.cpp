@@ -134,7 +134,10 @@ void Backend::entriesListed( const QList< KBlog::BlogPost > & posts )
     DBMan::self()->clearPosts( mBBlog->id() );
 
     for ( int i = 0; i < posts.count(); i++ ) {
-        DBMan::self()->addPost( BilboPost( posts[i] ), mBBlog->id() );
+        BilboPost tempPost( posts[i] );
+        tempPost.setContent( tempPost.content().replace( "\n", "<br/>" ) );
+        tempPost.setAdditionalContent( tempPost.additionalContent().replace( "\n", "<br/>" ) );
+        DBMan::self()->addPost( tempPost, mBBlog->id() );
     }
     kDebug() << "Emitting sigEntriesListFetched ...";
     Q_EMIT sigEntriesListFetched( mBBlog->id() );
@@ -155,8 +158,11 @@ void Backend::publishPost( BilboPost * post )
             categoryListNotSet = true;
             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
         }
+        kDebug()<<"Before break: "<<post->content();
         QStringList content = post->content().split("<!--more-->");
         if( content.count() == 2 ) {
+            kDebug()<<"Content: "<<content[0];
+            kDebug()<<"Additional: "<<content[1];
             bp->setContent(content[0]);
             bp->setAdditionalContent( content[1] );
         }
@@ -189,20 +195,6 @@ void Backend::postPublished( KBlog::BlogPost *post )
         setPostCategories( post->postId(), cats );
     } else {
         savePostInDbAndEmitResult( post );
-//         BilboPost *pp = new BilboPost( *post );
-// //         kDebug()<<pp->toString();
-//         int post_id;
-//         if(post->status() == KBlog::BlogPost::Modified) {
-//             post_id = DBMan::self()->editPost( *pp, mBBlog->id() );
-//         } else {
-//             post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
-//         }
-//         if ( post_id != -1 ) {
-//             pp->setId( post_id );
-//             pp->setPrivate( post->isPrivate() );
-//             kDebug() << "Emiteding sigPostPublished...";
-//             Q_EMIT sigPostPublished( mBBlog->id(), pp );
-//         }
     }
 }
 
@@ -335,11 +327,12 @@ void Backend::modifyPost( BilboPost * post )
             categoryListNotSet = true;
             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
         }
+        kDebug()<<"Before break: "<<post->content();
         QStringList content = post->content().split("<!--more-->");
-        if( content.count() > 0 )
+        if( content.count() == 2 ) {
             bp->setContent(content[0]);
-        if( content.count() > 1 )
             bp->setAdditionalContent( content[1] );
+        }
     }
         mKBlog->modifyPost( bp );
 }
@@ -401,22 +394,8 @@ void Backend::postCategoriesSetted( const QString &postId )
     kDebug();
     KBlog::BlogPost *post = mSetPostCategoriesMap[ postId ];
     savePostInDbAndEmitResult( post );
-//     BilboPost *pp = new BilboPost( *post );
-//     kDebug()<<pp->toString();
     mSetPostCategoriesMap.remove( postId );
-//     int post_id;
-//     if(post->status() == KBlog::BlogPost::Modified) {
-//         post_id = DBMan::self()->editPost( *pp, mBBlog->id() );
-//     } else {
-//         post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
-//     }
-//     if ( post_id != -1 ) {
-// //         pp->setPrivate( post->isPrivate() );
-//         pp->setId( post_id );
-//         kDebug() << "Emitting sigPostPublished ...";
-//         Q_EMIT sigPostPublished( mBBlog->id(), pp );
-//     }
-//     delete post;
+
 }
 
 void Backend::sltMediaError( KBlog::Blog::ErrorType type, const QString & errorMessage, KBlog::BlogMedia * media )
