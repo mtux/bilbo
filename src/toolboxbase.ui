@@ -33,6 +33,9 @@
          <string>&amp;Blogs</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_7" >
+         <property name="margin" >
+          <number>1</number>
+         </property>
          <item row="0" column="0" >
           <widget class="QFrame" name="frameBlog" >
            <property name="sizePolicy" >
@@ -50,6 +53,9 @@
            <layout class="QVBoxLayout" name="verticalLayout" >
             <property name="sizeConstraint" >
              <enum>QLayout::SetDefaultConstraint</enum>
+            </property>
+            <property name="margin" >
+             <number>2</number>
             </property>
            </layout>
           </widget>
@@ -157,7 +163,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>346</width>
+          <width>340</width>
           <height>386</height>
          </rect>
         </property>
@@ -165,6 +171,9 @@ p, li { white-space: pre-wrap; }
          <string>E&amp;ntries</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_5" >
+         <property name="margin" >
+          <number>1</number>
+         </property>
          <item row="1" column="0" >
           <layout class="QHBoxLayout" name="horizontalLayout_4" >
            <item>
@@ -285,14 +294,17 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>219</width>
-          <height>89</height>
+          <width>306</width>
+          <height>403</height>
          </rect>
         </property>
         <attribute name="label" >
          <string>&amp;Categories</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_4" >
+         <property name="margin" >
+          <number>1</number>
+         </property>
          <item row="0" column="0" >
           <widget class="QFrame" name="frameCat" >
            <property name="sizePolicy" >
@@ -307,7 +319,11 @@ p, li { white-space: pre-wrap; }
            <property name="frameShadow" >
             <enum>QFrame::Raised</enum>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_4" />
+           <layout class="QVBoxLayout" name="verticalLayout_4" >
+            <property name="margin" >
+             <number>2</number>
+            </property>
+           </layout>
           </widget>
          </item>
          <item row="1" column="0" >
@@ -412,14 +428,17 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>238</width>
-          <height>323</height>
+          <width>306</width>
+          <height>403</height>
          </rect>
         </property>
         <attribute name="label" >
          <string>&amp;Options</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_6" >
+         <property name="margin" >
+          <number>1</number>
+         </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_7" >
            <item>
@@ -618,14 +637,17 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>127</width>
-          <height>100</height>
+          <width>306</width>
+          <height>403</height>
          </rect>
         </property>
         <attribute name="label" >
          <string>&amp;Local entries</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_3" >
+         <property name="margin" >
+          <number>1</number>
+         </property>
          <item>
           <widget class="QTableWidget" name="localEntriesTable" >
            <property name="editTriggers" >

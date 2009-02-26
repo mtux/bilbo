@@ -118,8 +118,9 @@ protected Q_SLOTS:
 private Q_SLOTS:
     void sltTitleChanged( const QString& title );
     void sltDeleteProgressBar();
-    void saveTemporary();
+    void saveTemporary( bool force=false );
     void slotPostModified();
+    void slotQuit();
 
 private:
     void createUi();

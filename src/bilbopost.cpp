@@ -77,6 +77,7 @@ void BilboPost::setAuthor( const QString &author )
 BilboPost::BilboPost( const KBlog::BlogPost &post )
         : KBlog::BlogPost( post )
 {
+    mId = -1;
     this->mModifyTimeStamp = false;
 }
 

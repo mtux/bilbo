@@ -134,7 +134,10 @@ void Backend::entriesListed( const QList< KBlog::BlogPost > & posts )
     DBMan::self()->clearPosts( mBBlog->id() );
 
     for ( int i = 0; i < posts.count(); i++ ) {
-        DBMan::self()->addPost( BilboPost( posts[i] ), mBBlog->id() );
+        BilboPost tempPost( posts[i] );
+        tempPost.setContent( tempPost.content().replace( "\n", "<br/>" ) );
+        tempPost.setAdditionalContent( tempPost.additionalContent().replace( "\n", "<br/>" ) );
+        DBMan::self()->addPost( tempPost, mBBlog->id() );
     }
     kDebug() << "Emitting sigEntriesListFetched ...";
     Q_EMIT sigEntriesListFetched( mBBlog->id() );
@@ -149,14 +152,17 @@ void Backend::publishPost( BilboPost * post )
              this, SLOT( postPublished( KBlog::BlogPost * ) ) );
 
     if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
-        if ( post->categories().count() > 1 ) {
-            mCreatePostCategories = post->categoryList();
-            bp->categories().clear();
-            categoryListNotSet = true;
-            kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
-        }
+//         if ( post->categories().count() > 1 ) {
+//             mCreatePostCategories = post->categoryList();
+//             bp->categories().clear();
+//             categoryListNotSet = true;
+//             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
+//         }
+        kDebug()<<"Before break: "<<post->content();
         QStringList content = post->content().split("<!--more-->");
         if( content.count() == 2 ) {
+            kDebug()<<"Content: "<<content[0];
+            kDebug()<<"Additional: "<<content[1];
             bp->setContent(content[0]);
             bp->setAdditionalContent( content[1] );
         }
@@ -189,20 +195,6 @@ void Backend::postPublished( KBlog::BlogPost *post )
         setPostCategories( post->postId(), cats );
     } else {
         savePostInDbAndEmitResult( post );
-//         BilboPost *pp = new BilboPost( *post );
-// //         kDebug()<<pp->toString();
-//         int post_id;
-//         if(post->status() == KBlog::BlogPost::Modified) {
-//             post_id = DBMan::self()->editPost( *pp, mBBlog->id() );
-//         } else {
-//             post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
-//         }
-//         if ( post_id != -1 ) {
-//             pp->setId( post_id );
-//             pp->setPrivate( post->isPrivate() );
-//             kDebug() << "Emiteding sigPostPublished...";
-//             Q_EMIT sigPostPublished( mBBlog->id(), pp );
-//         }
     }
 }
 
@@ -329,17 +321,17 @@ void Backend::modifyPost( BilboPost * post )
     connect( mKBlog, SIGNAL( modifiedPost(KBlog::BlogPost*)),
              this, SLOT( postPublished(KBlog::BlogPost*)) );
     if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
-        if ( post->categories().count() > 1 ) {
-            mCreatePostCategories = post->categoryList();
-            bp->categories().clear();
-            categoryListNotSet = true;
-            kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
-        }
+//         if ( post->categories().count() > 1 ) {
+//             mCreatePostCategories = post->categoryList();
+//             bp->categories().clear();
+//             categoryListNotSet = true;
+//             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
+//         }
         QStringList content = post->content().split("<!--more-->");
-        if( content.count() > 0 )
+        if( content.count() == 2 ) {
             bp->setContent(content[0]);
-        if( content.count() > 1 )
             bp->setAdditionalContent( content[1] );
+        }
     }
         mKBlog->modifyPost( bp );
 }
@@ -364,6 +356,20 @@ void Backend::slotPostRemoved( KBlog::BlogPost *post )
         kDebug()<<"cannot remove post from database, error: "<<DBMan::self()->lastErrorText();
     }
     emit sigPostRemoved(mBBlog->id(), BilboPost(*post));
+}
+
+void Backend::fetchPost( BilboPost &post )
+{
+    KBlog::BlogPost *bp = post.toKBlogPost();
+    connect( mKBlog, SIGNAL( fetchedPost(KBlog::BlogPost*)),
+             this, SLOT( slotPostFetched(KBlog::BlogPost*)) );
+    mKBlog->fetchPost( bp );
+}
+
+void Backend::slotPostFetched( KBlog::BlogPost *post )
+{
+    emit sigPostFetched( new BilboPost(*post) );
+    delete post;
 }
 
 void Backend::error( KBlog::Blog::ErrorType type, const QString & errorMessage )
@@ -401,22 +407,8 @@ void Backend::postCategoriesSetted( const QString &postId )
     kDebug();
     KBlog::BlogPost *post = mSetPostCategoriesMap[ postId ];
     savePostInDbAndEmitResult( post );
-//     BilboPost *pp = new BilboPost( *post );
-//     kDebug()<<pp->toString();
     mSetPostCategoriesMap.remove( postId );
-//     int post_id;
-//     if(post->status() == KBlog::BlogPost::Modified) {
-//         post_id = DBMan::self()->editPost( *pp, mBBlog->id() );
-//     } else {
-//         post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
-//     }
-//     if ( post_id != -1 ) {
-// //         pp->setPrivate( post->isPrivate() );
-//         pp->setId( post_id );
-//         kDebug() << "Emitting sigPostPublished ...";
-//         Q_EMIT sigPostPublished( mBBlog->id(), pp );
-//     }
-//     delete post;
+
 }
 
 void Backend::sltMediaError( KBlog::Blog::ErrorType type, const QString & errorMessage, KBlog::BlogMedia * media )

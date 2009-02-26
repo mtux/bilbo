@@ -359,17 +359,17 @@ void Toolbox::getFieldsValue( BilboPost &currentPost )
     currentPost.setTags( this->currentTags() );
     currentPost.setModifyTimeStamp( this->chkOptionsTime->isChecked() );
     if ( currentPost.status() == KBlog::BlogPost::New ) {
-        if ( chkOptionsTime->isChecked() )
+        if ( chkOptionsTime->isChecked() ) {
             currentPost.setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
-        else
+            currentPost.setCreationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
+        } else {
             currentPost.setModificationDateTime( KDateTime::currentLocalDateTime() );
+            currentPost.setCreationDateTime( KDateTime::currentLocalDateTime() );
+        }
     } else {
         if ( chkOptionsTime->isChecked() ) {
             currentPost.setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
-//             currentPost->setCreationDateTime(KDateTime(datetimeOptionstimestamp->dateTime()));
-//         } else {// It means do not change the currentPost Modification time!
-//             currentPost->setModificationDateTime( KDateTime::currentLocalDateTime() );
-//    currentPost->setCreationDateTime(KDateTime::currentLocalDateTime());
+            currentPost.setCreationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
         }
     }
 
@@ -402,10 +402,12 @@ void Toolbox::setFieldsValue( BilboPost* post )
     chkOptionsComments->setChecked( post->isCommentAllowed() );
     chkOptionsTrackback->setChecked( post->isTrackBackAllowed() );
     chkOptionsTime->setChecked( post->isModifyTimeStamp() );
-    optionsTime->setTime( post->modificationDateTime().time() );
-    optionsDate->setDate( post->modificationDateTime().date() );
+    optionsTime->setTime( post->creationDateTime().time() );
+    optionsDate->setDate( post->creationDateTime().date() );
     txtSummary->setPlainText( post->summary() );
-//     txtOptionsTrackback->setText(post.);
+    if( post->status() != BilboPost::New ) {
+        chkOptionsTime->setChecked(true);
+    }
 }
 
 QList< Category > Toolbox::selectedCategories()
