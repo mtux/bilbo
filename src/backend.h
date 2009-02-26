@@ -89,6 +89,16 @@ public:
 
     void setPostCategories( const QString postId, const QMap<QString, bool> &categoriesList );
 
+    /**
+    * Fetch a blog post from the server with a specific ID.
+    * The ID of the existing post must be retrieved using getRecentPosts
+    * and then be modified and provided to this method or a new BlogPost
+    * created with the existing ID.
+    * @param post a blog post with the ID identifying the blog post to fetch.
+    * @see sigPostFetched()
+    */
+    void fetchPost( BilboPost &post );
+
 protected Q_SLOTS:
     void categoriesListed( const QList< QMap< QString, QString > > &   categories );
     void entriesListed( const QList< KBlog::BlogPost > &posts );
@@ -98,6 +108,7 @@ protected Q_SLOTS:
     void sltMediaError( KBlog::Blog::ErrorType type, const QString &errorMessage, KBlog::BlogMedia *media );
     void postCategoriesSetted( const QString &postId );
     void slotPostRemoved( KBlog::BlogPost *post );
+    void slotPostFetched( KBlog::BlogPost *post );
 
 Q_SIGNALS:
     /**
@@ -129,6 +140,8 @@ Q_SIGNALS:
      * this signal is emitted when a post removed successfully.
      */
     void sigPostRemoved( int blog_id, const BilboPost &post);
+
+    void sigPostFetched( BilboPost *post );
 
     /**
      * this signal emitted when an error occured on current transaction.

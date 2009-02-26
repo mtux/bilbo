@@ -152,12 +152,12 @@ void Backend::publishPost( BilboPost * post )
              this, SLOT( postPublished( KBlog::BlogPost * ) ) );
 
     if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
-        if ( post->categories().count() > 1 ) {
-            mCreatePostCategories = post->categoryList();
-            bp->categories().clear();
-            categoryListNotSet = true;
-            kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
-        }
+//         if ( post->categories().count() > 1 ) {
+//             mCreatePostCategories = post->categoryList();
+//             bp->categories().clear();
+//             categoryListNotSet = true;
+//             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
+//         }
         kDebug()<<"Before break: "<<post->content();
         QStringList content = post->content().split("<!--more-->");
         if( content.count() == 2 ) {
@@ -321,13 +321,12 @@ void Backend::modifyPost( BilboPost * post )
     connect( mKBlog, SIGNAL( modifiedPost(KBlog::BlogPost*)),
              this, SLOT( postPublished(KBlog::BlogPost*)) );
     if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
-        if ( post->categories().count() > 1 ) {
-            mCreatePostCategories = post->categoryList();
-            bp->categories().clear();
-            categoryListNotSet = true;
-            kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
-        }
-        kDebug()<<"Before break: "<<post->content();
+//         if ( post->categories().count() > 1 ) {
+//             mCreatePostCategories = post->categoryList();
+//             bp->categories().clear();
+//             categoryListNotSet = true;
+//             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
+//         }
         QStringList content = post->content().split("<!--more-->");
         if( content.count() == 2 ) {
             bp->setContent(content[0]);
@@ -357,6 +356,20 @@ void Backend::slotPostRemoved( KBlog::BlogPost *post )
         kDebug()<<"cannot remove post from database, error: "<<DBMan::self()->lastErrorText();
     }
     emit sigPostRemoved(mBBlog->id(), BilboPost(*post));
+}
+
+void Backend::fetchPost( BilboPost &post )
+{
+    KBlog::BlogPost *bp = post.toKBlogPost();
+    connect( mKBlog, SIGNAL( fetchedPost(KBlog::BlogPost*)),
+             this, SLOT( slotPostFetched(KBlog::BlogPost*)) );
+    mKBlog->fetchPost( bp );
+}
+
+void Backend::slotPostFetched( KBlog::BlogPost *post )
+{
+    emit sigPostFetched( new BilboPost(*post) );
+    delete post;
 }
 
 void Backend::error( KBlog::Blog::ErrorType type, const QString & errorMessage )
