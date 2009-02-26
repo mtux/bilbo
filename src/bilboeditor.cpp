@@ -31,6 +31,7 @@
 #include <kcolordialog.h>
 #include <kdebug.h>
 #include <kmessagebox.h>
+#include "kseparator.h"
 
 #include "bilboeditor.h"
 #include "dbman.h"
@@ -80,7 +81,6 @@ void BilboEditor::createUi()
     prev_index = 0;
 
     ///editor:
-    //editor = new QTextEdit(0);
     editor = new MultiLineTextEdit( tabVisual );
     connect( editor, SIGNAL( sigRemoteImageArrived( const KUrl ) ), this, 
              SLOT( sltReloadImage( const KUrl ) ) );
@@ -88,9 +88,7 @@ void BilboEditor::createUi()
              SLOT( sltMediaTypeFound( BilboMedia* ) ) );
 //     editor->document()->setDefaultStyleSheet( "p {text-align: right;}" );
 //     editor->setStyleSheet("QTextEdit {direction: rtl}");
-//     editor = new QTextBrowser( tabVisual );
-    //editor = new BilboRichTextEdit(0);
-    //barVisual = new QToolBar(0);
+
     barVisual = new KToolBar( tabVisual );
     barVisual->setIconSize( QSize( 22, 22 ) );
     barVisual->setToolButtonStyle( Qt::ToolButtonIconOnly );
@@ -114,14 +112,11 @@ void BilboEditor::createUi()
     kDebug() << lstMediaFiles->iconSize() << "icon size";
 
     QVBoxLayout *vLayout = new QVBoxLayout( tabVisual );
-//  barVisual->show();
     vLayout->addWidget( barVisual );
     vLayout->addWidget( editor );
     vLayout->addWidget( label );
     vLayout->addWidget( lstMediaFiles );
-//  tabVisual->setLayout(vLayout);
-//     connect( editor, SIGNAL( currentCharFormatChanged( const QTextCharFormat & ) ), this,
-//              SLOT( sltSyncToolbar( const QTextCharFormat & ) ) );
+
     connect( editor, SIGNAL( cursorPositionChanged() ), this, SLOT( sltSyncToolbar() ) );
 
     ///htmlEditor:
@@ -134,12 +129,20 @@ void BilboEditor::createUi()
     btnGetStyle = new KPushButton ( tabPreview );
     btnGetStyle->setText( i18n( "Get blog style" ) );
     connect( btnGetStyle, SIGNAL( clicked( bool ) ), this, SLOT( sltGetBlogStyle() ) );
-//     preview->settings()->setUserStyleSheetUrl( QUrl( 
-//         "http://localhost/wp-content/themes/classic/" ) );
 
-    QVBoxLayout *pLayout = new QVBoxLayout( tabPreview );
-    pLayout->addWidget( btnGetStyle );
-    pLayout->addWidget( preview );
+    QSpacerItem *horizontalSpacer = new QSpacerItem( 40, 20,
+                    QSizePolicy::Expanding, QSizePolicy::Minimum );
+    KSeparator *separator = new KSeparator( tabPreview );
+
+    QVBoxLayout *pLayout1 = new QVBoxLayout( tabPreview );
+//     QGridLayout *pLayout1 = new QVBoxLayout( tabPreview );
+    QHBoxLayout *pLayout2 = new QHBoxLayout();
+
+    pLayout2->addItem( horizontalSpacer );
+    pLayout2->addWidget( btnGetStyle );
+    pLayout1->addLayout( pLayout2 );
+    pLayout1->addWidget( separator );
+    pLayout1->addWidget( preview );
 //  tabPreview->setLayout(pLayout);
     this->setCurrentIndex( 0 );
 
@@ -888,7 +891,10 @@ void BilboEditor::sltSyncEditors( int index )
         if ( __currentBlogId > -1 ) {
             baseU = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
         }
-        preview->setHtml( htmlEditor->toPlainText(), QUrl( baseU ) );
+//         preview->setHtml( htmlEditor->toPlainText(), QUrl( baseU ) );
+        this->preview->setHtml( WeblogStyleGetter::styledHtml( __currentBlogId, 
+                         i18n( "Post Preview" ),
+                         this->htmlEditor->toPlainText() ) );
     }
 
     prev_index = index;
@@ -1182,7 +1188,7 @@ void BilboEditor::sltGetBlogStyle()
                i18n( "Select a blog" ) );
     }
     WeblogStyleGetter *styleGetter = new WeblogStyleGetter( __currentBlogId, this );
-    connect( styleGetter, SIGNAL( sigStyleFetched() ), this, SLOT( setPostPreview() ) );
+    connect( styleGetter, SIGNAL( sigStyleFetched() ), this, SLOT( sltSetPostPreview() ) );
 }
 
 void BilboEditor::sltSetPostPreview()
