@@ -245,8 +245,8 @@ void PostEntry::sltError( const QString & errMsg )
 {
     kDebug();
     QString err = i18n( "An Error occurred on latest transaction.\n%1", errMsg );
-    sltDeleteProgressBar();
     emit postPublishingDone( true, err );
+    sltDeleteProgressBar();
     sender()->deleteLater();
 }
 
@@ -256,8 +256,8 @@ void PostEntry::sltMediaError( const QString & errorMessage, BilboMedia * media 
     isUploadingMediaFilesFailed = true;
     kDebug() << " AN ERROR OCCURRED ON UPLOADING,\tError message is: " << errorMessage;
     QString err = i18n( "Uploading media file %1 failed.\n%3", media->name(), media->localUrl().prettyUrl(), errorMessage);
-    sltDeleteProgressBar();
     emit postPublishingDone( true, err );
+    sltDeleteProgressBar();
     sender()->deleteLater();
 }
 

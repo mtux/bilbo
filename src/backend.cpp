@@ -36,6 +36,8 @@
 #include <kdebug.h>
 #include <KDE/KLocale>
 // #include <QMimeData>
+#include <kio/netaccess.h>
+#include <kio/job.h>
 
 Backend::Backend( int blog_id, QObject* parent ): QObject( parent )
 {
@@ -113,6 +115,10 @@ void Backend::categoriesListed( const QList< QMap < QString , QString > > & cate
         rssUrl = category.value( "rssUrl", QString() );
         categoryId = category.value( "categoryId", QString() );
         parentId = category.value( "parentId", QString() );
+
+        if(categoryId.isEmpty()) {
+            categoryId = QString::number(i);
+        }
 
         DBMan::self()->addCategory( name, description, htmlUrl, rssUrl, categoryId, parentId, mBBlog->id() );
     }
@@ -200,12 +206,15 @@ void Backend::postPublished( KBlog::BlogPost *post )
 
 void Backend::uploadMedia( BilboMedia * media )
 {
-    kDebug() << "Blog Id: " << mBBlog->id();
-
+    kDebug() << "Blog Id: mm " << mBBlog->id();
+    QString tmp;
     switch ( mBBlog->api() ) {
         case BilboBlog::BLOGGER1_API:
         case BilboBlog::GDATA_API:
             kDebug() << "The Blogger1 and GData API type doesn't support uploading Media files.";
+            tmp = i18n( "Uploading media failed : Your blog api do not support uploading media objects");
+            kDebug() << "Emitting sigError...";
+            Q_EMIT sigMediaError( tmp, media );
             return;
             break;
         case BilboBlog::METAWEBLOG_API:
@@ -217,24 +226,21 @@ void Backend::uploadMedia( BilboMedia * media )
             m->setMimetype( media->mimeType() );
 
             QByteArray data;
-            QFile file( media->localUrl().url() );
-
-            if ( !file.open( QIODevice::ReadOnly ) ) {
-                kError() << "Cannot open file " << media->localUrl();
-                const QString tmp( i18n( "Uploading media failed : Cannot open file %1", media->localUrl().prettyUrl() ) );
-                kDebug() << "Emitting sigError ...";
-                Q_EMIT sigError( tmp );
-                return;
+            KIO::TransferJob *job = KIO::get( media->localUrl(), KIO::Reload, KIO::HideProgressInfo);
+            if( !KIO::NetAccess::synchronousRun(job, 0, &data) ){
+                kError()<<"Job error: " << job->errorString();
+                tmp = i18n( "Uploading media failed : Cannot read the media file,\
+please check if it exists. path: %1", media->localUrl().pathOrUrl() );
+                kDebug() << "Emitting sigError...";
+                Q_EMIT sigMediaError( tmp, media );
             }
-
-            data = file.readAll();
 
             if ( data.count() == 0 ) {
                 kError() << "Cannot read the media file, please check if it exists.";
-                const QString tmp( i18n( "Uploading media failed : Cannot read the media file,\
-please check if it exists. path: %1", media->localUrl().prettyUrl() ) );
-                kDebug() << "Emitting sigError ...";
-                Q_EMIT sigError( tmp );
+                tmp = i18n( "Uploading media failed : Cannot read the media file,\
+please check if it exists. path: %1", media->localUrl().pathOrUrl() );
+                kDebug() << "Emitting sigError...";
+                Q_EMIT sigMediaError( tmp, media );
                 return;
             }
 
@@ -245,17 +251,17 @@ please check if it exists. path: %1", media->localUrl().prettyUrl() ) );
 
             if ( media->checksum() == 0 ) {
                 kError() << "Media file checksum is zero";
-                const QString tmp( i18n( "Uploading media failed : Media file checksum is zero, please check file path. path: %1",
-                                         media->localUrl().url() ) );
-                kDebug() << "Emitting sigError ...";
-                Q_EMIT sigError( tmp );
+                tmp = i18n( "Uploading media failed : Media file checksum is zero, please check file path. path: %1",
+                                         media->localUrl().pathOrUrl() );
+                kDebug() << "Emitting sigError...";
+                Q_EMIT sigMediaError( tmp, media );
                 return;
             }
 
             if ( !MWBlog ) {
                 kError() << "MWBlog is NULL: casting has not worked, this should NEVER happen, has the gui allowed using GDATA?";
-                const QString tmp( i18n( "INTERNAL ERROR: MWBlog is NULL: casting has not worked, this should NEVER happen." ) );
-                kDebug() << "Emitting sigError ...";
+                tmp = i18n( "INTERNAL ERROR: MWBlog is NULL: casting has not worked, this should NEVER happen." );
+                kDebug() << "Emitting sigError...";
                 Q_EMIT sigError( tmp );
                 return;
             }
@@ -268,7 +274,7 @@ please check if it exists. path: %1", media->localUrl().prettyUrl() ) );
             break;
     }
     kError() << "Api type does not sets correctly!";
-    const QString tmp( i18n( "Api type does not sets correctly!" ) );
+    tmp = i18n( "Api type does not sets correctly!" );
     Q_EMIT sigError( tmp );
 }
 
