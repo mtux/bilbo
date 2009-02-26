@@ -22,35 +22,23 @@
 #ifndef BILBOEDITOR_H
 #define BILBOEDITOR_H
 
-//#include <QTabWidget>
 #include <ktabwidget.h>
 #include <QTextFormat>
-//#include <QtGui>
-//#include <QWebView>
-//#include "multilinetextedit.h"
 
-//class QTabWidget;
 class QTextCharFormat;
 class QWebView;
 class QPlainTextEdit;
-// class QNetworkAccessManager;
 class MultiLineTextEdit;
-// class QTextBrowser;
-//class QAction;
 class KAction;
 class KActionCollection;
-//class QToolBar;
 class KToolBar;
 class AddEditLink;
 // class AddImageDialog;
 // class AddMediaDialog;
 class BilboMedia;
 class KListWidget;
+class KPushButton;
 
-//class BilboRichTextEdit;
-//class KRichTextEdit;
-//class BilboTextCharFormat;
-//#include "bilbotextcharformat.h"
 
 //!Class BilboEditor represents the editor part of BilboBlogger
 /*!
@@ -249,6 +237,8 @@ protected Q_SLOTS:
 
     void sltAddUnorderedList();
 
+//     void sltAddPostSplitter();
+
 //     void sltSyncToolbar( const QTextCharFormat& f );
     void sltSyncToolbar();
 
@@ -257,6 +247,10 @@ protected Q_SLOTS:
      * changes. this function executes each time the user switches between tabs.
      */
     void sltSyncEditors( int index );
+
+    void sltGetBlogStyle();
+
+    void sltSetPostPreview();
 
 private:
 
@@ -283,6 +277,7 @@ private:
 //     void useRemoteImagePaths( QTextDocument* doc );
 //     void useLocalImagePaths( QTextDocument* doc );
 
+//     QWidget *mParent;
     QWidget *tabVisual;
     QWidget *tabHtml;
     QWidget *tabPreview;
@@ -302,6 +297,7 @@ private:
     //KToolBar *barHtml;
     //KToolBar *barPreview;
     KListWidget *lstMediaFiles;
+    KPushButton *btnGetStyle;
 
     KAction *actBold;
     KAction *actItalic;
@@ -324,6 +320,7 @@ private:
     KAction *actAddMedia;
     KAction *actOrderedList;
     KAction *actUnorderedList;
+//     KAction *actSplitPost;
 
 //   QString *mHtmlContent;
 

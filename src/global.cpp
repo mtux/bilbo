@@ -26,8 +26,8 @@
 // Settings *__conf;
 // DBMan *__db;
 int __currentBlogId;
-KTempDir *dir;
-QString __tempMediaDir;
+// KTempDir *dir;
+// QString __tempMediaDir;
 
 void global_init()
 {
@@ -35,13 +35,13 @@ void global_init()
 // //  __conf = new Settings;
 //  __db = new DBMan;
     __currentBlogId = -1;
-    dir = new KTempDir();
-    __tempMediaDir = dir->name();
+//     dir = new KTempDir();
+//     __tempMediaDir = dir->name();
 }
 
 void global_end()
 {
     kDebug();
     delete DBMan::self();
-    delete dir;
+//     delete dir;
 }

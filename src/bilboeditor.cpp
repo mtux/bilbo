@@ -19,47 +19,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//#include <QDebug>
 #include <QtGui>
 #include <QImage>
 #include <QTextCharFormat>
 #include <QWebView>
-// #include <QNetworkAccessManager>
 #include <klocalizedstring.h>
 #include <ktoolbar.h>
 #include <kaction.h>
 #include <kactioncollection.h>
 #include <kicon.h>
 #include <kcolordialog.h>
-// #include <klistwidget.h>
 #include <kdebug.h>
+#include <kmessagebox.h>
 
 #include "bilboeditor.h"
 #include "dbman.h"
 #include "multilinetextedit.h"
-// #include <QTextBrowser>
 #include "addeditlink.h"
 #include "addimagedialog.h"
 #include "bilbomedia.h"
 #include "global.h"
 #include "bilboblog.h"
-//#include "krichtextedit.h"
 // #include "ktoolbar.h"
 // #include "kaction.h"
 // #include "kicon.h"
-//#include "bilborichtextedit.h"
 #include "medialistwidget.h"
 #include "bilbotextformat.h"
 #include "bilbotexthtmlimporter.h"
 
 #include "htmlexporter.h"
-// #include "bilbomarkupbuilders/kabstractmarkupbuilder.h"
-// #include "bilbomarkupbuilders/kmarkupdirector.h"
-// #include "bilbomarkupbuilders/ktexthtmlbuilder.h"
+#include "weblogstylegetter.h"
 
 BilboEditor::BilboEditor( QWidget *parent )
         : KTabWidget( parent )
 {
+//     mParent = parent;
     createUi();
     connect(editor, SIGNAL(textChanged()), this, SIGNAL(textChanged()));
     connect(htmlEditor, SIGNAL(textChanged()), this, SIGNAL(textChanged()));
@@ -137,10 +131,14 @@ void BilboEditor::createUi()
 
     ///preview:
     preview = new QWebView( tabPreview );
+    btnGetStyle = new KPushButton ( tabPreview );
+    btnGetStyle->setText( i18n( "Get blog style" ) );
+    connect( btnGetStyle, SIGNAL( clicked( bool ) ), this, SLOT( sltGetBlogStyle() ) );
 //     preview->settings()->setUserStyleSheetUrl( QUrl( 
 //         "http://localhost/wp-content/themes/classic/" ) );
-//  barPreview = new QToolBar(0);
+
     QVBoxLayout *pLayout = new QVBoxLayout( tabPreview );
+    pLayout->addWidget( btnGetStyle );
     pLayout->addWidget( preview );
 //  tabPreview->setLayout(pLayout);
     this->setCurrentIndex( 0 );
@@ -1174,4 +1172,32 @@ bool BilboEditor::updateMediaPaths()
     }
     return true;
 }
+
+void BilboEditor::sltGetBlogStyle()
+{
+    int blogid = __currentBlogId;
+    if ( blogid < 0 ) {
+        KMessageBox::information( this,
+               i18n( "Please select a blog from the toolbox, then try again." ), 
+               i18n( "Select a blog" ) );
+    }
+    WeblogStyleGetter *styleGetter = new WeblogStyleGetter( __currentBlogId, this );
+    connect( styleGetter, SIGNAL( sigStyleFetched() ), this, SLOT( setPostPreview() ) );
+}
+
+void BilboEditor::sltSetPostPreview()
+{
+    if ( this->currentIndex() == 2 ) {
+//        this->preview->setHtml( WeblogStyleGetter::styledHtml( __currentBlogId, 
+//                          qobject_cast< *PostEntry >( mParent )->postTitle(),
+//                          this->htmlEditor->toPlainText() ) );
+        this->preview->setHtml( WeblogStyleGetter::styledHtml( __currentBlogId, 
+                         i18n( "Post Preview" ),
+                         this->htmlEditor->toPlainText() ) );
+    }
+    if ( qobject_cast< WeblogStyleGetter* >( sender() ) ) {
+        sender()->deleteLater();
+    }
+}
+
 #include "bilboeditor.moc"

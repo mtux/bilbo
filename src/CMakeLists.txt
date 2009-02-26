@@ -9,6 +9,7 @@ SET(QT_USE_QTWEBKIT 1)
 
 set(bilbo_SRCS
 # editorsettings.cpp
+ weblogstylegetter.cpp
  bilbocssparser.cpp
  bilbohtmlparser.cpp
  bilbotexthtmlimporter.cpp
