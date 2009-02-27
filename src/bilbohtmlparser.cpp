@@ -1170,7 +1170,7 @@ bool BilboTextHtmlParser::parseExclamationTag()
 //         pos += 3;
         pos += 2;       ///my code
         // eat comments
-        if ( pos == txt.indexOf( QLatin1String( "more" ), pos ) ) { ///my code
+        if ( pos == txt.indexOf( QLatin1String( "split" ), pos ) ) { ///my code
             pos-=3;     ///my code
             return false;       ///my code
         }
