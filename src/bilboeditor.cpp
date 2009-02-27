@@ -302,6 +302,11 @@ void BilboEditor::createActions()
     connect( actUnorderedList, SIGNAL( triggered( bool ) ), this, SLOT( sltAddUnorderedList() ) );
     barVisual->addAction( actUnorderedList );
 //  visualEditorActions->associateWidget(barVisual);
+    
+    actSplitPost = new KAction( KIcon( "insert-splitter" ), i18n( "Add Post Splitter" ), this );
+//  actUnorderedList->setCheckable(true);
+    connect( actSplitPost, SIGNAL( triggered( bool ) ), this, SLOT( sltAddPostSplitter() ) );
+    barVisual->addAction( actSplitPost );
 }
 
 // void BilboEditor::sltToggleItalic()
@@ -793,6 +798,22 @@ void BilboEditor::sltAddUnorderedList()
 // //   editor->textCursor().mergeBlockFormat(bf);
 //   editor->textCursor().currentList()->remove(editor->textCursor().block());
 //  }
+}
+
+void BilboEditor::sltAddPostSplitter()
+{
+    QTextBlockFormat f = editor->textCursor().blockFormat();
+    QTextBlockFormat f1 = f;
+
+    f.setProperty( BilboTextFormat::IsHtmlTagSign, true );
+    f.setProperty( QTextFormat::BlockTrailingHorizontalRulerWidth, 
+             QTextLength( QTextLength::PercentageLength, 80 ) );
+    if ( editor->textCursor().block().text().isEmpty() ) {
+        editor->textCursor().mergeBlockFormat( f );
+    } else {
+        editor->textCursor().insertBlock( f );
+    }
+    editor->textCursor().insertBlock( f1 );
 }
 
 void BilboEditor::sltSyncToolbar()

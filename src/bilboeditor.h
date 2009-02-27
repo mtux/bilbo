@@ -237,7 +237,7 @@ protected Q_SLOTS:
 
     void sltAddUnorderedList();
 
-//     void sltAddPostSplitter();
+    void sltAddPostSplitter();
 
 //     void sltSyncToolbar( const QTextCharFormat& f );
     void sltSyncToolbar();
@@ -320,7 +320,7 @@ private:
     KAction *actAddMedia;
     KAction *actOrderedList;
     KAction *actUnorderedList;
-//     KAction *actSplitPost;
+    KAction *actSplitPost;
 
 //   QString *mHtmlContent;
 
