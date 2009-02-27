@@ -132,7 +132,7 @@ void MainWindow::setupActions()
     actNewPost->setShortcut( Qt::CTRL + Qt::Key_N );
     connect( actNewPost, SIGNAL( triggered( bool ) ), this, SLOT( sltCreateNewPost() ) );
 
-    KAction *actAddBlog = new KAction( KIcon( "list-add" ), i18n( "Add Blog ..." ), this );
+    KAction *actAddBlog = new KAction( KIcon( "list-add" ), i18n( "Add Blog..." ), this );
     actionCollection()->addAction( QLatin1String( "add_blog" ), actAddBlog );
     connect( actAddBlog, SIGNAL( triggered( bool ) ), toolbox, SLOT( sltAddBlog() ) );
 
@@ -140,11 +140,11 @@ void MainWindow::setupActions()
 //     actionCollection()->addAction( QLatin1String( "upload_all" ), actUploadAll );
 //     connect( actUploadAll, SIGNAL( triggered( bool ) ), this, SLOT( sltUploadAllChanges() ) );
 
-    KAction *actPublish = new KAction( KIcon( "arrow-up" ), i18n( "Submit to ..." ), this );
+    KAction *actPublish = new KAction( KIcon( "arrow-up" ), i18n( "Submit to..." ), this );
     actionCollection()->addAction( QLatin1String( "publish_post" ), actPublish );
     connect( actPublish, SIGNAL( triggered( bool ) ), this, SLOT( sltPublishPost() ) );
 
-    KAction *actUpload = new KAction( /*KIcon( "document-save" ),*/ i18n( "Upload Media ..." ), this );
+    KAction *actUpload = new KAction( KIcon( "upload-media" ), i18n( "Upload Media..." ), this );
     actionCollection()->addAction( QLatin1String( "upload_media" ), actUpload );
     connect( actUpload, SIGNAL( triggered( bool ) ), this, SLOT( uploadMediaObject() ) );
 
@@ -339,7 +339,7 @@ void MainWindow::sltCurrentBlogChanged( int blog_id )
         BilboBlog *tmp = toolbox->blogList().value( blog_id );
         this->activePost->setDefaultLayoutDirection( tmp->direction() );
         this->activePost->setCurrentPostBlogId( blog_id );
-        actionCollection()->action("publish_post")->setText( i18n( "Submit to \"%1\" as ... ", tmp->title() ) );
+        actionCollection()->action("publish_post")->setText( i18n( "Submit to \"%1\" as... ", tmp->title() ) );
     }
 }
 
@@ -537,9 +537,9 @@ void MainWindow::uploadMediaObject()
 void MainWindow::slotMediaObjectUploaded( BilboMedia *media )
 {
     slotBusy(false);
-    KMessageBox::information(this, i18n( "Media uploaded.\nYou can find it here:\n<a href='%1'>%1</a>",
+    KMessageBox::information(this, i18n( "Media uploaded.\nYou can find it here:\n%1",
                                          media->remoteUrl().prettyUrl() ));
-
+    ///TODO Add to Post!
     media->deleteLater();
     sender()->deleteLater();
 }
