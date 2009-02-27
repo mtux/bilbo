@@ -963,7 +963,7 @@ void htmlExporter::emitBlock( const QTextBlock &block )
     if ( blockFormat.hasProperty( QTextFormat::BlockTrailingHorizontalRulerWidth ) ) { 
         if ( ( blockFormat.hasProperty( BilboTextFormat::IsHtmlTagSign ) ) && 
             ( blockFormat.boolProperty( BilboTextFormat::IsHtmlTagSign ) ) ) {
-            html += QLatin1String( "<!--more-->" );
+            html += QLatin1String( "<!--split-->" );
             return;
         } else {
             html += QLatin1String( "<hr" );

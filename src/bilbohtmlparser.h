@@ -80,7 +80,7 @@ enum BilboTextHTMLElements {
     Html_img,
     Html_br,
     Html_hr,
-    Html_comment_more,      ///my code
+    Html_comment_split,      ///my code
 
     Html_sub,
     Html_sup,
@@ -258,7 +258,7 @@ uint displayMode :
 
     inline bool mayNotHaveChildren() const {
 //         return id == Html_img || id == Html_hr || id == Html_br;
-        return id == Html_img || id == Html_hr || id == Html_br || id == Html_comment_more ;
+        return id == Html_img || id == Html_hr || id == Html_br || id == Html_comment_split ;
     }
 
     void initializeProperties( const BilboTextHtmlParserNode *parent, const BilboTextHtmlParser *parser );

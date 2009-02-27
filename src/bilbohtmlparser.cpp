@@ -316,7 +316,7 @@ static QChar resolveEntity( const QString &entity )
 }
 
 static const BilboTextHtmlElement elements[Html_NumElements] = {
-    { "!--more--",  Html_comment_more,  BilboTextHtmlElement::DisplayInline },
+    { "!--split--",  Html_comment_split,  BilboTextHtmlElement::DisplayInline },
     { "a",          Html_a,          BilboTextHtmlElement::DisplayInline },
     { "address",    Html_address,    BilboTextHtmlElement::DisplayInline },
     { "b",          Html_b,          BilboTextHtmlElement::DisplayInline },
@@ -1592,7 +1592,7 @@ void BilboTextHtmlParser::applyAttributes( const QStringList &attributes )
                 else if ( key == QLatin1String( "type" ) )
                     linkType = value;
                 break;
-            case Html_comment_more:             ///my code
+            case Html_comment_split:             ///my code
                 node->isHtmlTagSign = true;         ///my code
 //                 setWidthAttribute( &node->width, QLatin1String( "80%" ) );
                 break;      ///my code

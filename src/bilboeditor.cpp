@@ -167,6 +167,19 @@ void BilboEditor::createActions()
 {
 //  visualEditorActions = new KActionCollection(this->barVisual);
 
+    actCheckSpelling = new KAction( KIcon( "tools-check-spelling" ), i18n( "Enable Spell Checking"),
+                           this );
+//     actCheckSpelling->setShortcut( Qt::CTRL + Qt::Key_S );
+    actCheckSpelling->setToolTip( i18nc( "Enables spell checking, and its shortcut is (Ctrl+s)",
+                                "Enable Spell Checking (Ctrl+s)" ) );
+    actCheckSpelling->setCheckable( true );
+//  visualEditorActions->addAction(QLatin1String("bold"), actBold);
+    connect( actCheckSpelling, SIGNAL( triggered( bool ) ), this, 
+             SLOT( sltEnableSpellChecking() ) );
+    barVisual->addAction( actCheckSpelling );
+
+    barVisual->addSeparator();
+
     actBold = new KAction( KIcon( "format-text-bold" ), i18nc( "Makes text bold", "Bold" ),
                            this );
     actBold->setShortcut( Qt::CTRL + Qt::Key_B );
@@ -303,10 +316,20 @@ void BilboEditor::createActions()
     barVisual->addAction( actUnorderedList );
 //  visualEditorActions->associateWidget(barVisual);
     
-    actSplitPost = new KAction( KIcon( "insert-splitter" ), i18n( "Add Post Splitter" ), this );
+    actSplitPost = new KAction( KIcon( "insert-more-mark" ), i18n( "Split text" ), this );
 //  actUnorderedList->setCheckable(true);
     connect( actSplitPost, SIGNAL( triggered( bool ) ), this, SLOT( sltAddPostSplitter() ) );
     barVisual->addAction( actSplitPost );
+}
+
+void BilboEditor::sltEnableSpellChecking()
+{
+    if ( actCheckSpelling->isChecked() ) {
+        editor->setCheckSpellingEnabled( true );
+    } else {
+        editor->setCheckSpellingEnabled( false );
+    }
+//     editor->setCheckSpellingEnabled( !editor->checkSpellingEnabled() );
 }
 
 // void BilboEditor::sltToggleItalic()

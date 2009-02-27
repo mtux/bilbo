@@ -110,6 +110,8 @@ public:
 Q_SIGNALS:
     void textChanged();
 protected Q_SLOTS:
+    
+    void sltEnableSpellChecking();
     /*!
     Changes Italic style of current format.
      */
@@ -321,6 +323,7 @@ private:
     KAction *actOrderedList;
     KAction *actUnorderedList;
     KAction *actSplitPost;
+    KAction *actCheckSpelling;
 
 //   QString *mHtmlContent;
 

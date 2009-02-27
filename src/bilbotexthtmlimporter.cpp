@@ -192,7 +192,7 @@ void BilboTextHtmlImporter::import()
             appendBlock( blockFormat );
             hasBlock = false;
             continue;
-        } else if ( node->id == Html_comment_more ) {  ///my code
+        } else if ( node->id == Html_comment_split ) {  ///my code
 
             QTextBlockFormat blockFormat;
             blockFormat.setProperty( BilboTextFormat::IsHtmlTagSign, true );
