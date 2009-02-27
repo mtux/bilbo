@@ -1,15 +1,17 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui name="bilbo" version="1">
+<kpartgui name="bilbo" version="2">
 <MenuBar>
   <Menu name="file"><text>File</text>
       <Action name="toggle_toolbox" />
       <Action name="hide_mainwin" />
   </Menu>
+  <Menu name="blog"><text>Blog</text>
+    <Action name="add_blog" />
+    <Action name="upload_media" />
+  </Menu>
   <Menu name="post"><text>Post</text>
     <Action name="new_post" />
-    <Separator />
     <Action name="publish_post" />
-    <Separator />
     <Action name="save_locally" />
   </Menu>
   <Menu name="settings"><text>Settings</text>

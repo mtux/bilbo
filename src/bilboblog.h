@@ -74,6 +74,7 @@ public:
     bool isError() const;
     void setError(bool isError);
 
+    bool supportMediaObjectUploading() const;
     /**
      * return Blog Actual Url!
      * For http://bilbo.wordpress.com :

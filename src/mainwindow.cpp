@@ -34,6 +34,7 @@
 #include <QFile>
 #include <KApplication>
 #include <QMap>
+#include <KFileDialog>
 
 #include "mainwindow.h"
 #include "global.h"
@@ -131,7 +132,7 @@ void MainWindow::setupActions()
     actNewPost->setShortcut( Qt::CTRL + Qt::Key_N );
     connect( actNewPost, SIGNAL( triggered( bool ) ), this, SLOT( sltCreateNewPost() ) );
 
-    KAction *actAddBlog = new KAction( KIcon( "list-add" ), i18n( "Add Blog" ), this );
+    KAction *actAddBlog = new KAction( KIcon( "list-add" ), i18n( "Add Blog ..." ), this );
     actionCollection()->addAction( QLatin1String( "add_blog" ), actAddBlog );
     connect( actAddBlog, SIGNAL( triggered( bool ) ), toolbox, SLOT( sltAddBlog() ) );
 
@@ -143,9 +144,9 @@ void MainWindow::setupActions()
     actionCollection()->addAction( QLatin1String( "publish_post" ), actPublish );
     connect( actPublish, SIGNAL( triggered( bool ) ), this, SLOT( sltPublishPost() ) );
 
-//     actSave = new KAction( KIcon( "document-save" ), i18n( "Save" ), this );
-//     actionCollection()->addAction( QLatin1String( "save" ), actSave );
-//     connect( actSave, SIGNAL( triggered( bool ) ), this, SLOT( sltSavePostLocally() ) );
+    KAction *actUpload = new KAction( /*KIcon( "document-save" ),*/ i18n( "Upload Media ..." ), this );
+    actionCollection()->addAction( QLatin1String( "upload_media" ), actUpload );
+    connect( actUpload, SIGNAL( triggered( bool ) ), this, SLOT( uploadMediaObject() ) );
 
     KAction *actSaveLocally = new KAction( KIcon( "document-save" ), i18n( "Save Locally" ), this );
     actionCollection()->addAction( QLatin1String( "save_locally" ), actSaveLocally );
@@ -492,6 +493,55 @@ void MainWindow::sltClearCache()
 void MainWindow::slotShowStatusMessage(const QString &message, bool isPermanent)
 {
     statusBar()->showMessage(message, (isPermanent ? 0 : TIMEOUT));
+}
+
+void MainWindow::uploadMediaObject()
+{
+    BilboBlog blog = DBMan::self()->getBlogInfo(toolbox->currentBlogId());
+    if( blog.supportMediaObjectUploading() ) {
+        QString mediaPath = KFileDialog::getOpenFileName( KUrl("kfiledialog:///image?global"),
+                                                      "image/png image/jpeg image/gif", this,
+                                                          i18n("Select media to upload"));
+        if(mediaPath.isEmpty())
+            return;
+        KDialog *dialog = new KDialog(this);
+        QLabel *graphic= new QLabel(dialog);
+        graphic->setPixmap( QPixmap(mediaPath) );
+//         dialog->setButtons(KDialog::Ok | KDialog::Apply | KDialog::Cancel);
+        dialog->setWindowTitle( i18n( "Upload media..." ) );
+        dialog->setButtonText(KDialog::Ok, i18n("Upload") );
+        dialog->setMainWidget(graphic);
+        int i = dialog->exec();
+        kDebug()<< i;
+        ///TODO Add option to reselect media!
+        if( i ) {
+            KUrl mediaUrl(mediaPath);
+            BilboMedia *media = new BilboMedia(this);
+            media->setLocalUrl(mediaUrl);
+            media->setName( mediaUrl.fileName() );
+            media->setBlogId(toolbox->currentBlogId());
+            media->setMimeType( KMimeType::findByUrl( mediaUrl, 0, true )->name() );
+            Backend *b = new Backend(toolbox->currentBlogId(), this);
+            connect( b, SIGNAL( sigMediaUploaded(BilboMedia*) ),
+                    this, SLOT( slotMediaObjectUploaded(BilboMedia*) ) );
+            connect( b, SIGNAL( sigError(QString)), this, SLOT( sltError(QString) ) );
+            connect( b, SIGNAL( sigMediaError(QString,BilboMedia*) ), this, SLOT(sltError(QString)) );
+            b->uploadMedia( media );
+            slotBusy(true);
+        }
+    } else {
+        KMessageBox::error(this, i18n( "API of current selected blog doesn't support uploading media objects." ));
+    }
+}
+
+void MainWindow::slotMediaObjectUploaded( BilboMedia *media )
+{
+    slotBusy(false);
+    KMessageBox::information(this, i18n( "Media uploaded.\nYou can find it here:\n<a href='%1'>%1</a>",
+                                         media->remoteUrl().prettyUrl() ));
+
+    media->deleteLater();
+    sender()->deleteLater();
 }
 
 // void MainWindow::slotPostModified()

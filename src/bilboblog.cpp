@@ -174,3 +174,12 @@ QString BilboBlog::blogUrl()
     }
     return url;
 }
+
+bool BilboBlog::supportMediaObjectUploading() const
+{
+    if(mApi == WORDPRESSBUGGY_API || mApi == METAWEBLOG_API || mApi == MOVABLETYPE_API) {
+        return true;
+    } else {
+        return false;
+    }
+}
