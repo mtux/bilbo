@@ -112,6 +112,8 @@ Q_SIGNALS:
 protected Q_SLOTS:
     
     void sltEnableSpellChecking();
+
+    void sltSyncSpellCheckingButton( bool check);
     /*!
     Changes Italic style of current format.
      */

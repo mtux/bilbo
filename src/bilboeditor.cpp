@@ -117,6 +117,8 @@ void BilboEditor::createUi()
     vLayout->addWidget( label );
     vLayout->addWidget( lstMediaFiles );
 
+    connect( editor, SIGNAL( checkSpellingChanged( bool ) ), this, SLOT( sltSyncSpellCheckingButton( bool ) ) );
+
     connect( editor, SIGNAL( cursorPositionChanged() ), this, SLOT( sltSyncToolbar() ) );
 
     ///htmlEditor:
@@ -170,8 +172,8 @@ void BilboEditor::createActions()
     actCheckSpelling = new KAction( KIcon( "tools-check-spelling" ), i18n( "Enable Spell Checking"),
                            this );
 //     actCheckSpelling->setShortcut( Qt::CTRL + Qt::Key_S );
-    actCheckSpelling->setToolTip( i18nc( "Enables spell checking, and its shortcut is (Ctrl+s)",
-                                "Enable Spell Checking (Ctrl+s)" ) );
+//     actCheckSpelling->setToolTip( i18nc( "Enables spell checking, and its shortcut is (Ctrl+s)",
+//                                 "Enable Spell Checking (Ctrl+s)" ) );
     actCheckSpelling->setCheckable( true );
 //  visualEditorActions->addAction(QLatin1String("bold"), actBold);
     connect( actCheckSpelling, SIGNAL( triggered( bool ) ), this, 
@@ -330,6 +332,11 @@ void BilboEditor::sltEnableSpellChecking()
         editor->setCheckSpellingEnabled( false );
     }
 //     editor->setCheckSpellingEnabled( !editor->checkSpellingEnabled() );
+}
+
+void BilboEditor::sltSyncSpellCheckingButton( bool check )
+{
+    actCheckSpelling->setChecked( check );
 }
 
 // void BilboEditor::sltToggleItalic()
