@@ -49,7 +49,7 @@
 #include "bilbotexthtmlimporter.h"
 
 #include "htmlexporter.h"
-#include "weblogstylegetter.h"
+#include "stylegetter.h"
 
 BilboEditor::BilboEditor( QWidget *parent )
         : KTabWidget( parent )
@@ -135,7 +135,6 @@ void BilboEditor::createUi()
     KSeparator *separator = new KSeparator( tabPreview );
 
     QVBoxLayout *pLayout1 = new QVBoxLayout( tabPreview );
-//     QGridLayout *pLayout1 = new QVBoxLayout( tabPreview );
     QHBoxLayout *pLayout2 = new QHBoxLayout();
 
     pLayout2->addItem( horizontalSpacer );
@@ -143,7 +142,7 @@ void BilboEditor::createUi()
     pLayout1->addLayout( pLayout2 );
     pLayout1->addWidget( separator );
     pLayout1->addWidget( preview );
-//  tabPreview->setLayout(pLayout);
+
     this->setCurrentIndex( 0 );
 
     ///defaultCharFormat
@@ -286,7 +285,8 @@ void BilboEditor::createActions()
     barVisual->addAction( actAddImage );
     
     actAddMedia = new KAction( KIcon( "mail-attachment" ), 
-                               i18nc( "verb, to add a media file to the post as an attachment", "Attach Media" ), this );
+                i18nc( "verb, to add a media file to the post as an attachment", 
+                "Attach Media" ), this );
     connect( actAddMedia, SIGNAL( triggered( bool ) ), this, SLOT( sltAddMedia() ) );
     barVisual->addAction( actAddMedia );
 
@@ -302,6 +302,11 @@ void BilboEditor::createActions()
     connect( actUnorderedList, SIGNAL( triggered( bool ) ), this, SLOT( sltAddUnorderedList() ) );
     barVisual->addAction( actUnorderedList );
 //  visualEditorActions->associateWidget(barVisual);
+    
+    actSplitPost = new KAction( KIcon( "insert-splitter" ), i18n( "Add Post Splitter" ), this );
+//  actUnorderedList->setCheckable(true);
+    connect( actSplitPost, SIGNAL( triggered( bool ) ), this, SLOT( sltAddPostSplitter() ) );
+    barVisual->addAction( actSplitPost );
 }
 
 // void BilboEditor::sltToggleItalic()
@@ -349,20 +354,17 @@ void BilboEditor::sltToggleCode()
 void BilboEditor::sltFontSizeIncrease()
 {
     QTextCharFormat format;
-    //BilboTextFormat format;
     int idx = editor->currentCharFormat().intProperty( QTextFormat::FontSizeAdjustment );
     if ( idx < 3 ) {
         format.setProperty( QTextFormat::FontSizeAdjustment, QVariant( ++idx ) );
         editor->textCursor().mergeCharFormat( format );
     }
     editor->setFocus( Qt::OtherFocusReason );
-    kDebug() << editor->textCursor().charFormat().stringProperty( 0x100010 );
 }
 
 void BilboEditor::sltFontSizeDecrease()
 {
     QTextCharFormat format;
-    //BilboTextFormat format;
     int idx = editor->currentCharFormat().intProperty( QTextFormat::FontSizeAdjustment );
     if ( idx > -1 ) {
         format.setProperty( QTextFormat::FontSizeAdjustment, QVariant( --idx ) );
@@ -377,7 +379,7 @@ void BilboEditor::sltAddEditLink()
     linkDialog->setAttribute( Qt::WA_DeleteOnClose );
     connect( linkDialog, SIGNAL( addLink( const QString&, const QString&, const QString& ) ),
              this, SLOT( sltSetLink( const QString&, const QString&, const QString& ) ) );
-//  connect(linkDialog, SIGNAL(addLink(const QString&)), this, SLOT(sltSetLink(QString)));
+
     QTextCharFormat f = editor->currentCharFormat();
     if ( !f.isAnchor() ) {
         linkDialog->show();
@@ -389,7 +391,6 @@ void BilboEditor::sltAddEditLink()
 
 void BilboEditor::sltSetLink( const QString& address, const QString& target,
                               const QString& title )
-//void BilboEditor::sltSetLink(QString address)
 {
     QTextCharFormat f = editor->currentCharFormat();
     f.setAnchor( true );
@@ -505,13 +506,7 @@ void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int hei
 {
 //     QListWidgetItem *item;
     kDebug();
-    
-//     if ( media->mimeType().contains( "image" ) ) {
-//         if ( mMediaList->contains( media->remoteUrl() ) ) {
-//             //media is already added.
-//         } else {
-//             mMediaList->insert( media->remoteUrl(), media );
-//             item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::ImageType );
+
             QTextImageFormat imageFormat;
             
             imageFormat.setName( media->remoteUrl().url() );
@@ -529,10 +524,6 @@ void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int hei
             }
             editor->textCursor().insertImage( imageFormat );
             
-//             item->setData( Qt::UserRole, QVariant( media->remoteUrl() ) );
-//             item->setToolTip( media->name() );
-//         }
-//     }
             editor->setFocus( Qt::OtherFocusReason );
 }
 
@@ -809,6 +800,22 @@ void BilboEditor::sltAddUnorderedList()
 //  }
 }
 
+void BilboEditor::sltAddPostSplitter()
+{
+    QTextBlockFormat f = editor->textCursor().blockFormat();
+    QTextBlockFormat f1 = f;
+
+    f.setProperty( BilboTextFormat::IsHtmlTagSign, true );
+    f.setProperty( QTextFormat::BlockTrailingHorizontalRulerWidth, 
+             QTextLength( QTextLength::PercentageLength, 80 ) );
+    if ( editor->textCursor().block().text().isEmpty() ) {
+        editor->textCursor().mergeBlockFormat( f );
+    } else {
+        editor->textCursor().insertBlock( f );
+    }
+    editor->textCursor().insertBlock( f1 );
+}
+
 void BilboEditor::sltSyncToolbar()
 {
     if ( this->editor->textCursor().charFormat() != lastCharFormat ) {
@@ -892,8 +899,8 @@ void BilboEditor::sltSyncEditors( int index )
             baseU = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
         }
 //         preview->setHtml( htmlEditor->toPlainText(), QUrl( baseU ) );
-        this->preview->setHtml( WeblogStyleGetter::styledHtml( __currentBlogId, 
-                         i18n( "Post Preview" ),
+        this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
+                         i18n( "Post Title" ),
                          this->htmlEditor->toPlainText() ) );
     }
 
@@ -1035,89 +1042,6 @@ void BilboEditor::setLayoutDirection( Qt::LayoutDirection direction )
 //     }
 }
 
-// void BilboEditor::useRemoteImagePaths( QTextDocument* doc )
-// {
-//     QTextCharFormat f;
-//     QTextCursor cursor;
-// //  QTextBlock block = this->editor->document()->firstBlock();
-//     QTextBlock block = doc->firstBlock();
-//     QTextBlock::iterator i;
-//     BilboMedia *tempMedia;
-//     cursor = QTextCursor( doc );
-// 
-//     do {
-//         for ( i = block.begin(); !( i.atEnd() ); ++i ) {
-//             kDebug() << "start iterating";
-//             f = i.fragment().charFormat();
-//             if ( f.isImageFormat() ) {
-//                 kDebug() << "is image format";
-//                 QTextImageFormat imgFormat = f.toImageFormat();
-// 
-//                 if ( mMediaList->contains( imgFormat.name() ) ) {
-//                     kDebug() << "image exists";
-//                     tempMedia = mMediaList->value( imgFormat.name() );
-//                     imgFormat.setName( tempMedia->remoteUrl() );
-// //      imgFormat.setProperty(BilboTextFormat::ImageLocalPath,
-// //             QVariant(tempMedia->localUrl()));
-// 
-// //      cursor = this->editor->textCursor();
-//                     cursor.setPosition( i.fragment().position() );
-//                     cursor.movePosition( QTextCursor::NextCharacter,
-//                                          QTextCursor::KeepAnchor, i.fragment().length() );
-//                     if ( cursor.hasSelection() ) {
-//                         cursor.mergeCharFormat( imgFormat );
-// //       this->editor->setTextCursor(cursor);
-//                     }
-//                 }
-//             }
-//         }
-//         block = block.next();
-//     } while ( block.isValid() );
-// }
-
-// void BilboEditor::useLocalImagePaths( QTextDocument* doc )
-// {
-//     QTextCharFormat f;
-//     QTextCursor cursor;
-// //  QTextBlock block = this->editor->document()->firstBlock();
-//     QTextBlock block = doc->firstBlock();
-//     QTextBlock::iterator i;
-//     cursor = QTextCursor( doc );
-//     QMap <QString, BilboMedia*>::const_iterator c_i = mMediaList->constBegin();
-// 
-//     do {
-//         for ( i = block.begin(); !( i.atEnd() ); ++i ) {
-//             kDebug() << "start iterating";
-//             f = i.fragment().charFormat();
-//             if ( f.isImageFormat() ) {
-//                 kDebug() << "is image format";
-//                 QTextImageFormat imgFormat = f.toImageFormat();
-// 
-//                 BilboMedia *tempMedia = c_i.value();
-//                 while ( tempMedia->remoteUrl() != imgFormat.name() ) {
-//                     ++c_i;
-//                     if ( c_i == mMediaList->constEnd() ) {
-//                         c_i = mMediaList->constBegin();
-//                     }
-//                     tempMedia = c_i.value();
-//                 }
-// 
-//                 imgFormat.setName( tempMedia->localUrl() );
-// 
-//                 cursor = this->editor->textCursor();
-//                 cursor.setPosition( i.fragment().position() );
-//                 cursor.movePosition( QTextCursor::NextCharacter,
-//                                      QTextCursor::KeepAnchor, i.fragment().length() );
-//                 if ( cursor.hasSelection() ) {
-//                     cursor.mergeCharFormat( imgFormat );
-//                     this->editor->setTextCursor( cursor );
-//                 }
-//             }
-//         }
-//         block = block.next();
-//     } while ( block.isValid() );
-// }
-
 bool BilboEditor::updateMediaPaths()
 {
     int startIndex = 0;
@@ -1187,7 +1111,7 @@ void BilboEditor::sltGetBlogStyle()
                i18n( "Please select a blog from the toolbox, then try again." ), 
                i18n( "Select a blog" ) );
     }
-    WeblogStyleGetter *styleGetter = new WeblogStyleGetter( __currentBlogId, this );
+    StyleGetter *styleGetter = new StyleGetter( __currentBlogId, this );
     connect( styleGetter, SIGNAL( sigStyleFetched() ), this, SLOT( sltSetPostPreview() ) );
 }
 
@@ -1197,11 +1121,11 @@ void BilboEditor::sltSetPostPreview()
 //        this->preview->setHtml( WeblogStyleGetter::styledHtml( __currentBlogId, 
 //                          qobject_cast< *PostEntry >( mParent )->postTitle(),
 //                          this->htmlEditor->toPlainText() ) );
-        this->preview->setHtml( WeblogStyleGetter::styledHtml( __currentBlogId, 
-                         i18n( "Post Preview" ),
+        this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
+                         i18n( "Post Title" ),
                          this->htmlEditor->toPlainText() ) );
     }
-    if ( qobject_cast< WeblogStyleGetter* >( sender() ) ) {
+    if ( qobject_cast< StyleGetter* >( sender() ) ) {
         sender()->deleteLater();
     }
 }

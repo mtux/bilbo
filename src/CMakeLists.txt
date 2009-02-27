@@ -8,8 +8,7 @@ SET(QT_USE_QTWEBKIT 1)
 # add_subdirectory(bilbomarkupbuilders)
 
 set(bilbo_SRCS
-# editorsettings.cpp
- weblogstylegetter.cpp
+ stylegetter.cpp
  bilbocssparser.cpp
  bilbohtmlparser.cpp
  bilbotexthtmlimporter.cpp
@@ -38,7 +37,6 @@ set(bilbo_SRCS
  catcheckbox.cpp
  sendtoblogdialog.cpp
  waitwidget.cpp
-#bilborichtextedit.cpp
 )
 
 kde4_add_ui_files(
