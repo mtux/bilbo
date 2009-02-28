@@ -165,7 +165,7 @@ void Backend::publishPost( BilboPost * post )
 //             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
 //         }
         kDebug()<<"Before break: "<<post->content();
-        QStringList content = post->content().split("<!--more-->");
+        QStringList content = post->content().split("<!--split-->");
         if( content.count() == 2 ) {
             kDebug()<<"Content: "<<content[0];
             kDebug()<<"Additional: "<<content[1];
@@ -333,7 +333,7 @@ void Backend::modifyPost( BilboPost * post )
 //             categoryListNotSet = true;
 //             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
 //         }
-        QStringList content = post->content().split("<!--more-->");
+        QStringList content = post->content().split("<!--split-->");
         if( content.count() == 2 ) {
             bp->setContent(content[0]);
             bp->setAdditionalContent( content[1] );

@@ -357,8 +357,6 @@ void MainWindow::sltError( const QString & errorMessage )
     KMessageBox::detailedError( this, i18n( "An error ocurred on latest transaction " ), errorMessage );
     statusBar()->clearMessage();
     slotBusy(false);
-    this->unsetCursor();
-    toolbox->unsetCursor();
 }
 
 void MainWindow::writeConfigs()
@@ -432,6 +430,7 @@ void MainWindow::slotBusy(bool isBusy)
     kDebug()<<"isBusy="<<isBusy<<"\tbusyNumber="<<busyNumber;
     if(isBusy){
         this->setCursor(Qt::BusyCursor);
+        toolbox->setCursor( Qt::BusyCursor );
         ++busyNumber;
         if(!progress){
             progress = new QProgressBar(statusBar());
@@ -444,6 +443,7 @@ void MainWindow::slotBusy(bool isBusy)
         --busyNumber;
         if( busyNumber < 1 ){
             this->unsetCursor();
+            toolbox->unsetCursor();
             if(progress){
                 statusBar()->removeWidget(progress);
                 progress->deleteLater();
@@ -538,7 +538,8 @@ void MainWindow::slotMediaObjectUploaded( BilboMedia *media )
 {
     slotBusy(false);
     KMessageBox::information(this, i18n( "Media uploaded.\nYou can find it here:\n%1",
-                                         media->remoteUrl().prettyUrl() ));
+                                         media->remoteUrl().prettyUrl() ),
+                              i18n( "Uploaded successfully" ), QString(), KMessageBox::AllowLink);
     ///TODO Add to Post!
     media->deleteLater();
     sender()->deleteLater();

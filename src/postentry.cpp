@@ -120,7 +120,7 @@ void PostEntry::setPostBody( const QString & content, const QString &additionalC
     if(additionalContent.isEmpty()) {
         body = content;
     } else {
-        body = content + "</p><!--more--><p>" + additionalContent;
+        body = content + "</p><!--split--><p>" + additionalContent;
         mCurrentPost.setAdditionalContent(QString());
     }
     mCurrentPost.setContent( body );
@@ -392,7 +392,7 @@ void PostEntry::saveTemporary( bool force )
 {
     kDebug();
     if( isPostContentModified || ( !currentPost()->content().isEmpty() && force ) ) {
-        mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry(mCurrentPost, mCurrentPostBlogId, DBMan::Temp) );
+        mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry( *currentPost(), mCurrentPostBlogId, DBMan::Temp) );
         emit postSavedTemporary();
         kDebug()<<"Temporary saved";
     }
