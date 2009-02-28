@@ -19,4 +19,10 @@
         <default>5</default>
     </entry>
   </group>
+  <group name="Advanced">
+    <entry name="changeNToBreak" type="Bool">
+        <label>Change '\\n' to '<br/>' On posts retrieved from server</label>
+        <default>false</default>
+    </entry>
+  </group>
 </kcfg>

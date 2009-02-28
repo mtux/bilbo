@@ -48,6 +48,11 @@
 #include "systray.h"
 #include "bilboblog.h"
 #include "multilinetextedit.h"
+
+#include "ui_advancedsettingsbase.h"
+#include "ui_settingsbase.h"
+#include "ui_editorsettingsbase.h"
+
 #define TIMEOUT 5000
 
 MainWindow::MainWindow(): KXmlGuiWindow(),
@@ -216,13 +221,17 @@ void MainWindow::optionsPreferences()
     }
     KConfigDialog *dialog = new KConfigDialog( this, "settings", Settings::self() );
     QWidget *generalSettingsDlg = new QWidget;
-//     QWidget *generalSettingsDlg = new QWidget( dialog );
+    Ui::SettingsBase ui_prefs_base;
+    Ui::EditorSettingsBase ui_editorsettings_base;
     ui_prefs_base.setupUi( generalSettingsDlg );
     QWidget *editorSettingsDlg = new QWidget;
     ui_editorsettings_base.setupUi( editorSettingsDlg );
-//     EditorSettings *editorSettingsDlg = new EditorSettings( dialog );
+    QWidget *advancedSettingsDlg = new QWidget;
+    Ui::AdvancedSettingsBase ui_advancedsettings_base;
+    ui_advancedsettings_base.setupUi( advancedSettingsDlg );
     dialog->addPage( generalSettingsDlg, i18n( "General" ), "configure" );
     dialog->addPage( editorSettingsDlg, i18n( "Editor" ), "accessories-text-editor" );
+    dialog->addPage( advancedSettingsDlg, i18n( "Advanced" ), "applications-utilities");
     connect( dialog, SIGNAL( settingsChanged( const QString& ) ), this, SIGNAL( settingsChanged() ) );
     dialog->setAttribute( Qt::WA_DeleteOnClose );
     dialog->show();
@@ -497,8 +506,7 @@ void MainWindow::slotShowStatusMessage(const QString &message, bool isPermanent)
 
 void MainWindow::uploadMediaObject()
 {
-    BilboBlog blog = DBMan::self()->getBlogInfo(toolbox->currentBlogId());
-    if( blog.supportMediaObjectUploading() ) {
+    if(  toolbox->currentBlog()->supportMediaObjectUploading() ) {
         QString mediaPath = KFileDialog::getOpenFileName( KUrl("kfiledialog:///image?global"),
                                                       "image/png image/jpeg image/gif", this,
                                                           i18n("Select media to upload"));

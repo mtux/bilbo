@@ -6,16 +6,13 @@
     <x>0</x>
     <y>0</y>
     <width>306</width>
-    <height>81</height>
+    <height>57</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout" >
-   <item row="2" column="0" colspan="2" >
-    <widget class="KSeparator" name="kseparator" />
-   </item>
    <item row="1" column="0" >
     <widget class="QLabel" name="label" >
      <property name="text" >
@@ -49,11 +46,6 @@
    <class>KIntSpinBox</class>
    <extends>QSpinBox</extends>
    <header>knuminput.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KSeparator</class>
-   <extends>QFrame</extends>
-   <header>kseparator.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

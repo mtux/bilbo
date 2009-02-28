@@ -38,6 +38,7 @@
 // #include <QMimeData>
 #include <kio/netaccess.h>
 #include <kio/job.h>
+#include <settings.h>
 
 Backend::Backend( int blog_id, QObject* parent ): QObject( parent )
 {
@@ -141,8 +142,10 @@ void Backend::entriesListed( const QList< KBlog::BlogPost > & posts )
 
     for ( int i = 0; i < posts.count(); i++ ) {
         BilboPost tempPost( posts[i] );
-        tempPost.setContent( tempPost.content().replace( "\n", "<br/>" ) );
-        tempPost.setAdditionalContent( tempPost.additionalContent().replace( "\n", "<br/>" ) );
+        if(Settings::changeNToBreak()) {
+            tempPost.setContent( tempPost.content().replace( "\n", "<br/>" ) );
+            tempPost.setAdditionalContent( tempPost.additionalContent().replace( "\n", "<br/>" ) );
+        }
         DBMan::self()->addPost( tempPost, mBBlog->id() );
     }
     kDebug() << "Emitting sigEntriesListFetched ...";

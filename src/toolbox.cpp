@@ -480,6 +480,11 @@ int Toolbox::currentBlogId()
         return -1;
 }
 
+const BilboBlog * Toolbox::currentBlog()
+{
+    return mBlogList.value( currentBlogId() );
+}
+
 void Toolbox::sltEntrySelected( QListWidgetItem * item )
 {
     kDebug();
