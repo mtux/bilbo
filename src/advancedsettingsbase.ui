@@ -15,6 +15,9 @@
   <layout class="QVBoxLayout" name="verticalLayout" >
    <item>
     <widget class="QCheckBox" name="kcfg_changeNToBreak" >
+     <property name="toolTip" >
+      <string>It could be useful on some blogs like Wordpress that do not store posts as HTML</string>
+     </property>
      <property name="text" >
       <string>Change '\n' to '&lt;br/>' On posts retrieved from server</string>
      </property>

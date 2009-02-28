@@ -117,7 +117,7 @@ protected Q_SLOTS:
 
 private Q_SLOTS:
     void sltTitleChanged( const QString& title );
-    void sltDeleteProgressBar();
+    void deleteProgressBar();
     void saveTemporary( bool force=false );
     void slotPostModified();
     void slotQuit();
@@ -138,6 +138,7 @@ private:
     int mCurrentPostBlogId;
     QMap <QString, BilboMedia*> mMediaList;
 
+    int mNumOfFilesToBeUploaded;
     bool isUploadingMediaFilesFailed;
     bool isNewPost;
 //     bool mIsModified;
