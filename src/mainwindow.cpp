@@ -476,7 +476,7 @@ QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
     temp->setCurrentPost(post);
     temp->setCurrentPostBlogId( blog_id );
 
-    if ( blog_id != -1 ) {
+    if ( blog_id != -1 && toolbox->blogList().contains( blog_id ) ) {
         temp->setDefaultLayoutDirection( toolbox->blogList().value( blog_id )->direction() );
     }
 

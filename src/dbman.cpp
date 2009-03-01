@@ -99,7 +99,8 @@ bool DBMan::createDB()
     QSqlQuery q;
     ///Blog table!
     if ( !q.exec( "CREATE TABLE blog (id INTEGER PRIMARY KEY, blogid TEXT, blog_url TEXT, username TEXT,\
-                  style_url TEXT, api_type TEXT, title TEXT, direction TEXT, local_directory TEXT)" ) ) {
+                  style_url TEXT, api_type TEXT, title TEXT, direction TEXT, local_directory TEXT,\
+                  icon_url TEXT)" ) ) {
         ret = false;
         mLastErrorText = q.lastError().text();
     }
@@ -109,7 +110,7 @@ bool DBMan::createDB()
                   author TEXT, slug TEXT, post_password TEXT, title TEXT, content TEXT, text_more TEXT,\
                   c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC,\
                   is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT,\
-                  status NUMERIC, UNIQUE(postid, blog_id));" ) ) {
+                  status NUMERIC, trackback_urls TEXT, UNIQUE(postid, blog_id));" ) ) {
         ret = false;
         mLastErrorText = q.lastError().text();
     }
@@ -124,7 +125,7 @@ bool DBMan::createDB()
 
     ///files table
     if( !q.exec( "CREATE TABLE file (fileid INTEGER PRIMARY KEY, name TEXT, blog_id NUMERIC, is_uploaded NUMERIC,\
-        local_url TEXT, remote_url TEXT);" ) ) {
+        local_url TEXT, remote_url TEXT, mime_type TEXT);" ) ) {
         ret = false;
         mLastErrorText = q.lastError().text();
     }

@@ -74,7 +74,7 @@ AddEditBlog::AddEditBlog( int blog_id, QWidget *parent, Qt::WFlags flags )
     connect( ui.txtPass, SIGNAL( textChanged( const QString & ) ), this, SLOT( enableAutoConfBtn() ) );
     connect( ui.btnAutoConf, SIGNAL( clicked() ), this, SLOT( autoConfigure() ) );
     connect( ui.btnFetch, SIGNAL( clicked() ), this, SLOT( fetchBlogId() ) );
-//     connect(this, SIGNAL(accepted()), this, SLOT(sltAccepted()));
+    connect( ui.comboApi, SIGNAL( currentIndexChanged(int) ), this, SLOT( slotComboApiChanged(int) ) );
 //     connect( this, SIGNAL( rejected() ), this, SLOT( sltRejected() ) );
     connect( ui.txtUrl, SIGNAL( returnPressed() ), this, SLOT( sltReturnPressed() ) );
     connect( ui.txtUser, SIGNAL( returnPressed() ), this, SLOT( sltReturnPressed() ) );
@@ -219,8 +219,6 @@ void AddEditBlog::fetchBlogId()
             dynamic_cast<KBlog::Blogger1*>( mBlog )->setPassword( ui.txtPass->text() );
             connect( dynamic_cast<KBlog::Blogger1*>( mBlog ) , SIGNAL( listedBlogs( const QList<QMap<QString, QString> >& ) ),
                      this, SLOT( fetchedBlogId( const QList<QMap<QString, QString> >& ) ) );
-            connect( dynamic_cast<KBlog::Blogger1*>( mBlog ), SIGNAL( error( KBlog::Blog::ErrorType, const QString& ) ),
-                     this, SLOT( handleFetchError( KBlog::Blog::ErrorType, const QString& ) ) );
             mFetchBlogIdTimer = new QTimer( this );
             mFetchBlogIdTimer->setSingleShot( true );
             connect( mFetchBlogIdTimer, SIGNAL( timeout() ), this, SLOT( handleFetchIDTimeout() ) );
@@ -245,6 +243,8 @@ void AddEditBlog::fetchBlogId()
             return;
             break;
     };
+    connect( mBlog, SIGNAL( error( KBlog::Blog::ErrorType, const QString& ) ),
+             this, SLOT( handleFetchError( KBlog::Blog::ErrorType, const QString& ) ) );
     ui.txtId->setText( i18n( "Please wait..." ) );
     ui.txtId->setEnabled( false );
     showWaitWidget( i18n( "Fetching Blog Id..." ) );
@@ -258,8 +258,9 @@ void AddEditBlog::handleFetchIDTimeout()
     hideWaitWidget();
     KMessageBox::error( this, i18n( "Fetching the blog's id timed out. Check your internet connection,\
                                     and your homepage Url, username or password!\
-                                    \nnote that the url has to contain \"http://\" or ...\
-                                    \nfor example: http://bilbo.sf.net/xmlrpc.php is a good url" ) );
+                                    \nnote that the url has to contain \"http://\" .\
+                                    \nIf you are using a self hosted Wordpress blog,\
+                                    you have to enable Remote Publishing on its configurations" ) );
 }
 
 void AddEditBlog::handleFetchAPITimeout()
@@ -342,6 +343,88 @@ void AddEditBlog::sltReturnPressed()
 AddEditBlog::~AddEditBlog()
 {
     kDebug();
+}
+
+void AddEditBlog::setSupportedFeatures( BilboBlog::ApiType api )
+{
+    QString yesStyle = "QLabel{color: green;}";
+    QString yesText = i18n( "Yes" );
+    QString noStyle = "QLabel{color: red;}";
+    QString noText = i18n( "No, API doesn't support" );
+    QString notYetText = i18n( "No, Bilbo doesn't support yet" );
+
+    ui.featureCreatePost->setText( yesText );
+    ui.featureCreatePost->setStyleSheet( yesStyle );
+    ui.featureRemovePost->setText( yesText );
+    ui.featureRemovePost->setStyleSheet( yesStyle );
+    ui.featurRecentPosts->setText( yesText );
+    ui.featurRecentPosts->setStyleSheet( yesStyle );
+
+    ui.featureCreateCategory->setStyleSheet( noStyle );
+
+    switch( api ) {
+        case BilboBlog::BLOGGER1_API:
+            ui.featureUploadMedia->setText( noText );
+            ui.featureUploadMedia->setStyleSheet( noStyle );
+            ui.featureCategories->setText( noText );
+            ui.featureCategories->setStyleSheet( noStyle );
+            ui.featureMultipagedPosts->setText( noText );
+            ui.featureMultipagedPosts->setStyleSheet( noStyle );
+            ui.featureCreateCategory->setText( noText );
+            ui.featureTags->setText( noText );
+            ui.featureTags->setStyleSheet( noStyle );
+            break;
+        case BilboBlog::METAWEBLOG_API:
+            ui.featureUploadMedia->setText( yesText );
+            ui.featureUploadMedia->setStyleSheet( yesStyle );
+            ui.featureCategories->setText( noText );
+            ui.featureCategories->setStyleSheet( noStyle );
+            ui.featureMultipagedPosts->setText( noText );
+            ui.featureMultipagedPosts->setStyleSheet( noStyle );
+            ui.featureCreateCategory->setText( noText );
+            ui.featureTags->setText( noText );
+            ui.featureTags->setStyleSheet( noStyle );
+            break;
+        case BilboBlog::MOVABLETYPE_API:
+            ui.featureUploadMedia->setText( yesText );
+            ui.featureUploadMedia->setStyleSheet( yesStyle );
+            ui.featureCategories->setText( yesText );
+            ui.featureCategories->setStyleSheet( yesStyle );
+            ui.featureMultipagedPosts->setText( yesText );
+            ui.featureMultipagedPosts->setStyleSheet( yesStyle );
+            ui.featureCreateCategory->setText( noText );
+            ui.featureTags->setText( yesText );
+            ui.featureTags->setStyleSheet( yesStyle );
+            break;
+        case BilboBlog::WORDPRESSBUGGY_API:
+            ui.featureUploadMedia->setText( yesText );
+            ui.featureUploadMedia->setStyleSheet( yesStyle );
+            ui.featureCategories->setText( yesText );
+            ui.featureCategories->setStyleSheet( yesStyle );
+            ui.featureMultipagedPosts->setText( yesText );
+            ui.featureMultipagedPosts->setStyleSheet( yesStyle );
+            ui.featureCreateCategory->setText( notYetText );
+            ui.featureTags->setText( yesText );
+            ui.featureTags->setStyleSheet( yesStyle );
+            break;
+        case BilboBlog::GDATA_API:
+            ui.featureUploadMedia->setText( noText );
+            ui.featureUploadMedia->setStyleSheet( noStyle );
+            ui.featureCategories->setText( noText );
+            ui.featureCategories->setStyleSheet( noStyle );
+            ui.featureMultipagedPosts->setText( noText );
+            ui.featureMultipagedPosts->setStyleSheet( noStyle );
+            ui.featureCreateCategory->setText( noText );
+            ui.featureTags->setText( yesText );
+            ui.featureTags->setStyleSheet( yesStyle );
+            break;
+    };
+}
+
+void AddEditBlog::slotComboApiChanged( int index )
+{
+    ///This wrapper is to change api if needed!
+    setSupportedFeatures( (BilboBlog::ApiType) index );
 }
 
 void AddEditBlog::slotButtonClicked( int button )
