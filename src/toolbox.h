@@ -56,6 +56,7 @@ public:
     //void setFieldsValue(const BilboPost& post);
     void setFieldsValue( BilboPost* post = 0 );
     int currentBlogId();
+    const BilboBlog *currentBlog();
     void setCurrentBlog( int blog_id );
     void setCurrentPage( int index );
     QMap<int, BilboBlog*> & blogList();

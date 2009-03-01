@@ -50,6 +50,7 @@ kde4_add_ui_files(
   addcategorybase.ui
   settingsbase.ui
   editorsettingsbase.ui
+  advancedsettingsbase.ui
   sendtoblogbase.ui
   waitwidgetbase.ui
 )

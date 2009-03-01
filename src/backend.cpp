@@ -38,6 +38,7 @@
 // #include <QMimeData>
 #include <kio/netaccess.h>
 #include <kio/job.h>
+#include <settings.h>
 
 Backend::Backend( int blog_id, QObject* parent ): QObject( parent )
 {
@@ -141,8 +142,10 @@ void Backend::entriesListed( const QList< KBlog::BlogPost > & posts )
 
     for ( int i = 0; i < posts.count(); i++ ) {
         BilboPost tempPost( posts[i] );
-        tempPost.setContent( tempPost.content().replace( "\n", "<br/>" ) );
-        tempPost.setAdditionalContent( tempPost.additionalContent().replace( "\n", "<br/>" ) );
+        if(Settings::changeNToBreak()) {
+            tempPost.setContent( tempPost.content().replace( "\n", "<br/>" ) );
+            tempPost.setAdditionalContent( tempPost.additionalContent().replace( "\n", "<br/>" ) );
+        }
         DBMan::self()->addPost( tempPost, mBBlog->id() );
     }
     kDebug() << "Emitting sigEntriesListFetched ...";
@@ -165,7 +168,7 @@ void Backend::publishPost( BilboPost * post )
 //             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
 //         }
         kDebug()<<"Before break: "<<post->content();
-        QStringList content = post->content().split("<!--more-->");
+        QStringList content = post->content().split("<!--split-->");
         if( content.count() == 2 ) {
             kDebug()<<"Content: "<<content[0];
             kDebug()<<"Additional: "<<content[1];
@@ -206,7 +209,7 @@ void Backend::postPublished( KBlog::BlogPost *post )
 
 void Backend::uploadMedia( BilboMedia * media )
 {
-    kDebug() << "Blog Id: mm " << mBBlog->id();
+    kDebug() << "Blog Id: " << mBBlog->id();
     QString tmp;
     switch ( mBBlog->api() ) {
         case BilboBlog::BLOGGER1_API:
@@ -280,19 +283,18 @@ please check if it exists. path: %1", media->localUrl().pathOrUrl() );
 
 void Backend::mediaUploaded( KBlog::BlogMedia * media )
 {
-    kDebug() << "Blog Id: " << mBBlog->id();
+    kDebug() << "Blog Id: " << mBBlog->id() << "Media: "<<media->url();
     if(!media){
         kError()<<"ERROR! Media returned from KBlog is NULL!";
         return;
     }
     BilboMedia * m = mPublishMediaMap.value( media );
-    kDebug() << "check = 1";
     if(!m){
-        kError()<<"ERROR! Media returned from KBlog doesn't exist on the Map!";
+        kError()<<"ERROR! Media returned from KBlog doesn't exist on the Map! Url is:"
+                << media->url();
         return;
     }
     mPublishMediaMap.remove( media );
-    kDebug() << "check = 2";
     if ( media->status() == KBlog::BlogMedia::Error ) {
         kError() << "Upload error! with this message: " << media->error();
         const QString tmp( i18n( "Uploading Media failed : %1", media->error() ) );
@@ -301,7 +303,6 @@ void Backend::mediaUploaded( KBlog::BlogMedia * media )
         return;
     }
     quint16 newChecksum = qChecksum( media->data().data(), media->data().count() );
-    kDebug() << "check = 3";
     if ( newChecksum != m->checksum() ) {
         kError() << "Check sum error: checksum of sent file: " << m->checksum() <<
                 " Checksum of recived file: " << newChecksum << "Error: " << media->error() << endl;
@@ -311,10 +312,8 @@ void Backend::mediaUploaded( KBlog::BlogMedia * media )
         Q_EMIT sigMediaError( tmp, m );
         return;
     }
-    kDebug() << "check = 4";
     m->setRemoteUrl( QUrl( media->url().url() ).toString() );
     m->setUploaded( true );
-    kDebug() << "check = 5";
     kDebug() << "Emitting sigMediaUploaded...";
     Q_EMIT sigMediaUploaded( m );
 }
@@ -333,7 +332,7 @@ void Backend::modifyPost( BilboPost * post )
 //             categoryListNotSet = true;
 //             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
 //         }
-        QStringList content = post->content().split("<!--more-->");
+        QStringList content = post->content().split("<!--split-->");
         if( content.count() == 2 ) {
             bp->setContent(content[0]);
             bp->setAdditionalContent( content[1] );

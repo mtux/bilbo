@@ -23,8 +23,6 @@
 #define MAINWINDOW_H
 
 #include "bilbopost.h"
-#include "ui_settingsbase.h"
-#include "ui_editorsettingsbase.h"
 #include <kxmlguiwindow.h>
 
 class KTabWidget;
@@ -111,9 +109,6 @@ private:
         and return pointer to it's widget (Actually return value is a PostEntry instance)
     */
     QWidget* createPostEntry(int blog_id, const BilboPost& post);
-
-    Ui::SettingsBase ui_prefs_base;
-    Ui::EditorSettingsBase ui_editorsettings_base;
 
     Toolbox *toolbox;
     QDockWidget *toolboxDock;
