@@ -304,6 +304,11 @@ void MainWindow::sltPublishPost()
         kDebug() << "Blog id not sets correctly.";
         return;
     }
+    if( !activePost || tabPosts->currentIndex() == -1) {
+        KMessageBox::sorry( this, i18n( "There isn't any open post to submit!" ) );
+        kDebug() << "There isn't any post";
+        return;
+    }
     BilboPost post;
     toolbox->getFieldsValue( post );
 //     post.setPrivate( false );

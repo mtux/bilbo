@@ -1,11 +1,11 @@
 [Desktop Entry]
-Name=bilbo
-Name[x-test]=xxbilboxx
+Name=Bilbo
+Name[x-test]=xxBilboxx
 Exec=bilbo %i -caption "%c"
 Icon=bilbo
 Type=Application
-DocPath=bilbo/index.html
-GenericName=A KDE4 Blogging Client
-Terminal=0
+Categories=Network;
+GenericName=A KDE Blogging Client
+Terminal=false
 
 X-Ubuntu-Gettext-Domain=desktop_kdesdk
