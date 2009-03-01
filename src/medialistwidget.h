@@ -53,10 +53,12 @@ Q_SIGNALS:
 protected Q_SLOTS:
     void sltEditProperties();
     void sltSetProperties();
+    void sltCopyUrl();
     void sltRemoveMedia();
 
 private:
     KAction *actEdit;
+    KAction *actCopyUrl;
     KAction *actRemove;
 
     Ui::EditImageBase ui;

@@ -21,6 +21,7 @@
 
 #include "medialistwidget.h"
 #include <QContextMenuEvent>
+#include <QtGui/QClipboard>
 #include <kmenu.h>
 #include <kaction.h>
 #include <klocalizedstring.h>
@@ -31,6 +32,8 @@ MediaListWidget::MediaListWidget( QWidget *parent ): KListWidget( parent )
 {
     actEdit = new KAction( i18n( "Edit properties" ), this );
     connect( actEdit, SIGNAL( triggered( bool ) ), this, SLOT( sltEditProperties() ) );
+    actCopyUrl = new KAction( i18n( "Copy Url" ), this );
+    connect( actCopyUrl, SIGNAL( triggered( bool ) ), this, SLOT( sltCopyUrl() ) );
     actRemove = new KAction( i18n( "Remove media" ), this );
     connect( actRemove, SIGNAL( triggered( bool ) ), this, SLOT( sltRemoveMedia() ) );
 }
@@ -46,6 +49,7 @@ void MediaListWidget::contextMenuEvent( QContextMenuEvent *event )
         if ( this->itemAt( event->pos() )->type() == ImageType ) {
             menu.addAction( actEdit );
         }
+        menu.addAction( actCopyUrl );
         menu.addAction( actRemove );
         menu.exec( event->globalPos() );
     }
@@ -74,6 +78,11 @@ void MediaListWidget::sltSetProperties()
     Q_EMIT( sigSetProperties( this->currentRow(), ui.spinboxWidth->value(),
             ui.spinboxHeight->value(), ui.txtTitle->text(), ui.txtAltText->text() ) );
     kDebug() << "signal emmited" ;
+}
+
+void MediaListWidget::sltCopyUrl()
+{
+    QApplication::clipboard()->setText( this->currentItem()->toolTip() );
 }
 
 void MediaListWidget::sltRemoveMedia()
