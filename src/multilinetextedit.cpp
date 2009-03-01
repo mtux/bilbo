@@ -57,7 +57,6 @@ void MultiLineTextEdit::keyPressEvent( QKeyEvent *event )
     int tempKey = event->key();
     if ( tempKey == Qt::Key_Return && event->modifiers() == Qt::ShiftModifier ) {
         this->textCursor().insertText( QString( QChar::LineSeparator ) );
-        //qDebug() << "Enter Pressed" ;
 
     } else {
         KRichTextEdit::keyPressEvent( event );
