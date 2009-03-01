@@ -41,6 +41,7 @@
 #include "bilbomedia.h"
 #include "global.h"
 #include "bilboblog.h"
+#include "bilbopost.h"
 // #include "ktoolbar.h"
 // #include "kaction.h"
 // #include "kicon.h"
@@ -159,6 +160,7 @@ void BilboEditor::createUi()
     ///defaultBlockFormat
     defaultBlockFormat = editor->textCursor().blockFormat();
     
+    currentPostTitle = i18n( "Post Title" );
     createActions();
 
 
@@ -931,7 +933,7 @@ void BilboEditor::sltSyncEditors( int index )
         }
 //         preview->setHtml( htmlEditor->toPlainText(), QUrl( baseU ) );
         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
-                         i18n( "Post Title" ),
+                         currentPostTitle,
                          this->htmlEditor->toPlainText() ) );
     }
 
@@ -1052,6 +1054,15 @@ void BilboEditor::setLayoutDirection( Qt::LayoutDirection direction )
 //     }
 }
 
+void BilboEditor::setCurrentTitle( const QString& title)
+{
+    if ( title.isEmpty() ) {
+        currentPostTitle = i18n( "Post Title" );
+    } else {
+        currentPostTitle = title;
+    }
+}
+
 bool BilboEditor::updateMediaPaths()
 {
     int startIndex = 0;
@@ -1151,7 +1162,7 @@ void BilboEditor::sltSetPostPreview()
 {
     if ( this->currentIndex() == 2 ) {
         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
-                         i18n( "Post Title" ),
+                         currentPostTitle,
                          this->htmlEditor->toPlainText() ) );
     }
     if ( qobject_cast< StyleGetter* >( sender() ) ) {

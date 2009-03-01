@@ -28,16 +28,18 @@
 class QTextCharFormat;
 class QWebView;
 class QPlainTextEdit;
-class MultiLineTextEdit;
+
 class KAction;
-class KActionCollection;
+// class KActionCollection;
 class KToolBar;
-class AddEditLink;
-// class AddImageDialog;
-// class AddMediaDialog;
-class BilboMedia;
 class KListWidget;
 class KPushButton;
+
+class MultiLineTextEdit;
+class AddEditLink;
+class BilboMedia;
+class BilboPost;
+
 
 
 //!Class BilboEditor represents the editor part of BilboBlogger
@@ -105,7 +107,8 @@ public:
      * @return true if successfull, and false otherwise.
      */
     bool updateMediaPaths();
-//   KActionCollection *visualEditorActions;
+
+    void setCurrentTitle( const QString& title );
 
 Q_SIGNALS:
     void textChanged();
@@ -281,25 +284,16 @@ private:
 //     void useRemoteImagePaths( QTextDocument* doc );
 //     void useLocalImagePaths( QTextDocument* doc );
 
-//     QWidget *mParent;
     QWidget *tabVisual;
     QWidget *tabHtml;
     QWidget *tabPreview;
 
-    //QTextEdit *editor;
     MultiLineTextEdit *editor;
-//     QTextBrowser *editor;
-    //BilboRichTextEdit *editor;
-    //KRichTextEdit *editor;
     QPlainTextEdit *htmlEditor;
     QWebView *preview;
 
-    //QToolBar *barVisual;
-    //QToolBar *barHtml;
-    //QToolBar *barPreview;
     KToolBar *barVisual;
-    //KToolBar *barHtml;
-    //KToolBar *barPreview;
+
     KListWidget *lstMediaFiles;
     KPushButton *btnGetStyle;
 
@@ -332,12 +326,14 @@ private:
     AddEditLink *linkDialog;
     
     QTextCharFormat defaultCharFormat;
-    //BilboTextCharFormat defaultCharFormat;
     QTextBlockFormat defaultBlockFormat;
     QTextCharFormat lastCharFormat;
     QTextBlockFormat lastBlockFormat;
     
     QMap <QString, BilboMedia*> *mMediaList;
+
+//     const BilboPost *mCurrentPost;
+    QString currentPostTitle;
 //   QNetworkAccessManager *netManager;
     int prev_index;
 };

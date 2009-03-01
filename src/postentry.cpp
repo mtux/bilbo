@@ -98,6 +98,7 @@ void PostEntry::createUi()
 void PostEntry::sltTitleChanged( const QString& title )
 {
     mCurrentPost.setTitle( title );
+    this->editPostWidget->setCurrentTitle( title );
     Q_EMIT sigTitleChanged( title );
 }
 
@@ -111,6 +112,7 @@ void PostEntry::setPostTitle( const QString & title )
     kDebug();
     this->txtTitle->setText( title );
     mCurrentPost.setTitle( title );
+    this->editPostWidget->setCurrentTitle( title );
 }
 
 void PostEntry::setPostBody( const QString & content, const QString &additionalContent )
