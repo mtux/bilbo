@@ -84,7 +84,7 @@ QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
             if ( !file.exists() ) {
                 if ( !downloadFinished.contains( imageUrl.url() ) ) {
                     downloadFinished.insert( imageUrl.url(), false);
-                    KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite );
+                    KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, ( KIO::Overwrite | KIO::HideProgressInfo ) );
 
                     connect( copyJob, SIGNAL( result( KJob * ) ), this, 
                             SLOT( sltRemoteFileCopied( KJob * ) ) );
