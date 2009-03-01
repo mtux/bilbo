@@ -102,6 +102,7 @@ void BilboEditor::createUi()
     lstMediaFiles->setIconSize( QSize( 32, 32 ) );
     lstMediaFiles->setGridSize( QSize( 60, 48 ) );
     lstMediaFiles->setDragDropMode( QAbstractItemView::NoDragDrop );
+    lstMediaFiles->setResizeMode( QListView::Adjust );
     lstMediaFiles->setMaximumHeight( 60 );
     connect( lstMediaFiles, SIGNAL( sigSetProperties( const int, const int,
                                     const int, const QString, const QString ) ), 
@@ -799,8 +800,8 @@ void BilboEditor::sltMediaTypeFound( BilboMedia * media )
             item = new QListWidgetItem( media->icon(), media->name(), lstMediaFiles, MediaListWidget::OtherType );
         }
 //         item->setData( Qt::UserRole, QVariant( url ) );
-//         item->setToolTip( media->remoteUrl() );
         item->setToolTip( url );
+        item->setSizeHint( lstMediaFiles->gridSize() );
     }
 }
 
@@ -924,7 +925,7 @@ void BilboEditor::sltSyncEditors( int index )
 //    htmlEditor->setPlainText(builder->getResult());
         }
         QString baseU = "http://bilbo.sourceforge.net";
-//   QString baseU = "file://";
+
         if ( __currentBlogId > -1 ) {
             baseU = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
         }
@@ -949,12 +950,10 @@ QString BilboEditor::htmlToRichtext( const QString& html )
 
     QString h;
 //  QString basePath = KBloggerMedia::cachePath(); <base href=\"" + basePath + "\" />
-//  h = "<html><head></head><body><p>" + richText + "</p></body></html>";
     h = "<html><head></head><body><p>" + richText + "</p></body></html>";
     return h;
 }
 
-// const QString& BilboEditor::htmlContent()
 QString BilboEditor::htmlContent()
 {
     // TODO move htmlExp definiton to BilboEditor constructor.
@@ -996,9 +995,7 @@ QString BilboEditor::htmlContent()
 
 //  const QString& htmlContent = htmlEditor->toPlainText();
     QString htmlContent = htmlEditor->toPlainText();
-//     kDebug() << htmlContent << " editor output";
     return htmlContent;
-//  return htmlEditor->toPlainText();
 }
 
 //TODO if content is empty, simply clear editor content
@@ -1027,29 +1024,12 @@ void BilboEditor::setHtmlContent( const QString & content )
 //  this->editor->textCursor().insertBlock();
 }
 
-// QMap <QString, BilboMedia*> * BilboEditor::mediaList()
-// {
-//     return mMediaList;
-// }
-
 void BilboEditor::setMediaList( QMap <QString, BilboMedia*> * list )
 {
     mMediaList = list;
     editor->setMediaList( list );
 }
-// reason to remove:
-// this way, editor didn't generate html tags for default parameters, so no tag would be generated for rtl direction, if the default layout changed to rtl.
-//so browsers would show all texts in ltr direction.
 
-// Qt::LayoutDirection BilboEditor::defaultLayoutDirection()
-// {
-//  return this->defaultBlockFormat.layoutDirection();
-// }
-//
-// void BilboEditor::setDefaultLayoutDirection(Qt::LayoutDirection direction)
-// {
-//   this->defaultBlockFormat.setLayoutDirection(direction);
-// }
 void BilboEditor::setLayoutDirection( Qt::LayoutDirection direction )
 {
     QTextBlockFormat f = editor->textCursor().blockFormat();
@@ -1081,7 +1061,8 @@ bool BilboEditor::updateMediaPaths()
     bool changed = false;
 
     if ( this->currentIndex() == 0 ) {
-        htmlContent = this->editor->toHtml();
+        htmlExporter* htmlExp = new htmlExporter();
+        htmlContent = htmlExp->toHtml( this->editor->document() );
     } else {
         htmlContent = this->htmlEditor->toPlainText();
     }
@@ -1095,9 +1076,28 @@ bool BilboEditor::updateMediaPaths()
 
         if ( mMediaList->contains( path ) ) {
 //    if (mMediaList->value(path)->isUploaded()) {
+            BilboMedia *media = mMediaList->value( path );
+
             htmlContent.replace( startIndex, ( endIndex - startIndex ),
-                                 mMediaList->value( path )->remoteUrl().url() );
+                                 media->remoteUrl().url() );
             changed = true;
+
+            mMediaList->remove( path );
+            mMediaList->insert( media->remoteUrl().url(), media );
+
+            QList < QListWidgetItem* > list;
+            list = lstMediaFiles->findItems( media->name(), ( Qt::MatchFixedString | 
+                Qt::MatchCaseSensitive ) );
+            if ( list.isEmpty() ) {
+                kDebug() << "media isn't inserted in list widget";
+            } else {
+                for ( int i = 0; i < list.size(); i++ ) {
+                    if ( list.at( i )->toolTip() == path ) {
+                        list.at( i )->setToolTip( media->remoteUrl().url() );
+                        break;
+                    }
+                }
+            }
 //     if (this->currentIndex() == 0) {
 //      if (i.atEnd()) {
 //       block = block.next;
@@ -1125,7 +1125,9 @@ bool BilboEditor::updateMediaPaths()
     if ( changed ) {
         kDebug() << "change is true";
         if ( this->currentIndex() == 0 ) {
-            this->editor->setHtml( htmlContent );
+            QTextDocument *doc = editor->document();
+            doc->clear();
+            BilboTextHtmlImporter( doc, htmlContent ).import();
         } else {
             this->htmlEditor->setPlainText( htmlContent );
         }
@@ -1148,9 +1150,6 @@ void BilboEditor::sltGetBlogStyle()
 void BilboEditor::sltSetPostPreview()
 {
     if ( this->currentIndex() == 2 ) {
-//        this->preview->setHtml( WeblogStyleGetter::styledHtml( __currentBlogId, 
-//                          qobject_cast< *PostEntry >( mParent )->postTitle(),
-//                          this->htmlEditor->toPlainText() ) );
         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
                          i18n( "Post Title" ),
                          this->htmlEditor->toPlainText() ) );
