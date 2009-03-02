@@ -487,6 +487,8 @@ QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
     connect( this, SIGNAL( settingsChanged() ), temp, SLOT( settingsChanged() ));
     connect( temp, SIGNAL( showStatusMessage(QString,bool)),
              this, SLOT(slotShowStatusMessage(QString,bool)));
+
+    connect( temp, SIGNAL( sigBusy( bool ) ), this, SLOT( slotBusy( bool ) ) );
 //     connect( temp, SIGNAL( postModified() ), this, SLOT(slotPostModified()) );
 //     connect( temp, SIGNAL( postSavedLocally() ), this, SLOT( slotPostSaved() ) );
 
