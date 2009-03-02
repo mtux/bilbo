@@ -37,8 +37,6 @@ Implements a dialog to enter address of a local or remote media file.
  @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 // TODO change the class to support more than one type of media.
-// TODO use KDialog instead of QDialog.
-// now when using it default ok-cancel buttons appear on top right corner of the dialog window.
 
 class AddMediaDialog: public KDialog
 {

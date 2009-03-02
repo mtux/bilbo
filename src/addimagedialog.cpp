@@ -34,7 +34,7 @@ AddImageDialog::AddImageDialog(QWidget* parent): AddMediaDialog(parent)
     QStringList mimeFilter;
     mimeFilter << "image/gif" << "image/jpeg" << "image/png" ;
     ui.kurlreqMediaUrl->fileDialog()->setMimeFilter( mimeFilter );
-    this->setWindowTitle( "Add Image" );
+    this->setWindowTitle( i18n( "Add Image" ) );
     editFrame = new QFrame(this);
     editFrame->setFrameShape(QFrame::StyledPanel);
     editFrame->setFrameShadow(QFrame::Raised);
