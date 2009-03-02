@@ -26,6 +26,8 @@
 
 #include "ui_addeditblogbase.h"
 #include <blog.h>
+#include "bilboblog.h"
+
 class BilboBlog;
 class KJob;
 class WaitWidget;
@@ -61,6 +63,8 @@ protected Q_SLOTS:
     void handleFetchError( KBlog::Blog::ErrorType type, const QString& errorMsg );
 
     void sltReturnPressed();
+    void setSupportedFeatures( BilboBlog::ApiType api );
+    void slotComboApiChanged( int index );
 
     void gotHtml( KJob * );
     void gotXmlRpcTest( KJob *job );

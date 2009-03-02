@@ -168,7 +168,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <attribute name="label" >
-         <string>E&amp;ntries</string>
+         <string>Blog Posts</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_5" >
          <property name="margin" >
@@ -299,7 +299,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <attribute name="label" >
-         <string>&amp;Categories</string>
+         <string>Post &amp;Categories</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_4" >
          <property name="margin" >
@@ -433,7 +433,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <attribute name="label" >
-         <string>&amp;Options</string>
+         <string>Post &amp;Options</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_6" >
          <property name="margin" >

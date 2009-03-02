@@ -119,7 +119,7 @@ void Toolbox::sltRemoveBlog()
         return;
 
     DBMan::self()->removeBlog( qobject_cast<BlogRadioButton*>( btn )->blogId() );
-//     listBlogs.remove(listBlogRadioButtons.checkedButton()->text());
+    emit sigCurrentBlogChanged( -1 );
     listBlogRadioButtons.removeButton( btn );
     btn->deleteLater();
     lstEntriesList->clear();
@@ -520,7 +520,13 @@ void Toolbox::sltEntriesCopyUrl()
         KMessageBox::sorry( this, i18n( "There isn't any selected entry!\nIn order to use this function you have to select an entry first." ) );
         return;
     }
-    QApplication::clipboard()->setText( DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data( 32 ).toInt() ).link().url() );
+    BilboPost post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data( 32 ).toInt() );
+    if( !post.permaLink().isEmpty() )
+        QApplication::clipboard()->setText( post.permaLink().prettyUrl() );
+    else if ( !post.link().isEmpty() )
+        QApplication::clipboard()->setText( post.link().prettyUrl() );
+    else
+        KMessageBox::sorry(this, i18n( "Sorry, There isn't any link field available for this entry on Database." ) );
 }
 
 Toolbox::~Toolbox()
