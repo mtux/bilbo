@@ -932,6 +932,7 @@ void BilboEditor::sltSyncEditors( int index )
             baseU = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
         }
 //         preview->setHtml( htmlEditor->toPlainText(), QUrl( baseU ) );
+
         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
                          currentPostTitle,
                          this->htmlEditor->toPlainText() ) );
@@ -1154,16 +1155,25 @@ void BilboEditor::sltGetBlogStyle()
                i18n( "Please select a blog from the toolbox, then try again." ), 
                i18n( "Select a blog" ) );
     }
+
+    Q_EMIT sigShowStatusMessage( i18n( "Fetching blog style from the web..." ), true );
+    Q_EMIT sigBusy( true );
+
     StyleGetter *styleGetter = new StyleGetter( __currentBlogId, this );
     connect( styleGetter, SIGNAL( sigStyleFetched() ), this, SLOT( sltSetPostPreview() ) );
 }
 
 void BilboEditor::sltSetPostPreview()
 {
+    Q_EMIT sigShowStatusMessage( i18n( "The requested blog style fetched." ), false );
+    Q_EMIT sigBusy( false );
+
     if ( this->currentIndex() == 2 ) {
+        Q_EMIT sigShowStatusMessage( i18n( "Setting blog style..." ), true );
         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
                          currentPostTitle,
                          this->htmlEditor->toPlainText() ) );
+        Q_EMIT sigShowStatusMessage( i18n( "The requested blog style set." ), false );
     }
     if ( qobject_cast< StyleGetter* >( sender() ) ) {
         sender()->deleteLater();

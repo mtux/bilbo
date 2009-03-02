@@ -106,6 +106,14 @@ Q_SIGNALS:
      */
     void showStatusMessage( const QString& message, bool isPermanent);
 
+    /**
+     * This signal is emitted for operations in background, like request of some
+     * data from the web.
+     * @param isBusy if it's true, the operation is in progress. otherwise, it
+     * is finished.
+     */
+    void sigBusy( bool isBusy );
+
 public Q_SLOTS:
     void settingsChanged();
 

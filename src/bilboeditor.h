@@ -73,26 +73,12 @@ public:
 
 //     QMap <QString, BilboMedia*> * mediaList();
 
-    /**
-     * Retrieves default layout direction from default block format of the editor
-     * @return default layout direction of the editor.
-     * @see setDefaultLayoutDirection()
-     */
-//   Qt::LayoutDirection defaultLayoutDirection();
-
     void setHtmlContent( const QString &content );
 
     void setMediaList( QMap <QString, BilboMedia*> *list );
 //   void setMediaList(QMap <QString, BilboMedia*> & list);
 
     void setPlainTextContent( const QString &content );
-
-    /**
-     * Changes the default layout direction of the editor, to the given direction.
-     * @param direction is the new layout direction.
-     * @see defaultLayoutDirection()
-     */
-//   void setDefaultLayoutDirection(Qt::LayoutDirection direction);
 
     /**
      * Changes the layout direction of the editor, to the given direction.
@@ -112,30 +98,28 @@ public:
 
 Q_SIGNALS:
     void textChanged();
+
+    /**
+     * To show a message on statusBar
+     * @param message Message to be shown
+     * @param isPermanent If it's true the message will not have a timeout!
+     *  so it will be shown until next message arrived
+     */
+    void sigShowStatusMessage( const QString& message, bool isPermanent );
+
+    /**
+     * This signal is emitted for operations in background, like request of some
+     * data from the web.
+     * @param isBusy if it's true, the operation is in progress. otherwise, it
+     * is finished.
+     */
+    void sigBusy( bool isBusy );
+
 protected Q_SLOTS:
     
     void sltEnableSpellChecking();
 
     void sltSyncSpellCheckingButton( bool check);
-    /*!
-    Changes Italic style of current format.
-     */
-//   void sltToggleItalic();
-
-    /*!
-    Changes Bold style of current text.
-     */
-//   void sltToggleBold();
-
-    /*!
-    Changes Underline style of current text.
-    */
-//   void sltToggleUnderline();
-
-    /*!
-    Changes Strikeout style of current text.
-    */
-//   void sltToggleStrikeout();
 
     /*!
     Changes the current text font into Courier fontfamily, to represent code style.
@@ -158,10 +142,6 @@ protected Q_SLOTS:
     void sltFontSizeDecrease();
 
     /*!
-     * Creates a new paragraph in cursor position by adding <p> tags.
-     */
-//     void sltNewParagraph();
-    /*!
     Changes Alignment of current paragraph into Right Alignment.
      */
     void sltAlignRight();
@@ -171,12 +151,6 @@ protected Q_SLOTS:
      */
     void sltAlignLeft();
 
-    /*!
-    Changes Alignment of current paragraph into Center Alignment.
-     */
-//   void sltAlignCenter();
-//   void sltAlignJustify();
-//
     /*!
     Switches Layout Direction of current paragraph between RightToLeft and LeftToRight Directions.
      */
@@ -193,7 +167,6 @@ protected Q_SLOTS:
      * if link title is set in the link dialog, current text will change into that.
      */
     void sltSetLink( const QString& address, const QString& target, const QString& title );
-//   void sltSetLink(QString address);
 
     /*!
     Removes link from current text by assigning false to the Anchor property of text format.
@@ -246,7 +219,6 @@ protected Q_SLOTS:
 
     void sltAddPostSplitter();
 
-//     void sltSyncToolbar( const QTextCharFormat& f );
     void sltSyncToolbar();
 
     /*!
@@ -280,9 +252,6 @@ private:
     Prepares the html code to be used by editor->setHtml() function.
      */
     QString htmlToRichtext( const QString& html );
-
-//     void useRemoteImagePaths( QTextDocument* doc );
-//     void useLocalImagePaths( QTextDocument* doc );
 
     QWidget *tabVisual;
     QWidget *tabHtml;

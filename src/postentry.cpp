@@ -56,6 +56,9 @@ PostEntry::PostEntry( QWidget *parent )
     isPostContentModified = false;
     connect( editPostWidget, SIGNAL(textChanged()), this, SLOT(slotPostModified()) );
 //     connect( txtTitle, SIGNAL(textChanged(QString)), this, SLOT(slotPostModified()) );
+    connect( editPostWidget, SIGNAL( sigShowStatusMessage( const QString&, bool ) ), 
+            this, SIGNAL( showStatusMessage( const QString&, bool ) ) );
+    connect( editPostWidget, SIGNAL( sigBusy( bool ) ), this, SIGNAL( sigBusy( bool ) ) );
 }
 
 void PostEntry::slotQuit()
