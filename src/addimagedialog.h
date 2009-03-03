@@ -45,8 +45,6 @@ Q_SIGNALS:
 
 protected:
     virtual void addOtherMediaAttributes();
-//     using AddMediaDialog::media;
-//     using AddMediaDialog::sltOkClicked;
 
 // protected Q_SLOTS:
 //     virtual void sltOkClicked();
@@ -54,7 +52,6 @@ protected:
     
 private:
     QFrame *editFrame;
-    QWidget *editImageWidget;
     Ui::EditImageBase editImageWidgetUi;
 
 };
