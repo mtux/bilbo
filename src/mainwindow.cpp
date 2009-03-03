@@ -424,12 +424,6 @@ void MainWindow::postManipulationDone( bool isError, const QString &customMessag
     toolbox->unsetCursor();
 }
 
-bool MainWindow::queryClose()
-{
-    hide();
-    return false;
-}
-
 bool MainWindow::queryExit()
 {
     kDebug();
