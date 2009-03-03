@@ -26,6 +26,7 @@
 #include <QMap>
 #include "category.h"
 #include <blog.h>
+#include "bilbopost.h"
 
 
 class KUrl;
@@ -109,6 +110,10 @@ protected Q_SLOTS:
     void postCategoriesSetted( const QString &postId );
     void slotPostRemoved( KBlog::BlogPost *post );
     void slotPostFetched( KBlog::BlogPost *post );
+    /**
+     * This function is called after a post published fine, to insert it to DB and emit sigPostPublished.
+     */
+    void savePostInDbAndEmitResult( KBlog::BlogPost *post );
 
 Q_SIGNALS:
     /**
@@ -154,17 +159,13 @@ Q_SIGNALS:
 
 private:
     QString errorTypeToString( KBlog::Blog::ErrorType type );
-    /**
-     * This function is called after a post published fine, to insert it to DB and emit sigPostPublished.
-     */
-    void savePostInDbAndEmitResult( KBlog::BlogPost *post );
     KBlog::Blog *mKBlog;
     BilboBlog *mBBlog;
 //     quint16 mChecksum;
 //     QString mediaLocalUrl;
     QList<Category> mCreatePostCategories;
     QMap<QString, KBlog::BlogPost *> mSetPostCategoriesMap;
-//     QMap<KBlog::BlogPost *, BilboPost *> mSubmitPostMap;
+    QMap<KBlog::BlogPost *, BilboPost::Status> mSubmitPostStatusMap;
     QMap<KBlog::BlogMedia *, BilboMedia *> mPublishMediaMap;
     bool categoryListNotSet;
 };

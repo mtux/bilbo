@@ -49,6 +49,19 @@ AddEditBlog::AddEditBlog( int blog_id, QWidget *parent, Qt::WFlags flags )
     this->setMainWidget( mainW );
     this->setWindowTitle( i18n( "Add a new blog" ) );
     isNewBlog = true;
+
+    connect( ui.txtId, SIGNAL( textChanged( const QString& ) ), this, SLOT( enableOkButton( const QString& ) ) );
+    connect( ui.txtUrl, SIGNAL( textChanged( const QString & ) ), this, SLOT( enableAutoConfBtn() ) );
+    connect( ui.txtUser, SIGNAL( textChanged( const QString & ) ), this, SLOT( enableAutoConfBtn() ) );
+    connect( ui.txtPass, SIGNAL( textChanged( const QString & ) ), this, SLOT( enableAutoConfBtn() ) );
+    connect( ui.btnAutoConf, SIGNAL( clicked() ), this, SLOT( autoConfigure() ) );
+    connect( ui.btnFetch, SIGNAL( clicked() ), this, SLOT( fetchBlogId() ) );
+    connect( ui.comboApi, SIGNAL( currentIndexChanged(int) ), this, SLOT( slotComboApiChanged(int) ) );
+    connect( ui.txtUrl, SIGNAL( returnPressed() ), this, SLOT( sltReturnPressed() ) );
+    connect( ui.txtUser, SIGNAL( returnPressed() ), this, SLOT( sltReturnPressed() ) );
+    connect( ui.txtPass, SIGNAL( returnPressed() ), this, SLOT( sltReturnPressed() ) );
+    connect( ui.txtId, SIGNAL( returnPressed() ), this, SLOT( sltReturnPressed() ) );
+
     if ( blog_id > -1 ) {
         this->setWindowTitle( i18n( "Edit Blog Settings" ) );
         this->enableButtonOk( true );
@@ -68,19 +81,8 @@ AddEditBlog::AddEditBlog( int blog_id, QWidget *parent, Qt::WFlags flags )
         bBlog->setBlogId( 0 );
         this->enableButtonOk( false );
     }
-    connect( ui.txtId, SIGNAL( textChanged( const QString& ) ), this, SLOT( enableOkButton( const QString& ) ) );
-    connect( ui.txtUrl, SIGNAL( textChanged( const QString & ) ), this, SLOT( enableAutoConfBtn() ) );
-    connect( ui.txtUser, SIGNAL( textChanged( const QString & ) ), this, SLOT( enableAutoConfBtn() ) );
-    connect( ui.txtPass, SIGNAL( textChanged( const QString & ) ), this, SLOT( enableAutoConfBtn() ) );
-    connect( ui.btnAutoConf, SIGNAL( clicked() ), this, SLOT( autoConfigure() ) );
-    connect( ui.btnFetch, SIGNAL( clicked() ), this, SLOT( fetchBlogId() ) );
-    connect( ui.comboApi, SIGNAL( currentIndexChanged(int) ), this, SLOT( slotComboApiChanged(int) ) );
-//     connect( this, SIGNAL( rejected() ), this, SLOT( sltRejected() ) );
-    connect( ui.txtUrl, SIGNAL( returnPressed() ), this, SLOT( sltReturnPressed() ) );
-    connect( ui.txtUser, SIGNAL( returnPressed() ), this, SLOT( sltReturnPressed() ) );
-    connect( ui.txtPass, SIGNAL( returnPressed() ), this, SLOT( sltReturnPressed() ) );
-    connect( ui.txtId, SIGNAL( returnPressed() ), this, SLOT( sltReturnPressed() ) );
 
+    slotComboApiChanged( ui.comboApi->currentIndex() );
     ui.txtUrl->setFocus();
 }
 

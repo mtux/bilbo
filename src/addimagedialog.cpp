@@ -35,7 +35,7 @@ AddImageDialog::AddImageDialog(QWidget* parent): AddMediaDialog(parent)
     ui.verticalLayout->addWidget( editFrame );
 
     ui.radiobtnRemoteUrl->setEnabled( true );
-    this->setWindowTitle( "Add Image" );
+    this->setWindowTitle( i18n( "Add Image" ) );
 
     QStringList mimeFilter;
     mimeFilter << "image/gif" << "image/jpeg" << "image/png" ;

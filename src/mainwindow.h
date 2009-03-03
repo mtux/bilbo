@@ -94,7 +94,6 @@ private slots:
 
 protected:
     void keyReleaseEvent( QKeyEvent * event );
-    bool queryClose();
     /**
     *  Reimplemented to save settings
     */

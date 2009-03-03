@@ -200,10 +200,12 @@ void Backend::postPublished( KBlog::BlogPost *post )
         for ( int i = 0; i < count; ++i ) {
             cats.insert( mCreatePostCategories[i].categoryId, false );
         }
-//         kDebug()<<"there's "<<count<< " categories to send."<<"\t numbers: "<<cats.count()<<" are:"<<cats.keys();
         setPostCategories( post->postId(), cats );
     } else {
-        savePostInDbAndEmitResult( post );
+        mSubmitPostStatusMap[ post ] = post->status();
+        connect( mKBlog, SIGNAL( fetchedPost(KBlog::BlogPost*)),
+                 this, SLOT( savePostInDbAndEmitResult(KBlog::BlogPost*)) );
+        mKBlog->fetchPost( post );
     }
 }
 
@@ -456,11 +458,12 @@ void Backend::savePostInDbAndEmitResult( KBlog::BlogPost *post )
 {
     BilboPost *pp = new BilboPost( *post );
     int post_id;
-    if(post->status() == KBlog::BlogPost::Modified) {
+    if( mSubmitPostStatusMap[ post ] == KBlog::BlogPost::Modified) {
         post_id = DBMan::self()->editPost( *pp, mBBlog->id() );
     } else {
         post_id = DBMan::self()->addPost( *pp, mBBlog->id() );
     }
+    mSubmitPostStatusMap.remove(post);
     if ( post_id != -1 ) {
         pp->setPrivate( post->isPrivate() );
         pp->setId( post_id );

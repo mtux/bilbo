@@ -50,6 +50,7 @@ int main( int argc, char *argv[] )
     global_init();
 
     MainWindow *bilbo = new MainWindow;
+    bilbo->setAttribute(Qt::WA_DeleteOnClose, false);
 
     if ( Settings::show_main_on_start() )
         bilbo->show();
