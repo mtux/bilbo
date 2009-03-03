@@ -31,19 +31,20 @@
 
 AddImageDialog::AddImageDialog(QWidget* parent): AddMediaDialog(parent)
 {
-    QStringList mimeFilter;
-    mimeFilter << "image/gif" << "image/jpeg" << "image/png" ;
-    ui.kurlreqMediaUrl->fileDialog()->setMimeFilter( mimeFilter );
-    this->setWindowTitle( i18n( "Add Image" ) );
     editFrame = new QFrame(this);
     editFrame->setFrameShape(QFrame::StyledPanel);
     editFrame->setFrameShadow(QFrame::Raised);
-//     editImageWidget = new QWidget( this );
-//     editImageWidget = new QWidget( editFrame );
+
     editImageWidgetUi.setupUi( editFrame );
-//     ui.gridLayout->addWidget( editImageWidget, 1, 0, 1, 2 );
-    ui.gridLayout_2->addWidget( editFrame, 1, 0, 3, 1 );
-//     ui.gridLayout->update();
+    ui.verticalLayout->addWidget( editFrame );
+
+    ui.radiobtnRemoteUrl->setEnabled( true );
+    this->setWindowTitle( i18n( "Add Image" ) );
+
+    QStringList mimeFilter;
+    mimeFilter << "image/gif" << "image/jpeg" << "image/png" ;
+    ui.kurlreqMediaUrl->fileDialog()->setMimeFilter( mimeFilter );
+
 //     connect( this, SIGNAL( okClicked() ), this, SLOT( sltOkClicked() ) );
 }
 

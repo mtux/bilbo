@@ -900,15 +900,11 @@ void BilboEditor::sltSyncEditors( int index )
         BilboTextHtmlImporter( doc, htmlEditor->toPlainText() ).import();
 //         useLocalImagePaths( doc );
 //         doc->setUndoRedoEnabled( true );
-        kDebug() << doc->blockCount() << " has blocks";
-//         kDebug() << editor->document()->toHtml() << "index=2" << endl;
+
         editor->setTextCursor( QTextCursor( doc ) );
 
-//         kDebug() << editor->document()->toHtml() << "index=0" << endl;
         //editor->setTextOrHtml(htmlEditor->toPlainText());
     } else if ( index == 1 ) {
-        kDebug() << editor->document()->toHtml() << "index=1" << endl;
-        //kDebug() << editor->toHtml() << endl;
 // //         useRemoteImagePaths( doc );
 
 //   md.constructContent(doc);
@@ -1039,9 +1035,6 @@ void BilboEditor::setLayoutDirection( Qt::LayoutDirection direction )
     f.setLayoutDirection( direction );
     editor->textCursor().mergeBlockFormat( f );
 
-    if ( f.hasProperty( QTextBlockFormat::BlockAlignment ) ) {
-        kDebug() << "has Alignment";
-    }
     if ( direction == Qt::LeftToRight ) {
         this->actRightToLeft->setChecked( false );
     } else {

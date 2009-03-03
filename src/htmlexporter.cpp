@@ -54,7 +54,7 @@ QString htmlExporter::toHtml( const QTextDocument* document )
     }
     doc = document;
 
-    kDebug() << doc->blockCount() << endl;
+//     kDebug() << doc->blockCount() << endl;
 
     //const QFont defaultFont = doc->defaultFont();
     //defaultCharFormat.setFont(defaultFont);
@@ -72,7 +72,6 @@ void htmlExporter::emitFrame( QTextFrame::Iterator frameIt )
 {
 //     kDebug() << "html" << html;
     if ( !frameIt.atEnd() ) {
-//   qDebug() << "frameIt is not at end" << endl;
         QTextFrame::Iterator next = frameIt;
         ++next;
         if ( next.atEnd()
@@ -85,8 +84,7 @@ void htmlExporter::emitFrame( QTextFrame::Iterator frameIt )
 
 
     for ( QTextFrame::Iterator it = frameIt;
-            !it.atEnd(); ++it ) {
-//   qDebug() << "entered for loop" << endl;
+            !it.atEnd(); ++it ) {;
         if ( QTextFrame *f = it.currentFrame() ) {
 //    qDebug() << "Its a frame, not a block" << endl;
             if ( QTextTable * table = qobject_cast<QTextTable *>( f ) ) {
@@ -246,7 +244,7 @@ void htmlExporter::emitAttribute( const char *attribute, const QString &value )
 QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharFormat &format )
 {
 //     kDebug() << "html" << html;
-    qDebug( "htmlExporter::emitCharFormatStyle" );
+
     QList<htmlExporter::tag> tags;
     bool attributesEmitted = false;
     QLatin1String styleTag( "<span style=\"" );
@@ -623,7 +621,7 @@ void htmlExporter::emitFragment( const QTextFragment &fragment )
 //   html += QLatin1String(">");
 //   closeAnchor = true;
 //  }
-    kDebug() << "tags count" << tags.count() << endl;
+//     kDebug() << "tags count" << tags.count() << endl;
     for ( int i = 0; i < tags.count(); ++i ) {
         switch ( tags.at( i ) ) {
             case span:
@@ -678,7 +676,7 @@ void htmlExporter::emitFragment( const QTextFragment &fragment )
             html.chop(qstrlen(styleTag.latin1()));
     */
     QString txt = fragment.text();
-    kDebug() << txt ;
+//     kDebug() << txt ;
     if ( txt.count() == 1 && txt.at( 0 ) == QChar::ObjectReplacementCharacter ) {
         if ( format.isImageFormat() ) {
             QTextImageFormat imgFmt = format.toImageFormat();
@@ -735,7 +733,7 @@ void htmlExporter::emitFragment( const QTextFragment &fragment )
         }
     }
 
-    kDebug() << html ;
+//     kDebug() << html ;
 
     //Close Tags
     //if (!closeAnchor)
@@ -795,7 +793,6 @@ void htmlExporter::emitFragment( const QTextFragment &fragment )
 void htmlExporter::emitBlockAttributes( const QTextBlock &block )
 {
 //     kDebug() << "html" << html;
-    qDebug( "htmlExporter::emitBlockAttributes" );
     QTextBlockFormat format = block.blockFormat();
 
     Qt::LayoutDirection dir = format.layoutDirection();

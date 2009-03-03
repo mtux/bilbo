@@ -392,10 +392,8 @@ static const BilboTextHtmlElement *lookupElement( const QString &element )
     const BilboTextHtmlElement *end = &elements[Html_NumElements];
     const BilboTextHtmlElement *e = qBinaryFind( start, end, element );
     if ( e == end ) {
-        kDebug() << "not found";
         return 0;
     }
-    kDebug() << "found";
     return e;
 }
 
@@ -1111,7 +1109,7 @@ void BilboTextHtmlParser::parseTag()
 
     // parse tag name
     node->tag = parseWord().toLower();
-    kDebug() << node->tag;
+//     kDebug() << node->tag;
 
     const BilboTextHtmlElement *elem = ::lookupElement( node->tag );
     if ( elem ) {
@@ -1121,7 +1119,7 @@ void BilboTextHtmlParser::parseTag()
     } else {
         node->id = -1;
     }
-    kDebug() << node->id;
+//     kDebug() << node->id;
 
     node->isListItem = ( node->id == Html_li );
     node->isListStart = ( node->id == Html_ol || node->id == Html_ul );

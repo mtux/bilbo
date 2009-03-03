@@ -19,7 +19,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//#include <QFileDialog>
 #include <kfiledialog.h>
 #include <klineedit.h>
 #include <kmessagebox.h>
@@ -36,22 +35,13 @@
 
 AddMediaDialog::AddMediaDialog( QWidget *parent ) : KDialog( parent )
 {
-//     QDialog *dialog = new QDialog( parent );
     QWidget *dialog = new QWidget( this );
     ui.setupUi( dialog );
-    
-//     QStringList mimeFilter;
-//     mimeFilter << "image/gif" << "image/jpeg" << "image/png" ;
-//     ui.kurlreqMediaUrl->fileDialog()->setMimeFilter( mimeFilter );
-    
-    ui.kurlreqMediaUrl->fileDialog()->setWindowTitle( i18n( "Choose a file" ) );
-    ui.kurlreqMediaUrl->lineEdit()->setToolTip( i18n( "Type media path here." ) );
-    ui.kurlreqMediaUrl->button()->setToolTip( i18n( "Browse" ) );
-    
-//     dialog->setAttribute( Qt::WA_DeleteOnClose );
+
     this->setMainWidget( dialog );
-    this->setWindowTitle( "Attach media" );
     this->resize( dialog->width(), dialog->height() );
+    this->setWindowTitle( "Attach media" );
+
     connect( this, SIGNAL( okClicked() ), this, SLOT( sltOkClicked() ) );
     connect( ui.radiobtnLocalUrl, SIGNAL( toggled( bool ) ), this, 
              SLOT( sltMediaSourceChanged() ) );
@@ -59,6 +49,9 @@ AddMediaDialog::AddMediaDialog( QWidget *parent ) : KDialog( parent )
              SLOT( sltMediaSourceChanged() ) );
     
     ui.kurlreqMediaUrl->lineEdit()->setFocus();
+    ui.kurlreqMediaUrl->fileDialog()->setWindowTitle( i18n( "Choose a file" ) );
+    ui.kurlreqMediaUrl->lineEdit()->setToolTip( i18n( "Type media path here." ) );
+    ui.kurlreqMediaUrl->button()->setToolTip( i18n( "Browse" ) );
 }
 
 AddMediaDialog::~AddMediaDialog()
