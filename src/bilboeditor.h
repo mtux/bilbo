@@ -22,15 +22,15 @@
 #ifndef BILBOEDITOR_H
 #define BILBOEDITOR_H
 
-#include <ktabwidget.h>
 #include <QTextFormat>
+
+#include <ktabwidget.h>
 
 class QTextCharFormat;
 class QWebView;
 class QPlainTextEdit;
 
 class KAction;
-// class KActionCollection;
 class KToolBar;
 class KListWidget;
 class KPushButton;
@@ -41,44 +41,52 @@ class BilboMedia;
 class BilboPost;
 
 
-
-//!Class BilboEditor represents the editor part of BilboBlogger
-/*!
- @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
- @author Golnaz Nilieh <g382nilieh@gmail.com>
+/**
+* Class BilboEditor represents the editor part of BilboBlogger
+* @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+* @author Golnaz Nilieh <g382nilieh@gmail.com>
 */
 
 class BilboEditor : public KTabWidget
 {
     Q_OBJECT
 public:
-    //!BilboEditor constructor
-    /*!
-    Creates a new instance of BilboEditor, and calls createUi() function to initialize its widgets.
-    */
-    BilboEditor( QWidget *parent = 0 );
-
-    //!BilboEditor destructor
-    ~BilboEditor();
-
-    //!Returns the editor current text in html format
 
     /**
-     * Synchronizes htmlEditor and editor tabs, by sending content of the current one to another.
-     * then copies the content of htmlEditor into the variable mHtmlContent, and returns it.
-     * @return a reference to an String which contains html text
+     * @brief BilboEditor destructor.
+     * Creates a new instance of BilboEditor, and calls createUi() function to 
+     * initialize its widgets.
+     */
+    BilboEditor( QWidget *parent = 0 );
+
+    /**
+     * @brief BilboEditor destructor.
+     */
+    ~BilboEditor();
+
+    /**
+     * @brief Returns the editor current text in html format
+     * Synchronizes HtmlEditor and editor tabs, by sending content of the current one to another.
+     * then copies the content of HtmlEditor into the variable mHtmlContent, and returns it.
+     * @return an String which contains html text
      */
 //   const QString& htmlContent();
     QString htmlContent();
 
-//     QMap <QString, BilboMedia*> * mediaList();
-
+    /**
+     * Sets the given string as the HtmlEditor and VisualEditor content.
+     * @param content
+     */
     void setHtmlContent( const QString &content );
 
+//     QMap <QString, BilboMedia*> * mediaList();
+
+    /**
+     * Makes BilboEditor to use @param list as its list of media files.
+     * then BilboEditor can add media files to it, or remove them.
+     */
     void setMediaList( QMap <QString, BilboMedia*> *list );
 //   void setMediaList(QMap <QString, BilboMedia*> & list);
-
-    void setPlainTextContent( const QString &content );
 
     /**
      * Changes the layout direction of the editor, to the given direction.
@@ -94,9 +102,16 @@ public:
      */
     bool updateMediaPaths();
 
+    /**
+     * Stores the given title, to be shown as the post title in preview tab.
+     * @param title is the post title.
+     */
     void setCurrentTitle( const QString& title );
 
 Q_SIGNALS:
+    /**
+     * This signal is emitted when the content of VisualEditor or HtmlEditor changes.
+     */
     void textChanged();
 
     /**
@@ -117,9 +132,9 @@ Q_SIGNALS:
 
 protected Q_SLOTS:
     
-    void sltEnableSpellChecking();
+    void sltToggleSpellChecking();
 
-    void sltSyncSpellCheckingButton( bool check);
+    void sltSyncSpellCheckingButton( bool check );
 
     /*!
     Changes the current text font into Courier fontfamily, to represent code style.
@@ -301,9 +316,7 @@ private:
     
     QMap <QString, BilboMedia*> *mMediaList;
 
-//     const BilboPost *mCurrentPost;
     QString currentPostTitle;
-//   QNetworkAccessManager *netManager;
     int prev_index;
 };
 

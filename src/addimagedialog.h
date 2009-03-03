@@ -45,10 +45,6 @@ Q_SIGNALS:
 
 protected:
     virtual void addOtherMediaAttributes();
-
-// protected Q_SLOTS:
-//     virtual void sltOkClicked();
-//     virtual void sltRemoteFileCopied(KJob* job);
     
 private:
     QFrame *editFrame;

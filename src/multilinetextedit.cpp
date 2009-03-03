@@ -19,7 +19,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//#include <QDebug>
 #include <QtGui>
 // #include <QNetworkAccessManager>
 // #include <QNetworkRequest>
@@ -30,6 +29,8 @@
 #include <kio/netaccess.h>
 #include <kio/jobuidelegate.h>
 #include <kmimetype.h>
+#include <kaction.h>
+#include <klocalizedstring.h>
 
 #include "multilinetextedit.h"
 #include "constants.h"
@@ -180,23 +181,6 @@ void MultiLineTextEdit::setMediaList( QMap <QString, BilboMedia*> * list )
 {
     mMediaList = list;
 }
-// GetImageThread::GetImageThread( KRichTextEdit *parent, const KUrl & image ) : QThread( parent )
-// {
-//     cursor = parent->textCursor();
-//     imageUrl = image;
-// }
-// 
-// GetImageThread::run()
-// {
-//     KUrl localUrl = KUrl( "file://" + __tempMediaDir + imageUrl.fileName() );
-//     KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite | KIO::HideProgressInfo );
-//     if ( !KIO::NetAccess::synchronousRun( copyJob, 0 ) ) {
-//         kDebug() << "Copy job failed";
-//         return;
-//     }
-//     QTextImageFormat f;
-//     f.setImageName( localUrl.url() );
-//     cursor
-// }
+
 
 #include <multilinetextedit.moc>

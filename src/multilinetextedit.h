@@ -22,38 +22,48 @@
 #ifndef MULTILINETEXTEDIT_H
 #define MULTILINETEXTEDIT_H
 
-//#include <QWidget>
-//#include <QtGui>
-//#include <QTextEdit>
+
 #include "krichtextedit.h"
 
-// class QNetwokAccessManager;
-// class QNetworkReply;
 class KJob;
 class BilboMedia;
 
-//!Class MultiLineTextEdit Implements a TextEdit widget that supports new line charachters
-/*!
- @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
- @author Golnaz Nilieh <g382nilieh@gmail.com>
- */
+/**
+* Class MultiLineTextEdit Implements a TextEdit widget that supports new line 
+* charachters, and loading images from the web.
+* @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+* @author Golnaz Nilieh <g382nilieh@gmail.com>
+*/
 
 class MultiLineTextEdit : public KRichTextEdit
 {
     Q_OBJECT
 public:
-    //!Implements the class constructor.
-    /*!
-     * \param *parent is needed for KRichTextEdit constructor, which MultiLineTextEdit
-     * inherits from.
+
+    /**
+     * @brief MultiLineTextEdit constructor.
+     * @param parent is needed for KRichTextEdit constructor, which 
+     * MultiLineTextEdit inherits from.
      */
     MultiLineTextEdit( QWidget *parent = 0 );
 
-    //!Implements the class destructor.
+    /**
+     * @brief MultiLineTextEdit destructor.
+     */
     ~MultiLineTextEdit();
     
+    /**
+     * Clears the internal list of downloaded media, so that function 
+     * loadResource() gets them from the web at the next call.
+     */
     static void clearCache();
     
+    /**
+     * Makes MultiLineTextEdit to use @param list as its list of media files.
+     * In the loadResource() function, it looks for each resource in list, to
+     * see if a media object for that resource is created.
+     * @sa loadResource().
+     */
     void setMediaList( QMap <QString, BilboMedia*> * list );
     
 Q_SIGNALS:
@@ -63,6 +73,14 @@ Q_SIGNALS:
      */
     void sigRemoteImageArrived( const KUrl imagePath );
     
+    /**
+     * When loadResource() function is called for a media file, which is not
+     * inserted in the editor media-list before, it tries to determine the media
+     * mimetype. if successfull, it creates a BilboMedia object for that media,
+     * then emits this signal.
+     * @param media is the created BilboMedia object.
+     * @sa loadResource().
+     */
     void sigMediaTypeFound( BilboMedia *media );
 
 protected:
@@ -73,6 +91,7 @@ protected:
      * this function is defined virtual in parent class: KRichTextEdit.
      */
     void keyPressEvent( QKeyEvent *event );
+
     /**
      * If the name is the url of a remote image, looks for it in cache, and if it doesn't exist, starts downloading of it and returns an empty QVariant object.
      * else if the image is local or has been downloaded before, returns image data as a
@@ -84,14 +103,14 @@ protected:
      * the function, else, it's an empty QVariant object.
      */
     virtual QVariant loadResource( int type, const QUrl & name );
-    
+
 // private:
 //     QNetworkAccessManager *netManager;
 //     
 private Q_SLOTS:
-//     void sltReplyFinished( QNetworkReply *reply, const QUrl & name );
+
     void sltRemoteFileCopied(KJob * job);
-    
+
 private:
     static QMap <QString, bool> downloadFinished;
     QMap <QString, BilboMedia*> *mMediaList;
