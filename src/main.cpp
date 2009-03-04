@@ -30,7 +30,7 @@
 #include <kcmdlineargs.h>
 #include <kstandarddirs.h>
 static const char description[] =
-    I18N_NOOP( "A KDE Blogging client." );
+    I18N_NOOP( "A KDE Blogging Client." );
 
 // static const char version[] = "0.2";
 
@@ -52,7 +52,7 @@ int main( int argc, char *argv[] )
     MainWindow *bilbo = new MainWindow;
     bilbo->setAttribute(Qt::WA_DeleteOnClose, false);
 
-    if ( Settings::show_main_on_start() )
+    if ( Settings::showMainOnStart() )
         bilbo->show();
     int r = app.exec();
 

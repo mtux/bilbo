@@ -63,6 +63,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     activePost = 0;
     busyNumber = 0;
     progress = 0;
+    this->setWindowTitle( i18n("Bilbo Blogger") );
     tabPosts->setElideMode( Qt::ElideRight );///TODO make this Optional!
     tabPosts->setTabCloseActivatePrevious( true );
     setCentralWidget( tabPosts );
@@ -101,8 +102,8 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
 
 //     this->setWindowIcon(KIcon(":/media/bilbo.png"));
 //     readConfig();
-    toolbox->setVisible( Settings::show_toolbox_on_start() );
-    actionCollection()->action("toggle_toolbox")->setChecked( Settings::show_toolbox_on_start() );
+    toolbox->setVisible( Settings::showToolboxOnStart() );
+    actionCollection()->action("toggle_toolbox")->setChecked( Settings::showToolboxOnStart() );
 //     if ( Settings::show_toolbox_on_start() ) {
 //         actToggleToolboxVisible->setText( i18n( "Hide Toolbox" ) );
 //     } else {
@@ -116,7 +117,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     connect( toolbox, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
     connect( toolbox, SIGNAL( sigBusy(bool) ), this, SLOT( slotBusy(bool) ));
 
-    QTimer::singleShot( 1000, this, SLOT( loadTempPosts() ) );
+    QTimer::singleShot( 0, this, SLOT( loadTempPosts() ) );
 }
 
 MainWindow::~MainWindow()
@@ -360,9 +361,11 @@ void MainWindow::sltCurrentBlogChanged( int blog_id )
 void MainWindow::sltSavePostLocally()
 {
     kDebug();
-    toolbox->getFieldsValue(*activePost->currentPost());
-    activePost->saveLocally();
-    toolbox->reloadLocalPosts();
+    if(activePost && tabPosts->count() > 0) {
+        toolbox->getFieldsValue(*activePost->currentPost());
+        activePost->saveLocally();
+        toolbox->reloadLocalPosts();
+    }
 }
 
 void MainWindow::sltError( const QString & errorMessage )
@@ -377,9 +380,9 @@ void MainWindow::writeConfigs()
 {
     kDebug();
     if ( toolboxDock->isVisible() )
-        Settings::setShow_toolbox_on_start( true );
+        Settings::setShowToolboxOnStart( true );
     else
-        Settings::setShow_toolbox_on_start( false );
+        Settings::setShowToolboxOnStart( false );
 }
 
 void MainWindow::keyReleaseEvent( QKeyEvent * event )
@@ -507,6 +510,10 @@ void MainWindow::slotShowStatusMessage(const QString &message, bool isPermanent)
 
 void MainWindow::uploadMediaObject()
 {
+    if( toolbox->currentBlogId() == -1 ) {
+        KMessageBox::sorry( this, i18n( "You have to select a blog to upload media to it." ) );
+        return;
+    }
     if(  toolbox->currentBlog()->supportMediaObjectUploading() ) {
         QString mediaPath = KFileDialog::getOpenFileName( KUrl("kfiledialog:///image?global"),
                                                       "image/png image/jpeg image/gif", this,
