@@ -115,6 +115,16 @@ bool DBMan::createDB()
         mLastErrorText = q.lastError().text();
     }
 
+    ///comments table!
+//     if ( !q.exec( "CREATE TABLE comment (id INTEGER PRIMARY KEY, postid TEXT NOT NULL, blog_id NUMERIC NOT NULL,\
+//         author TEXT, slug TEXT, post_password TEXT, title TEXT, content TEXT, text_more TEXT,\
+//         c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC,\
+//         is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT,\
+//         status NUMERIC, trackback_urls TEXT, UNIQUE(postid, blog_id));" ) ) {
+//         ret = false;
+//         mLastErrorText = q.lastError().text();
+//     }
+
     ///categories table!
     if ( !q.exec( "CREATE TABLE category (catid INTEGER PRIMARY KEY, name TEXT NOT NULL,\
                   description TEXT, htmlUrl TEXT, rssUrl TEXT, categoryId TEXT, parentId TEXT,\
@@ -267,7 +277,7 @@ int DBMan::addPost( const BilboPost & post, int blog_id )
 {
     kDebug() << "Adding post with title: " << post.title() << " to Blog " << blog_id;
     QSqlQuery q;
-    q.prepare( "INSERT INTO post (postid, blog_id, author, title, content, text_more, c_time, m_time,\
+    q.prepare( "INSERT OR REPLACE INTO post (postid, blog_id, author, title, content, text_more, c_time, m_time,\
                is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary,\
                tags, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
     q.addBindValue( post.postId() );
@@ -426,7 +436,7 @@ int DBMan::addCategory( const QString &name, const QString &description, const Q
                         const QString &rssUrl, const QString &categoryId, const QString &parentId, int blog_id )
 {
     QSqlQuery q;
-    q.prepare( "INSERT INTO category (name, description, htmlUrl, rssUrl, categoryId, parentId, blog_id)\
+    q.prepare( "INSERT OR REPLACE INTO category (name, description, htmlUrl, rssUrl, categoryId, parentId, blog_id)\
                VALUES(?, ?, ?, ?, ?, ?, ?)" );
     q.addBindValue( name );
     q.addBindValue( description );

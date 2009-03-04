@@ -462,6 +462,11 @@ QString Backend::errorTypeToString( KBlog::Blog::ErrorType type )
 
 void Backend::savePostInDbAndEmitResult( KBlog::BlogPost *post )
 {
+    if(!post) {
+        kError()<<"ERROR: post is NULL ";
+        Q_EMIT sigError( "post is NULL" );
+        return;
+    }
     BilboPost *pp = new BilboPost( *post );
     int post_id;
     if( mSubmitPostStatusMap[ post ] == KBlog::BlogPost::Modified) {

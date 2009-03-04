@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>393</width>
-    <height>326</height>
+    <width>400</width>
+    <height>346</height>
    </rect>
   </property>
   <property name="currentIndex" >
@@ -17,7 +17,7 @@
     <string>Basic</string>
    </attribute>
    <layout class="QGridLayout" name="gridLayout_2" >
-    <item row="0" column="0" colspan="3" >
+    <item row="0" column="0" colspan="4" >
      <widget class="QLabel" name="label_4" >
       <property name="sizePolicy" >
        <sizepolicy vsizetype="MinimumExpanding" hsizetype="Preferred" >
@@ -48,7 +48,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="1" column="0" colspan="3" >
+    <item row="1" column="0" colspan="4" >
      <widget class="KSeparator" name="kseparator" />
     </item>
     <item row="2" column="0" >
@@ -67,7 +67,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="2" column="1" colspan="2" >
+    <item row="2" column="1" colspan="3" >
      <widget class="QLabel" name="lblTitle" >
       <property name="font" >
        <font>
@@ -102,7 +102,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="3" column="1" colspan="2" >
+    <item row="3" column="1" colspan="3" >
      <widget class="KLineEdit" name="txtUrl" >
       <property name="text" >
        <string>http://</string>
@@ -115,7 +115,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="4" column="0" >
+    <item row="5" column="0" >
      <widget class="QLabel" name="label_2" >
       <property name="text" >
        <string>User&amp;name :</string>
@@ -128,10 +128,10 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="4" column="1" colspan="2" >
+    <item row="5" column="1" colspan="3" >
      <widget class="KLineEdit" name="txtUser" />
     </item>
-    <item row="5" column="0" >
+    <item row="6" column="0" >
      <widget class="QLabel" name="label_3" >
       <property name="text" >
        <string>&amp;Password :</string>
@@ -144,7 +144,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="5" column="1" colspan="2" >
+    <item row="6" column="1" colspan="3" >
      <widget class="KLineEdit" name="txtPass" >
       <property name="echoMode" >
        <enum>QLineEdit::Password</enum>
@@ -160,7 +160,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="6" column="0" colspan="2" >
+    <item row="7" column="0" colspan="3" >
      <spacer name="horizontalSpacer_2" >
       <property name="orientation" >
        <enum>Qt::Horizontal</enum>
@@ -173,7 +173,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </spacer>
     </item>
-    <item row="6" column="2" >
+    <item row="7" column="3" >
      <widget class="KPushButton" name="btnAutoConf" >
       <property name="enabled" >
        <bool>false</bool>
@@ -183,7 +183,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="10" column="0" colspan="3" >
+    <item row="11" column="0" colspan="4" >
      <spacer name="verticalSpacer_2" >
       <property name="orientation" >
        <enum>Qt::Vertical</enum>
@@ -199,10 +199,10 @@ p, li { white-space: pre-wrap; }
       </property>
      </spacer>
     </item>
-    <item row="8" column="0" colspan="3" >
+    <item row="9" column="0" colspan="4" >
      <widget class="KSeparator" name="kseparator_3" />
     </item>
-    <item row="9" column="0" colspan="3" >
+    <item row="10" column="0" colspan="4" >
      <widget class="QLabel" name="label_19" >
       <property name="text" >
        <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
@@ -213,6 +213,20 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="wordWrap" >
        <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2" colspan="2" >
+     <widget class="QLabel" name="label_17" >
+      <property name="font" >
+       <font>
+        <pointsize>8</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text" >
+       <string>e.g. : http://domain.com/blog/</string>
       </property>
      </widget>
     </item>

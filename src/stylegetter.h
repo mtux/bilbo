@@ -91,7 +91,6 @@ Q_SIGNALS:
 private Q_SLOTS:
 //     void slotPostSent();
     void sltTempPostPublished( int blogId, BilboPost* post );
-    void sltTempPostFetched( BilboPost* post );
     void sltTempPostRemoved( int blog_id, const BilboPost &post );
     void sltHtmlCopied( KJob* job );
     void sltError( const QString & errMsg );
