@@ -22,7 +22,6 @@
 #ifndef MULTILINETEXTEDIT_H
 #define MULTILINETEXTEDIT_H
 
-
 #include "krichtextedit.h"
 
 class KJob;

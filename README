@@ -1,8 +1,7 @@
 Bilbo Blogger is a free/Open Source Blogging application, focused on simplicity and usability.
-It based on KDE KBlog library, and uses and based on Qt4 and KDE 4 libraries.
+It based on KDE KBlog library, and uses Qt4 and KDE 4 libraries.
 
-Bilbo Blogger is based on KBlog library! And you could build it with KBlog.
-(But with some modifications on code!) and With KBlog you may misses some features that didn't commited to KBlog source code yet!
+Bilbo Blogger is based on KBlog library! And you can build it with KBlog (with some modifications on code!), but with KBlog you may miss some features that haven't been commited to KBlog source code yet!
 
 So we have a modified version of KBlog for Bilbo called "BilboKBlog", And you can build Bilbo with it,
 (Current source is intended to build with BilboKBlog)
@@ -12,9 +11,9 @@ It's under active development, and first version will be ready about 10 March 20
 
 Requirements to build
 -=-=-=-=-=-=-=-=-=-=-=-=-=
-Bilbo Blogger is depend on KDELibs, KDEPimLibs and BilboKBlog (a customized KBlog for Bilbo)
+Bilbo Blogger depends on KDELibs, KDEPimLibs and BilboKBlog (a customized KBlog for Bilbo)
 
-You have to build and install BilboKBlog before building Bilbo, if you didn't install it yet!
+You have to build and install BilboKBlog before building Bilbo, if you haven't installed it yet!
 You can find BilboKBlog source code at this repository: http://github.com/mtux/bilbokblog
 
 How To Build The Project
