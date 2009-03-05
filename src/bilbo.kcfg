@@ -5,11 +5,11 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name="bilborc"/>
   <group name="Preferences">
-    <entry name="show_main_on_start" type="Bool">
+    <entry name="showMainOnStart" type="Bool">
         <label>Show Bilbo Window on startup</label>
         <default>true</default>
     </entry>
-    <entry name="show_toolbox_on_start" hidden="true" type="Bool">
+    <entry name="showToolboxOnStart" hidden="true" type="Bool">
         <default>true</default>
     </entry>
   </group>
@@ -17,6 +17,10 @@
     <entry name="autosaveInterval" type="Int">
         <label>Editor auto save interval :</label>
         <default>5</default>
+    </entry>
+    <entry name="addPoweredBy" type="Bool">
+        <label>Automatically insert "Powered by Bilbo Blogger"</label>
+        <default>false</default>
     </entry>
   </group>
   <group name="Advanced">

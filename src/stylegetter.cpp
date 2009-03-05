@@ -42,6 +42,7 @@
 #include "bilboblog.h"
 #include "backend.h"
 #include "dbman.h"
+#include <kdatetime.h>
 
 #define POST_TITLE "Temporary-Post-Used-For-Style-Detection-Title-"
 #define POST_CONTENT "Temporary-Post-Used-For-Style-Detection-Content-"
@@ -69,6 +70,7 @@ StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
     mTempPost->setTitle( mPostTitle );
     mTempPost->setContent( mPostContent );
     mTempPost->setPrivate( false );
+    mTempPost->setCreationDateTime( KDateTime( QDate(2000, 1, 1), QTime(0, 0), KDateTime::UTC ) );
 
     b = new Backend( blogid );
     connect( b, SIGNAL( sigPostPublished( int, BilboPost* ) ), this, 
@@ -129,21 +131,13 @@ void StyleGetter::sltTempPostPublished( int blogId, BilboPost* post )
 {
     kDebug();
 
-    connect( b, SIGNAL( sigPostFetched( BilboPost * ) ), this, SLOT( sltTempPostFetched( BilboPost * ) ) );
-    b->fetchPost( *post );
-}
-
-void StyleGetter::sltTempPostFetched( BilboPost* post )
-{
     KUrl postUrl;
     postUrl = post->permaLink();
-    if ( postUrl.url().isEmpty() ) {
+    if ( postUrl.isEmpty() ) {
         kDebug() << "permalink was empty";
         postUrl = post->link();
-        if ( postUrl.url().isEmpty() ) {
-            KMessageBox::error( mParent,
-                            i18n( "Can not fetch style from the blog" ) );
-            return;
+        if ( postUrl.isEmpty() ) {
+            postUrl = KUrl( DBMan::self()->getBlogInfo(blogId).blogUrl() );
         }
     }
 
@@ -151,9 +145,7 @@ void StyleGetter::sltTempPostFetched( BilboPost* post )
     mJob = KIO::storedGet( postUrl, KIO::NoReload, KIO::HideProgressInfo );
 
     connect( mJob, SIGNAL( result( KJob* ) ),
-             this, SLOT( sltHtmlCopied( KJob* ) ) );
-    
-//     sender()->deleteLater();
+            this, SLOT( sltHtmlCopied( KJob* ) ) );
 }
 
 void StyleGetter::sltHtmlCopied( KJob *job )

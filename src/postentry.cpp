@@ -363,33 +363,13 @@ void PostEntry::saveLocally()
     kDebug();
     if(currentPost()->content().isEmpty()) {
         if( KMessageBox::warningYesNo(this, i18n("Current post content is empty, \
-are you sure of saving an empty post?")) == KMessageBox::NoExec )
-            return;
+are you sure of saving an empty post?")) == KMessageBox::Yes ) {
+            mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry( mCurrentPost, mCurrentPostBlogId,
+                                                                    DBMan::Local ) );
+            emit postSavedLocally();
+            emit showStatusMessage(i18n( "Post saved locally." ), false);
+        }
     }
-//     QMap <QString, BilboMedia*>::const_iterator it = this->mediaList().constBegin();
-//     while ( it != this->mediaList().constEnd() ) {
-//         if ( !( it.value()->isUploaded() ) && !( it.key().startsWith( MEDIA_DIR ) ) ) {//"file://" + CACHED_MEDIA_DIR
-//             QString baseName = it.value()->name();
-//             QString desiredFileName = MEDIA_DIR + baseName;
-//             int indexOfDot = baseName.indexOf('.', 0, Qt::CaseInsensitive);
-//             QString newFileName = desiredFileName;
-//             int i = 1;
-//             while( KStandardDirs::exists( newFileName ) ){
-//                 baseName.insert(indexOfDot, QString::number(i));
-//                 newFileName = MEDIA_DIR + baseName;
-//                 baseName = it.value()->name();
-//                 ++i;
-//             }
-//             KIO::file_copy(it.value()->localUrl(), KUrl(newFileName));
-//         }
-//         ++it;
-//     }
-    ///^ Removed, so the media files don't moved to anywhere. -Mehrdad
-    mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry( mCurrentPost, mCurrentPostBlogId, DBMan::Local ) );
-    emit postSavedLocally();
-    emit showStatusMessage(i18n( "Post saved locally." ), false);
-//     connect( editPostWidget, SIGNAL(textChanged()), this, SLOT(slotPostModified()) );
-//     connect( txtTitle, SIGNAL(textChanged(QString)), this, SLOT(slotPostModified()) );
 }
 
 void PostEntry::saveTemporary( bool force )

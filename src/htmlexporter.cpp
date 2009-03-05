@@ -63,7 +63,9 @@ QString htmlExporter::toHtml( const QTextDocument* document )
 //  emitBlock(doc->rootFrame()->begin().currentBlock());
     //sanitizeHtml();
     html.replace( QRegExp( "<br[\\s]*/>" ), "<br />\n" );
-
+    if ( html.endsWith( ">\n" ) ) {
+        html.remove( html.length() - 1, 1 );
+    }
     return html;
 }
 
@@ -1013,7 +1015,7 @@ void htmlExporter::emitBlock( const QTextBlock &block )
 
     //qDebug() << html << endl;
     if ( pre ) {
-        html += QLatin1String( "</pre>" );
+        html += QLatin1String( "</pre>\n" );
     } else {
 //   if ( ! (html.right(7).contains(QRegExp("<br[\\s]*/>[\\n]*"))) ) {
 //          html += QLatin1String("<br />");//"</p>");
@@ -1021,9 +1023,9 @@ void htmlExporter::emitBlock( const QTextBlock &block )
         //html += QLatin1String("</div>");
 //         html += QLatin1String( "</p>" );
         if ( list ) {
-            html += QLatin1String( "</li>" );
+            html += QLatin1String( "</li>\n" );
         } else {
-            html += QLatin1String( "</p>" );
+            html += QLatin1String( "</p>\n" );
         }
     }
     // HACK html.replace( QRegExp("<br[\\s]*/>[\\n]*<br[\\s]*/>[\\n]*"),"<br />&nbsp;<br />" );
@@ -1031,9 +1033,9 @@ void htmlExporter::emitBlock( const QTextBlock &block )
     if ( list ) {
         if ( list->itemNumber( block ) == list->count() - 1 ) { // last item? close list
             if ( isOrderedList( list->format().style() ) ) {
-                html += QLatin1String( "</ol>" );
+                html += QLatin1String( "</ol>\n" );
             } else {
-                html += QLatin1String( "</ul>" );
+                html += QLatin1String( "</ul>\n" );
             }
         }
     }

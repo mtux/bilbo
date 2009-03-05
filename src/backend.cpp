@@ -160,6 +160,12 @@ void Backend::publishPost( BilboPost * post )
     connect( mKBlog, SIGNAL( createdPost( KBlog::BlogPost * ) ),
              this, SLOT( postPublished( KBlog::BlogPost * ) ) );
 
+    if( Settings::addPoweredBy() ) {
+        QString poweredStr = i18nc( "HTML code",
+                                    "<p>=-=-=-=-=<br/>"
+                                    "<i>Powered by <b><a href='http://bilbo.ospdev.net/'>Bilbo Blogger</a></b></i></p>" );
+        bp->setContent(bp->content() + poweredStr);
+    }
     if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
 //         if ( post->categories().count() > 1 ) {
 //             mCreatePostCategories = post->categoryList();
@@ -168,7 +174,7 @@ void Backend::publishPost( BilboPost * post )
 //             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
 //         }
         kDebug()<<"Before break: "<<post->content();
-        QStringList content = post->content().split("<!--split-->");
+        QStringList content = bp->content().split("<!--split-->");
         if( content.count() == 2 ) {
             kDebug()<<"Content: "<<content[0];
             kDebug()<<"Additional: "<<content[1];
@@ -456,6 +462,11 @@ QString Backend::errorTypeToString( KBlog::Blog::ErrorType type )
 
 void Backend::savePostInDbAndEmitResult( KBlog::BlogPost *post )
 {
+    if(!post) {
+        kError()<<"ERROR: post is NULL ";
+        Q_EMIT sigError( "post is NULL" );
+        return;
+    }
     BilboPost *pp = new BilboPost( *post );
     int post_id;
     if( mSubmitPostStatusMap[ post ] == KBlog::BlogPost::Modified) {
