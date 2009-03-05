@@ -259,10 +259,8 @@ void AddEditBlog::handleFetchIDTimeout()
     ui.txtId->setEnabled( true );
     hideWaitWidget();
     KMessageBox::error( this, i18n( "Fetching the blog's id timed out. Check your internet connection,\
-                                    and your homepage Url, username or password!\
-                                    \nnote that the url has to contain \"http://\" .\
-                                    \nIf you are using a self hosted Wordpress blog,\
-                                    you have to enable Remote Publishing on its configurations" ) );
+and your homepage Url, username or password!\nnote that the url has to contain \"http://\"\
+\nIf you are using a self hosted Wordpress blog, you have to enable Remote Publishing on its configurations" ) );
 }
 
 void AddEditBlog::handleFetchAPITimeout()
@@ -271,7 +269,7 @@ void AddEditBlog::handleFetchAPITimeout()
     hideWaitWidget();
     ui.txtId->setEnabled( true );
     KMessageBox::sorry( this, i18n( "Sorry, Bilbo cannot get API type automatically,\
-                                    please check your internet connection, otherwise you have to set API type on advanced tab manually." ),
+please check your internet connection, otherwise you have to set API type on advanced tab manually." ),
                         i18n( "AutoConfiguration Failed" ) );
 }
 
