@@ -922,11 +922,11 @@ void BilboEditor::sltSyncEditors( int index )
             htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
 //    htmlEditor->setPlainText(builder->getResult());
         }
-        QString baseU = "http://bilbo.sourceforge.net";
-
-        if ( __currentBlogId > -1 ) {
-            baseU = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
-        }
+//         QString baseU = "http://bilbo.ospdev.net";
+// 
+//         if ( __currentBlogId > -1 ) {
+//             baseU = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
+//         }
 //         preview->setHtml( htmlEditor->toPlainText(), QUrl( baseU ) );
 
         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
