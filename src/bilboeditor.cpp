@@ -771,12 +771,12 @@ void BilboEditor::sltSyncEditors( int index )
         } else {
             htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
         }
-//         QString baseU = "http://bilbo.ospdev.net";
-// 
-//         if ( __currentBlogId > -1 ) {
-//             baseU = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
-//         }
-//         preview->setHtml( htmlEditor->toPlainText(), QUrl( baseU ) );
+        QString baseU = "http://bilbo.ospdev.net";
+
+        if ( __currentBlogId > -1 ) {
+            baseU = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
+        }
+        preview->setHtml( htmlEditor->toPlainText(), QUrl( baseU ) );
 
         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
                          currentPostTitle,
