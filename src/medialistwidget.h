@@ -48,7 +48,7 @@ public:
 Q_SIGNALS:
     void sigRemoveMedia( const int index );
     void sigSetProperties( const int index, const int width, const int height,
-                           const QString title, const QString Alt_text );
+                           const QString title, const QString link, const QString Alt_text );
 
 protected Q_SLOTS:
     void sltEditProperties();

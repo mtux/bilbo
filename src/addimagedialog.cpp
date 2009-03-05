@@ -21,13 +21,9 @@
 #include <kfiledialog.h>
 #include <kmessagebox.h>
 #include <kdebug.h>
-// #include <kio/job.h>
-// #include <kio/jobuidelegate.h>
 
 #include "addimagedialog.h"
 #include "bilbomedia.h"
-// #include "global.h"
-// #include "settings.h"
 
 AddImageDialog::AddImageDialog(QWidget* parent): AddMediaDialog(parent)
 {
@@ -44,8 +40,6 @@ AddImageDialog::AddImageDialog(QWidget* parent): AddMediaDialog(parent)
     QStringList mimeFilter;
     mimeFilter << "image/gif" << "image/jpeg" << "image/png" ;
     ui.kurlreqMediaUrl->fileDialog()->setMimeFilter( mimeFilter );
-
-//     connect( this, SIGNAL( okClicked() ), this, SLOT( sltOkClicked() ) );
 }
 
 
@@ -53,24 +47,6 @@ AddImageDialog::~AddImageDialog()
 {
 }
 
-
-// void AddImageDialog::sltOkClicked()
-// {
-//     kDebug() << "ok zadim :D";
-//     AddMediaDialog::sltOkClicked();
-//     
-//     KUrl imageUrl = ui.kurlreqMediaUrl->url();
-//     if ( !imageUrl.isEmpty() && imageUrl.isValid() && !imageUrl.isLocalFile() ) {
-//         if ( Settings::download_remote_media() ) {
-//             kDebug() << "download!";
-//             
-//             KUrl localUrl = KUrl( "file://" + __tempMediaDir + imageUrl.fileName() );
-//             KIO::Job*  copyJob = KIO::file_copy( imageUrl, localUrl, -1, KIO::Overwrite );
-//             connect( copyJob, SIGNAL( result( KJob * ) ), this, 
-//                     SLOT( sltRemoteFileCopied( KJob * ) ) );
-//         }
-//     }
-// }
 
 // void AddImageDialog::sltRemoteFileCopied(KJob* job)
 // {
@@ -93,6 +69,7 @@ void AddImageDialog::addOtherMediaAttributes()
         Q_EMIT sigAddImage( media, editImageWidgetUi.spinboxWidth->value(), 
                             editImageWidgetUi.spinboxHeight->value(), 
                             editImageWidgetUi.txtTitle->text(), 
+                            editImageWidgetUi.txtLink->text(),
                             editImageWidgetUi.txtAltText->text() );
 //     } else {
 //         KMessageBox::error( this, i18n( "The selected media is not an image file, or its format isn't supported." ) );

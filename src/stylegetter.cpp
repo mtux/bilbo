@@ -75,6 +75,7 @@ StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
     b = new Backend( blogid );
     connect( b, SIGNAL( sigPostPublished( int, BilboPost* ) ), this, 
              SLOT( sltTempPostPublished( int, BilboPost* ) ) );
+//     connect( b, SIGNAL( sigPostFetched( BilboPost * ) ), this, SLOT( sltTempPostFetched( BilboPost * ) ) );
     connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
 
     b->publishPost( mTempPost );
@@ -129,6 +130,7 @@ QString StyleGetter::styledHtml( const int blogid,
 void StyleGetter::sltTempPostPublished( int blogId, BilboPost* post )
 {
     kDebug();
+
     KUrl postUrl;
     postUrl = post->permaLink();
     if ( postUrl.isEmpty() ) {
@@ -157,14 +159,13 @@ void StyleGetter::sltHtmlCopied( KJob *job )
     }
     QByteArray httpData( qobject_cast<KIO::StoredTransferJob*>( job )->data() );
 
-    // KUrl directory() hasn't worked for me, so i do it myself:
     QString href( mTempPost->permaLink().url() );
     int filenameOffset = href.lastIndexOf( "/" );
     href = href.remove( filenameOffset + 1, 255 );
     QString base( "<base href=\""+href+"\"/>" );
     kDebug() << "base: " << base;
 
-    QRegExp rxBase( "(<base\\shref=[^>]+>)" ); // TODO check if that works
+    QRegExp rxBase( "(<base\\shref=[^>]+>)" );
     if ( rxBase.indexIn( httpData ) != -1 ) {
          httpData.replace( rxBase.cap( 1 ).toLatin1(), base.toLatin1() );
     }

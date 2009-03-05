@@ -22,9 +22,7 @@
 #ifndef ADDMEDIADIALOG_H
 #define ADDMEDIADIALOG_H
 
-//#include <QDialog>
 #include <KDialog>
-//#include <KIO>
 #include <kio/jobclasses.h>
 
 #include "ui_addmediadialogbase.h"
@@ -57,10 +55,15 @@ Q_SIGNALS:
     /**
      * when the dialog is accepted, sends a BilboMedia object to the caller function.this object
      * contains media properties, like path and mimetype.
-     * @param media
+     * @param media is the created BilboMedia object.
      */
     void sigAddMedia( BilboMedia *media );
     
+    /**
+     * When the mimetype of a media files is determined, and set in the related
+     * BilboMedia object, this signal will be emitted.
+     * @param media is the BilboMedia object which its mimetype is set.
+     */
     void sigMediaTypeFound( BilboMedia *media );
 
 protected:
@@ -73,7 +76,6 @@ protected Q_SLOTS:
     virtual void sltOkClicked();
     virtual void sltRemoteFileTypeFound( KIO::Job *job, const QString &type );
     void sltMediaSourceChanged();
-//     virtual void sltRemoteFileCopied( KJob *job );
 };
 
 #endif
