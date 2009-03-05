@@ -432,7 +432,7 @@ void AddEditBlog::slotButtonClicked( int button )
     kDebug();
     if ( button == KDialog::Ok ) {
         if ( bBlog->blogid().isEmpty() && ui.txtId->text().isEmpty() ) {
-            KMessageBox::sorry( this, i18n( "Sorry, BlogId not retrived yet,\
+            KMessageBox::sorry( this, i18n( "Sorry, BlogId not retrieved yet,\
                                             \nYou have to Fetch blog id by hitting\
                                             \"Auto Configure\" Or \"Fetch ID\" button or Insert your Blog Id manually." )
                                             );

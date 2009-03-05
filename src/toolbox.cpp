@@ -288,7 +288,7 @@ void Toolbox::sltLoadCategoryListFromDB( int blog_id )
 void Toolbox::sltRemoveSelectedEntryFromServer()
 {
     if( KMessageBox::warningYesNoCancel(this, i18n( "Removing a post from your blog is not undoable!\
-\nAre you sure of remoing post with title \"%1\" from your blog?", lstEntriesList->currentItem()->text() ))
+\nAre you sure of removing post with title \"%1\" from your blog?", lstEntriesList->currentItem()->text() ))
     == KMessageBox::Yes) {
         BilboPost post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data(32).toInt() );
         Backend *b = new Backend(currentBlogId(), this);

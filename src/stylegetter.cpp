@@ -44,8 +44,11 @@
 #include "dbman.h"
 #include <kdatetime.h>
 
-#define POST_TITLE "Temporary-Post-Used-For-Style-Detection-Title-"
-#define POST_CONTENT "Temporary-Post-Used-For-Style-Detection-Content-"
+// #define POST_TITLE "Temporary-Post-Used-For-Style-Detection-Title-"
+// #define POST_CONTENT "Temporary-Post-Used-For-Style-Detection-Content-"
+
+const QString POST_TITLE = "Temporary-Post-Used-For-Style-Detection-Title-";
+const QString POST_CONTENT = "Temporary-Post-Used-For-Style-Detection-Content-";
 
 StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
 {
@@ -197,6 +200,9 @@ void StyleGetter::sltHtmlCopied( KJob *job )
 
 void StyleGetter::sltTempPostRemoved( int blog_id, const BilboPost &post)
 {
+    Q_UNUSED( blog_id );
+    Q_UNUSED( post );
+
     delete mTempPost;
     b->deleteLater();
 
@@ -215,9 +221,9 @@ void StyleGetter::generateRandomPostStrings()
 void StyleGetter::sltError( const QString & errMsg )
 {
     kDebug();
-    QString err = i18n( "An Error occurred on latest transaction.\n%1", errMsg );
-
-    KMessageBox::error( mParent, err );
+//     QString err = i18n( "An Error occurred on latest transaction.\n%1", errMsg );
+    KMessageBox::detailedError( mParent, i18n( "An error ocurred on latest transaction " ), errMsg );
+//     KMessageBox::error( mParent, err );
     b->deleteLater();
 }
 

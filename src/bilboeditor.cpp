@@ -87,7 +87,7 @@ void BilboEditor::createUi()
     barVisual->setIconSize( QSize( 22, 22 ) );
     barVisual->setToolButtonStyle( Qt::ToolButtonIconOnly );
 
-    QLabel *label = new QLabel( i18n( "Post media:" ), tabVisual );
+    QLabel *label = new QLabel( i18n( "Media list:" ), tabVisual );
     label->setMaximumHeight( 30 );
 
     lstMediaFiles = new MediaListWidget( tabVisual );
@@ -771,16 +771,15 @@ void BilboEditor::sltSyncEditors( int index )
         } else {
             htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
         }
-        QString baseU = "http://bilbo.ospdev.net";
+        QString baseUrl = "http://bilbo.ospdev.net";
 
         if ( __currentBlogId > -1 ) {
-            baseU = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
+            baseUrl = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
         }
-        preview->setHtml( htmlEditor->toPlainText(), QUrl( baseU ) );
 
         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
                          currentPostTitle,
-                         this->htmlEditor->toPlainText() ), QUrl( baseU ) );
+                         this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
     }
 
     prev_index = index;
@@ -946,9 +945,15 @@ void BilboEditor::sltSetPostPreview()
 
     if ( this->currentIndex() == 2 ) {
         Q_EMIT sigShowStatusMessage( i18n( "Setting blog style..." ), true );
+
+        QString baseUrl = "http://bilbo.ospdev.net";
+        if ( __currentBlogId > -1 ) {
+            baseUrl = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
+        }
         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
                          currentPostTitle,
-                         this->htmlEditor->toPlainText() ) );
+                         this->htmlEditor->toPlainText() ), baseUrl );
+
         Q_EMIT sigShowStatusMessage( i18n( "The requested blog style set." ), false );
     }
     if ( qobject_cast< StyleGetter* >( sender() ) ) {

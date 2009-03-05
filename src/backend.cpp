@@ -241,7 +241,7 @@ void Backend::uploadMedia( BilboMedia * media )
             if( !KIO::NetAccess::synchronousRun(job, 0, &data) ){
                 kError()<<"Job error: " << job->errorString();
                 tmp = i18n( "Uploading media failed : Cannot read the media file,\
-please check if it exists. path: %1", media->localUrl().pathOrUrl() );
+ please check if it exists. path: %1", media->localUrl().pathOrUrl() );
                 kDebug() << "Emitting sigError...";
                 Q_EMIT sigMediaError( tmp, media );
             }
@@ -284,8 +284,8 @@ please check if it exists. path: %1", media->localUrl().pathOrUrl() );
             return;
             break;
     }
-    kError() << "Api type does not sets correctly!";
-    tmp = i18n( "Api type does not sets correctly!" );
+    kError() << "Api type isn't set correctly!";
+    tmp = i18n( "Api type isn't set correctly!" );
     Q_EMIT sigError( tmp );
 }
 
@@ -440,7 +440,7 @@ QString Backend::errorTypeToString( KBlog::Blog::ErrorType type )
     QString errType;
     switch ( type ) {
         case KBlog::Blog::XmlRpc:
-            errType = i18n( "XML RPC Error: " );
+            errType = i18n( "XML-RPC Error: " );
             break;
         case KBlog::Blog::Atom:
             errType = i18n( "Atom API Error: " );
