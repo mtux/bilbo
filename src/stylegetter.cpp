@@ -44,8 +44,8 @@
 #include "dbman.h"
 #include <kdatetime.h>
 
-#define POST_TITLE "Temporary-Post-Used-For-Style-Detection-Title-"
-#define POST_CONTENT "Temporary-Post-Used-For-Style-Detection-Content-"
+static const char POST_TITLE[] = "Temporary-Post-Used-For-Style-Detection-Title-";
+static const char  POST_CONTENT[] = "Temporary-Post-Used-For-Style-Detection-Content-";
 
 StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
 {
