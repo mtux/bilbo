@@ -29,7 +29,7 @@
 #include "kdebug.h"
 #include "bilbotextformat.h"
 
-#define MAX_ENTITY 258
+static const int MAX_ENTITY = 258;
 static const struct BilboTextHtmlEntity {
     const char *name;
     quint16 code;

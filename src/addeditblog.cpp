@@ -37,7 +37,7 @@
 #include "dbman.h"
 #include "global.h"
 
-#define TIMEOUT 45000
+static const int TIMEOUT = 45000;
 
 AddEditBlog::AddEditBlog( int blog_id, QWidget *parent, Qt::WFlags flags )
         : KDialog( parent, flags )

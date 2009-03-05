@@ -30,14 +30,12 @@ Constants.
  @author Golnaz Nilieh <g382nilieh@gmail.com>
  */
 
-#define VERSION "0.1"
-#define APPNAME "Bilbo Blogger"
+static const char VERSION[] = "0.1";
+static const char APPNAME[] = "Bilbo Blogger";
 #define DATA_DIR KStandardDirs::locateLocal("data", "bilbo/")
 #define CONF_DB QString(DATA_DIR)+QString("/bilbo.db")
-// #define MEDIA_DIR KStandardDirs::locateLocal("data", "bilbo/media/", true)
-// #define UNKNOWN_BLOG_DIR KStandardDirs::locateLocal("data", "bilbo/Unknown Blog/", true)
 #define CACHED_MEDIA_DIR KStandardDirs::locateLocal("cache", "bilbo/media/", true)
-#define STATUSTIMEOUT 5000
+static const int STATUSTIMEOUT = 5000;
 
 
 #endif
