@@ -76,7 +76,8 @@ void MediaListWidget::sltEditProperties()
 void MediaListWidget::sltSetProperties()
 {
     Q_EMIT( sigSetProperties( this->currentRow(), ui.spinboxWidth->value(),
-            ui.spinboxHeight->value(), ui.txtTitle->text(), ui.txtAltText->text() ) );
+                              ui.spinboxHeight->value(), ui.txtTitle->text(), 
+                              ui.txtLink->text(), ui.txtAltText->text() ) );
     kDebug() << "signal emmited" ;
 }
 

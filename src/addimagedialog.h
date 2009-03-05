@@ -41,7 +41,7 @@ public:
     
 Q_SIGNALS:
     void sigAddImage( BilboMedia *media, const int width, const int height, 
-                      const QString title, const QString Alt_text  );
+                      const QString title, const QString link, const QString Alt_text  );
 
 protected:
     virtual void addOtherMediaAttributes();

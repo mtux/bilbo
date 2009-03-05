@@ -69,6 +69,7 @@ void AddImageDialog::addOtherMediaAttributes()
         Q_EMIT sigAddImage( media, editImageWidgetUi.spinboxWidth->value(), 
                             editImageWidgetUi.spinboxHeight->value(), 
                             editImageWidgetUi.txtTitle->text(), 
+                            editImageWidgetUi.txtLink->text(),
                             editImageWidgetUi.txtAltText->text() );
 //     } else {
 //         KMessageBox::error( this, i18n( "The selected media is not an image file, or its format isn't supported." ) );

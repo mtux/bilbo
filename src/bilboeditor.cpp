@@ -98,9 +98,9 @@ void BilboEditor::createUi()
     lstMediaFiles->setResizeMode( QListView::Adjust );
     lstMediaFiles->setMaximumHeight( 60 );
     connect( lstMediaFiles, SIGNAL( sigSetProperties( const int, const int,
-                                    const int, const QString, const QString ) ), 
+                                    const int, const QString, const QString, const QString ) ), 
             this, SLOT( sltSetImageProperties( const int, const int, const int, 
-                        const QString, const QString ) ) );
+                        const QString, const QString, const QString ) ) );
     connect( lstMediaFiles, SIGNAL( sigRemoveMedia( const int ) ), this, SLOT( sltRemoveMedia( const int ) ) );
 
     kDebug() << lstMediaFiles->iconSize() << "icon size";
@@ -433,15 +433,15 @@ void BilboEditor::sltAddImage()
 //     imageDialog->setAttribute( Qt::WA_DeleteOnClose );
     
     connect( imageDialog, SIGNAL( sigAddImage( BilboMedia *, const int, const int, 
-             const QString, const QString ) ), this, SLOT( sltSetImage( BilboMedia *, 
-             const int, const int, const QString, const QString ) ) );
+             const QString, const QString, const QString ) ), this, SLOT( sltSetImage( BilboMedia *, 
+             const int, const int, const QString, const QString, const QString ) ) );
     connect( imageDialog, SIGNAL( sigMediaTypeFound( BilboMedia * ) ), this, 
              SLOT( sltMediaTypeFound( BilboMedia * ) ) );
     imageDialog->exec();
 }
 
 void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int height, 
-                               const QString title, const QString Alt_text )
+                        const QString title, const QString link, const QString Alt_text )
 {
     kDebug();
 
@@ -459,6 +459,10 @@ void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int hei
             }
             if ( !Alt_text.isEmpty() ) {
                 imageFormat.setProperty( BilboTextFormat::ImageAlternateText, QVariant( Alt_text ) );
+            }
+            if ( !link.isEmpty() ) {
+                imageFormat.setAnchor( true );
+                imageFormat.setAnchorHref( link );
             }
             editor->textCursor().insertImage( imageFormat );
 
@@ -541,7 +545,8 @@ void BilboEditor::sltSetMedia( BilboMedia *media )
 }
 
 void BilboEditor::sltSetImageProperties( const int index, const int width,
-        const int height, const QString title, const QString Alt_text )
+                    const int height, const QString title, const QString link,
+                    const QString Alt_text )
 {
     this->editor->setFocus( Qt::OtherFocusReason );
     QString path = lstMediaFiles->item( index )->toolTip();
@@ -572,7 +577,10 @@ void BilboEditor::sltSetImageProperties( const int index, const int width,
                     if ( !Alt_text.isEmpty() ) {
                         imgFormat.setProperty( BilboTextFormat::ImageAlternateText, QVariant( Alt_text ) );
                     }
-
+                    if ( !link.isEmpty() ) {
+                        imgFormat.setAnchor( true );
+                        imgFormat.setAnchorHref( link );
+                    }
                     cursor = this->editor->textCursor();
                     cursor.setPosition( i.fragment().position() );
                     cursor.movePosition( QTextCursor::NextCharacter,

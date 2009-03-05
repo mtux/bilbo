@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>344</width>
-    <height>126</height>
+    <width>391</width>
+    <height>141</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -57,9 +57,9 @@
     </widget>
    </item>
    <item row="2" column="0" >
-    <widget class="QLabel" name="labelAltText" >
+    <widget class="QLabel" name="labelLink" >
      <property name="text" >
-      <string comment="the alternative text which is displayed to the user, if the image can not be loaded." >Alternative text:</string>
+      <string>Image Link</string>
      </property>
     </widget>
    </item>
@@ -78,11 +78,21 @@
     </widget>
    </item>
    <item row="2" column="1" colspan="3" >
-    <widget class="KLineEdit" name="txtAltText" >
+    <widget class="KLineEdit" name="txtLink" >
      <property name="showClearButton" stdset="0" >
       <bool>true</bool>
      </property>
     </widget>
+   </item>
+   <item row="3" column="0" >
+    <widget class="QLabel" name="labelAltText" >
+     <property name="text" >
+      <string comment="the alternative text which is displayed to the user, if the image can not be loaded." >Alternative text:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="3" >
+    <widget class="KLineEdit" name="txtAltText" />
    </item>
   </layout>
  </widget>

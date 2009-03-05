@@ -206,12 +206,12 @@ protected Q_SLOTS:
     void sltAddImage();
 
     void sltSetImage( BilboMedia *media, const int width, const int height, 
-                 const QString title, const QString Alt_text );
+               const QString title, const QString link, const QString Alt_text );
     
     void sltReloadImage( const KUrl imagePath );
 
     void sltSetImageProperties( const int index, const int width, const int height,
-                                const QString title, const QString Alt_text );
+                       const QString title, const QString link, const QString Alt_text );
     
     /**
      * Creates an instance of AddMediaDialog class,and opens it, to select a media file.
