@@ -364,6 +364,9 @@ void BilboEditor::sltSetLink( const QString& address, const QString& target,
     f.setProperty( BilboTextFormat::AnchorTitle, QVariant( title ) );
     f.setProperty( BilboTextFormat::AnchorTarget, QVariant( target ) );
 
+    f.setFontUnderline( true );
+    f.setForeground( QBrush( Qt::blue ) );
+
     editor->textCursor().mergeCharFormat( f );
     editor->setFocus( Qt::OtherFocusReason );
 }
@@ -374,7 +377,7 @@ void BilboEditor::sltRemoveLink()
     f.setAnchor( false );
     f.setUnderlineStyle( this->defaultCharFormat.underlineStyle() );
     f.setForeground( this->defaultCharFormat.foreground() );
-    
+
     editor->textCursor().mergeCharFormat( f );
     editor->setFocus( Qt::MouseFocusReason );
 }
@@ -415,13 +418,18 @@ void BilboEditor::sltAlignLeft()
 void BilboEditor::sltChangeLayoutDirection()
 {
     kDebug();
-    
     QTextBlockFormat f = editor->textCursor().blockFormat();
-    if ( f.layoutDirection() != Qt::RightToLeft ) {
+    if ( actRightToLeft->isChecked() ) {
         f.setLayoutDirection( Qt::RightToLeft );
     } else {
         f.setLayoutDirection( Qt::LeftToRight );
     }
+    
+//     if ( f.layoutDirection() != Qt::RightToLeft ) {
+//         f.setLayoutDirection( Qt::RightToLeft );
+//     } else {
+//         f.setLayoutDirection( Qt::LeftToRight );
+//     }
     editor->textCursor().mergeBlockFormat( f );
 
     editor->setFocus( Qt::OtherFocusReason );
@@ -839,9 +847,14 @@ void BilboEditor::setMediaList( QMap <QString, BilboMedia*> * list )
 
 void BilboEditor::setLayoutDirection( Qt::LayoutDirection direction )
 {
-    QTextBlockFormat f = editor->textCursor().blockFormat();
-    f.setLayoutDirection( direction );
-    editor->textCursor().mergeBlockFormat( f );
+//     QTextBlockFormat f = editor->textCursor().blockFormat();
+//     f.setLayoutDirection( direction );
+//     editor->textCursor().mergeBlockFormat( f );
+    QTextOption textOption = editor->document()->defaultTextOption();
+    textOption.setTextDirection( direction );
+    editor->document()->setDefaultTextOption( textOption );
+
+//     this->defaultBlockFormat.setLayoutDirection( direction );
 
     if ( direction == Qt::LeftToRight ) {
         this->actRightToLeft->setChecked( false );

@@ -797,6 +797,7 @@ void htmlExporter::emitBlockAttributes( const QTextBlock &block )
 //     kDebug() << "html" << html;
     QTextBlockFormat format = block.blockFormat();
 
+    if (format.hasProperty( QTextFormat::LayoutDirection ) ) {
     Qt::LayoutDirection dir = format.layoutDirection();
 //  if (dir == Qt::LeftToRight) {
 //   mDefaultBlockFormat.setAlignment(Qt::AlignLeft);
@@ -804,7 +805,7 @@ void htmlExporter::emitBlockAttributes( const QTextBlock &block )
 //   mDefaultBlockFormat.setAlignment(Qt::AlignRight);
 //  }
 
-    if ( dir != mDefaultBlockFormat.layoutDirection() ) {
+//     if ( dir != mDefaultBlockFormat.layoutDirection() ) {
         // assume default to not bloat the html too much
         if ( dir == Qt::LeftToRight ) {
             html += QLatin1String( " dir=\"ltr\"" );
