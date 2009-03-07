@@ -252,8 +252,10 @@ void Toolbox::sltLoadEntriesFromDB( int blog_id )
     for ( int i=0; i < count; ++i ) {
         QListWidgetItem *lstItem = new QListWidgetItem( listEntries[i].value("title").toString() );
         lstItem->setToolTip(listEntries[i].value("m_time").toDateTime().toString());
-        if(listEntries[i].value("is_private").toBool())
+        if(listEntries[i].value("is_private").toBool()) {
             lstItem->setForeground(QBrush(Qt::blue));
+            lstItem->setToolTip(lstItem->toolTip() + " (Draft)");
+        }
         lstItem->setData( 32, listEntries[i].value("id").toInt() );
         lstEntriesList->addItem( lstItem );
     }
