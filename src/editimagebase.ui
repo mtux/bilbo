@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>391</width>
+    <width>390</width>
     <height>141</height>
    </rect>
   </property>
@@ -17,6 +17,9 @@
     <widget class="QLabel" name="labelWidth" >
      <property name="text" >
       <string comment="noun, with of the image in pixels." >Image width:</string>
+     </property>
+     <property name="alignment" >
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
@@ -54,12 +57,8 @@
      <property name="text" >
       <string>Image Title:</string>
      </property>
-    </widget>
-   </item>
-   <item row="2" column="0" >
-    <widget class="QLabel" name="labelLink" >
-     <property name="text" >
-      <string>Image Link</string>
+     <property name="alignment" >
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
@@ -67,6 +66,9 @@
     <widget class="QLabel" name="labelHeight" >
      <property name="text" >
       <string comment="noun, height of the image in pixels." >Image height:</string>
+     </property>
+     <property name="alignment" >
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
@@ -77,22 +79,42 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1" colspan="3" >
+   <item row="3" column="0" >
+    <widget class="QLabel" name="labelAltText" >
+     <property name="text" >
+      <string comment="the alternative text which is displayed to the user, if the image can not be loaded." >Alternative text:</string>
+     </property>
+     <property name="alignment" >
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="3" >
+    <widget class="KLineEdit" name="txtAltText" >
+     <property name="showClearButton" stdset="0" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" >
+    <widget class="QLabel" name="labelLink" >
+     <property name="text" >
+      <string>Image Link To:</string>
+     </property>
+     <property name="alignment" >
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1" colspan="3" >
     <widget class="KLineEdit" name="txtLink" >
      <property name="showClearButton" stdset="0" >
       <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="3" column="0" >
-    <widget class="QLabel" name="labelAltText" >
-     <property name="text" >
-      <string comment="the alternative text which is displayed to the user, if the image can not be loaded." >Alternative text:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1" colspan="3" >
-    <widget class="KLineEdit" name="txtAltText" />
+   <item row="4" column="0" colspan="4" >
+    <widget class="KSeparator" name="kseparator" />
    </item>
   </layout>
  </widget>
@@ -106,6 +128,11 @@
    <class>KLineEdit</class>
    <extends>QLineEdit</extends>
    <header>klineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KSeparator</class>
+   <extends>QFrame</extends>
+   <header>kseparator.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

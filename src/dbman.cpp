@@ -33,7 +33,7 @@
 DBMan::DBMan()
 {
     kDebug();
-    mWallet = KWallet::Wallet::openWallet( "kdewallet", 0 );
+    mWallet = KWallet::Wallet::openWallet( KWallet::Wallet::LocalWallet(), 0 );
     if ( mWallet ) {
         if ( !mWallet->setFolder( "bilbo" ) ) {
             mWallet->createFolder( "bilbo" );
@@ -116,14 +116,14 @@ bool DBMan::createDB()
     }
 
     ///comments table!
-//     if ( !q.exec( "CREATE TABLE comment (id INTEGER PRIMARY KEY, postid TEXT NOT NULL, blog_id NUMERIC NOT NULL,\
-//         author TEXT, slug TEXT, post_password TEXT, title TEXT, content TEXT, text_more TEXT,\
-//         c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC,\
-//         is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT,\
-//         status NUMERIC, trackback_urls TEXT, UNIQUE(postid, blog_id));" ) ) {
-//         ret = false;
-//         mLastErrorText = q.lastError().text();
-//     }
+/*     if ( !q.exec( "CREATE TABLE comment (id INTEGER PRIMARY KEY, postid TEXT NOT NULL, blog_id NUMERIC NOT NULL,\
+        author TEXT, slug TEXT, post_password TEXT, title TEXT, content TEXT, text_more TEXT,\
+        c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC,\
+        is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT,\
+        status NUMERIC, trackback_urls TEXT, UNIQUE(postid, blog_id));" ) ) {
+        ret = false;
+        mLastErrorText = q.lastError().text();
+    }*/
 
     ///categories table!
     if ( !q.exec( "CREATE TABLE category (catid INTEGER PRIMARY KEY, name TEXT NOT NULL,\
@@ -300,6 +300,17 @@ int DBMan::addPost( const BilboPost & post, int blog_id )
     int ret;
     if ( q.exec() ) {
         ret = q.lastInsertId().toInt();
+
+        ///Delete previouse Categories (if there are any!) :
+        QSqlQuery qd;
+        qd.prepare( "DELETE FROM post_cat WHERE postId=? AND blogId=(SELECT blogid FROM blog where id=?)" );
+        qd.addBindValue(post.postId());
+        qd.addBindValue(blog_id);
+        if ( !qd.exec() ) {
+            mLastErrorText = qd.lastError().text();
+            kError() << "Cannot delete previous categories.";
+        }
+
         int cat_count = post.categories().count();
         if( cat_count > 0 ) {
 //             kDebug()<< "Adding "<<cat_count<<" category to post.";

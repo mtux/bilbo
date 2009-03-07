@@ -59,7 +59,7 @@ Toolbox::Toolbox( QWidget *parent )
     connect( btnBlogRemove, SIGNAL( clicked() ), this, SLOT( sltRemoveBlog() ) );
 
     connect( btnCatReload, SIGNAL( clicked() ), this, SLOT( sltReloadCategoryList() ) );
-    connect( btnEntriesReload, SIGNAL( clicked() ), this, SLOT( sltReloadEntries() ) );
+    connect( btnEntriesUpdate, SIGNAL( clicked() ), this, SLOT( sltUpdateEntries() ) );
 
     connect( this, SIGNAL( sigCurrentBlogChanged( int ) ), this, SLOT( sltCurrentBlogChanged( int ) ) );
     connect( &listBlogRadioButtons, SIGNAL( buttonClicked( int ) ), this, SLOT( sltSetCurrentBlog() ) );
@@ -76,7 +76,7 @@ Toolbox::Toolbox( QWidget *parent )
     lblOptionsTrackBack->setVisible( false );
     txtOptionsTrackback->setVisible( false );
     btnCatAdd->setVisible( false );
-    btnEntriesUpdate->setVisible(false);
+    btnEntriesReload->setVisible(false);
 
     QTimer::singleShot(1000, this, SLOT(reloadLocalPosts()));
 }
@@ -197,7 +197,7 @@ you have to select a blog from Blogs page before asking for Category list" ) );
     emit sigBusy( true );
 }
 
-void Toolbox::sltReloadEntries()
+void Toolbox::sltUpdateEntries()
 {
     kDebug();
     if ( !listBlogRadioButtons.checkedButton() ) {
@@ -215,7 +215,8 @@ you have to select a blog from Blogs page before asking for Entries list" ) );
 void Toolbox::sltGetEntriesCount( int count )
 {
     kDebug();
-    Backend *entryB = new Backend( qobject_cast<BlogRadioButton*>( listBlogRadioButtons.checkedButton() )->blogId() );
+    Backend *entryB = new Backend( qobject_cast<BlogRadioButton*>( listBlogRadioButtons.checkedButton() )->blogId(),
+                                   this);
     entryB->getEntriesListFromServer( count );
     connect( entryB, SIGNAL( sigEntriesListFetched( int ) ), this, SLOT( sltLoadEntriesFromDB( int ) ) );
     connect( entryB, SIGNAL( sigError( const QString& ) ), this, SIGNAL( sigError( const QString& ) ) );
@@ -287,6 +288,8 @@ void Toolbox::sltLoadCategoryListFromDB( int blog_id )
 
 void Toolbox::sltRemoveSelectedEntryFromServer()
 {
+    if(lstEntriesList->selectedItems().count() < 1)
+        return;
     if( KMessageBox::warningYesNoCancel(this, i18n( "Removing a post from your blog is not undoable!\
 \nAre you sure of removing post with title \"%1\" from your blog?", lstEntriesList->currentItem()->text() ))
     == KMessageBox::Yes) {

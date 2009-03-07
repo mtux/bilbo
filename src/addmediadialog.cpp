@@ -102,6 +102,7 @@ void AddMediaDialog::sltOkClicked()
 void AddMediaDialog::sltRemoteFileTypeFound( KIO::Job *job, const QString &type )
 {
     kDebug() << type ;
+    Q_UNUSED(job);
     media->setMimeType( type );
 //     if ( !Settings::download_remote_media() ) {
 //         media->setLocalUrl( media->remoteUrl() );

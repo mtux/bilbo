@@ -71,7 +71,7 @@ public slots:
     void sltSetCurrentBlog();
     void sltReloadCategoryList();
     void sltLoadCategoryListFromDB( int blog_id );
-    void sltReloadEntries();
+    void sltUpdateEntries();
     void sltGetEntriesCount( int );
     void sltLoadEntriesFromDB( int blog_id );
     void sltRemoveSelectedEntryFromServer();

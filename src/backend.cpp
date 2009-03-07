@@ -138,7 +138,7 @@ void Backend::getEntriesListFromServer( int count )
 void Backend::entriesListed( const QList< KBlog::BlogPost > & posts )
 {
     kDebug() << "Blog Id: " << mBBlog->id();
-    DBMan::self()->clearPosts( mBBlog->id() );
+//     DBMan::self()->clearPosts( mBBlog->id() );
 
     for ( int i = 0; i < posts.count(); i++ ) {
         BilboPost tempPost( posts[i] );
