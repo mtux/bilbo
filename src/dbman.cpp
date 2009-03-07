@@ -116,14 +116,13 @@ bool DBMan::createDB()
     }
 
     ///comments table!
-/*     if ( !q.exec( "CREATE TABLE comment (id INTEGER PRIMARY KEY, postid TEXT NOT NULL, blog_id NUMERIC NOT NULL,\
-        author TEXT, slug TEXT, post_password TEXT, title TEXT, content TEXT, text_more TEXT,\
-        c_time TEXT, m_time TEXT, is_private NUMERIC, is_comment_allowed NUMERIC,\
-        is_trackback_allowed NUMERIC, link TEXT, perma_link TEXT, summary TEXT, tags TEXT,\
-        status NUMERIC, trackback_urls TEXT, UNIQUE(postid, blog_id));" ) ) {
+    if ( !q.exec( "CREATE TABLE comment (id INTEGER PRIMARY KEY, commentid TEXT NOT NULL, blog_id NUMERIC NOT NULL,\
+        postId TEXT, author_name TEXT, author_url TEXT, author_email TEXT, title TEXT, content TEXT,\
+        c_time TEXT, m_time TEXT, link TEXT, password TEXT,\
+        status NUMERIC, UNIQUE(commentid, blog_id));" ) ) {
         ret = false;
         mLastErrorText = q.lastError().text();
-    }*/
+    }
 
     ///categories table!
     if ( !q.exec( "CREATE TABLE category (catid INTEGER PRIMARY KEY, name TEXT NOT NULL,\
@@ -188,22 +187,24 @@ bool DBMan::createDB()
     ///delete related informations on DB, On removing a post or a blog
     q.exec( "CREATE TRIGGER delete_post AFTER DELETE ON post\
     BEGIN\
-    DELETE from post_cat WHERE post_cat.postId=OLD.postid;\
-    DELETE from post_file WHERE post_file.post_id=OLD.id;\
+    DELETE FROM post_cat WHERE post_cat.postId=OLD.postid;\
+    DELETE FROM post_file WHERE post_file.post_id=OLD.id;\
+    DELETE FROM comment WHERE comment.postId=OLD.postid;\
     END" );
     q.exec( "CREATE TRIGGER delete_blog AFTER DELETE ON blog \
     BEGIN\
-    DELETE from category WHERE category.blog_id=OLD.id;\
-    DELETE from file WHERE file.blog_id=OLD.id;\
-    DELETE from post WHERE post.blog_id=OLD.id;\
+    DELETE FROM category WHERE category.blog_id=OLD.id;\
+    DELETE FROM file WHERE file.blog_id=OLD.id;\
+    DELETE FROM post WHERE post.blog_id=OLD.id;\
+    DELETE FROM comment WHERE comment.blog_id=OLD.id;\
     END" );
     q.exec( "CREATE TRIGGER delete_temp_post AFTER DELETE ON temp_post \
     BEGIN\
-    DELETE from temp_post_cat WHERE local_id=OLD.local_id;\
+    DELETE FROM temp_post_cat WHERE local_id=OLD.local_id;\
     END" );
     q.exec( "CREATE TRIGGER delete_local_post AFTER DELETE ON local_post \
     BEGIN\
-    DELETE from local_post_cat WHERE local_id=OLD.local_id;\
+    DELETE FROM local_post_cat WHERE local_id=OLD.local_id;\
     END" );
 
     return ret;

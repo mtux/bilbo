@@ -418,7 +418,7 @@ void MainWindow::postManipulationDone( bool isError, const QString &customMessag
         KMessageBox::detailedError(this, i18n("Uploading post failed"), customMessage);
     } else {
         if(KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?",
-            customMessage)) != KMessageBox::Yes){
+            customMessage)) == KMessageBox::No) {
             sltRemovePostEntry(qobject_cast<PostEntry*>(sender()));
         }
         toolbox->sltLoadEntriesFromDB(toolbox->currentBlogId());

@@ -361,15 +361,16 @@ void PostEntry::deleteProgressBar()
 void PostEntry::saveLocally()
 {
     kDebug();
-    if(currentPost()->content().isEmpty()) {
+    if( currentPost()->content().isEmpty() ) {
         if( KMessageBox::warningYesNo(this, i18n("Current post content is empty, \
-are you sure of saving an empty post?")) == KMessageBox::Yes ) {
-            mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry( mCurrentPost, mCurrentPostBlogId,
-                                                                    DBMan::Local ) );
-            emit postSavedLocally();
-            emit showStatusMessage(i18n( "Post saved locally." ), false);
-        }
+are you sure of saving an empty post?")) == KMessageBox::No )
+            return;
     }
+    mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry( *currentPost(), mCurrentPostBlogId,
+                                                            DBMan::Local ) );
+    emit postSavedLocally();
+    emit showStatusMessage(i18n( "Post saved locally." ), false);
+    kDebug()<<"Locally saved";
 }
 
 void PostEntry::saveTemporary( bool force )
