@@ -49,6 +49,7 @@ AddEditBlog::AddEditBlog( int blog_id, QWidget *parent, Qt::WFlags flags )
     this->setMainWidget( mainW );
     this->setWindowTitle( i18n( "Add a new blog" ) );
     isNewBlog = true;
+    mFetchAPITimer = mFetchBlogIdTimer = mFetchProfileIdTimer = 0;
 
     connect( ui.txtId, SIGNAL( textChanged( const QString& ) ), this, SLOT( enableOkButton( const QString& ) ) );
     connect( ui.txtUrl, SIGNAL( textChanged( const QString & ) ), this, SLOT( enableAutoConfBtn() ) );
@@ -255,6 +256,14 @@ void AddEditBlog::fetchBlogId()
 void AddEditBlog::handleFetchIDTimeout()
 {
     kDebug();
+    if ( mFetchBlogIdTimer ) {
+        mFetchBlogIdTimer->deleteLater();
+        mFetchBlogIdTimer = 0;
+    }
+    if( mFetchProfileIdTimer ) {
+        mFetchProfileIdTimer->deleteLater();
+        mFetchProfileIdTimer = 0;
+    }
     ui.txtId->setText( QString() );
     ui.txtId->setEnabled( true );
     hideWaitWidget();
@@ -266,6 +275,8 @@ and your homepage Url, username or password!\nnote that the url has to contain \
 void AddEditBlog::handleFetchAPITimeout()
 {
     kDebug();
+    mFetchAPITimer->deleteLater();
+    mFetchAPITimer = 0;
     hideWaitWidget();
     ui.txtId->setEnabled( true );
     KMessageBox::sorry( this, i18n( "Sorry, Bilbo cannot get API type automatically,\
@@ -284,7 +295,10 @@ void AddEditBlog::handleFetchError( KBlog::Blog::ErrorType type, const QString &
 void AddEditBlog::fetchedBlogId( const QList< QMap < QString , QString > > & list )
 {
     kDebug();
-    mFetchBlogIdTimer->deleteLater();
+    if( mFetchBlogIdTimer ) {
+        mFetchBlogIdTimer->deleteLater();
+        mFetchBlogIdTimer = 0;
+    }
     hideWaitWidget();
     if ( list.count() > 1 ) {
         ///TODO handle more than one blog!
@@ -309,10 +323,15 @@ void AddEditBlog::fetchedProfileId( const QString &id )
     kDebug();
     Q_UNUSED(id);
     mFetchProfileIdTimer->deleteLater();
+    mFetchProfileIdTimer = 0;
     connect( dynamic_cast<KBlog::GData*>( mBlog ), SIGNAL( listedBlogs( const QList<QMap<QString, QString> >& ) ),
              this, SLOT( fetchedBlogId( const QList<QMap<QString, QString> >& ) ) );
     connect( dynamic_cast<KBlog::GData*>( mBlog ), SIGNAL( error( KBlog::Blog::ErrorType, const QString& ) ),
              this, SLOT( handleFetchError( KBlog::Blog::ErrorType, const QString& ) ) );
+    mFetchBlogIdTimer = new QTimer( this );
+    mFetchBlogIdTimer->setSingleShot( true );
+    connect( mFetchBlogIdTimer, SIGNAL( timeout() ), this, SLOT( handleFetchIDTimeout() ) );
+    mFetchBlogIdTimer->start( TIMEOUT );
     dynamic_cast<KBlog::GData*>( mBlog )->listBlogs();
 }
 
