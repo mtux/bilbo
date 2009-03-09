@@ -70,7 +70,15 @@ StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
     mTempPost->setTitle( mPostTitle );
     mTempPost->setContent( mPostContent );
     mTempPost->setPrivate( false );
-    mTempPost->setCreationDateTime( KDateTime( QDate(2000, 1, 1), QTime(0, 0), KDateTime::UTC ) );
+//     mTempPost->setCreationDateTime( KDateTime( QDate(2000, 1, 1), QTime(0, 0), KDateTime::UTC ) );
+/**
+ * TODO ^ Use this just on MovableType, WordpressBuggy and GData blogs!
+ * Because other APIs do not support link() and permaLink() options! and if we post this temp post
+ * at 2000-1-1 we cannot get style from homepage! becasue that post do not shows at homepage!
+ * So:
+ * We have to use this just for them, and for others! we have to post at current time! to can get style from homepage!
+ * -Mehrdad Momeny
+*/
 
     b = new Backend( blogid );
     connect( b, SIGNAL( sigPostPublished( int, BilboPost* ) ), this, 

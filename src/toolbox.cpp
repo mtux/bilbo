@@ -572,7 +572,7 @@ void Toolbox::setButtonsIcon()
     btnLocalRemove->setText( QString() );
 }
 
-QMap<int, BilboBlog*> & Toolbox::blogList()
+const QMap<int, BilboBlog*> & Toolbox::blogList() const
 {
     return mBlogList;
 }

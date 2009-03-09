@@ -59,7 +59,7 @@ public:
     const BilboBlog *currentBlog();
     void setCurrentBlog( int blog_id );
     void setCurrentPage( int index );
-    QMap<int, BilboBlog*> & blogList();
+    const QMap<int, BilboBlog*> & blogList() const;
 //     void addLocalPostToList(QVariantMap data);
 
 public slots:
