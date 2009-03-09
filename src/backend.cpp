@@ -167,12 +167,6 @@ void Backend::publishPost( BilboPost * post )
         bp->setContent(bp->content() + poweredStr);
     }
     if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
-//         if ( post->categories().count() > 1 ) {
-//             mCreatePostCategories = post->categoryList();
-//             bp->categories().clear();
-//             categoryListNotSet = true;
-//             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
-//         }
         kDebug()<<"Before break: "<<post->content();
         QStringList content = bp->content().split("<!--split-->");
         if( content.count() == 2 ) {
@@ -181,6 +175,10 @@ void Backend::publishPost( BilboPost * post )
             bp->setContent(content[0]);
             bp->setAdditionalContent( content[1] );
         }
+    }
+    if( mBBlog->api() == BilboBlog::MOVABLETYPE_API && post->categoryList().count() > 0 ) {
+        mCreatePostCategories = post->categoryList();
+        categoryListNotSet = true;
     }
     mKBlog->createPost( bp );
 
@@ -334,19 +332,17 @@ void Backend::modifyPost( BilboPost * post )
     connect( mKBlog, SIGNAL( modifiedPost(KBlog::BlogPost*)),
              this, SLOT( postPublished(KBlog::BlogPost*)) );
     if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
-//         if ( post->categories().count() > 1 ) {
-//             mCreatePostCategories = post->categoryList();
-//             bp->categories().clear();
-//             categoryListNotSet = true;
-//             kDebug() << "Will use setPostCategories Function, for " << mCreatePostCategories.count() << " categories.";
-//         }
         QStringList content = post->content().split("<!--split-->");
         if( content.count() == 2 ) {
             bp->setContent(content[0]);
             bp->setAdditionalContent( content[1] );
         }
     }
-        mKBlog->modifyPost( bp );
+    if( mBBlog->api() == BilboBlog::MOVABLETYPE_API && post->categoryList().count() > 0 ) {
+        mCreatePostCategories = post->categoryList();
+        categoryListNotSet = true;
+    }
+    mKBlog->modifyPost( bp );
 }
 
 void Backend::removePost( BilboPost &post )
@@ -419,7 +415,10 @@ void Backend::postCategoriesSetted( const QString &postId )
 {
     kDebug();
     KBlog::BlogPost *post = mSetPostCategoriesMap[ postId ];
-    savePostInDbAndEmitResult( post );
+    mSubmitPostStatusMap[ post ] = post->status();
+    connect( mKBlog, SIGNAL( fetchedPost(KBlog::BlogPost*)),
+             this, SLOT( savePostInDbAndEmitResult(KBlog::BlogPost*)) );
+    mKBlog->fetchPost( post );
     mSetPostCategoriesMap.remove( postId );
 
 }
