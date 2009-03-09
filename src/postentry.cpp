@@ -31,7 +31,7 @@
 #include "dbman.h"
 #include "global.h"
 #include "sendtoblogdialog.h"
-#include <qt4/QtCore/QMap>
+#include <QtCore>
 #include <kio/job.h>
 #include "settings.h"
 #include <KApplication>
