@@ -115,7 +115,7 @@ void Toolbox::sltRemoveBlog()
         return;
     }
     if(KMessageBox::warningYesNo(this, i18n("Are you sure of removing selected blog?")) 
-        == KMessageBox::NoExec)
+        == KMessageBox::No)
         return;
 
     DBMan::self()->removeBlog( qobject_cast<BlogRadioButton*>( btn )->blogId() );
@@ -251,7 +251,7 @@ void Toolbox::sltLoadEntriesFromDB( int blog_id )
     int count = listEntries.count();
     for ( int i=0; i < count; ++i ) {
         QListWidgetItem *lstItem = new QListWidgetItem( listEntries[i].value("title").toString() );
-        lstItem->setToolTip(listEntries[i].value("m_time").toDateTime().toString());
+        lstItem->setToolTip(listEntries[i].value("c_time").toDateTime().toString());
         if(listEntries[i].value("is_private").toBool()) {
             lstItem->setForeground(QBrush(Qt::blue));
             lstItem->setToolTip(lstItem->toolTip() + " (Draft)");
@@ -363,19 +363,18 @@ void Toolbox::getFieldsValue( BilboPost &currentPost )
     currentPost.setCategoryList( this->selectedCategories() );
     currentPost.setTags( this->currentTags() );
     currentPost.setModifyTimeStamp( this->chkOptionsTime->isChecked() );
+    currentPost.setModificationDateTime( KDateTime::currentLocalDateTime() );
     if ( currentPost.status() == KBlog::BlogPost::New ) {
         if ( chkOptionsTime->isChecked() ) {
             currentPost.setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
             currentPost.setCreationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
         } else {
-            currentPost.setModificationDateTime( KDateTime::currentLocalDateTime() );
             currentPost.setCreationDateTime( KDateTime::currentLocalDateTime() );
         }
     } else {
-        if ( chkOptionsTime->isChecked() ) {
-            currentPost.setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
-            currentPost.setCreationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
-        }
+//         if ( chkOptionsTime->isChecked() ) {
+        currentPost.setCreationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
+//         }
     }
 
     currentPost.setPrivate(( comboOptionsStatus->currentIndex() == 1 ) ? true : false );
@@ -410,9 +409,9 @@ void Toolbox::setFieldsValue( BilboPost* post )
     optionsTime->setTime( post->creationDateTime().time() );
     optionsDate->setDate( post->creationDateTime().date() );
     txtSummary->setPlainText( post->summary() );
-    if( post->status() != BilboPost::New ) {
-        chkOptionsTime->setChecked(true);
-    }
+//     if( post->status() != BilboPost::New ) {
+//         chkOptionsTime->setChecked(true);
+//     }
 }
 
 QList< Category > Toolbox::selectedCategories()

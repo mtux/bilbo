@@ -1021,14 +1021,14 @@ QList<QVariantMap> DBMan::listPostsInfo( int blog_id )
 {
     QList<QVariantMap> list;
     QSqlQuery q;
-    q.prepare( "SELECT title, id, m_time, is_private FROM post WHERE blog_id = ? ORDER BY m_time DESC" );
+    q.prepare( "SELECT title, id, c_time, is_private FROM post WHERE blog_id = ? ORDER BY m_time DESC" );
     q.addBindValue( blog_id );
     if ( q.exec() ) {
         while ( q.next() ) {
             QVariantMap entry;
             entry[ "title" ] = q.value( 0 ).toString();
             entry[ "id" ] = q.value( 1 ).toInt();
-            entry[ "m_time" ] = q.value( 2 ).toDateTime();
+            entry[ "c_time" ] = KDateTime::fromString( q.value( 2 ).toString() ).dateTime();
             entry[ "is_private" ] = q.value( 3 ).toBool();
             list.append(entry);
         }
