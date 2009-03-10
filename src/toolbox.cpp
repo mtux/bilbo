@@ -60,6 +60,7 @@ Toolbox::Toolbox( QWidget *parent )
 
     connect( btnCatReload, SIGNAL( clicked() ), this, SLOT( sltReloadCategoryList() ) );
     connect( btnEntriesUpdate, SIGNAL( clicked() ), this, SLOT( sltUpdateEntries() ) );
+    connect( btnEntriesClear, SIGNAL( clicked(bool) ), this, SLOT( clearEntries()) );
 
     connect( this, SIGNAL( sigCurrentBlogChanged( int ) ), this, SLOT( sltCurrentBlogChanged( int ) ) );
     connect( &listBlogRadioButtons, SIGNAL( buttonClicked( int ) ), this, SLOT( sltSetCurrentBlog() ) );
@@ -555,6 +556,7 @@ void Toolbox::setButtonsIcon()
     btnEntriesUpdate->setIcon( KIcon( "arrow-down" ) );
     btnEntriesCopyUrl->setIcon( KIcon( "edit-copy" ) );
     btnEntriesRemove->setIcon( KIcon( "list-remove" ) );
+    btnEntriesClear->setIcon( KIcon( "edit-clear" ) );
     btnCatReload->setIcon( KIcon( "view-refresh" ) );
     btnCatAdd->setIcon( KIcon( "list-add" ) );
     btnLocalRemove->setIcon( KIcon( "list-remove" ) );
@@ -566,6 +568,7 @@ void Toolbox::setButtonsIcon()
     btnEntriesUpdate->setText( QString() );
     btnEntriesCopyUrl->setText( QString() );
     btnEntriesRemove->setText( QString() );
+    btnEntriesClear->setText( QString() );
     btnCatReload->setText( QString() );
     btnCatAdd->setText( QString() );
     btnLocalRemove->setText( QString() );
@@ -623,6 +626,18 @@ void Toolbox::sltRemoveLocalEntry()
     } else {
         KMessageBox::sorry(this, i18n("You have to select at least one entry from list."));
     }
+}
+
+void Toolbox::clearEntries()
+{
+    kDebug();
+    int id = currentBlogId();
+    if( id == -1 )
+        return;
+    if ( DBMan::self()->clearPosts( id ) )
+        lstEntriesList->clear();
+    else
+        KMessageBox::detailedSorry(this, i18n( "Can not clear entries list." ) , DBMan::self()->lastErrorText());
 }
 
 #include "toolbox.moc"

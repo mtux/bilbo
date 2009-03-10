@@ -82,6 +82,7 @@ public slots:
     void sltLocalEntrySelected( int row, int column );
     void reloadLocalPosts();
     void sltRemoveLocalEntry();
+    void clearEntries();
 
 signals:
     void sigCurrentBlogChanged( int blog_id );
