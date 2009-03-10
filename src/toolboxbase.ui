@@ -57,14 +57,7 @@
            <item>
             <widget class="KPushButton" name="btnBlogAdd" >
              <property name="toolTip" >
-              <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;table border="0" style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
-&lt;tr>
-&lt;td style="border: none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;">&lt;span style=" font-size:9pt;">Add New Blog&lt;/span>&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
+              <string>Add New Blog</string>
              </property>
              <property name="text" >
               <string comment="verb, add new blog" >&amp;Add...</string>
@@ -77,14 +70,7 @@ p, li { white-space: pre-wrap; }
               <bool>false</bool>
              </property>
              <property name="toolTip" >
-              <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;table border="0" style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
-&lt;tr>
-&lt;td style="border: none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;">&lt;span style=" font-size:9pt;">Edit current selected blog settings&lt;/span>&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
+              <string>Edit current selected blog settings</string>
              </property>
              <property name="text" >
               <string comment="verb, edit selected blog properties" >&amp;Edit...</string>
@@ -103,14 +89,7 @@ p, li { white-space: pre-wrap; }
               </sizepolicy>
              </property>
              <property name="toolTip" >
-              <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;table border="0" style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
-&lt;tr>
-&lt;td style="border: none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;">&lt;span style=" font-size:9pt;">Remove current selected blog&lt;/span>&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
+              <string>Remove current selected blog</string>
              </property>
              <property name="text" >
               <string comment="verb, remove selected blog from the blog list" >&amp;Remove</string>
@@ -168,7 +147,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QWidget" name="pgEntries" >
         <property name="geometry" >
          <rect>
-          <x>0</x>
+          <x>-93</x>
           <y>0</y>
           <width>406</width>
           <height>386</height>
@@ -221,14 +200,7 @@ p, li { white-space: pre-wrap; }
            <item>
             <widget class="KPushButton" name="btnEntriesReload" >
              <property name="toolTip" >
-              <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;table border="0" style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
-&lt;tr>
-&lt;td style="border: none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;">&lt;span style=" font-size:9pt;">Reload entries list&lt;/span>&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
+              <string>Reload entries list</string>
              </property>
              <property name="text" >
               <string>&amp;Reload</string>
@@ -238,14 +210,7 @@ p, li { white-space: pre-wrap; }
            <item>
             <widget class="KPushButton" name="btnEntriesUpdate" >
              <property name="toolTip" >
-              <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;table border="0" style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
-&lt;tr>
-&lt;td style="border: none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;">&lt;span style=" font-size:9pt;">Update entries list&lt;/span>&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
+              <string>Update entries list</string>
              </property>
              <property name="text" >
               <string>U&amp;pdate</string>
@@ -255,14 +220,7 @@ p, li { white-space: pre-wrap; }
            <item>
             <widget class="KPushButton" name="btnEntriesCopyUrl" >
              <property name="toolTip" >
-              <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;table border="0" style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
-&lt;tr>
-&lt;td style="border: none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;">&lt;span style=" font-size:9pt;">Copy URL of selected entry&lt;/span>&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
+              <string>Copy URL of selected entry</string>
              </property>
              <property name="text" >
               <string>Copy &amp;URL</string>
@@ -344,14 +302,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <widget class="KPushButton" name="btnCatReload" >
                <property name="toolTip" >
-                <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;table border="0" style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
-&lt;tr>
-&lt;td style="border: none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;">&lt;span style=" font-size:9pt;">Reload categories list&lt;/span>&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
+                <string>Reload categories list</string>
                </property>
                <property name="text" >
                 <string>Reload</string>
@@ -361,14 +312,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <widget class="KPushButton" name="btnCatAdd" >
                <property name="toolTip" >
-                <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;table border="0" style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
-&lt;tr>
-&lt;td style="border: none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;">&lt;span style=" font-size:9pt;">Add a new category to selected blog&lt;/span>&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
+                <string>Add a new category to selected blog</string>
                </property>
                <property name="whatsThis" >
                 <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
@@ -454,7 +398,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>408</width>
+          <width>313</width>
           <height>403</height>
          </rect>
         </property>
@@ -533,15 +477,15 @@ p, li { white-space: pre-wrap; }
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="font" >
+              <font>
+               <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="text" >
-              <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:10pt; font-weight:400; font-style:normal;">
-&lt;table style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
-&lt;tr>
-&lt;td style="border: none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-weight:600;">FeedBack :&lt;/span>&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
+              <string>Feedback: </string>
              </property>
             </widget>
            </item>
@@ -663,7 +607,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>408</width>
+          <width>313</width>
           <height>403</height>
          </rect>
         </property>
