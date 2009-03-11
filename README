@@ -15,7 +15,7 @@ Bilbo Blogger depends on KDELibs, KDEPimLibs and BilboKBlog (a customized KBlog 
 You need KDELibs and KDEPimLibs development packages. (e.g. for Kubuntu: kdelibs5-dev and kdepimlibs5-dev)
 
 You have to build and install BilboKBlog before building Bilbo, if you haven't installed it yet!
-You can find BilboKBlog source code at this repository: http://github.com/mtux/bilbokblog
+Always you can fetch latest development snapshot of Bilbo and BilboKBlog at these repositories: http://gitorious.org/projects/bilbo/ AND http://gitorious.org/projects/bilbokblog/
 
 How To Build The Project
 -=-=-=-=-=-=-=-=-=-=-=-=-=
