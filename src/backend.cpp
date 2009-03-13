@@ -162,7 +162,7 @@ void Backend::publishPost( BilboPost * post )
 
     if( Settings::addPoweredBy() ) {
         QString poweredStr = "<p>=-=-=-=-=<br/>"
-        "<i>Powered by <b><a href='http://bilbo.ospdev.net/'>Bilbo Blogger</a></b></i></p>";
+        "<i>Powered by <b><a href='http://bilbo.gnufolks.org/'>Bilbo Blogger</a></b></i></p>";
         bp->setContent(bp->content() + poweredStr);
     }
     if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {

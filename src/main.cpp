@@ -38,7 +38,7 @@ int main( int argc, char *argv[] )
 {
     KAboutData about( "bilbo", 0, ki18n( "Bilbo Blogger" ), VERSION, ki18n( description ),
                       KAboutData::License_GPL_V3, ki18n( "(C) 2008-2009 Bilbo Developers" ),
-                      KLocalizedString(), "http://bilbo.ospdev.net",
+                      KLocalizedString(), "http://bilbo.gnufolks.org",
                       "https://bugs.launchpad.net/bilbo" );
     about.addAuthor( ki18n( "Mehrdad Momeny" ), ki18n( "Core Developer" ), "mehrdad.momeny@gmail.com" );
     about.addAuthor( ki18n( "Golnaz Nilieh" ), ki18n( "Core Developer" ), "g382nilieh@gmail.com" );

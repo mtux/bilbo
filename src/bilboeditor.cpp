@@ -779,7 +779,7 @@ void BilboEditor::sltSyncEditors( int index )
         } else {
             htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
         }
-        QString baseUrl = "http://bilbo.ospdev.net";
+        QString baseUrl = "http://bilbo.gnufolks.org";
 
         if ( __currentBlogId > -1 ) {
             baseUrl = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
@@ -959,7 +959,7 @@ void BilboEditor::sltSetPostPreview()
     if ( this->currentIndex() == 2 ) {
         Q_EMIT sigShowStatusMessage( i18n( "Setting blog style..." ), true );
 
-        QString baseUrl = "http://bilbo.ospdev.net";
+        QString baseUrl = "http://bilbo.gnufolks.org";
         if ( __currentBlogId > -1 ) {
             baseUrl = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
         }
