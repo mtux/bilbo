@@ -156,7 +156,7 @@ void Backend::publishPost( BilboPost * post )
 {
     kDebug() << "Blog Id: " << mBBlog->id();
 
-    KBlog::BlogPost *bp = post->toKBlogPost();
+    KBlog::BlogPost *bp = preparePost( post );
     connect( mKBlog, SIGNAL( createdPost( KBlog::BlogPost * ) ),
              this, SLOT( postPublished( KBlog::BlogPost * ) ) );
 
@@ -165,24 +165,7 @@ void Backend::publishPost( BilboPost * post )
         "<i>Powered by <b><a href='http://bilbo.gnufolks.org/'>Bilbo Blogger</a></b></i></p>";
         bp->setContent(bp->content() + poweredStr);
     }
-    if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
-        kDebug()<<"Before break: "<<post->content();
-        QStringList content = bp->content().split("<!--split-->");
-        if( content.count() == 2 ) {
-            kDebug()<<"Content: "<<content[0];
-            kDebug()<<"Additional: "<<content[1];
-            bp->setContent(content[0]);
-            bp->setAdditionalContent( content[1] );
-        }
-    }
-    if( mBBlog->api() == BilboBlog::MOVABLETYPE_API && post->categoryList().count() > 0 ) {
-        mCreatePostCategories = post->categoryList();
-        categoryListNotSet = true;
-    }
     mKBlog->createPost( bp );
-
-// NOTE the line below commented, because after publishing a post, we display the content in the editor, and we should have the post object so that the content be editable. -Golnaz
-//     delete post;
 }
 
 void Backend::postPublished( KBlog::BlogPost *post )
@@ -327,20 +310,9 @@ void Backend::modifyPost( BilboPost * post )
 {
     kDebug() << "Blog Id: " << mBBlog->id();
 
-    KBlog::BlogPost *bp = post->toKBlogPost();
+    KBlog::BlogPost *bp = preparePost( post );
     connect( mKBlog, SIGNAL( modifiedPost(KBlog::BlogPost*)),
              this, SLOT( postPublished(KBlog::BlogPost*)) );
-    if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
-        QStringList content = post->content().split("<!--split-->");
-        if( content.count() == 2 ) {
-            bp->setContent(content[0]);
-            bp->setAdditionalContent( content[1] );
-        }
-    }
-    if( mBBlog->api() == BilboBlog::MOVABLETYPE_API && post->categoryList().count() > 0 ) {
-        mCreatePostCategories = post->categoryList();
-        categoryListNotSet = true;
-    }
     mKBlog->modifyPost( bp );
 }
 
@@ -480,6 +452,24 @@ void Backend::savePostInDbAndEmitResult( KBlog::BlogPost *post )
         Q_EMIT sigPostPublished( mBBlog->id(), pp );
     }
     delete post;
+}
+
+KBlog::BlogPost * Backend::preparePost( BilboPost *post )
+{
+    post->setContent( post->content().remove('\n') );
+    post->setAdditionalContent( post->additionalContent().remove( '\n' ) );
+    if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
+        QStringList content = post->content().split("<!--split-->");
+        if( content.count() == 2 ) {
+            post->setContent(content[0]);
+            post->setAdditionalContent( content[1] );
+        }
+    }
+    if( mBBlog->api() == BilboBlog::MOVABLETYPE_API && post->categoryList().count() > 0 ) {
+        mCreatePostCategories = post->categoryList();
+        categoryListNotSet = true;
+    }
+    return post->toKBlogPost();
 }
 
 #include "backend.moc"

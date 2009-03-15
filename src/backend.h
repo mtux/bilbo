@@ -158,6 +158,7 @@ Q_SIGNALS:
     void sigMediaError( const QString &errorMessage, BilboMedia* media );
 
 private:
+    KBlog::BlogPost * preparePost( BilboPost *post );
     QString errorTypeToString( KBlog::Blog::ErrorType type );
     KBlog::Blog *mKBlog;
     BilboBlog *mBBlog;
