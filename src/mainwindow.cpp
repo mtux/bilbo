@@ -385,7 +385,7 @@ void MainWindow::writeConfigs()
         Settings::setShowToolboxOnStart( false );
 }
 
-void MainWindow::keyReleaseEvent( QKeyEvent * event )
+void MainWindow::keyPressEvent( QKeyEvent * event )
 {
     if ( event->modifiers() == Qt::CTRL ) {
         switch ( event->key() ) {
@@ -404,8 +404,11 @@ void MainWindow::keyReleaseEvent( QKeyEvent * event )
             case Qt::Key_5:
                 toolbox->setCurrentPage( 4 );
                 break;
+            case Qt::Key_W:
+                sltRemovePostEntry();
+                break;
             default:
-                QMainWindow::keyPressEvent( event );
+                KXmlGuiWindow::keyPressEvent( event );
                 break;
         }
     }

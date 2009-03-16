@@ -93,7 +93,7 @@ private slots:
     void slotMediaObjectUploaded( BilboMedia* );
 
 protected:
-    void keyReleaseEvent( QKeyEvent * event );
+    void keyPressEvent( QKeyEvent * event );
     /**
     *  Reimplemented to save settings
     */

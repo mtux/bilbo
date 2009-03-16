@@ -410,9 +410,9 @@ void Toolbox::setFieldsValue( BilboPost* post )
     optionsTime->setTime( post->creationDateTime().time() );
     optionsDate->setDate( post->creationDateTime().date() );
     txtSummary->setPlainText( post->summary() );
-//     if( post->status() != BilboPost::New ) {
-//         chkOptionsTime->setChecked(true);
-//     }
+    if( post->status() != BilboPost::New ) {
+        chkOptionsTime->setChecked(true);
+    }
 }
 
 QList< Category > Toolbox::selectedCategories()
