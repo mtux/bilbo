@@ -310,7 +310,7 @@ void MainWindow::sltPublishPost()
         kDebug() << "There isn't any post";
         return;
     }
-    BilboPost post;
+    BilboPost post = *activePost->currentPost();
     toolbox->getFieldsValue( post );
 //     post.setPrivate( false );
     activePost->publishPost( blog_id, post );

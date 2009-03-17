@@ -146,8 +146,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>422</width>
-          <height>403</height>
+          <width>412</width>
+          <height>100</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -265,8 +265,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>422</width>
-          <height>403</height>
+          <width>219</width>
+          <height>135</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -289,8 +289,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>408</width>
-              <height>322</height>
+              <width>94</width>
+              <height>24</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7" >
@@ -389,7 +389,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>422</width>
+          <width>385</width>
           <height>403</height>
          </rect>
         </property>
@@ -514,36 +514,91 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item>
-          <widget class="KDateWidget" name="optionsDate" >
-           <property name="enabled" >
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTimeEdit" name="optionsTime" >
-           <property name="enabled" >
-            <bool>false</bool>
-           </property>
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="buttonSymbols" >
-            <enum>QAbstractSpinBox::UpDownArrows</enum>
-           </property>
-           <property name="correctionMode" >
-            <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-           </property>
-           <property name="calendarPopup" >
-            <bool>true</bool>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_8" >
+           <item>
+            <spacer name="horizontalSpacer_9" >
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType" >
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>15</width>
+               <height>17</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QFrame" name="frame" >
+             <property name="frameShape" >
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow" >
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_3" >
+              <item row="0" column="0" colspan="3" >
+               <widget class="KDateWidget" name="optionsDate" >
+                <property name="enabled" >
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" >
+               <widget class="QTimeEdit" name="optionsTime" >
+                <property name="enabled" >
+                 <bool>false</bool>
+                </property>
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="alignment" >
+                 <set>Qt::AlignCenter</set>
+                </property>
+                <property name="buttonSymbols" >
+                 <enum>QAbstractSpinBox::UpDownArrows</enum>
+                </property>
+                <property name="correctionMode" >
+                 <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                </property>
+                <property name="calendarPopup" >
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1" >
+               <spacer name="horizontalSpacer_8" >
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0" >
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="1" column="2" >
+               <widget class="KPushButton" name="btnOptionsNow" >
+                <property name="enabled" >
+                 <bool>false</bool>
+                </property>
+                <property name="text" >
+                 <string>Now</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="QLabel" name="lblOptionsTrackBack" >
@@ -595,8 +650,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>422</width>
-          <height>403</height>
+          <width>127</width>
+          <height>100</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -736,32 +791,48 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>chkOptionsTime</sender>
    <signal>toggled(bool)</signal>
-   <receiver>optionsDate</receiver>
+   <receiver>optionsTime</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>130</x>
-     <y>258</y>
+     <x>81</x>
+     <y>239</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>130</x>
-     <y>283</y>
+     <x>80</x>
+     <y>301</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>chkOptionsTime</sender>
    <signal>toggled(bool)</signal>
-   <receiver>optionsTime</receiver>
+   <receiver>btnOptionsNow</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>77</x>
-     <y>261</y>
+     <x>169</x>
+     <y>229</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>75</x>
-     <y>332</y>
+     <x>361</x>
+     <y>291</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chkOptionsTime</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>optionsDate</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>134</x>
+     <y>239</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>135</x>
+     <y>271</y>
     </hint>
    </hints>
   </connection>

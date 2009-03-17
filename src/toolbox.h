@@ -83,6 +83,7 @@ public slots:
     void reloadLocalPosts();
     void sltRemoveLocalEntry();
     void clearEntries();
+    void setDateTimeNow();
 
 signals:
     void sigCurrentBlogChanged( int blog_id );

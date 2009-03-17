@@ -70,6 +70,7 @@ Toolbox::Toolbox( QWidget *parent )
     connect( btnEntriesCopyUrl, SIGNAL( clicked( bool ) ), this, SLOT( sltEntriesCopyUrl() ) );
     connect( btnEntriesRemove, SIGNAL( clicked(bool) ), this, SLOT( sltRemoveSelectedEntryFromServer() ) );
 
+    connect( btnOptionsNow, SIGNAL( clicked(bool)), this, SLOT( setDateTimeNow() ) );
     connect( localEntriesTable, SIGNAL( cellDoubleClicked(int,int) ),
              this, SLOT(sltLocalEntrySelected(int,int)) );
     connect( btnLocalRemove, SIGNAL( clicked( bool ) ) , this, SLOT( sltRemoveLocalEntry() ) );
@@ -364,18 +365,17 @@ void Toolbox::getFieldsValue( BilboPost &currentPost )
     currentPost.setCategoryList( this->selectedCategories() );
     currentPost.setTags( this->currentTags() );
     currentPost.setModifyTimeStamp( this->chkOptionsTime->isChecked() );
-    currentPost.setModificationDateTime( KDateTime::currentLocalDateTime() );
     if ( currentPost.status() == KBlog::BlogPost::New ) {
         if ( chkOptionsTime->isChecked() ) {
             currentPost.setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
             currentPost.setCreationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
         } else {
             currentPost.setCreationDateTime( KDateTime::currentLocalDateTime() );
+            currentPost.setModificationDateTime( KDateTime::currentLocalDateTime() );
         }
     } else {
-//         if ( chkOptionsTime->isChecked() ) {
         currentPost.setCreationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
-//         }
+        currentPost.setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
     }
 
     currentPost.setPrivate(( comboOptionsStatus->currentIndex() == 1 ) ? true : false );
@@ -410,9 +410,9 @@ void Toolbox::setFieldsValue( BilboPost* post )
     optionsTime->setTime( post->creationDateTime().time() );
     optionsDate->setDate( post->creationDateTime().date() );
     txtSummary->setPlainText( post->summary() );
-    if( post->status() != BilboPost::New ) {
-        chkOptionsTime->setChecked(true);
-    }
+//     if( post->status() != BilboPost::New ) {
+//         chkOptionsTime->setChecked(true);
+//     }
 }
 
 QList< Category > Toolbox::selectedCategories()
@@ -638,6 +638,12 @@ void Toolbox::clearEntries()
         lstEntriesList->clear();
     else
         KMessageBox::detailedSorry(this, i18n( "Can not clear entries list." ) , DBMan::self()->lastErrorText());
+}
+
+void Toolbox::setDateTimeNow()
+{
+    optionsDate->setDate( QDate::currentDate() );
+    optionsTime->setTime( QTime::currentTime() );
 }
 
 #include "toolbox.moc"
