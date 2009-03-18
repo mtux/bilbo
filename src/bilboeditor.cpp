@@ -358,7 +358,25 @@ void BilboEditor::sltAddEditLink()
 void BilboEditor::sltSetLink( const QString& address, const QString& target,
                               const QString& title )
 {
+    editor->setFocus( Qt::OtherFocusReason );
+
     QTextCharFormat f = editor->currentCharFormat();
+    QTextCursor cursor = editor->textCursor();
+
+    if ( ( f.isAnchor() ) && ( !editor->textCursor().hasSelection() ) ) {
+
+        QTextBlock block = cursor.block();
+        QTextBlock::iterator i;
+        for ( i = block.begin(); !( i.atEnd() ); ++i ) {
+
+            if ( i.fragment().contains( cursor.position() ) ) {
+                cursor.setPosition( i.fragment().position() );
+                cursor.movePosition( QTextCursor::NextCharacter,
+                                     QTextCursor::KeepAnchor, i.fragment().length() );
+                break;
+            }
+        }
+    }
     f.setAnchor( true );
     f.setAnchorHref( address );
     f.setProperty( BilboTextFormat::AnchorTitle, QVariant( title ) );
@@ -367,8 +385,7 @@ void BilboEditor::sltSetLink( const QString& address, const QString& target,
     f.setFontUnderline( true );
     f.setForeground( QBrush( Qt::blue ) );
 
-    editor->textCursor().mergeCharFormat( f );
-    editor->setFocus( Qt::OtherFocusReason );
+    cursor.mergeCharFormat( f );
 }
 
 void BilboEditor::sltRemoveLink()
