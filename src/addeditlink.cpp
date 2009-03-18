@@ -19,24 +19,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//#include <klocalizedstring.h>
-//#include <kdialogbuttonbox.h>
 #include "addeditlink.h"
 
 AddEditLink::AddEditLink( QWidget *parent )
         : KDialog( parent )
 {
     QWidget *dialog = new QWidget( this );
-//     QDialog *dialog = new QDialog( parent );
     ui.setupUi( dialog );
-//     dialog->setAttribute( Qt::WA_DeleteOnClose );
     this->setMainWidget( dialog );
-//     this->setWindowTitle( i18nc( "verb, to insert a link into the text, or Modify an Ex", "Add Link" ) );
 
-    //ui.label_2->hide();
-    //ui.txtTitle->hide();
-    //ui.comboTarget->hide();
-    //ui.label_3->hide();
     this->resize( dialog->width(), dialog->height() );
     
     connect( this, SIGNAL( accepted() ), this, SLOT( sltAccepted() ) );
@@ -55,10 +46,6 @@ void AddEditLink::sltAccepted()
     const QString target = linkTarget;
 
     Q_EMIT addLink( ui.txtAddress->text(), target, ui.txtTitle->text() );
-//  Q_EMIT addLink( ui.txtAddress->text() );
-//  close();
-//  QDialog::accept();
-// //  hide();
 }
 
 void AddEditLink::show( const QString& address, const QString& title, const QString& target )

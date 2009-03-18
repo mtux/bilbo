@@ -22,8 +22,7 @@
 #ifndef ADDEDITLINK_H
 #define ADDEDITLINK_H
 
-#include <QDialog>
-//#include <KDialog>
+#include <kdialog.h>
 
 #include "ui_addeditlinkbase.h"
 
@@ -44,7 +43,6 @@ public:
 
 Q_SIGNALS:
     void addLink( const QString& address, const QString& target, const QString& title );
-//   void addLink( const QString& address );
 
 private Q_SLOTS:
     void sltAccepted();
