@@ -216,10 +216,8 @@ int DBMan::addBlog( const BilboBlog & blog )
     q.prepare( "INSERT INTO blog (blogid, blog_url, username, style_url, api_type, title,\
                direction, local_directory) VALUES(?, ?, ?, ?, ?, ?, ?, ?)" );
     q.addBindValue( blog.blogid() );
-    //q.addBindValue(blog.url().toString());
     q.addBindValue( blog.url().url() );
     q.addBindValue( blog.username() );
-//  q.addBindValue(blog.password());
     q.addBindValue( blog.stylePath() );
     q.addBindValue( blog.api() );
     q.addBindValue( blog.title() );
@@ -239,8 +237,10 @@ int DBMan::addBlog( const BilboBlog & blog )
 bool DBMan::editBlog( const BilboBlog & blog )
 {
     QSqlQuery q;
-    q.prepare( "UPDATE blog SET username=? , style_url=? , api_type=?, \
+    q.prepare( "UPDATE blog SET blogid=?, blog_url=?, username=? , style_url=? , api_type=?, \
                title=?, direction=?, local_directory=? WHERE id=?" );
+    q.addBindValue( blog.blogid() );
+    q.addBindValue( blog.url().url() );
     q.addBindValue( blog.username() );
     q.addBindValue( blog.stylePath() );
     q.addBindValue( blog.api() );
