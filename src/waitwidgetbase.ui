@@ -9,9 +9,6 @@
     <height>58</height>
    </rect>
   </property>
-  <property name="windowTitle" >
-   <string>Please wait...</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout" >
    <item>
     <widget class="QLabel" name="operationNameLabel" >
