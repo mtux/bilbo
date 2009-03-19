@@ -266,7 +266,7 @@ private:
     /*!
     Prepares the html code to be used by editor->setHtml() function.
      */
-    QString htmlToRichtext( const QString& html );
+//     QString htmlToRichtext( const QString& html );
 
     QWidget *tabVisual;
     QWidget *tabHtml;

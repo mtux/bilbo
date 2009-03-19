@@ -122,6 +122,10 @@ void BilboEditor::createUi()
 
     ///preview:
     preview = new QWebView( tabPreview );
+//     preview->settings()->setAttribute( QWebSettings::AutoLoadImages, true );
+//     preview->settings()->setAttribute( QWebSettings::JavaEnabled, true );
+//     preview->settings()->setAttribute( QWebSettings::QWebSettings::JavascriptEnabled, true );
+
     btnGetStyle = new KPushButton ( tabPreview );
     btnGetStyle->setText( i18n( "Get blog style" ) );
     connect( btnGetStyle, SIGNAL( clicked( bool ) ), this, SLOT( sltGetBlogStyle() ) );
@@ -796,7 +800,7 @@ void BilboEditor::sltSyncEditors( int index )
         } else {
             htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
         }
-        QString baseUrl = "http://bilbo.gnufolks.org";
+        QString baseUrl = "http://bilbo.gnufolks.org/";
 
         if ( __currentBlogId > -1 ) {
             baseUrl = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
@@ -811,18 +815,18 @@ void BilboEditor::sltSyncEditors( int index )
     delete htmlExp;
 }
 
-QString BilboEditor::htmlToRichtext( const QString& html )
-{
-    QString richText = html;
-
-    richText.remove( QChar( '\n' ) );
-
-    richText.replace( QRegExp( "<del>(.*)</del>" ), "<s>\\1</s>" );
-
-    QString h;
-    h = "<html><head></head><body><p>" + richText + "</p></body></html>";
-    return h;
-}
+// QString BilboEditor::htmlToRichtext( const QString& html )
+// {
+//     QString richText = html;
+// 
+//     richText.remove( QChar( '\n' ) );
+// 
+//     richText.replace( QRegExp( "<del>(.*)</del>" ), "<s>\\1</s>" );
+// 
+//     QString h;
+//     h = "<html><head></head><body><p>" + richText + "</p></body></html>";
+//     return h;
+// }
 
 QString BilboEditor::htmlContent()
 {
@@ -976,13 +980,13 @@ void BilboEditor::sltSetPostPreview()
     if ( this->currentIndex() == 2 ) {
         Q_EMIT sigShowStatusMessage( i18n( "Setting blog style..." ), true );
 
-        QString baseUrl = "http://bilbo.gnufolks.org";
+        QString baseUrl = "http://bilbo.gnufolks.org/";
         if ( __currentBlogId > -1 ) {
             baseUrl = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
         }
         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
                          currentPostTitle,
-                         this->htmlEditor->toPlainText() ), baseUrl );
+                         this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
 
         Q_EMIT sigShowStatusMessage( i18n( "The requested blog style set." ), false );
     }
