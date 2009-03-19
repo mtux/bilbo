@@ -150,9 +150,9 @@ void StyleGetter::sltTempPostPublished( int blogId, BilboPost* post )
     }
 
     mTempPost = post;
-    mJob = KIO::storedGet( postUrl, KIO::NoReload, KIO::HideProgressInfo );
+    KIO::StoredTransferJob *job = KIO::storedGet( postUrl, KIO::NoReload, KIO::HideProgressInfo );
 
-    connect( mJob, SIGNAL( result( KJob* ) ),
+    connect( job, SIGNAL( result( KJob* ) ),
             this, SLOT( sltHtmlCopied( KJob* ) ) );
 }
 

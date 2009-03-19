@@ -35,10 +35,6 @@
 #include <QString>
 
 
-namespace KIO
-{
-class Job;
-}
 class KJob;
 
 
@@ -100,7 +96,6 @@ private:
 
     BilboPost *mTempPost;
     QString mCachePath;
-    KIO::Job *mJob;
     QString mPostTitle;
     QString mPostContent;
     QWidget *mParent;
