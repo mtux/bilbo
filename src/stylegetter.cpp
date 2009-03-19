@@ -183,7 +183,11 @@ void StyleGetter::sltHtmlCopied( KJob *job )
     }
 
     KUrl dest(mCachePath + "style.html");
-    Q_ASSERT( dest.isValid() );
+//     Q_ASSERT( dest.isValid() );
+    
+    if ( QFile::exists( dest.path() ) ) {
+        QFile::remove( dest.path() );
+    }
     QFile file( dest.path() );
     file.open( QIODevice::WriteOnly );
     if ( file.write( httpData ) == -1 ) {
