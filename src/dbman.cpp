@@ -35,11 +35,15 @@ DBMan::DBMan()
     kDebug();
     mWallet = KWallet::Wallet::openWallet( KWallet::Wallet::LocalWallet(), 0 );
     if ( mWallet ) {
+        useWallet = true;
         if ( !mWallet->setFolder( "bilbo" ) ) {
             mWallet->createFolder( "bilbo" );
             mWallet->setFolder( "bilbo" );
         }
         kDebug() << "Wallet successfully opened.";
+    } else {
+        useWallet = false;
+        kDebug() << "Could not use Wallet service";
     }
 
     if ( !QFile::exists( CONF_DB ) ) {
@@ -99,8 +103,8 @@ bool DBMan::createDB()
     QSqlQuery q;
     ///Blog table!
     if ( !q.exec( "CREATE TABLE blog (id INTEGER PRIMARY KEY, blogid TEXT, blog_url TEXT, username TEXT,\
-                  style_url TEXT, api_type TEXT, title TEXT, direction TEXT, local_directory TEXT,\
-                  icon_url TEXT)" ) ) {
+                  password TEXT, style_url TEXT, api_type TEXT, title TEXT, direction TEXT,\
+                  local_directory TEXT, icon_url TEXT)" ) ) {
         ret = false;
         mLastErrorText = q.lastError().text();
     }
@@ -213,8 +217,18 @@ bool DBMan::createDB()
 int DBMan::addBlog( const BilboBlog & blog )
 {
     QSqlQuery q;
-    q.prepare( "INSERT INTO blog (blogid, blog_url, username, style_url, api_type, title,\
+    if( useWallet ) {
+        q.prepare( "INSERT INTO blog (blogid, blog_url, username, style_url, api_type, title,\
                direction, local_directory) VALUES(?, ?, ?, ?, ?, ?, ?, ?)" );
+        if ( mWallet && mWallet->writePassword( blog.url().url() + '_' + blog.username(), blog.password() ) == 0 )
+            kDebug() << "Password stored to kde wallet";
+        else
+            return -1;
+    } else {
+        q.prepare( "INSERT INTO blog (password, blogid, blog_url, username, style_url, api_type, title,\
+               direction, local_directory) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+        q.addBindValue( blog.password() );
+    }
     q.addBindValue( blog.blogid() );
     q.addBindValue( blog.url().url() );
     q.addBindValue( blog.username() );
@@ -225,8 +239,6 @@ int DBMan::addBlog( const BilboBlog & blog )
     q.addBindValue( blog.localDirectory() );
 
     if ( q.exec() ) {
-        if ( mWallet && mWallet->writePassword( blog.url().url() + '_' + blog.username(), blog.password() ) == 0 )
-            kDebug() << "Password stored to kde wallet";
         return q.lastInsertId().toInt();
     } else {
         mLastErrorText = q.lastError().text();
@@ -237,8 +249,18 @@ int DBMan::addBlog( const BilboBlog & blog )
 bool DBMan::editBlog( const BilboBlog & blog )
 {
     QSqlQuery q;
-    q.prepare( "UPDATE blog SET blogid=?, blog_url=?, username=? , style_url=? , api_type=?, \
-               title=?, direction=?, local_directory=? WHERE id=?" );
+    if( useWallet ) {
+        q.prepare( "UPDATE blog SET blogid=?, blog_url=?, username=? , style_url=? , api_type=?, \
+                   title=?, direction=?, local_directory=? WHERE id=?" );
+        if ( mWallet && mWallet->writePassword( blog.url().url() + '_' + blog.username(), blog.password() ) == 0 )
+            kDebug() << "Password stored to kde wallet";
+        else
+            return false;
+    } else {
+        q.prepare( "UPDATE blog SET password=?, blogid=?, blog_url=?, username=? , style_url=? , api_type=?, \
+                    title=?, direction=?, local_directory=? WHERE id=?" );
+        q.addBindValue( blog.password() );
+    }
     q.addBindValue( blog.blogid() );
     q.addBindValue( blog.url().url() );
     q.addBindValue( blog.username() );
@@ -248,8 +270,7 @@ bool DBMan::editBlog( const BilboBlog & blog )
     q.addBindValue( blog.direction() );
     q.addBindValue( blog.localDirectory() );
     q.addBindValue( blog.id() );
-    if ( mWallet && mWallet->writePassword( blog.url().url() + '_' + blog.username(), blog.password() ) == 0 )
-        kDebug() << "Password stored to kde wallet";
+
     bool res = q.exec();
     if ( !res ) {
         mLastErrorText = q.lastError().text();
@@ -261,8 +282,10 @@ bool DBMan::editBlog( const BilboBlog & blog )
 bool DBMan::removeBlog( int blog_id )
 {
     BilboBlog tmp = this->getBlogInfo( blog_id );
-    if ( mWallet && mWallet->removeEntry( tmp.url().url() + '_' + tmp.username() ) == 0 )
-        kDebug() << "Password removed to kde wallet";
+    if( useWallet ) {
+        if ( mWallet && mWallet->removeEntry( tmp.url().url() + '_' + tmp.username() ) == 0 )
+            kDebug() << "Password removed to kde wallet";
+    }
     QSqlQuery q;
     q.prepare( "DELETE FROM blog WHERE id=?" );
     q.addBindValue( blog_id );
@@ -754,24 +777,27 @@ QList< BilboBlog *> DBMan::listBlogs()
     QList<BilboBlog *> list;
     QSqlQuery q;
     if (q.exec( "SELECT id, blogid, blog_url, username, style_url, api_type, title,\
-            direction, local_directory FROM blog" ) ) {
+            direction, local_directory, password FROM blog" ) ) {
         while ( q.next() ) {
             BilboBlog *tmp = new BilboBlog;
             tmp->setId( q.value( 0 ).toInt() );
             tmp->setBlogId( q.value( 1 ).toString() );
             tmp->setUrl( QUrl( q.value( 2 ).toString() ) );
             tmp->setUsername( q.value( 3 ).toString() );
-    //   tmp->setPassword (q.value(4).toString());
             tmp->setStylePath( q.value( 4 ).toString() );
             tmp->setApi(( BilboBlog::ApiType )q.value( 5 ).toInt() );
             tmp->setTitle( q.value( 6 ).toString() );
             tmp->setDirection(( Qt::LayoutDirection )q.value( 7 ).toInt() );
             tmp->setLocalDirectory( q.value( 8 ).toString() );
-            QString buffer;
-            if ( mWallet && mWallet->readPassword( tmp->url().url() + '_' + tmp->username() , buffer )
-                == 0 && !buffer.isEmpty() ) {
-                tmp->setPassword( buffer );
-                kDebug() << "Password loaded from kde wallet.";
+            if( useWallet ) {
+                QString buffer;
+                if ( mWallet && mWallet->readPassword( tmp->url().url() + '_' + tmp->username() , buffer )
+                    == 0 && !buffer.isEmpty() ) {
+                    tmp->setPassword( buffer );
+                    kDebug() << "Password loaded from kde wallet.";
+                }
+            } else {
+                tmp->setPassword( q.value( 9 ).toString() );
             }
             list.append( tmp );
         }
@@ -800,7 +826,7 @@ BilboBlog DBMan::getBlogInfo( QString title )
     BilboBlog b;
     QSqlQuery q;
     q.prepare( "SELECT id, blogid, blog_url, username, style_url, api_type, title, \
-               direction, local_directory \
+               direction, local_directory, password \
                FROM blog WHERE title = ?" );
     q.addBindValue( title );
     if ( q.exec() ) {
@@ -809,17 +835,20 @@ BilboBlog DBMan::getBlogInfo( QString title )
             b.setBlogId( q.value( 1 ).toString() );
             b.setUrl( QUrl( q.value( 2 ).toString() ) );
             b.setUsername( q.value( 3 ).toString() );
-//    b.setPassword (q.value(4).toString());
             b.setStylePath( q.value( 4 ).toString() );
             b.setApi(( BilboBlog::ApiType )q.value( 5 ).toInt() );
             b.setTitle( q.value( 6 ).toString() );
             b.setDirection(( Qt::LayoutDirection )q.value( 7 ).toInt() );
             b.setLocalDirectory( q.value( 8 ).toString() );
-            QString buffer;
-            if ( mWallet && mWallet->readPassword( b.url().url() + '_' + b.username(), buffer )
-                == 0 && !buffer.isEmpty() ) {
-                b.setPassword( buffer );
-                kDebug() << "Password loaded from kde wallet.";
+            if( useWallet ) {
+                QString buffer;
+                if ( mWallet && mWallet->readPassword( b.url().url() + '_' + b.username(), buffer )
+                    == 0 && !buffer.isEmpty() ) {
+                    b.setPassword( buffer );
+                    kDebug() << "Password loaded from kde wallet.";
+                }
+            } else {
+                b.setPassword( q.value( 9 ).toString() );
             }
             return b;
         } else {
@@ -837,7 +866,7 @@ BilboBlog DBMan::getBlogInfo( int blog_id )
     BilboBlog b;
     QSqlQuery q;
     q.prepare( "SELECT id, blogid, blog_url, username, style_url, api_type, \
-               title, direction, local_directory \
+                title, direction, local_directory, password \
                FROM blog WHERE id = ?" );
     q.addBindValue( blog_id );
     if ( q.exec() ) {
@@ -846,17 +875,20 @@ BilboBlog DBMan::getBlogInfo( int blog_id )
             b.setBlogId( q.value( 1 ).toString() );
             b.setUrl( QUrl( q.value( 2 ).toString() ) );
             b.setUsername( q.value( 3 ).toString() );
-//    b->setPassword (q.value(4).toString());
             b.setStylePath( q.value( 4 ).toString() );
             b.setApi(( BilboBlog::ApiType )q.value( 5 ).toInt() );
             b.setTitle( q.value( 6 ).toString() );
             b.setDirection(( Qt::LayoutDirection ) q.value( 7 ).toInt() );
             b.setLocalDirectory( q.value( 8 ).toString() );
-            QString buffer;
-            if ( mWallet && mWallet->readPassword( b.url().url() + '_' + b.username(), buffer )
-                == 0 && !buffer.isEmpty() ) {
-                b.setPassword( buffer );
-                kDebug() << "Password loaded from kde wallet.";
+            if( useWallet ) {
+                QString buffer;
+                if ( mWallet && mWallet->readPassword( b.url().url() + '_' + b.username(), buffer )
+                    == 0 && !buffer.isEmpty() ) {
+                    b.setPassword( buffer );
+                    kDebug() << "Password loaded from kde wallet.";
+                }
+            } else {
+                b.setPassword( q.value( 9 ).toString() );
             }
             return b;
         } else {

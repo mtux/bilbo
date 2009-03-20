@@ -146,6 +146,7 @@ private:
     static DBMan* mSelf;
     KWallet::Wallet* mWallet;
     QString mLastErrorText;
+    bool useWallet;
 };
 
 #endif
