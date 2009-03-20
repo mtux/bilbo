@@ -302,8 +302,8 @@ int DBMan::addPost( const BilboPost & post, int blog_id )
     kDebug() << "Adding post with title: " << post.title() << " to Blog " << blog_id;
     QSqlQuery q;
     q.prepare( "INSERT OR REPLACE INTO post (postid, blog_id, author, title, content, text_more, c_time, m_time,\
-               is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary,\
-               tags, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+               is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, slug,\
+               tags, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
     q.addBindValue( post.postId() );
     q.addBindValue( blog_id );
     q.addBindValue( post.author() );
@@ -318,6 +318,7 @@ int DBMan::addPost( const BilboPost & post, int blog_id )
     q.addBindValue( post.link().url() );
     q.addBindValue( post.permaLink().url() );
     q.addBindValue( post.summary() );
+    q.addBindValue( post.wpSlug() );
     q.addBindValue( post.tags().join(QString(',')) );
     q.addBindValue( post.status() );
 
@@ -368,7 +369,7 @@ bool DBMan::editPost( const BilboPost & post, int blog_id )
     QSqlQuery q;
     q.prepare( "UPDATE post SET author=?, title=?, content=?, text_more=?, c_time=?, m_time=?,\
                is_private=?, is_comment_allowed=?, is_trackback_allowed=?, link=?, perma_link=?, summary=?,\
-               tags=?, status=? WHERE postid=? AND blog_id=?" );
+               slug=?, tags=?, status=? WHERE postid=? AND blog_id=?" );
     q.addBindValue( post.author() );
     q.addBindValue( post.title() );
     q.addBindValue( post.content() );
@@ -381,6 +382,7 @@ bool DBMan::editPost( const BilboPost & post, int blog_id )
     q.addBindValue( post.link().url() );
     q.addBindValue( post.permaLink().url() );
     q.addBindValue( post.summary() );
+    q.addBindValue( post.wpSlug() );
     q.addBindValue( post.tags().join(QString(',')) );
     q.addBindValue( post.status() );
 
@@ -587,7 +589,7 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
             ///Add new post to temp_post
             q.prepare( "INSERT OR REPLACE INTO "+ postTable +" (postid, blog_id, author, title, content,\
             text_more, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link,\
-            summary, tags, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+            summary, slug, tags, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
             q.addBindValue( post.postId() );
             q.addBindValue( blog_id );
             q.addBindValue( post.author() );
@@ -602,6 +604,7 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
             q.addBindValue( post.link().url() );
             q.addBindValue( post.permaLink().url() );
             q.addBindValue( post.summary() );
+            q.addBindValue( post.wpSlug() );
             q.addBindValue( post.tags().join(QString(',')) );
             q.addBindValue( post.status() );
 
@@ -616,8 +619,8 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
             ///Update post, with id!
             q.prepare( "INSERT OR REPLACE INTO "+ postTable +" (local_id, postid, blog_id, author, title,\
             content, text_more, c_time, m_time, is_private, is_comment_allowed, is_trackback_allowed, link,\
-            perma_link, summary, tags, status)\
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+            perma_link, summary, slug, tags, status)\
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
             q.addBindValue( post.id() );
             q.addBindValue( post.postId() );
             q.addBindValue( blog_id );
@@ -633,6 +636,7 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
             q.addBindValue( post.link().url() );
             q.addBindValue( post.permaLink().url() );
             q.addBindValue( post.summary() );
+            q.addBindValue( post.wpSlug() );
             q.addBindValue( post.tags().join(QString(',')) );
             q.addBindValue( post.status() );
 
@@ -647,8 +651,8 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
     } else {///Post is already created at "Post" table and has a valid id, postId and blog_id. So, local_id is useless here
         q.prepare( "INSERT OR REPLACE INTO "+ postTable +" (id, postid, blog_id, author, title,\
         content, text_more, c_time, m_time, is_private,\
-        is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags, status)\
-        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
+        is_comment_allowed, is_trackback_allowed, link, perma_link, summary, slug, tags, status)\
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" );
         q.addBindValue( post.id() );
         q.addBindValue( post.postId() );
         q.addBindValue( blog_id );
@@ -664,6 +668,7 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
         q.addBindValue( post.link().url() );
         q.addBindValue( post.permaLink().url() );
         q.addBindValue( post.summary() );
+        q.addBindValue( post.wpSlug() );
         q.addBindValue( post.tags().join(QString(',')) );
         q.addBindValue( post.status() );
 
@@ -906,7 +911,7 @@ QList< BilboPost* > DBMan::listPosts( int blog_id )
     QList<BilboPost *> list;
     QSqlQuery q;
     q.prepare( "SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed,\
-               is_trackback_allowed, link, perma_link, summary, tags, status, text_more\
+               is_trackback_allowed, link, perma_link, summary, tags, status, text_more, slug\
                FROM post WHERE blog_id = ? ORDER BY m_time DESC" );
     q.addBindValue( blog_id );
     if ( q.exec() ) {
@@ -928,6 +933,7 @@ QList< BilboPost* > DBMan::listPosts( int blog_id )
             tmp->setTags( q.value( 13 ).toString().split( ',', QString::SkipEmptyParts ) );
             tmp->setStatus(( KBlog::BlogPost::Status ) q.value( 14 ).toInt() );
             tmp->setAdditionalContent( q.value( 15 ).toString() );
+            tmp->setWpSlug( q.value( 16 ).toString() );
 
             ///get Category list:
             QList<Category> catList;
@@ -968,7 +974,7 @@ BilboPost DBMan::getPostInfo( int post_id )
     QSqlQuery q;
     BilboPost tmp;
     q.prepare( "SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed,\
-               is_trackback_allowed, link, perma_link, summary, tags, status, blog_id, text_more\
+               is_trackback_allowed, link, perma_link, summary, tags, status, blog_id, text_more, slug\
                FROM post WHERE id = ?" );
     q.addBindValue( post_id );
     if ( q.exec() ) {
@@ -992,6 +998,7 @@ BilboPost DBMan::getPostInfo( int post_id )
             tmp.setStatus(( KBlog::BlogPost::Status ) q.value( 14 ).toInt() );
             int blog_id = q.value( 15 ).toInt();
             tmp.setAdditionalContent(  q.value( 16 ).toString() );
+            tmp.setWpSlug(  q.value( 17 ).toString() );
 
             ///get Category list:
             QList<Category> catList;
@@ -1138,8 +1145,8 @@ QMap<BilboPost*, int> DBMan::listTempPosts()
     QMap<BilboPost*, int> list;
     QSqlQuery q;
     q.prepare( "SELECT id, local_id, postid, blog_id, author, title, content, text_more, c_time,\
-    m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags, status\
-    FROM temp_post ORDER BY m_time DESC" );
+    m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags, status,\
+    slug FROM temp_post ORDER BY m_time DESC" );
     if ( q.exec() ) {
         while ( q.next() ) {
             BilboPost *tmp = new BilboPost();
@@ -1160,6 +1167,7 @@ QMap<BilboPost*, int> DBMan::listTempPosts()
             tmp->setSummary( q.value( 15 ).toString() );
             tmp->setTags( q.value( 16 ).toString().split( ',', QString::SkipEmptyParts ) );
             tmp->setStatus(( KBlog::BlogPost::Status ) q.value( 17 ).toInt() );
+            tmp->setWpSlug( q.value( 18 ).toString() );
 
             if(tmp->status() == KBlog::BlogPost::New){
                 tmp->setId(local_id);
@@ -1229,8 +1237,8 @@ BilboPost DBMan::localPost(int local_id)
     QSqlQuery q;
     BilboPost tmp;
     q.prepare( "SELECT id, local_id, postid, blog_id, author, title, content, text_more, c_time,\
-    m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags, status\
-    FROM local_post WHERE local_id=?" );
+    m_time, is_private, is_comment_allowed, is_trackback_allowed, link, perma_link, summary, tags, status,\
+    slug FROM local_post WHERE local_id=?" );
     q.addBindValue(local_id);
     if ( q.exec() ) {
         if ( q.next() ) {
@@ -1251,6 +1259,7 @@ BilboPost DBMan::localPost(int local_id)
             tmp.setSummary( q.value( 15 ).toString() );
             tmp.setTags( q.value( 16 ).toString().split( ',', QString::SkipEmptyParts ) );
             tmp.setStatus(( KBlog::BlogPost::Status ) q.value( 17 ).toInt() );
+            tmp.setWpSlug( q.value( 18 ).toString() );
 
             if(tmp.status() == KBlog::BlogPost::New){
                 tmp.setId(local_id);

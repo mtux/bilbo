@@ -147,7 +147,7 @@
           <x>0</x>
           <y>0</y>
           <width>412</width>
-          <height>100</height>
+          <height>386</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -265,8 +265,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>219</width>
-          <height>135</height>
+          <width>385</width>
+          <height>403</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -289,8 +289,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>94</width>
-              <height>24</height>
+              <width>371</width>
+              <height>322</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7" >
@@ -601,6 +601,16 @@ p, li { white-space: pre-wrap; }
           </layout>
          </item>
          <item>
+          <widget class="QLabel" name="label_4" >
+           <property name="text" >
+            <string>Permalink (wordpress) :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="KLineEdit" name="txtSlug" />
+         </item>
+         <item>
           <widget class="QLabel" name="lblOptionsTrackBack" >
            <property name="text" >
             <string>&amp;Trackback URLs :</string>
@@ -650,8 +660,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>127</width>
-          <height>100</height>
+          <width>385</width>
+          <height>403</height>
          </rect>
         </property>
         <attribute name="label" >

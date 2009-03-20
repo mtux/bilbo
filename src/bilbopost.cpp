@@ -103,6 +103,7 @@ KBlog::BlogPost * BilboPost::toKBlogPost()
     pp->setPermaLink( this->permaLink() );
     pp->setStatus( this->status() );
     pp->setAdditionalContent( this->additionalContent() );
+    pp->setWpSlug( this->wpSlug() );
 
     return pp;
 }
@@ -154,6 +155,7 @@ BilboPost::BilboPost( const BilboPost &post )
     this->setId( post.id() );
     this->setStatus( post.status() );
     this->setAdditionalContent( post.additionalContent() );
+    this->setWpSlug( post.wpSlug() );
 }
 
 bool BilboPost::isModifyTimeStamp() const
@@ -192,15 +194,12 @@ void BilboPost::setProperties( const BilboPost& postProp )
     this->setCategories( postProp.categories() );
     this->setCategoryList( postProp.categoryList() );
     this->setCommentAllowed( postProp.isCommentAllowed() );
-//     this->setError( postProp.error() );
     this->setTags( postProp.tags() );
     this->setMood( postProp.mood() );
     this->setMusic( postProp.music() );
-//     this->setPrivate( postProp.isPrivate() );
-//     this->setStatus( postProp.status() );
     this->setSummary( postProp.summary() );
     this->setTrackBackAllowed( postProp.isTrackBackAllowed() );
     this->setAuthor( postProp.author() );
     this->setModifyTimeStamp( postProp.isModifyTimeStamp() );
-//     this->setId( postProp.id() );
+    this->setWpSlug( postProp.wpSlug() );
 }

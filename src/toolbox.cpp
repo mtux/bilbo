@@ -323,6 +323,7 @@ void Toolbox::resetFields()
     optionsDate->setDate( QDateTime::currentDateTime().date() );
     optionsTime->setTime( QDateTime::currentDateTime().time() );
     txtOptionsTrackback->clear();
+    txtSlug->clear();
     txtSummary->clear();
     chkOptionsComments->setChecked( true );
     chkOptionsTrackback->setChecked( true );
@@ -377,7 +378,7 @@ void Toolbox::getFieldsValue( BilboPost &currentPost )
         currentPost.setCreationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
         currentPost.setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
     }
-
+    currentPost.setWpSlug( txtSlug->text() );
     currentPost.setPrivate(( comboOptionsStatus->currentIndex() == 1 ) ? true : false );
     currentPost.setCommentAllowed( chkOptionsComments->isChecked() );
     currentPost.setTrackBackAllowed( chkOptionsTrackback->isChecked() );
@@ -409,10 +410,8 @@ void Toolbox::setFieldsValue( BilboPost* post )
     chkOptionsTime->setChecked( post->isModifyTimeStamp() );
     optionsTime->setTime( post->creationDateTime().time() );
     optionsDate->setDate( post->creationDateTime().date() );
+    txtSlug->setText( post->wpSlug() );
     txtSummary->setPlainText( post->summary() );
-//     if( post->status() != BilboPost::New ) {
-//         chkOptionsTime->setChecked(true);
-//     }
 }
 
 QList< Category > Toolbox::selectedCategories()
