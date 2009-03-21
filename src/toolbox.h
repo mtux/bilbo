@@ -93,6 +93,9 @@ signals:
 
 protected slots:
     void slotPostRemoved( int blog_id, const BilboPost &post );
+    void openPostInBrowser();
+    void copyPostTitle();
+    void requestEntriesListContextMenu( const QPoint & pos );
 
 private:
     QStringList selectedCategoriesTitle();

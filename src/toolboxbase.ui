@@ -146,8 +146,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>412</width>
-          <height>386</height>
+          <width>385</width>
+          <height>403</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -212,16 +212,6 @@
             </widget>
            </item>
            <item>
-            <widget class="KPushButton" name="btnEntriesCopyUrl" >
-             <property name="toolTip" >
-              <string>Copy URL of selected entry</string>
-             </property>
-             <property name="text" >
-              <string>Copy &amp;URL</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="KPushButton" name="btnEntriesRemove" >
              <property name="toolTip" >
               <string>Remove selected entry from server</string>
@@ -265,8 +255,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>385</width>
-          <height>403</height>
+          <width>219</width>
+          <height>135</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -289,8 +279,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>371</width>
-              <height>322</height>
+              <width>94</width>
+              <height>24</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7" >
@@ -389,8 +379,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>385</width>
-          <height>403</height>
+          <width>273</width>
+          <height>392</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -660,8 +650,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>385</width>
-          <height>403</height>
+          <width>127</width>
+          <height>100</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -775,7 +765,6 @@ p, li { white-space: pre-wrap; }
  <tabstops>
   <tabstop>btnBlogAdd</tabstop>
   <tabstop>btnBlogRemove</tabstop>
-  <tabstop>btnEntriesCopyUrl</tabstop>
   <tabstop>btnCatAdd</tabstop>
   <tabstop>txtCatTags</tabstop>
   <tabstop>chkOptionsTime</tabstop>

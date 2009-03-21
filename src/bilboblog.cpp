@@ -157,7 +157,7 @@ void BilboBlog::setLocalDirectory( const QString &directory )
     mLocalDirectory = directory;
 }
 
-QString BilboBlog::blogUrl()
+QString BilboBlog::blogUrl() const
 {
     //QString url=this->url().toString();
     QString url = this->url().url();

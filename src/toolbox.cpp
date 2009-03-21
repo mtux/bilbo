@@ -38,6 +38,9 @@
 #include "bilboblog.h"
 #include "blogradiobutton.h"
 #include "catcheckbox.h"
+#include <KMenu>
+#include <KAction>
+#include <KToolInvocation>
 
 Toolbox::Toolbox( QWidget *parent )
         : QWidget( parent )
@@ -67,7 +70,7 @@ Toolbox::Toolbox( QWidget *parent )
 
     connect( lstEntriesList, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ),
              this, SLOT( sltEntrySelected( QListWidgetItem* ) ) );
-    connect( btnEntriesCopyUrl, SIGNAL( clicked( bool ) ), this, SLOT( sltEntriesCopyUrl() ) );
+//     connect( btnEntriesCopyUrl, SIGNAL( clicked( bool ) ), this, SLOT( sltEntriesCopyUrl() ) );
     connect( btnEntriesRemove, SIGNAL( clicked(bool) ), this, SLOT( sltRemoveSelectedEntryFromServer() ) );
 
     connect( btnOptionsNow, SIGNAL( clicked(bool)), this, SLOT( setDateTimeNow() ) );
@@ -79,6 +82,10 @@ Toolbox::Toolbox( QWidget *parent )
     txtOptionsTrackback->setVisible( false );
     btnCatAdd->setVisible( false );
     btnEntriesReload->setVisible(false);
+
+    lstEntriesList->setContextMenuPolicy( Qt::CustomContextMenu );
+    connect( lstEntriesList, SIGNAL( customContextMenuRequested( const QPoint & ) ),
+             this, SLOT( requestEntriesListContextMenu( const QPoint & ) ) );
 
     QTimer::singleShot(1000, this, SLOT(reloadLocalPosts()));
 }
@@ -521,7 +528,6 @@ void Toolbox::setCurrentPage( int index )
 void Toolbox::sltEntriesCopyUrl()
 {
     if ( lstEntriesList->currentItem() == 0 ) {
-        KMessageBox::sorry( this, i18n( "There isn't any selected entry!\nIn order to use this function you have to select an entry first." ) );
         return;
     }
     BilboPost post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data( 32 ).toInt() );
@@ -553,7 +559,7 @@ void Toolbox::setButtonsIcon()
     btnBlogRemove->setIcon( KIcon( "list-remove" ) );
     btnEntriesReload->setIcon( KIcon( "view-refresh" ) );
     btnEntriesUpdate->setIcon( KIcon( "arrow-down" ) );
-    btnEntriesCopyUrl->setIcon( KIcon( "edit-copy" ) );
+//     btnEntriesCopyUrl->setIcon( KIcon( "edit-copy" ) );
     btnEntriesRemove->setIcon( KIcon( "list-remove" ) );
     btnEntriesClear->setIcon( KIcon( "edit-clear" ) );
     btnCatReload->setIcon( KIcon( "view-refresh" ) );
@@ -565,7 +571,7 @@ void Toolbox::setButtonsIcon()
     btnBlogRemove->setText( QString() );
     btnEntriesReload->setText( QString() );
     btnEntriesUpdate->setText( QString() );
-    btnEntriesCopyUrl->setText( QString() );
+//     btnEntriesCopyUrl->setText( QString() );
     btnEntriesRemove->setText( QString() );
     btnEntriesClear->setText( QString() );
     btnCatReload->setText( QString() );
@@ -643,6 +649,46 @@ void Toolbox::setDateTimeNow()
 {
     optionsDate->setDate( QDate::currentDate() );
     optionsTime->setTime( QTime::currentTime() );
+}
+
+void Toolbox::requestEntriesListContextMenu( const QPoint & pos )
+{
+    Q_UNUSED(pos);
+    KMenu *entriesContextMenu = new KMenu( this );
+    KAction *actEntriesOpenInBrowser = new KAction( KIcon("applications-internet"),
+                                                    i18n("Open in browser"), entriesContextMenu );
+    connect( actEntriesOpenInBrowser, SIGNAL( triggered() ), this, SLOT( openPostInBrowser() ) );
+    KAction *actEntriesCopyUrl = new KAction( KIcon("edit-copy"),
+                                              i18n("Copy URL"), entriesContextMenu );
+    connect( actEntriesCopyUrl, SIGNAL( triggered(bool) ), this, SLOT( sltEntriesCopyUrl() ) );
+    KAction *actEntriesCopyTitle = new KAction( KIcon("edit-copy"),
+                                                i18n("Copy title"), entriesContextMenu );
+    connect( actEntriesCopyTitle, SIGNAL( triggered(bool) ), this, SLOT( copyPostTitle() ) );
+    entriesContextMenu->addAction( actEntriesOpenInBrowser );
+    entriesContextMenu->addAction( actEntriesCopyUrl );
+    entriesContextMenu->addAction( actEntriesCopyTitle );
+    entriesContextMenu->exec( QCursor::pos() );
+}
+
+void Toolbox::openPostInBrowser()
+{
+    if( lstEntriesList->selectedItems().count() <= 0 )
+        return;
+    BilboPost post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data( 32 ).toInt() );
+    QString url;
+    if( !post.permaLink().isEmpty() )
+        url = post.permaLink().pathOrUrl();
+    else if ( !post.link().isEmpty() )
+        url = post.link().pathOrUrl();
+    else
+        url = currentBlog()->blogUrl();
+    KToolInvocation::invokeBrowser ( url );
+}
+
+void Toolbox::copyPostTitle()
+{
+    if( lstEntriesList->selectedItems().count() > 0 )
+        QApplication::clipboard()->setText( lstEntriesList->currentItem()->text() );
 }
 
 #include "toolbox.moc"

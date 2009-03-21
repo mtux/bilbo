@@ -82,7 +82,7 @@ public:
      * and it's blogUrl() is http://bilbo.wordpress.com/
      * @return Blog actual url.
      */
-    QString blogUrl();
+    QString blogUrl() const;
 
 private:
     KUrl mUrl;

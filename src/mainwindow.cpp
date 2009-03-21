@@ -333,6 +333,7 @@ void MainWindow::sltRemovePostEntry( PostEntry *widget )
 //     }
     if( tabPosts->count() < 1 ) {
         activePost = 0;
+        actionCollection()->action("publish_post")->setEnabled( false );
     }
 }
 
@@ -350,11 +351,14 @@ void MainWindow::sltCurrentBlogChanged( int blog_id )
         kDebug() << "Blog id do not sets correctly";
         return;
     }
-    if(activePost) {
-        BilboBlog *tmp = toolbox->blogList().value( blog_id );
+    BilboBlog *tmp = toolbox->blogList().value( blog_id );
+    actionCollection()->action("publish_post")->setText( i18n( "Submit to \"%1\" as... ", tmp->title() ) );
+    if( activePost ) {
+        actionCollection()->action("publish_post")->setEnabled( true );
         this->activePost->setDefaultLayoutDirection( tmp->direction() );
         this->activePost->setCurrentPostBlogId( blog_id );
-        actionCollection()->action("publish_post")->setText( i18n( "Submit to \"%1\" as... ", tmp->title() ) );
+    } else {
+        actionCollection()->action("publish_post")->setEnabled( false );
     }
 }
 
@@ -418,7 +422,7 @@ void MainWindow::postManipulationDone( bool isError, const QString &customMessag
 {
     kDebug();
     if(isError){
-        KMessageBox::detailedError(this, i18n("Uploading post failed"), customMessage);
+        KMessageBox::detailedError(this, i18n("Submiting post failed"), customMessage);
     } else {
         if(KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?",
             customMessage)) == KMessageBox::No) {
