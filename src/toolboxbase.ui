@@ -20,134 +20,13 @@
     <layout class="QGridLayout" name="gridLayout" >
      <item row="0" column="0" >
       <widget class="QToolBox" name="box" >
-       <widget class="QWidget" name="pgBlogs" >
-        <property name="geometry" >
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>385</width>
-          <height>403</height>
-         </rect>
-        </property>
-        <attribute name="label" >
-         <string>&amp;Blogs</string>
-        </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_8" >
-         <item>
-          <widget class="QScrollArea" name="scrollArea_2" >
-           <property name="frameShadow" >
-            <enum>QFrame::Raised</enum>
-           </property>
-           <property name="widgetResizable" >
-            <bool>true</bool>
-           </property>
-           <widget class="QWidget" name="frameBlog" >
-            <property name="geometry" >
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>371</width>
-              <height>357</height>
-             </rect>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout" >
-             <property name="leftMargin" >
-              <number>2</number>
-             </property>
-             <property name="topMargin" >
-              <number>2</number>
-             </property>
-             <property name="rightMargin" >
-              <number>2</number>
-             </property>
-            </layout>
-           </widget>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_5" >
-           <property name="sizeConstraint" >
-            <enum>QLayout::SetMinimumSize</enum>
-           </property>
-           <item>
-            <spacer name="horizontalSpacer" >
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0" >
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="KPushButton" name="btnBlogAdd" >
-             <property name="toolTip" >
-              <string>Add New Blog</string>
-             </property>
-             <property name="text" >
-              <string comment="verb, add new blog" >&amp;Add...</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="KPushButton" name="btnBlogEdit" >
-             <property name="enabled" >
-              <bool>false</bool>
-             </property>
-             <property name="toolTip" >
-              <string>Edit current selected blog settings</string>
-             </property>
-             <property name="text" >
-              <string comment="verb, edit selected blog properties" >&amp;Edit...</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="KPushButton" name="btnBlogRemove" >
-             <property name="enabled" >
-              <bool>false</bool>
-             </property>
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip" >
-              <string>Remove current selected blog</string>
-             </property>
-             <property name="text" >
-              <string comment="verb, remove selected blog from the blog list" >&amp;Remove</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_2" >
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0" >
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
        <widget class="QWidget" name="pgEntries" >
         <property name="geometry" >
          <rect>
           <x>0</x>
           <y>0</y>
           <width>385</width>
-          <height>403</height>
+          <height>432</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -763,30 +642,12 @@ p, li { white-space: pre-wrap; }
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>btnBlogAdd</tabstop>
-  <tabstop>btnBlogRemove</tabstop>
   <tabstop>btnCatAdd</tabstop>
   <tabstop>txtCatTags</tabstop>
   <tabstop>chkOptionsTime</tabstop>
  </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>btnBlogAdd</sender>
-   <signal>clicked()</signal>
-   <receiver>ToolboxBase</receiver>
-   <slot>repaint()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>97</x>
-     <y>433</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>161</x>
-     <y>290</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>chkOptionsTime</sender>
    <signal>toggled(bool)</signal>

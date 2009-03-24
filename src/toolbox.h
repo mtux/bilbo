@@ -34,7 +34,7 @@ class QButtonGroup;
 class BilboPost;
 class AddEditBlog;
 class BilboBlog;
-class BlogRadioButton;
+// class BlogRadioButton;
 class CatCheckBox;
 /**
  @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
@@ -47,7 +47,7 @@ public:
     Toolbox( QWidget *parent );
     ~Toolbox();
 
-    void reloadBlogList();
+//     void reloadBlogList();
     /**
      *    Will set current state of toolbox (Current post) properties on input pointer!
      * @param currentPost input and output of this Function.
@@ -55,27 +55,27 @@ public:
     void getFieldsValue( BilboPost &currentPost );
     //void setFieldsValue(const BilboPost& post);
     void setFieldsValue( BilboPost* post = 0 );
-    int currentBlogId();
-    const BilboBlog *currentBlog();
-    void setCurrentBlog( int blog_id );
+    void setCurrentBlogId( int blog_id );
+//     const BilboBlog *currentBlog();
+//     void setCurrentBlog( int blog_id );
     void setCurrentPage( int index );
-    const QMap<int, BilboBlog*> & blogList() const;
+//     const QMap<int, BilboBlog*> & blogList() const;
 //     void addLocalPostToList(QVariantMap data);
 
 public slots:
-    void sltAddBlog();
-    void sltBlogAdded( BilboBlog& );
-    void sltEditBlog();
-    void sltBlogEdited( BilboBlog& );
-    void sltRemoveBlog();
-    void sltSetCurrentBlog();
+//     void sltAddBlog();
+//     void sltBlogAdded( BilboBlog& );
+//     void sltEditBlog();
+//     void sltBlogEdited( BilboBlog& );
+//     void sltRemoveBlog();
+//     void sltSetCurrentBlog();
     void sltReloadCategoryList();
     void sltLoadCategoryListFromDB( int blog_id );
     void sltUpdateEntries();
     void sltGetEntriesCount( int );
     void sltLoadEntriesFromDB( int blog_id );
     void sltRemoveSelectedEntryFromServer();
-    void sltCurrentBlogChanged( int blog_id );
+//     void sltCurrentBlogChanged( int blog_id );
     void resetFields();
     void sltEntrySelected( QListWidgetItem *item );
     void sltEntriesCopyUrl();
@@ -86,7 +86,7 @@ public slots:
     void setDateTimeNow();
 
 signals:
-    void sigCurrentBlogChanged( int blog_id );
+//     void sigCurrentBlogChanged( int blog_id );
     void sigEntrySelected( BilboPost &post, int blog_id );
     void sigError( const QString& );
     void sigBusy( bool isBusy );
@@ -108,11 +108,12 @@ private:
     void unCheckCatList();
     void setButtonsIcon();
 
-    QButtonGroup listBlogRadioButtons;
+//     QButtonGroup listBlogRadioButtons;
     QList<CatCheckBox*> listCategoryCheckBoxes;
-    QMap<int, BilboBlog*> mBlogList;
-    BlogRadioButton *blogToEdit;
-    QDir blogToEditDir;
+    int mCurrentBlogId;
+//     QMap<int, BilboBlog*> mBlogList;
+//     BlogRadioButton *blogToEdit;
+//     QDir blogToEditDir;
 //  BilboPost *currentPost;
     KStatusBar *statusbar;
 };

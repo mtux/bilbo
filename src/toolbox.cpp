@@ -36,7 +36,7 @@
 #include "backend.h"
 #include "bilbopost.h"
 #include "bilboblog.h"
-#include "blogradiobutton.h"
+// #include "blogradiobutton.h"
 #include "catcheckbox.h"
 #include <KMenu>
 #include <KAction>
@@ -46,27 +46,28 @@ Toolbox::Toolbox( QWidget *parent )
         : QWidget( parent )
 {
     kDebug();
+    mCurrentBlogId = -1;
     if ( parent )
         this->statusbar = qobject_cast<KXmlGuiWindow*>( parent )->statusBar();
     else
         this->statusbar = new KStatusBar( this );
     setupUi( this );
     setButtonsIcon();
-    frameBlog->layout()->setAlignment( Qt::AlignTop );
+//     frameBlog->layout()->setAlignment( Qt::AlignTop );
     frameCat->layout()->setAlignment( Qt::AlignTop );
-    reloadBlogList();
+//     reloadBlogList();
     optionsDate->setDate( QDateTime::currentDateTime().date() );
     optionsTime->setTime( QDateTime::currentDateTime().time() );
-    connect( btnBlogAdd, SIGNAL( clicked() ), this, SLOT( sltAddBlog() ) );
-    connect( btnBlogEdit, SIGNAL( clicked() ), this, SLOT( sltEditBlog() ) );
-    connect( btnBlogRemove, SIGNAL( clicked() ), this, SLOT( sltRemoveBlog() ) );
+//     connect( btnBlogAdd, SIGNAL( clicked() ), this, SLOT( sltAddBlog() ) );
+//     connect( btnBlogEdit, SIGNAL( clicked() ), this, SLOT( sltEditBlog() ) );
+//     connect( btnBlogRemove, SIGNAL( clicked() ), this, SLOT( sltRemoveBlog() ) );
 
     connect( btnCatReload, SIGNAL( clicked() ), this, SLOT( sltReloadCategoryList() ) );
     connect( btnEntriesUpdate, SIGNAL( clicked() ), this, SLOT( sltUpdateEntries() ) );
     connect( btnEntriesClear, SIGNAL( clicked(bool) ), this, SLOT( clearEntries()) );
 
-    connect( this, SIGNAL( sigCurrentBlogChanged( int ) ), this, SLOT( sltCurrentBlogChanged( int ) ) );
-    connect( &listBlogRadioButtons, SIGNAL( buttonClicked( int ) ), this, SLOT( sltSetCurrentBlog() ) );
+//     connect( this, SIGNAL( sigCurrentBlogChanged( int ) ), this, SLOT( sltCurrentBlogChanged( int ) ) );
+//     connect( &listBlogRadioButtons, SIGNAL( buttonClicked( int ) ), this, SLOT( sltSetCurrentBlog() ) );
 
     connect( lstEntriesList, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ),
              this, SLOT( sltEntrySelected( QListWidgetItem* ) ) );
@@ -90,114 +91,128 @@ Toolbox::Toolbox( QWidget *parent )
     QTimer::singleShot(1000, this, SLOT(reloadLocalPosts()));
 }
 
-void Toolbox::sltAddBlog()
+void Toolbox::setCurrentBlogId( int blog_id )
 {
-    kDebug();
-    AddEditBlog *addEditBlogWindow = new AddEditBlog( -1, this );
-    addEditBlogWindow->setAttribute( Qt::WA_DeleteOnClose );
-    addEditBlogWindow->show();
-    connect( addEditBlogWindow, SIGNAL( sigBlogAdded( BilboBlog& ) ), this, SLOT( sltBlogAdded( BilboBlog& ) ) );
-}
-
-void Toolbox::sltEditBlog()
-{
-    kDebug();
-    blogToEdit = qobject_cast<BlogRadioButton*>( listBlogRadioButtons.checkedButton() );
-    if ( !blogToEdit ) {
-        KMessageBox::sorry( this, i18n( "There isn't any selected blog, you have to select a blog first." ) );
+    kDebug()<<blog_id;
+    if( mCurrentBlogId == blog_id )
         return;
-    }
-//  blogToEditDir = QDir(DATA_DIR + DBMan::self()->getBlogInfo(blogToEdit->blogId())->blogUrl());
-
-    AddEditBlog *addEditBlogWindow = new AddEditBlog( blogToEdit->blogId(), this );
-    addEditBlogWindow->setAttribute( Qt::WA_DeleteOnClose );
-    connect( addEditBlogWindow, SIGNAL( sigBlogEdited( BilboBlog& ) ), this, SLOT( sltBlogEdited( BilboBlog& ) ) );
-    addEditBlogWindow->show();
-}
-
-void Toolbox::sltRemoveBlog()
-{
-    kDebug();
-    QAbstractButton *btn = listBlogRadioButtons.checkedButton();
-    if(!btn){
-        KMessageBox::sorry( this, i18n( "There isn't any selected blog, you have to select a blog first." ) );
+//     btnBlogEdit->setEnabled( true );
+//     btnBlogRemove->setEnabled( true );
+    mCurrentBlogId = blog_id;
+    if( blog_id <= 0 )
         return;
-    }
-    if(KMessageBox::warningYesNo(this, i18n("Are you sure of removing selected blog?")) 
-        == KMessageBox::No)
-        return;
-
-    DBMan::self()->removeBlog( qobject_cast<BlogRadioButton*>( btn )->blogId() );
-    emit sigCurrentBlogChanged( -1 );
-    listBlogRadioButtons.removeButton( btn );
-    btn->deleteLater();
-    lstEntriesList->clear();
-    clearCatList();
-    txtCatTags->clear();
-    sltSetCurrentBlog();
+    sltLoadCategoryListFromDB( blog_id );
+    sltLoadEntriesFromDB( blog_id );
+    Qt::LayoutDirection ll = DBMan::self()->blogList().value( blog_id )->direction();
+    frameCat->setLayoutDirection( ll );
+    lstEntriesList->setLayoutDirection( ll );
 }
 
-void Toolbox::sltBlogAdded( BilboBlog &addedBlog )
-{
-    kDebug();
-    mBlogList[ addedBlog.id() ] = new BilboBlog(addedBlog, this);
-    BlogRadioButton *a = new BlogRadioButton( addedBlog.title() );
-    a->setToolTip( addedBlog.blogUrl() );
-    a->setBlogId( addedBlog.id() );
-    listBlogRadioButtons.addButton( a );
-    frameBlog->layout()->addWidget( a );
-    a->setChecked( true );
-    sltReloadCategoryList();
-    sltSetCurrentBlog();
-
-}
-
-void Toolbox::sltBlogEdited( BilboBlog &editedBlog )
-{
-    kDebug();
-    mBlogList[ editedBlog.id() ] = new BilboBlog(editedBlog, this);
-    blogToEdit->setText( editedBlog.title() );
-    blogToEdit->setToolTip( editedBlog.blogUrl() );
-    blogToEdit->setChecked( true );
-    sltCurrentBlogChanged( blogToEdit->blogId() );
-    sltReloadCategoryList();
-}
-
-void Toolbox::reloadBlogList()
-{
-    kDebug();
-    foreach( QAbstractButton *ab, listBlogRadioButtons.buttons() ) {
-        delete ab;
-    }
-    listBlogRadioButtons.buttons().clear();
-    mBlogList.clear();
-    QList<BilboBlog*> listBlogs = DBMan::self()->listBlogs();
-    int count = listBlogs.count();
-    for ( int i = 0; i < count; ++i ) {
-        mBlogList [ listBlogs[i]->id() ] = listBlogs[i];
-        BlogRadioButton *rb = new BlogRadioButton( listBlogs[i]->title(), this );
-        rb->setBlogId( listBlogs[i]->id() );
-        rb->setToolTip( listBlogs[i]->blogUrl() );
-        listBlogRadioButtons.addButton( rb );
-        frameBlog->layout()->addWidget( rb );
-    }
-}
+/* void Toolbox::sltAddBlog()
+// {
+//     kDebug();
+//     AddEditBlog *addEditBlogWindow = new AddEditBlog( -1, this );
+//     addEditBlogWindow->setAttribute( Qt::WA_DeleteOnClose );
+//     addEditBlogWindow->show();
+//     connect( addEditBlogWindow, SIGNAL( sigBlogAdded( BilboBlog& ) ), this, SLOT( sltBlogAdded( BilboBlog& ) ) );
+// }
+// 
+// void Toolbox::sltEditBlog()
+// {
+//     kDebug();
+//     blogToEdit = qobject_cast<BlogRadioButton*>( listBlogRadioButtons.checkedButton() );
+//     if ( !blogToEdit ) {
+//         KMessageBox::sorry( this, i18n( "There isn't any selected blog, you have to select a blog first." ) );
+//         return;
+//     }
+// //  blogToEditDir = QDir(DATA_DIR + DBMan::self()->getBlogInfo(blogToEdit->blogId())->blogUrl());
+// 
+//     AddEditBlog *addEditBlogWindow = new AddEditBlog( blogToEdit->blogId(), this );
+//     addEditBlogWindow->setAttribute( Qt::WA_DeleteOnClose );
+//     connect( addEditBlogWindow, SIGNAL( sigBlogEdited( BilboBlog& ) ), this, SLOT( sltBlogEdited( BilboBlog& ) ) );
+//     addEditBlogWindow->show();
+// }
+// 
+// void Toolbox::sltRemoveBlog()
+// {
+//     kDebug();
+//     QAbstractButton *btn = listBlogRadioButtons.checkedButton();
+//     if(!btn){
+//         KMessageBox::sorry( this, i18n( "There isn't any selected blog, you have to select a blog first." ) );
+//         return;
+//     }
+//     if(KMessageBox::warningYesNo(this, i18n("Are you sure of removing selected blog?")) 
+//         == KMessageBox::No)
+//         return;
+// 
+//     DBMan::self()->removeBlog( qobject_cast<BlogRadioButton*>( btn )->blogId() );
+//     emit sigCurrentBlogChanged( -1 );
+//     listBlogRadioButtons.removeButton( btn );
+//     btn->deleteLater();
+//     lstEntriesList->clear();
+//     clearCatList();
+//     txtCatTags->clear();
+//     sltSetCurrentBlog();
+// }
+// 
+// void Toolbox::sltBlogAdded( BilboBlog &addedBlog )
+// {
+//     kDebug();
+//     mBlogList[ addedBlog.id() ] = new BilboBlog(addedBlog, this);
+//     BlogRadioButton *a = new BlogRadioButton( addedBlog.title() );
+//     a->setToolTip( addedBlog.blogUrl() );
+//     a->setBlogId( addedBlog.id() );
+//     listBlogRadioButtons.addButton( a );
+//     frameBlog->layout()->addWidget( a );
+//     a->setChecked( true );
+//     sltReloadCategoryList();
+//     sltSetCurrentBlog();
+// 
+// }
+// 
+// void Toolbox::sltBlogEdited( BilboBlog &editedBlog )
+// {
+//     kDebug();
+//     mBlogList[ editedBlog.id() ] = new BilboBlog(editedBlog, this);
+//     blogToEdit->setText( editedBlog.title() );
+//     blogToEdit->setToolTip( editedBlog.blogUrl() );
+//     blogToEdit->setChecked( true );
+//     sltCurrentBlogChanged( blogToEdit->blogId() );
+//     sltReloadCategoryList();
+// }
+// 
+// void Toolbox::reloadBlogList()
+// {
+//     kDebug();
+//     foreach( QAbstractButton *ab, listBlogRadioButtons.buttons() ) {
+//         delete ab;
+//     }
+//     listBlogRadioButtons.buttons().clear();
+//     mBlogList.clear();
+//     QList<BilboBlog*> listBlogs = DBMan::self()->listBlogs();
+//     int count = listBlogs.count();
+//     for ( int i = 0; i < count; ++i ) {
+//         mBlogList [ listBlogs[i]->id() ] = listBlogs[i];
+//         BlogRadioButton *rb = new BlogRadioButton( listBlogs[i]->title(), this );
+//         rb->setBlogId( listBlogs[i]->id() );
+//         rb->setToolTip( listBlogs[i]->blogUrl() );
+//         listBlogRadioButtons.addButton( rb );
+//         frameBlog->layout()->addWidget( rb );
+//     }
+// }
+*/
 
 void Toolbox::sltReloadCategoryList()
 {
     kDebug();
-    QAbstractButton *btn = listBlogRadioButtons.checkedButton();
-    if ( !btn ) {
+//     QAbstractButton *btn = listBlogRadioButtons.checkedButton();
+    if ( mCurrentBlogId == -1 ) {
         KMessageBox::sorry( this, i18n( "There isn't any selected blog, \
 you have to select a blog from Blogs page before asking for Category list" ) );
         return;
     }
 
-    int blog_id;
-
-    blog_id = qobject_cast<BlogRadioButton*>( btn )->blogId();
-
-    Backend *b = new Backend( blog_id );
+    Backend *b = new Backend( mCurrentBlogId );
     b->getCategoryListFromServer();
     connect( b, SIGNAL( sigCategoryListFetched( int ) ), this, SLOT( sltLoadCategoryListFromDB( int ) ) );
     connect( b, SIGNAL( sigError( const QString& ) ), this, SIGNAL( sigError( const QString& ) ) );
@@ -209,7 +224,7 @@ you have to select a blog from Blogs page before asking for Category list" ) );
 void Toolbox::sltUpdateEntries()
 {
     kDebug();
-    if ( !listBlogRadioButtons.checkedButton() ) {
+    if ( mCurrentBlogId == -1 ) {
         KMessageBox::sorry( this, i18n( "There isn't any selected blog, \
 you have to select a blog from Blogs page before asking for Entries list" ) );
         kDebug() << "There isn't any selected blog.";
@@ -224,8 +239,7 @@ you have to select a blog from Blogs page before asking for Entries list" ) );
 void Toolbox::sltGetEntriesCount( int count )
 {
     kDebug();
-    Backend *entryB = new Backend( qobject_cast<BlogRadioButton*>( listBlogRadioButtons.checkedButton() )->blogId(),
-                                   this);
+    Backend *entryB = new Backend( mCurrentBlogId, this);
     entryB->getEntriesListFromServer( count );
     connect( entryB, SIGNAL( sigEntriesListFetched( int ) ), this, SLOT( sltLoadEntriesFromDB( int ) ) );
     connect( entryB, SIGNAL( sigError( const QString& ) ), this, SIGNAL( sigError( const QString& ) ) );
@@ -234,6 +248,7 @@ void Toolbox::sltGetEntriesCount( int count )
     emit sigBusy( true );
 }
 
+/*
 void Toolbox::sltSetCurrentBlog()
 {
     kDebug();
@@ -246,6 +261,7 @@ void Toolbox::sltSetCurrentBlog()
     kDebug() << "Current Blog Id: " << id;
     emit sigCurrentBlogChanged( id );
 }
+*/
 
 void Toolbox::sltLoadEntriesFromDB( int blog_id )
 {
@@ -305,7 +321,7 @@ void Toolbox::sltRemoveSelectedEntryFromServer()
 \nAre you sure of removing post with title \"%1\" from your blog?", lstEntriesList->currentItem()->text() ))
     == KMessageBox::Yes) {
         BilboPost post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data(32).toInt() );
-        Backend *b = new Backend(currentBlogId(), this);
+        Backend *b = new Backend( mCurrentBlogId, this);
         connect(b, SIGNAL(sigPostRemoved(int,const BilboPost&)), this, SLOT(slotPostRemoved(int,const BilboPost&)) );
         b->removePost(post);
         statusbar->showMessage( i18n( "Removing post..." ) );
@@ -315,7 +331,7 @@ void Toolbox::sltRemoveSelectedEntryFromServer()
 void Toolbox::slotPostRemoved( int blog_id, const BilboPost &post )
 {
     KMessageBox::information( this, i18n( "Post with title \"%1\" removed from \"%2\".",
-                                          post.title(), mBlogList.value(blog_id)->title() ) );
+                                          post.title(), DBMan::self()->blogList().value(blog_id)->title() ) );
     sltLoadEntriesFromDB( blog_id );
     statusbar->showMessage( i18n( "Post removed" ), STATUSTIMEOUT );
     sender()->deleteLater();
@@ -346,26 +362,26 @@ void Toolbox::clearCatList()
     listCategoryCheckBoxes.clear();
 }
 
-void Toolbox::sltCurrentBlogChanged( int blog_id )
-{
-    kDebug();
-    if ( blog_id == -1 ) {
-        kDebug() << "Blog id do not sets correctly";
-        btnBlogEdit->setEnabled( false );
-        btnBlogRemove->setEnabled( false );
-        return;
-    }
-    if( __currentBlogId == blog_id )
-        return;
-    btnBlogEdit->setEnabled( true );
-    btnBlogRemove->setEnabled( true );
-    __currentBlogId = blog_id;
-    sltLoadCategoryListFromDB( blog_id );
-    sltLoadEntriesFromDB( blog_id );
-    Qt::LayoutDirection ll = mBlogList.value(blog_id)->direction();
-    frameCat->setLayoutDirection( ll );
-    lstEntriesList->setLayoutDirection( ll );
-}
+// void Toolbox::sltCurrentBlogChanged( int blog_id )
+// {
+//     kDebug();
+//     if ( blog_id == -1 ) {
+//         kDebug() << "Blog id do not sets correctly";
+//         btnBlogEdit->setEnabled( false );
+//         btnBlogRemove->setEnabled( false );
+//         return;
+//     }
+//     if( __currentBlogId == blog_id )
+//         return;
+//     btnBlogEdit->setEnabled( true );
+//     btnBlogRemove->setEnabled( true );
+//     __currentBlogId = blog_id;
+//     sltLoadCategoryListFromDB( blog_id );
+//     sltLoadEntriesFromDB( blog_id );
+//     Qt::LayoutDirection ll = mBlogList.value(blog_id)->direction();
+//     frameCat->setLayoutDirection( ll );
+//     lstEntriesList->setLayoutDirection( ll );
+// }
 
 void Toolbox::getFieldsValue( BilboPost &currentPost )
 {
@@ -479,22 +495,22 @@ QStringList Toolbox::currentTags()
     return t;
 }
 
-int Toolbox::currentBlogId()
-{
-    kDebug();
-    QAbstractButton *btn = listBlogRadioButtons.checkedButton();
-    if ( btn ) {
-        int id = qobject_cast<BlogRadioButton*>( btn )->blogId();
-        kDebug() << id;
-        return id;
-    } else
-        return -1;
-}
+// int Toolbox::currentBlogId()
+// {
+//     kDebug();
+//     QAbstractButton *btn = listBlogRadioButtons.checkedButton();
+//     if ( btn ) {
+//         int id = qobject_cast<BlogRadioButton*>( btn )->blogId();
+//         kDebug() << id;
+//         return id;
+//     } else
+//         return -1;
+// }
 
-const BilboBlog * Toolbox::currentBlog()
-{
-    return mBlogList.value( currentBlogId() );
-}
+// const BilboBlog * Toolbox::currentBlog()
+// {
+//     return mBlogList.value( currentBlogId() );
+// }
 
 void Toolbox::sltEntrySelected( QListWidgetItem * item )
 {
@@ -502,23 +518,23 @@ void Toolbox::sltEntrySelected( QListWidgetItem * item )
 //     setFieldsValue(*post);
     BilboPost post = DBMan::self()->getPostInfo( item->data( 32 ).toInt() );
     kDebug() << "Emiting sigEntrySelected...";
-    Q_EMIT sigEntrySelected( post, currentBlogId() );
+    Q_EMIT sigEntrySelected( post, mCurrentBlogId );
 }
 
-void Toolbox::setCurrentBlog( int blog_id )
-{
-    kDebug();
-    if(currentBlogId() == blog_id)
-        return;
-//     QString blogTitle = listBlogs.key(blog_id);
-    foreach( QAbstractButton *b, listBlogRadioButtons.buttons() ) {
-        if ( qobject_cast<BlogRadioButton*>( b )->blogId() == blog_id ) {
-            b->setChecked( true );
-            emit sigCurrentBlogChanged(blog_id);
-            break;
-        }
-    }
-}
+// void Toolbox::setCurrentBlog( int blog_id )
+// {
+//     kDebug();
+//     if(currentBlogId() == blog_id)
+//         return;
+// //     QString blogTitle = listBlogs.key(blog_id);
+//     foreach( QAbstractButton *b, listBlogRadioButtons.buttons() ) {
+//         if ( qobject_cast<BlogRadioButton*>( b )->blogId() == blog_id ) {
+//             b->setChecked( true );
+//             emit sigCurrentBlogChanged(blog_id);
+//             break;
+//         }
+//     }
+// }
 
 void Toolbox::setCurrentPage( int index )
 {
@@ -554,9 +570,9 @@ void Toolbox::unCheckCatList()
 
 void Toolbox::setButtonsIcon()
 {
-    btnBlogAdd->setIcon( KIcon( "list-add" ) );
-    btnBlogEdit->setIcon( KIcon( "document-edit" ) );
-    btnBlogRemove->setIcon( KIcon( "list-remove" ) );
+//     btnBlogAdd->setIcon( KIcon( "list-add" ) );
+//     btnBlogEdit->setIcon( KIcon( "document-edit" ) );
+//     btnBlogRemove->setIcon( KIcon( "list-remove" ) );
     btnEntriesReload->setIcon( KIcon( "view-refresh" ) );
     btnEntriesUpdate->setIcon( KIcon( "arrow-down" ) );
 //     btnEntriesCopyUrl->setIcon( KIcon( "edit-copy" ) );
@@ -566,9 +582,9 @@ void Toolbox::setButtonsIcon()
     btnCatAdd->setIcon( KIcon( "list-add" ) );
     btnLocalRemove->setIcon( KIcon( "list-remove" ) );
     ///TODO Add option for selecting only text or only Icon for Toolbox buttons!
-    btnBlogAdd->setText( QString() );
-    btnBlogEdit->setText( QString() );
-    btnBlogRemove->setText( QString() );
+//     btnBlogAdd->setText( QString() );
+//     btnBlogEdit->setText( QString() );
+//     btnBlogRemove->setText( QString() );
     btnEntriesReload->setText( QString() );
     btnEntriesUpdate->setText( QString() );
 //     btnEntriesCopyUrl->setText( QString() );
@@ -579,10 +595,10 @@ void Toolbox::setButtonsIcon()
     btnLocalRemove->setText( QString() );
 }
 
-const QMap<int, BilboBlog*> & Toolbox::blogList() const
-{
-    return mBlogList;
-}
+// const QMap<int, BilboBlog*> & Toolbox::blogList() const
+// {
+//     return mBlogList;
+// }
 
 void Toolbox::reloadLocalPosts()
 {
@@ -636,7 +652,7 @@ void Toolbox::sltRemoveLocalEntry()
 void Toolbox::clearEntries()
 {
     kDebug();
-    int id = currentBlogId();
+    int id = mCurrentBlogId;
     if( id == -1 )
         return;
     if ( DBMan::self()->clearPosts( id ) )
@@ -681,7 +697,7 @@ void Toolbox::openPostInBrowser()
     else if ( !post.link().isEmpty() )
         url = post.link().pathOrUrl();
     else
-        url = currentBlog()->blogUrl();
+        url = DBMan::self()->blogList().value( mCurrentBlogId )->blogUrl();
     KToolInvocation::invokeBrowser ( url );
 }
 

@@ -33,10 +33,10 @@ set(bilbo_SRCS
  addimagedialog.cpp
  bilbomedia.cpp
  addcategory.cpp
- blogradiobutton.cpp
  catcheckbox.cpp
  sendtoblogdialog.cpp
  waitwidget.cpp
+ blogsettings.cpp
 )
 
 kde4_add_ui_files(
@@ -53,6 +53,7 @@ kde4_add_ui_files(
   advancedsettingsbase.ui
   sendtoblogbase.ui
   waitwidgetbase.ui
+  blogsettingsbase.ui
 )
 
 kde4_add_kcfg_files( bilbo_SRCS settings.kcfgc)

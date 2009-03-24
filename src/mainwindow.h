@@ -31,7 +31,7 @@ class KToggleAction;
 class QProgressBar;
 class QToolButton;
 class Toolbox;
-// class AddEditBlog;
+class KSelectAction;
 class PostEntry;
 class SysTray;
 // class Backend;
@@ -71,7 +71,7 @@ protected slots:
      */
     void sltRemovePostEntry( PostEntry *widget=0 );
 
-    void sltCurrentBlogChanged( int blog_id );
+//     void sltCurrentBlogChanged( int blog_id );
 
     void sltSavePostLocally();
 //     void sltSaveAsDraft();
@@ -91,6 +91,7 @@ private slots:
     void slotBusy( bool isBusy );
     void slotShowStatusMessage(const QString &message, bool isPermanent);
     void slotMediaObjectUploaded( BilboMedia* );
+    void currentBlogChanged( QAction* );
 
 protected:
     void keyPressEvent( QKeyEvent * event );
@@ -100,6 +101,7 @@ protected:
     bool queryExit();
 
 private:
+    void setCurrentBlog( int blog_id );
     void setupActions();
     void setupSystemTray();
     void writeConfigs();
@@ -120,5 +122,8 @@ private:
 
     int busyNumber;///If this is 0 so there isn't any progress! otherwise there is! so progressbar will show
     QProgressBar *progress;
+
+    KSelectAction *blogs;
+    int mCurrentBlogId;
 };
 #endif

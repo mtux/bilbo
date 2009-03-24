@@ -47,6 +47,8 @@ public:
 
     ~DBMan();
     enum LocalPostState {Local=0, Temp=1};
+   
+    const QMap<int, BilboBlog*> & blogList() const;
 
     QString lastErrorText();
     /**
@@ -147,6 +149,8 @@ private:
     KWallet::Wallet* mWallet;
     QString mLastErrorText;
     bool useWallet;
+    void reloadBlogList();
+    QMap<int, BilboBlog*> mBlogList;
 };
 
 #endif

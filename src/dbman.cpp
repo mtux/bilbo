@@ -55,6 +55,8 @@ DBMan::DBMan()
         }
     } else if ( !connectDB() )
         exit( 1 );
+
+    reloadBlogList();
 }
 
 QString DBMan::lastErrorText()
@@ -69,6 +71,21 @@ DBMan * DBMan::self()
     if ( !mSelf )
         mSelf = new DBMan;
     return mSelf;
+}
+
+const QMap<int, BilboBlog*> & DBMan::blogList() const
+{
+    return mBlogList;
+}
+
+void DBMan::reloadBlogList()
+{
+    mBlogList.clear();
+    QList<BilboBlog*> listBlogs = this->listBlogs();
+    int count = listBlogs.count();
+    for ( int i = 0; i < count; ++i ) {
+        mBlogList [ listBlogs[i]->id() ] = listBlogs[i];
+    }
 }
 
 bool DBMan::connectDB()

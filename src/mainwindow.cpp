@@ -19,6 +19,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "mainwindow.h"
+#include "global.h"
+#include "dbman.h"
+#include "toolbox.h"
+#include "postentry.h"
+#include "addeditblog.h"
+#include "backend.h"
+#include "bilbomedia.h"
+#include "settings.h"
+#include "systray.h"
+#include "bilboblog.h"
+#include "multilinetextedit.h"
+#include "blogsettings.h"
+
+#include "ui_advancedsettingsbase.h"
+#include "ui_settingsbase.h"
+#include "ui_editorsettingsbase.h"
 
 #include <ktabwidget.h>
 #include <kstatusbar.h>
@@ -35,23 +52,8 @@
 #include <KApplication>
 #include <QMap>
 #include <KFileDialog>
+#include <KSelectAction>
 
-#include "mainwindow.h"
-#include "global.h"
-#include "dbman.h"
-#include "toolbox.h"
-#include "postentry.h"
-#include "addeditblog.h"
-#include "backend.h"
-#include "bilbomedia.h"
-#include "settings.h"
-#include "systray.h"
-#include "bilboblog.h"
-#include "multilinetextedit.h"
-
-#include "ui_advancedsettingsbase.h"
-#include "ui_settingsbase.h"
-#include "ui_editorsettingsbase.h"
 
 #define TIMEOUT 5000
 
@@ -60,6 +62,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
 {
     kDebug();
     previousActivePostIndex = -1;
+    mCurrentBlogId = -1;
     activePost = 0;
     busyNumber = 0;
     progress = 0;
@@ -98,25 +101,25 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     // toolbar position, icon size, etc.
     setupGUI();
 
-//     toolbox->setFieldsValue( activePost->currentPost() );
-
-//     this->setWindowIcon(KIcon(":/media/bilbo.png"));
-//     readConfig();
     toolbox->setVisible( Settings::showToolboxOnStart() );
     actionCollection()->action("toggle_toolbox")->setChecked( Settings::showToolboxOnStart() );
-//     if ( Settings::show_toolbox_on_start() ) {
-//         actToggleToolboxVisible->setText( i18n( "Hide Toolbox" ) );
-//     } else {
-//         actToggleToolboxVisible->setText( i18n( "Show Toolbox" ) );
-//     }
+
     setupSystemTray();
 
     connect( tabPosts, SIGNAL( currentChanged( int ) ), this, SLOT( sltActivePostChanged( int ) ) );
     connect( toolbox, SIGNAL( sigEntrySelected( BilboPost &, int ) ), this, SLOT( sltNewPostOpened( BilboPost&, int ) ) );
-    connect( toolbox, SIGNAL( sigCurrentBlogChanged( int ) ), this, SLOT( sltCurrentBlogChanged( int ) ) );
+//     connect( toolbox, SIGNAL( sigCurrentBlogChanged( int ) ), this, SLOT( sltCurrentBlogChanged( int ) ) );
     connect( toolbox, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
     connect( toolbox, SIGNAL( sigBusy(bool) ), this, SLOT( slotBusy(bool) ));
 
+    QList<BilboBlog*> blogList = DBMan::self()->blogList().values();
+    int count = blogList.count();
+    for(int i=0; i < count; ++i) {
+        QAction *act = new QAction( blogList[i]->title(), blogs );
+        act->setData( blogList[i]->id() );
+        blogs->addAction( act );
+    }
+    connect( blogs, SIGNAL(triggered( QAction* )), this, SLOT(currentBlogChanged(QAction*)) );
     QTimer::singleShot( 0, this, SLOT( loadTempPosts() ) );
 }
 
@@ -138,13 +141,9 @@ void MainWindow::setupActions()
     actNewPost->setShortcut( Qt::CTRL + Qt::Key_N );
     connect( actNewPost, SIGNAL( triggered( bool ) ), this, SLOT( sltCreateNewPost() ) );
 
-    KAction *actAddBlog = new KAction( KIcon( "list-add" ), i18n( "Add Blog..." ), this );
-    actionCollection()->addAction( QLatin1String( "add_blog" ), actAddBlog );
-    connect( actAddBlog, SIGNAL( triggered( bool ) ), toolbox, SLOT( sltAddBlog() ) );
-
-//     actUploadAll = new KAction( KIcon( "arrow-up-double" ), i18n( "Upload All Changes" ), this );
-//     actionCollection()->addAction( QLatin1String( "upload_all" ), actUploadAll );
-//     connect( actUploadAll, SIGNAL( triggered( bool ) ), this, SLOT( sltUploadAllChanges() ) );
+//     KAction *actAddBlog = new KAction( KIcon( "list-add" ), i18n( "Add Blog..." ), this );
+//     actionCollection()->addAction( QLatin1String( "add_blog" ), actAddBlog );
+//     connect( actAddBlog, SIGNAL( triggered( bool ) ), toolbox, SLOT( sltAddBlog() ) );
 
     KAction *actPublish = new KAction( KIcon( "arrow-up" ), i18n( "Submit to..." ), this );
     actionCollection()->addAction( QLatin1String( "publish_post" ), actPublish );
@@ -159,11 +158,6 @@ void MainWindow::setupActions()
     actSaveLocally->setShortcut( Qt::CTRL + Qt::Key_S );
     connect( actSaveLocally, SIGNAL( triggered( bool ) ), this, SLOT( sltSavePostLocally() ) );
 
-//     actSaveDraft = new KAction( KIcon( "document-save-as" ), i18n( "Save as Draft" ), this );
-//     actionCollection()->addAction( QLatin1String( "save_draft" ), actSaveDraft );
-//     actSaveDraft->setShortcut( Qt::CTRL + Qt::SHIFT + Qt::Key_S );
-//     connect( actSaveDraft, SIGNAL( triggered( bool ) ), this, SLOT( sltSaveAsDraft() ) );
-
     KToggleAction *actToggleToolboxVisible = new KToggleAction( i18n( "Show Toolbox" ), this );
     actionCollection()->addAction( QLatin1String( "toggle_toolbox" ), actToggleToolboxVisible );
     actToggleToolboxVisible->setShortcut( Qt::CTRL + Qt::Key_T );
@@ -177,6 +171,9 @@ void MainWindow::setupActions()
     actionCollection()->addAction( QLatin1String( "hide_mainwin" ), actHide );
     actHide->setShortcut( Qt::Key_Escape );
     connect( actHide, SIGNAL( triggered( bool ) ), this, SLOT( hide() ) );
+
+    blogs = new KSelectAction( this );
+    actionCollection()->addAction( QLatin1String( "blogs_list" ), blogs );
 }
 
 void MainWindow::loadTempPosts()
@@ -192,18 +189,59 @@ void MainWindow::loadTempPosts()
         }
     } else {
         sltCreateNewPost();
+        if( blogs->items().count() > 0 )
+            blogs->setCurrentItem( 0 );
     }
 //     activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
     previousActivePostIndex = 0;
     if( activePost )
-        toolbox->setCurrentBlog(activePost->currentPostBlogId());
+        setCurrentBlog( activePost->currentPostBlogId() );
+}
+
+void MainWindow::setCurrentBlog( int blog_id )
+{
+    kDebug()<<blog_id;
+    int count = blogs->items().count();
+    for (int i=0; i<count; ++i) {
+        if( blogs->action(i)->data().toInt() == blog_id ) {
+            kDebug()<< blogs->setCurrentItem( i );
+            kDebug()<<i;
+            break;
+        }
+    }
+    mCurrentBlogId = blog_id;
+    toolbox->setCurrentBlogId( blog_id );
+}
+
+void MainWindow::currentBlogChanged( QAction *act )
+{
+    if( act ) {
+        if( mCurrentBlogId == act->data().toInt() )
+            return;
+        mCurrentBlogId = act->data().toInt();
+        __currentBlogId = mCurrentBlogId;
+//         actionCollection()->action("publish_post")->setText( i18n( "Submit to \"%1\" as... ", tmp->title() ) );
+        if( activePost ) {
+            actionCollection()->action("publish_post")->setEnabled( true );
+            activePost->setDefaultLayoutDirection( DBMan::self()->blogList().value( mCurrentBlogId )->direction() );
+            activePost->setCurrentPostBlogId( mCurrentBlogId );
+        } else {
+            actionCollection()->action("publish_post")->setEnabled( false );
+        }
+        blogs->setToolTip( DBMan::self()->blogList().value( mCurrentBlogId )->blogUrl() );
+    } else {
+        mCurrentBlogId = -1;
+        if( activePost )
+            activePost->setCurrentPostBlogId( mCurrentBlogId );
+    }
+    toolbox->setCurrentBlogId( mCurrentBlogId );
 }
 
 void MainWindow::sltCreateNewPost()
 {
     kDebug();
 
-    tabPosts->setCurrentWidget( createPostEntry(toolbox->currentBlogId(), BilboPost()) );
+    tabPosts->setCurrentWidget( createPostEntry( mCurrentBlogId, BilboPost()) );
 
     if ( this->isVisible() == false ) {
         this->show();
@@ -225,12 +263,14 @@ void MainWindow::optionsPreferences()
     Ui::SettingsBase ui_prefs_base;
     Ui::EditorSettingsBase ui_editorsettings_base;
     ui_prefs_base.setupUi( generalSettingsDlg );
+    BlogSettings *blogSettingsDlg = new BlogSettings;
     QWidget *editorSettingsDlg = new QWidget;
     ui_editorsettings_base.setupUi( editorSettingsDlg );
     QWidget *advancedSettingsDlg = new QWidget;
     Ui::AdvancedSettingsBase ui_advancedsettings_base;
     ui_advancedsettings_base.setupUi( advancedSettingsDlg );
     dialog->addPage( generalSettingsDlg, i18n( "General" ), "configure" );
+    dialog->addPage( blogSettingsDlg, i18n( "Blogs" ), "document-properties");
     dialog->addPage( editorSettingsDlg, i18n( "Editor" ), "accessories-text-editor" );
     dialog->addPage( advancedSettingsDlg, i18n( "Advanced" ), "applications-utilities");
     connect( dialog, SIGNAL( settingsChanged( const QString& ) ), this, SIGNAL( settingsChanged() ) );
@@ -281,13 +321,13 @@ void MainWindow::sltActivePostChanged( int index )
     if (( prevActivePost != 0 ) && ( index != previousActivePostIndex ) ) {
         prevPostBlogId = prevActivePost->currentPostBlogId();
         toolbox->getFieldsValue( *prevActivePost->currentPost() );
-        prevActivePost->setCurrentPostBlogId( toolbox->currentBlogId() );
+        prevActivePost->setCurrentPostBlogId( mCurrentBlogId );
     }
 
     if ( index >= 0 ) {
         activePostBlogId = activePost->currentPostBlogId();
         if ( activePostBlogId != -1 && activePostBlogId != prevPostBlogId ) {
-                toolbox->setCurrentBlog( activePostBlogId );
+                setCurrentBlog( activePostBlogId );
         }
         toolbox->setFieldsValue( activePost->currentPost() );
     } else {
@@ -299,8 +339,7 @@ void MainWindow::sltActivePostChanged( int index )
 void MainWindow::sltPublishPost()
 {
     kDebug();
-    int blog_id = toolbox->currentBlogId();
-    if ( blog_id == -1 ) {
+    if ( mCurrentBlogId == -1 ) {
         KMessageBox::sorry( this, i18n( "You have to select a blog to publish this post to it." ) );
         kDebug() << "Blog id not sets correctly.";
         return;
@@ -313,7 +352,7 @@ void MainWindow::sltPublishPost()
     BilboPost post = *activePost->currentPost();
     toolbox->getFieldsValue( post );
 //     post.setPrivate( false );
-    activePost->publishPost( blog_id, post );
+    activePost->publishPost( mCurrentBlogId, post );
     this->setCursor( Qt::BusyCursor );
     toolbox->setCursor( Qt::BusyCursor );
 }
@@ -344,23 +383,15 @@ void MainWindow::sltNewPostOpened( BilboPost &newPost, int blog_id )
     tabPosts->setCurrentWidget( w );
 }
 
-void MainWindow::sltCurrentBlogChanged( int blog_id )
-{
-    kDebug();
-    if ( blog_id < 0 ) {
-        kDebug() << "Blog id do not sets correctly";
-        return;
-    }
-    BilboBlog *tmp = toolbox->blogList().value( blog_id );
-    actionCollection()->action("publish_post")->setText( i18n( "Submit to \"%1\" as... ", tmp->title() ) );
-    if( activePost ) {
-        actionCollection()->action("publish_post")->setEnabled( true );
-        this->activePost->setDefaultLayoutDirection( tmp->direction() );
-        this->activePost->setCurrentPostBlogId( blog_id );
-    } else {
-        actionCollection()->action("publish_post")->setEnabled( false );
-    }
-}
+// void MainWindow::sltCurrentBlogChanged( int blog_id )
+// {
+//     kDebug();
+//     if ( blog_id < 0 ) {
+//         kDebug() << "Blog id do not sets correctly";
+//         return;
+//     }
+// 
+// }
 
 void MainWindow::sltSavePostLocally()
 {
@@ -428,7 +459,7 @@ void MainWindow::postManipulationDone( bool isError, const QString &customMessag
             customMessage)) == KMessageBox::No) {
             sltRemovePostEntry(qobject_cast<PostEntry*>(sender()));
         }
-        toolbox->sltLoadEntriesFromDB(toolbox->currentBlogId());
+        toolbox->sltLoadEntriesFromDB( mCurrentBlogId );
     }
     this->unsetCursor();
     toolbox->unsetCursor();
@@ -480,8 +511,8 @@ QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
     temp->setCurrentPost(post);
     temp->setCurrentPostBlogId( blog_id );
 
-    if ( blog_id != -1 && toolbox->blogList().contains( blog_id ) ) {
-        temp->setDefaultLayoutDirection( toolbox->blogList().value( blog_id )->direction() );
+    if ( blog_id != -1 && DBMan::self()->blogList().contains( blog_id ) ) {
+        temp->setDefaultLayoutDirection( DBMan::self()->blogList().value( blog_id )->direction() );
     }
 
     connect( temp, SIGNAL( sigTitleChanged( const QString& ) ),
@@ -517,11 +548,11 @@ void MainWindow::slotShowStatusMessage(const QString &message, bool isPermanent)
 
 void MainWindow::uploadMediaObject()
 {
-    if( toolbox->currentBlogId() == -1 ) {
+    if( mCurrentBlogId == -1 ) {
         KMessageBox::sorry( this, i18n( "You have to select a blog to upload media to it." ) );
         return;
     }
-    if(  toolbox->currentBlog()->supportMediaObjectUploading() ) {
+    if(  DBMan::self()->blogList().value(mCurrentBlogId)->supportMediaObjectUploading() ) {
         QString mediaPath = KFileDialog::getOpenFileName( KUrl("kfiledialog:///image?global"),
                                                       "image/png image/jpeg image/gif", this,
                                                           i18n("Select media to upload"));
@@ -542,9 +573,9 @@ void MainWindow::uploadMediaObject()
             BilboMedia *media = new BilboMedia(this);
             media->setLocalUrl(mediaUrl);
             media->setName( mediaUrl.fileName() );
-            media->setBlogId(toolbox->currentBlogId());
+            media->setBlogId( mCurrentBlogId );
             media->setMimeType( KMimeType::findByUrl( mediaUrl, 0, true )->name() );
-            Backend *b = new Backend(toolbox->currentBlogId(), this);
+            Backend *b = new Backend( mCurrentBlogId, this);
             connect( b, SIGNAL( sigMediaUploaded(BilboMedia*) ),
                     this, SLOT( slotMediaObjectUploaded(BilboMedia*) ) );
             connect( b, SIGNAL( sigError(QString)), this, SLOT( sltError(QString) ) );
