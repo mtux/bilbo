@@ -116,6 +116,7 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     int count = blogList.count();
     for(int i=0; i < count; ++i) {
         QAction *act = new QAction( blogList[i]->title(), blogs );
+        act->setCheckable( true );
         act->setData( blogList[i]->id() );
         blogs->addAction( act );
     }
