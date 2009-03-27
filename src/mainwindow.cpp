@@ -261,13 +261,20 @@ void MainWindow::optionsPreferences()
     }
     KConfigDialog *dialog = new KConfigDialog( this, "settings", Settings::self() );
     QWidget *generalSettingsDlg = new QWidget;
+    generalSettingsDlg->setAttribute( Qt::WA_DeleteOnClose );
     Ui::SettingsBase ui_prefs_base;
     Ui::EditorSettingsBase ui_editorsettings_base;
     ui_prefs_base.setupUi( generalSettingsDlg );
     BlogSettings *blogSettingsDlg = new BlogSettings;
+    blogSettingsDlg->setAttribute( Qt::WA_DeleteOnClose );
+    connect( blogSettingsDlg, SIGNAL(blogAdded(BilboBlog)), this, SLOT(slotBlogAdded(BilboBlog)) );
+    connect( blogSettingsDlg, SIGNAL(blogEdited(BilboBlog)), this, SLOT(slotBlogEdited(BilboBlog)) );
+    connect( blogSettingsDlg, SIGNAL(blogRemoved(int)), this, SLOT(slotBlogRemoved(int)) );
     QWidget *editorSettingsDlg = new QWidget;
+    editorSettingsDlg->setAttribute( Qt::WA_DeleteOnClose );
     ui_editorsettings_base.setupUi( editorSettingsDlg );
     QWidget *advancedSettingsDlg = new QWidget;
+    advancedSettingsDlg->setAttribute( Qt::WA_DeleteOnClose );
     Ui::AdvancedSettingsBase ui_advancedsettings_base;
     ui_advancedsettings_base.setupUi( advancedSettingsDlg );
     dialog->addPage( generalSettingsDlg, i18n( "General" ), "configure" );
@@ -277,6 +284,36 @@ void MainWindow::optionsPreferences()
     connect( dialog, SIGNAL( settingsChanged( const QString& ) ), this, SIGNAL( settingsChanged() ) );
     dialog->setAttribute( Qt::WA_DeleteOnClose );
     dialog->show();
+}
+
+void MainWindow::slotBlogAdded( const BilboBlog &blog )
+{
+    QAction *act = new QAction( blog.title(), blogs );
+    act->setCheckable( true );
+    act->setData( blog.id() );
+    blogs->addAction( act );
+}
+
+void MainWindow::slotBlogEdited( const BilboBlog &blog )
+{
+    int count = blogs->actions().count();
+    for(int i=0; i< count; ++i){
+        if( blogs->action( i )->data().toInt() == blog.id() ) {
+            blogs->action( i )->setText( blog.title() );
+            break;
+        }
+    }
+}
+
+void MainWindow::slotBlogRemoved( int blog_id )
+{
+    int count = blogs->actions().count();
+    for(int i=0; i< count; ++i){
+        if( blogs->action( i )->data().toInt() == blog_id ) {
+            blogs->removeAction( blogs->action( i ) );
+            break;
+        }
+    }
 }
 
 void MainWindow::setupSystemTray()

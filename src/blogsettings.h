@@ -33,16 +33,24 @@ public:
     BlogSettings( QWidget *parent = 0 );
     ~BlogSettings();
 
-private:
+signals:
+    void blogAdded( const BilboBlog &blog );
+    void blogEdited( const BilboBlog &blog );
+    void blogRemoved( int blog_id );
+
+protected slots:
     void addBlog();
     void editBlog();
     void removeBlog();
     void loadBlogsList();
 
 private slots:
-    void slotBlogAdded( BilboBlog &blog );
-    void slotBlogEdited( BilboBlog &blog );
+    void slotBlogAdded( const BilboBlog &blog );
+    void slotBlogEdited( const BilboBlog &blog );
     void blogsTablestateChanged();
+
+private:
+    void addBlogToList( const BilboBlog &blog );
 };
 
 #endif // SETTINGSBLOGS_H

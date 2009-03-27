@@ -256,6 +256,8 @@ int DBMan::addBlog( const BilboBlog & blog )
     q.addBindValue( blog.localDirectory() );
 
     if ( q.exec() ) {
+        BilboBlog *bb = new BilboBlog( blog );
+        mBlogList[ bb->id() ] = bb;
         return q.lastInsertId().toInt();
     } else {
         mLastErrorText = q.lastError().text();
@@ -292,15 +294,20 @@ bool DBMan::editBlog( const BilboBlog & blog )
     if ( !res ) {
         mLastErrorText = q.lastError().text();
         kDebug() << q.lastError().text();
+        return res;
     }
+    BilboBlog *tmp = mBlogList[ blog.id() ];
+    BilboBlog *newBlog = new BilboBlog( blog );
+    mBlogList[ blog.id() ] = newBlog;
+    tmp->deleteLater();
     return res;
 }
 
 bool DBMan::removeBlog( int blog_id )
 {
-    BilboBlog tmp = this->getBlogInfo( blog_id );
+    BilboBlog *tmp = mBlogList[ blog_id ];
     if( useWallet ) {
-        if ( mWallet && mWallet->removeEntry( tmp.url().url() + '_' + tmp.username() ) == 0 )
+        if ( mWallet && mWallet->removeEntry( tmp->url().url() + '_' + tmp->username() ) == 0 )
             kDebug() << "Password removed to kde wallet";
     }
     QSqlQuery q;
@@ -310,7 +317,10 @@ bool DBMan::removeBlog( int blog_id )
     if ( !res ) {
         mLastErrorText = q.lastError().text();
         kDebug() << q.lastError().text();
+        return res;
     }
+    mBlogList.remove( blog_id );
+    tmp->deleteLater();
     return res;
 }
 

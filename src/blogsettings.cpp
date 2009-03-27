@@ -31,9 +31,9 @@ BlogSettings::BlogSettings( QWidget *parent )
     kDebug();
     setupUi( this );
 
-    connect( btnAdd, SIGNAL( clicked() ), this, SLOT( addAccount() ) );
-    connect( btnEdit, SIGNAL( clicked() ), this, SLOT( editAccount() ) );
-    connect( btnRemove, SIGNAL( clicked() ), this, SLOT( removeAccount() ) );
+    connect( btnAdd, SIGNAL( clicked() ), this, SLOT(addBlog()) );
+    connect( btnEdit, SIGNAL( clicked() ), this, SLOT(editBlog()) );
+    connect( btnRemove, SIGNAL( clicked() ), this, SLOT(removeBlog()) );
     connect( blogsTable, SIGNAL( currentItemChanged( QTableWidgetItem *, QTableWidgetItem * ) ),
              this, SLOT( blogsTablestateChanged() ) );
 
@@ -45,27 +45,26 @@ BlogSettings::BlogSettings( QWidget *parent )
 
 BlogSettings::~BlogSettings()
 {
-    
+    kDebug();
 }
 
 void BlogSettings::addBlog()
 {
+    kDebug();
     AddEditBlog *addEditBlogWindow = new AddEditBlog( -1, this );
+    addEditBlogWindow->setWindowModality( Qt::ApplicationModal );
     addEditBlogWindow->setAttribute( Qt::WA_DeleteOnClose );
-    addEditBlogWindow->exec();
-    connect( addEditBlogWindow, SIGNAL( sigBlogAdded( BilboBlog& ) ), this, SLOT( slotBlogAdded( BilboBlog& ) ) );
+    connect( addEditBlogWindow, SIGNAL( sigBlogAdded( const BilboBlog& ) ),
+             this, SLOT( slotBlogAdded( const BilboBlog& ) ) );
+    connect( addEditBlogWindow, SIGNAL(sigBlogAdded(const BilboBlog&)),
+             this, SIGNAL(blogAdded(const BilboBlog&)));
+    addEditBlogWindow->show();
 }
 
-void BlogSettings::slotBlogAdded( BilboBlog &blog )
+void BlogSettings::slotBlogAdded( const BilboBlog &blog )
 {
-    int newRow = blogsTable->rowCount();
-    blogsTable->insertRow( newRow );
-    QTableWidgetItem *item1 = new QTableWidgetItem( blog.title() );
-    item1->setData( 32, blog.id() );//blog_id
-    blogsTable->setItem( newRow, 0, item1 );
-    QTableWidgetItem *item2 = new QTableWidgetItem( blog.blogUrl() );
-//     item2->setData( 32, ... );
-    blogsTable->setItem( newRow, 1, item2 );
+    kDebug();
+    addBlogToList( blog );
 }
 
 void BlogSettings::editBlog()
@@ -76,18 +75,24 @@ void BlogSettings::editBlog()
     int blog_id = blogsTable->item( blogsTable->currentRow(), 0 )->data( 32 ).toInt();
     AddEditBlog *addEditBlogWindow = new AddEditBlog( blog_id, this );
     addEditBlogWindow->setAttribute( Qt::WA_DeleteOnClose );
-    connect( addEditBlogWindow, SIGNAL( sigBlogEdited( BilboBlog& ) ), this, SLOT( slotBlogEdited( BilboBlog& ) ) );
-    addEditBlogWindow->exec();
+    addEditBlogWindow->setWindowModality( Qt::ApplicationModal );
+    connect( addEditBlogWindow, SIGNAL( sigBlogEdited( const BilboBlog& ) ),
+             this, SLOT( slotBlogEdited( const BilboBlog& ) ) );
+    connect( addEditBlogWindow, SIGNAL(sigBlogEdited(const BilboBlog&)),
+             this, SIGNAL(blogEdited(const BilboBlog&)));
+    addEditBlogWindow->show();
 }
 
-void BlogSettings::slotBlogEdited( BilboBlog &blog )
+void BlogSettings::slotBlogEdited( const BilboBlog &blog )
 {
+    kDebug();
     blogsTable->item( blogsTable->currentRow(), 0 )->setText( blog.title() );
     blogsTable->item( blogsTable->currentRow(), 1 )->setText( blog.blogUrl() );
 }
 
 void BlogSettings::removeBlog()
 {
+    kDebug();
     if( blogsTable->selectedItems().count() <= 0 )
         return;
     if(KMessageBox::warningYesNo(this, i18n("Are you sure of removing selected blog?")) 
@@ -96,17 +101,20 @@ void BlogSettings::removeBlog()
     int blog_id = blogsTable->item( blogsTable->currentRow(), 0 )->data( 32 ).toInt();
     if ( DBMan::self()->removeBlog( blog_id ) ) {
         blogsTable->removeRow( blogsTable->currentRow() );
+        emit blogRemoved( blog_id );
     } else {
         ///cannot remove
+        kError()<<"Cannot remove blog with id "<<blog_id;
     }
 }
 
 void BlogSettings::loadBlogsList()
 {
+    kDebug();
     QList<BilboBlog*> list = DBMan::self()->blogList().values();
     int count = list.count();
     for(int i=0; i<count; ++i) {
-        slotBlogAdded( *list[i] );
+        addBlogToList( *list[i] );
     }
 }
 
@@ -121,4 +129,17 @@ void BlogSettings::blogsTablestateChanged()
     }
 }
 
-// #include "blogsettings.moc"
+void BlogSettings::addBlogToList( const BilboBlog &blog )
+{
+    kDebug();
+    int newRow = blogsTable->rowCount();
+    blogsTable->insertRow( newRow );
+    QTableWidgetItem *item1 = new QTableWidgetItem( blog.title() );
+    item1->setData( 32, blog.id() );//blog_id
+    blogsTable->setItem( newRow, 0, item1 );
+    QTableWidgetItem *item2 = new QTableWidgetItem( blog.blogUrl() );
+//     item2->setData( 32, ... );
+    blogsTable->setItem( newRow, 1, item2 );
+}
+
+#include "blogsettings.moc"

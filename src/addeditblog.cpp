@@ -489,6 +489,8 @@ for storing media files for locally stored posts\nPlease check permissions or cr
             if ( blog_id != -1 ) {
                 kDebug() << "Emitting sigBlogAdded() ...";
                 Q_EMIT sigBlogAdded( *bBlog );
+            } else {
+                kDebug() << "Cannot add blog";
             }
         } else {
 //             QDir dir = QDir( bBlog->localDirectory() );

@@ -22,8 +22,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "bilbopost.h"
 #include <kxmlguiwindow.h>
+#include "bilbopost.h"
+#include "bilboblog.h"
 
 class KTabWidget;
 class KAction;
@@ -92,6 +93,10 @@ private slots:
     void slotShowStatusMessage(const QString &message, bool isPermanent);
     void slotMediaObjectUploaded( BilboMedia* );
     void currentBlogChanged( QAction* );
+
+    void slotBlogAdded( const BilboBlog &blog );
+    void slotBlogEdited( const BilboBlog &blog );
+    void slotBlogRemoved( int blog_id );
 
 protected:
     void keyPressEvent( QKeyEvent * event );

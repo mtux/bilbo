@@ -69,8 +69,8 @@ protected Q_SLOTS:
     void gotHtml( KJob * );
     void gotXmlRpcTest( KJob *job );
 Q_SIGNALS:
-    void sigBlogAdded( BilboBlog& );
-    void sigBlogEdited( BilboBlog& );
+    void sigBlogAdded( const BilboBlog& );
+    void sigBlogEdited( const BilboBlog& );
 
 private:
     void showWaitWidget( QString text );
