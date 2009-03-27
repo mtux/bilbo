@@ -100,10 +100,6 @@ private slots:
 
 protected:
     void keyPressEvent( QKeyEvent * event );
-    /**
-    *  Reimplemented to save settings
-    */
-    bool queryExit();
 
 private:
     void setCurrentBlog( int blog_id );

@@ -256,8 +256,7 @@ int DBMan::addBlog( const BilboBlog & blog )
     q.addBindValue( blog.localDirectory() );
 
     if ( q.exec() ) {
-        BilboBlog *bb = new BilboBlog( blog );
-        mBlogList[ bb->id() ] = bb;
+        reloadBlogList();
         return q.lastInsertId().toInt();
     } else {
         mLastErrorText = q.lastError().text();
@@ -296,10 +295,7 @@ bool DBMan::editBlog( const BilboBlog & blog )
         kDebug() << q.lastError().text();
         return res;
     }
-    BilboBlog *tmp = mBlogList[ blog.id() ];
-    BilboBlog *newBlog = new BilboBlog( blog );
-    mBlogList[ blog.id() ] = newBlog;
-    tmp->deleteLater();
+    reloadBlogList();
     return res;
 }
 
@@ -319,8 +315,7 @@ bool DBMan::removeBlog( int blog_id )
         kDebug() << q.lastError().text();
         return res;
     }
-    mBlogList.remove( blog_id );
-    tmp->deleteLater();
+    reloadBlogList();
     return res;
 }
 

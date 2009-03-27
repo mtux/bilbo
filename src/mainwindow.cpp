@@ -190,8 +190,6 @@ void MainWindow::loadTempPosts()
         }
     } else {
         sltCreateNewPost();
-        if( blogs->items().count() > 0 )
-            blogs->setCurrentItem( 0 );
     }
 //     activePost = qobject_cast<PostEntry*>( tabPosts->currentWidget() );
     previousActivePostIndex = 0;
@@ -243,7 +241,12 @@ void MainWindow::sltCreateNewPost()
     kDebug();
 
     tabPosts->setCurrentWidget( createPostEntry( mCurrentBlogId, BilboPost()) );
-
+    if( mCurrentBlogId == -1 ) {
+        if( blogs->items().count() > 0 ) {
+            blogs->setCurrentItem( 0 );
+            currentBlogChanged( blogs->action( 0 ) );
+        }
+    }
     if ( this->isVisible() == false ) {
         this->show();
     }
@@ -267,8 +270,10 @@ void MainWindow::optionsPreferences()
     ui_prefs_base.setupUi( generalSettingsDlg );
     BlogSettings *blogSettingsDlg = new BlogSettings;
     blogSettingsDlg->setAttribute( Qt::WA_DeleteOnClose );
-    connect( blogSettingsDlg, SIGNAL(blogAdded(BilboBlog)), this, SLOT(slotBlogAdded(BilboBlog)) );
-    connect( blogSettingsDlg, SIGNAL(blogEdited(BilboBlog)), this, SLOT(slotBlogEdited(BilboBlog)) );
+    connect( blogSettingsDlg, SIGNAL(blogAdded(const BilboBlog &)),
+             this, SLOT(slotBlogAdded(const BilboBlog &)) );
+    connect( blogSettingsDlg, SIGNAL(blogEdited(const BilboBlog &)),
+             this, SLOT(slotBlogEdited(const BilboBlog &)) );
     connect( blogSettingsDlg, SIGNAL(blogRemoved(int)), this, SLOT(slotBlogRemoved(int)) );
     QWidget *editorSettingsDlg = new QWidget;
     editorSettingsDlg->setAttribute( Qt::WA_DeleteOnClose );
@@ -292,6 +297,9 @@ void MainWindow::slotBlogAdded( const BilboBlog &blog )
     act->setCheckable( true );
     act->setData( blog.id() );
     blogs->addAction( act );
+    blogs->setCurrentAction( act );
+    currentBlogChanged( act );
+    toolbox->sltReloadCategoryList();
 }
 
 void MainWindow::slotBlogEdited( const BilboBlog &blog )
@@ -310,6 +318,10 @@ void MainWindow::slotBlogRemoved( int blog_id )
     int count = blogs->actions().count();
     for(int i=0; i< count; ++i){
         if( blogs->action( i )->data().toInt() == blog_id ) {
+            if( blogs->currentItem() == i ) {
+                blogs->setCurrentItem( i-1 );
+                currentBlogChanged( blogs->action( i-1 ) );
+            }
             blogs->removeAction( blogs->action( i ) );
             break;
         }
@@ -421,16 +433,6 @@ void MainWindow::sltNewPostOpened( BilboPost &newPost, int blog_id )
     tabPosts->setCurrentWidget( w );
 }
 
-// void MainWindow::sltCurrentBlogChanged( int blog_id )
-// {
-//     kDebug();
-//     if ( blog_id < 0 ) {
-//         kDebug() << "Blog id do not sets correctly";
-//         return;
-//     }
-// 
-// }
-
 void MainWindow::sltSavePostLocally()
 {
     kDebug();
@@ -501,15 +503,6 @@ void MainWindow::postManipulationDone( bool isError, const QString &customMessag
     }
     this->unsetCursor();
     toolbox->unsetCursor();
-}
-
-bool MainWindow::queryExit()
-{
-    kDebug();
-    //TODO Save Current Open posts!
-//     delete DBMan::self();
-//     this->deleteLater();
-    return true;
 }
 
 void MainWindow::slotBusy(bool isBusy)
