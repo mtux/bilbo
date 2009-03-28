@@ -124,7 +124,7 @@ void BilboEditor::createUi()
     preview = new QWebView( tabPreview );
 //     preview->settings()->setAttribute( QWebSettings::AutoLoadImages, true );
 //     preview->settings()->setAttribute( QWebSettings::JavaEnabled, true );
-//     preview->settings()->setAttribute( QWebSettings::QWebSettings::JavascriptEnabled, true );
+//     preview->settings()->setAttribute( QWebSettings::JavascriptEnabled, true );
 
     btnGetStyle = new KPushButton ( tabPreview );
     btnGetStyle->setText( i18n( "Get blog style" ) );

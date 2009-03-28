@@ -57,7 +57,8 @@ StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
         return;
     }
     // sets cachePath to ~/.kde4/share/apps/bilbo/blog_host_name/
-    QString blogDir = DBMan::self()->getBlogInfo( blogid ).url().host();
+//     QString blogDir = DBMan::self()->getBlogInfo( blogid ).url().host();
+    QString blogDir = tempBlog.url().host();
     kDebug() << blogDir;
     mCachePath = KStandardDirs::locateLocal( "data", "bilbo/" + blogDir + '/' , true );
     generateRandomPostStrings();
@@ -70,6 +71,12 @@ StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
     mTempPost->setTitle( mPostTitle );
     mTempPost->setContent( mPostContent );
     mTempPost->setPrivate( false );
+
+    if ( ( tempBlog.api() == BilboBlog::MOVABLETYPE_API ) |
+         ( tempBlog.api() == BilboBlog::WORDPRESSBUGGY_API ) |
+         ( tempBlog.api() == BilboBlog::GDATA_API ) ) {
+        mTempPost->setCreationDateTime( KDateTime( QDate(2000, 1, 1), QTime(0, 0), KDateTime::UTC ) );
+    }
 //     mTempPost->setCreationDateTime( KDateTime( QDate(2000, 1, 1), QTime(0, 0), KDateTime::UTC ) );
 /**
  * TODO ^ Use this just on MovableType, WordpressBuggy and GData blogs!
