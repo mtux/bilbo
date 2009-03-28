@@ -200,17 +200,20 @@ void MainWindow::loadTempPosts()
 void MainWindow::setCurrentBlog( int blog_id )
 {
     kDebug()<<blog_id;
+    if(blog_id == -1) {
+        blogs->setCurrentItem( -1 );
+        toolbox->setCurrentBlogId( blog_id );
+        actionCollection()->action("publish_post")->setEnabled( false );
+        return;
+    }
     int count = blogs->items().count();
     for (int i=0; i<count; ++i) {
         if( blogs->action(i)->data().toInt() == blog_id ) {
-            kDebug()<< blogs->setCurrentItem( i );
-            kDebug()<<i;
+            blogs->setCurrentItem( i );
+            currentBlogChanged( blogs->action( i ) );
             break;
         }
     }
-    mCurrentBlogId = blog_id;
-//     __currentBlogId = mCurrentBlogId;
-    toolbox->setCurrentBlogId( blog_id );
 }
 
 void MainWindow::currentBlogChanged( QAction *act )
@@ -548,10 +551,6 @@ QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
     temp->setAttribute( Qt::WA_DeleteOnClose );
     temp->setCurrentPost(post);
     temp->setCurrentPostBlogId( blog_id );
-
-    if ( blog_id != -1 && DBMan::self()->blogList().contains( blog_id ) ) {
-        temp->setDefaultLayoutDirection( DBMan::self()->blogList().value( blog_id )->direction() );
-    }
 
     connect( temp, SIGNAL( sigTitleChanged( const QString& ) ),
              this, SLOT( sltPostTitleChanged( const QString& ) ) );

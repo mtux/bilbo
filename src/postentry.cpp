@@ -145,7 +145,9 @@ void PostEntry::setCurrentPostBlogId( int blog_id )
 {
     kDebug();
     mCurrentPostBlogId = blog_id;
-    setDefaultLayoutDirection( DBMan::self()->blogList().value( blog_id )->direction() );
+    if ( blog_id != -1 && DBMan::self()->blogList().contains( blog_id ) ) {
+        setDefaultLayoutDirection( DBMan::self()->blogList().value( blog_id )->direction() );
+    }
 }
 
 void PostEntry::setCurrentPostFromEditor()
