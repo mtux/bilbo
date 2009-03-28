@@ -35,6 +35,7 @@
 #include <kio/job.h>
 #include "settings.h"
 #include <KApplication>
+#include "bilboblog.h"
 
 #define MINUTE 60000
 
@@ -144,6 +145,7 @@ void PostEntry::setCurrentPostBlogId( int blog_id )
 {
     kDebug();
     mCurrentPostBlogId = blog_id;
+    setDefaultLayoutDirection( DBMan::self()->blogList().value( blog_id )->direction() );
 }
 
 void PostEntry::setCurrentPostFromEditor()

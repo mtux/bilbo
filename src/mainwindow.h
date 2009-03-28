@@ -127,6 +127,6 @@ private:
     QProgressBar *progress;
 
     KSelectAction *blogs;
-    int mCurrentBlogId;
+    int &mCurrentBlogId;
 };
 #endif

@@ -58,7 +58,7 @@
 #define TIMEOUT 5000
 
 MainWindow::MainWindow(): KXmlGuiWindow(),
-        tabPosts( new KTabWidget( this ) )
+        tabPosts( new KTabWidget( this ) ), mCurrentBlogId(__currentBlogId)
 {
     kDebug();
     previousActivePostIndex = -1;
@@ -209,6 +209,7 @@ void MainWindow::setCurrentBlog( int blog_id )
         }
     }
     mCurrentBlogId = blog_id;
+//     __currentBlogId = mCurrentBlogId;
     toolbox->setCurrentBlogId( blog_id );
 }
 
@@ -218,11 +219,9 @@ void MainWindow::currentBlogChanged( QAction *act )
         if( mCurrentBlogId == act->data().toInt() )
             return;
         mCurrentBlogId = act->data().toInt();
-        __currentBlogId = mCurrentBlogId;
-//         actionCollection()->action("publish_post")->setText( i18n( "Submit to \"%1\" as... ", tmp->title() ) );
+//         __currentBlogId = mCurrentBlogId;
         if( activePost ) {
             actionCollection()->action("publish_post")->setEnabled( true );
-            activePost->setDefaultLayoutDirection( DBMan::self()->blogList().value( mCurrentBlogId )->direction() );
             activePost->setCurrentPostBlogId( mCurrentBlogId );
         } else {
             actionCollection()->action("publish_post")->setEnabled( false );
