@@ -9,6 +9,10 @@
         <label>Show Bilbo Window on startup</label>
         <default>true</default>
     </entry>
+    <entry name="CopyMediaUrl" type="Bool">
+        <label>Copy media URL to clipboard after upload</label>
+        <default>false</default>
+    </entry>
     <entry name="showToolboxOnStart" hidden="true" type="Bool">
         <default>true</default>
     </entry>

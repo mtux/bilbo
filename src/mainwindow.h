@@ -57,7 +57,7 @@ signals:
 
 protected slots:
     void sltCreateNewPost();
-
+    void addBlog();
     void sltUploadAllChanges();
     void sltPostTitleChanged( const QString& title );
     void sltToggleToolboxVisible( bool isVisible );
@@ -71,8 +71,6 @@ protected slots:
      * Remove @p widget from main tab wigdet (if it's NULL current Post entry will be removed)
      */
     void sltRemovePostEntry( PostEntry *widget=0 );
-
-//     void sltCurrentBlogChanged( int blog_id );
 
     void sltSavePostLocally();
 //     void sltSaveAsDraft();

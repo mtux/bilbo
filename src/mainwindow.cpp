@@ -142,9 +142,9 @@ void MainWindow::setupActions()
     actNewPost->setShortcut( Qt::CTRL + Qt::Key_N );
     connect( actNewPost, SIGNAL( triggered( bool ) ), this, SLOT( sltCreateNewPost() ) );
 
-//     KAction *actAddBlog = new KAction( KIcon( "list-add" ), i18n( "Add Blog..." ), this );
-//     actionCollection()->addAction( QLatin1String( "add_blog" ), actAddBlog );
-//     connect( actAddBlog, SIGNAL( triggered( bool ) ), toolbox, SLOT( sltAddBlog() ) );
+    KAction *actAddBlog = new KAction( KIcon( "list-add" ), i18n( "Add Blog..." ), this );
+    actionCollection()->addAction( QLatin1String( "add_blog" ), actAddBlog );
+    connect( actAddBlog, SIGNAL( triggered( bool ) ), this, SLOT( addBlog() ) );
 
     KAction *actPublish = new KAction( KIcon( "arrow-up" ), i18n( "Submit..." ), this );
     actionCollection()->addAction( QLatin1String( "publish_post" ), actPublish );
@@ -299,6 +299,16 @@ void MainWindow::slotConfigWindowDestroyed( QObject *win )
 {
     QSize size = qobject_cast<QWidget *>(win)->size();
     Settings::setConfigWindowSize( size );
+}
+
+void MainWindow::addBlog()
+{
+    AddEditBlog *addEditBlogWindow = new AddEditBlog( -1, this );
+    addEditBlogWindow->setWindowModality( Qt::ApplicationModal );
+    addEditBlogWindow->setAttribute( Qt::WA_DeleteOnClose );
+    connect( addEditBlogWindow, SIGNAL( sigBlogAdded( const BilboBlog& ) ),
+             this, SLOT( slotBlogAdded( const BilboBlog& ) ) );
+    addEditBlogWindow->show();
 }
 
 void MainWindow::slotBlogAdded( const BilboBlog &blog )
@@ -628,9 +638,16 @@ void MainWindow::uploadMediaObject()
 void MainWindow::slotMediaObjectUploaded( BilboMedia *media )
 {
     slotBusy(false);
-    KMessageBox::information(this, i18n( "Media uploaded.\nYou can find it here:\n%1",
-                                         media->remoteUrl().prettyUrl() ),
-                              i18n( "Uploaded successfully" ), QString(), KMessageBox::AllowLink);
+    QString msg;
+    if( Settings::copyMediaUrl() ) {
+        KApplication::clipboard()->setText( media->remoteUrl().prettyUrl() );
+        msg = i18n( "Media uploaded, and URL copied to clipboard.\nYou can find it here:\n%1",
+                                         media->remoteUrl().prettyUrl() );
+    } else {
+        msg = i18n( "Media uploaded.\nYou can find it here:\n%1",
+                                         media->remoteUrl().prettyUrl() );
+    }
+    KMessageBox::information(this, msg, i18n( "Successfully uploaded" ), QString(), KMessageBox::AllowLink);
     ///TODO Add to Post!
     media->deleteLater();
     sender()->deleteLater();
