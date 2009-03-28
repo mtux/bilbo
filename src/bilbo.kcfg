@@ -12,6 +12,9 @@
     <entry name="showToolboxOnStart" hidden="true" type="Bool">
         <default>true</default>
     </entry>
+    <entry name="configWindowSize" hidden="true" type="Size">
+        <default>QSize(500,400)</default>
+    </entry>
   </group>
   <group name="Editor">
     <entry name="autosaveInterval" type="Int">

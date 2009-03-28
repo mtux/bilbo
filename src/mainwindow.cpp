@@ -287,8 +287,16 @@ void MainWindow::optionsPreferences()
     dialog->addPage( editorSettingsDlg, i18n( "Editor" ), "accessories-text-editor" );
     dialog->addPage( advancedSettingsDlg, i18n( "Advanced" ), "applications-utilities");
     connect( dialog, SIGNAL( settingsChanged( const QString& ) ), this, SIGNAL( settingsChanged() ) );
+    connect( dialog, SIGNAL(destroyed(QObject*)), this, SLOT(slotConfigWindowDestroyed(QObject*)));
     dialog->setAttribute( Qt::WA_DeleteOnClose );
+    dialog->resize( Settings::configWindowSize() );
     dialog->show();
+}
+
+void MainWindow::slotConfigWindowDestroyed( QObject *win )
+{
+    QSize size = qobject_cast<QWidget *>(win)->size();
+    Settings::setConfigWindowSize( size );
 }
 
 void MainWindow::slotBlogAdded( const BilboBlog &blog )
