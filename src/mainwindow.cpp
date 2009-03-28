@@ -320,6 +320,7 @@ void MainWindow::slotBlogAdded( const BilboBlog &blog )
     blogs->setCurrentAction( act );
     currentBlogChanged( act );
     toolbox->sltReloadCategoryList();
+    toolbox->sltGetEntriesCount( 20 );
 }
 
 void MainWindow::slotBlogEdited( const BilboBlog &blog )

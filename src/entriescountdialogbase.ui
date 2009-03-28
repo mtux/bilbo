@@ -22,8 +22,14 @@
    </item>
    <item row="1" column="0" >
     <widget class="KIntSpinBox" name="spinCount" >
+     <property name="minimum" >
+      <number>1</number>
+     </property>
+     <property name="maximum" >
+      <number>100</number>
+     </property>
      <property name="value" >
-      <number>10</number>
+      <number>20</number>
      </property>
     </widget>
    </item>
