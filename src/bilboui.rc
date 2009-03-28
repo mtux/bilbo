@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui name="bilbo" version="6">
+<kpartgui name="bilbo" version="7">
 <MenuBar>
   <Menu name="file"><text>File</text>
       <Action name="toggle_toolbox" />
@@ -27,6 +27,7 @@
     <Action name="new_post" />
     <Action name="save_locally" />
     <Action name="publish_post" />
+    <Separator />
     <Action name="blogs_list" />
 </Toolbar>
 </kpartgui>

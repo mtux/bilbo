@@ -146,7 +146,7 @@ void MainWindow::setupActions()
 //     actionCollection()->addAction( QLatin1String( "add_blog" ), actAddBlog );
 //     connect( actAddBlog, SIGNAL( triggered( bool ) ), toolbox, SLOT( sltAddBlog() ) );
 
-    KAction *actPublish = new KAction( KIcon( "arrow-up" ), i18n( "Submit to..." ), this );
+    KAction *actPublish = new KAction( KIcon( "arrow-up" ), i18n( "Submit..." ), this );
     actionCollection()->addAction( QLatin1String( "publish_post" ), actPublish );
     connect( actPublish, SIGNAL( triggered( bool ) ), this, SLOT( sltPublishPost() ) );
 
