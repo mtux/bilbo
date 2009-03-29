@@ -43,6 +43,9 @@ int main( int argc, char *argv[] )
     about.addAuthor( ki18n( "Mehrdad Momeny" ), ki18n( "Core Developer" ), "mehrdad.momeny@gmail.com" );
     about.addAuthor( ki18n( "Golnaz Nilieh" ), ki18n( "Core Developer" ), "g382nilieh@gmail.com" );
     about.addCredit( ki18n( "Roozbeh Shafiee" ), ki18n( "Icon designer" ), "roozbeh@roozbehonline.com");
+
+    about.setTranslator( ki18nc("NAME OF TRANSLATORS (Comma separated)", "Your names"),
+                         ki18nc("EMAIL OF TRANSLATORS (Comma separated)", "Your emails"));
     KCmdLineArgs::init( argc, argv, &about );
 //     KCmdLineOptions options;
 
