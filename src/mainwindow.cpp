@@ -203,7 +203,7 @@ void MainWindow::setCurrentBlog( int blog_id )
     if(blog_id == -1) {
         blogs->setCurrentItem( -1 );
         toolbox->setCurrentBlogId( blog_id );
-        actionCollection()->action("publish_post")->setEnabled( false );
+//         actionCollection()->action("publish_post")->setEnabled( false );
         return;
     }
     int count = blogs->items().count();
@@ -224,10 +224,10 @@ void MainWindow::currentBlogChanged( QAction *act )
         mCurrentBlogId = act->data().toInt();
 //         __currentBlogId = mCurrentBlogId;
         if( activePost ) {
-            actionCollection()->action("publish_post")->setEnabled( true );
+//             actionCollection()->action("publish_post")->setEnabled( true );
             activePost->setCurrentPostBlogId( mCurrentBlogId );
         } else {
-            actionCollection()->action("publish_post")->setEnabled( false );
+//             actionCollection()->action("publish_post")->setEnabled( false );
         }
         blogs->setToolTip( DBMan::self()->blogList().value( mCurrentBlogId )->blogUrl() );
     } else {
@@ -344,6 +344,8 @@ void MainWindow::slotBlogRemoved( int blog_id )
                 currentBlogChanged( blogs->action( i-1 ) );
             }
             blogs->removeAction( blogs->action( i ) );
+            if(blogs->currentItem() == -1)
+                toolbox->clearFields();
             break;
         }
     }
@@ -443,7 +445,7 @@ void MainWindow::sltRemovePostEntry( PostEntry *widget )
 //     }
     if( tabPosts->count() < 1 ) {
         activePost = 0;
-        actionCollection()->action("publish_post")->setEnabled( false );
+//         actionCollection()->action("publish_post")->setEnabled( false );
     }
 }
 
@@ -550,7 +552,7 @@ void MainWindow::slotBusy(bool isBusy)
                 progress->deleteLater();
                 progress = 0;
             }
-            busyNumber = 0;
+//             busyNumber = 0;
         }
     }
 }

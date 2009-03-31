@@ -47,35 +47,23 @@ public:
     Toolbox( QWidget *parent );
     ~Toolbox();
 
-//     void reloadBlogList();
     /**
      *    Will set current state of toolbox (Current post) properties on input pointer!
      * @param currentPost input and output of this Function.
      */
     void getFieldsValue( BilboPost &currentPost );
-    //void setFieldsValue(const BilboPost& post);
     void setFieldsValue( BilboPost* post = 0 );
     void setCurrentBlogId( int blog_id );
-//     const BilboBlog *currentBlog();
-//     void setCurrentBlog( int blog_id );
     void setCurrentPage( int index );
-//     const QMap<int, BilboBlog*> & blogList() const;
-//     void addLocalPostToList(QVariantMap data);
+    void clearFields();
 
 public slots:
-//     void sltAddBlog();
-//     void sltBlogAdded( BilboBlog& );
-//     void sltEditBlog();
-//     void sltBlogEdited( BilboBlog& );
-//     void sltRemoveBlog();
-//     void sltSetCurrentBlog();
     void sltReloadCategoryList();
     void sltLoadCategoryListFromDB( int blog_id );
     void sltUpdateEntries();
     void sltGetEntriesCount( int );
     void sltLoadEntriesFromDB( int blog_id );
     void sltRemoveSelectedEntryFromServer();
-//     void sltCurrentBlogChanged( int blog_id );
     void resetFields();
     void sltEntrySelected( QListWidgetItem *item );
     void sltEntriesCopyUrl();

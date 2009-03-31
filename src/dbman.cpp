@@ -1237,7 +1237,7 @@ QList<QVariantMap> DBMan::listLocalPosts()
     QList<QVariantMap> list;
     QSqlQuery q;
     q.prepare( "SELECT local_post.local_id, local_post.title, local_post.blog_id, blog.title\
-    FROM local_post JOIN blog ON local_post.blog_id = blog.id ORDER BY m_time DESC" );
+    FROM local_post LEFT OUTER JOIN blog ON local_post.blog_id = blog.id ORDER BY m_time DESC" );
     if ( q.exec() ) {
         while ( q.next() ) {
             QVariantMap entry;

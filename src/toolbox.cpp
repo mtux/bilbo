@@ -227,6 +227,22 @@ void Toolbox::slotPostRemoved( int blog_id, const BilboPost &post )
     statusbar->showMessage( i18n( "Post removed" ), STATUSTIMEOUT );
     sender()->deleteLater();
 }
+void Toolbox::clearFields()
+{
+    kDebug();
+    clearCatList();
+    lstEntriesList->clear();
+    txtCatTags->clear();
+    chkOptionsTime->setChecked( false );
+    optionsDate->setDate( QDateTime::currentDateTime().date() );
+    optionsTime->setTime( QDateTime::currentDateTime().time() );
+    txtOptionsTrackback->clear();
+    txtSlug->clear();
+    txtSummary->clear();
+    chkOptionsComments->setChecked( true );
+    chkOptionsTrackback->setChecked( true );
+    comboOptionsStatus->setCurrentIndex( 0 );
+}
 
 void Toolbox::resetFields()
 {
