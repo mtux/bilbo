@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>361</height>
+    <width>395</width>
+    <height>325</height>
    </rect>
   </property>
   <property name="currentIndex" >
@@ -17,7 +17,23 @@
     <string>Basic</string>
    </attribute>
    <layout class="QGridLayout" name="gridLayout_2" >
-    <item row="0" column="0" colspan="4" >
+    <item row="0" column="0" colspan="3" >
+     <widget class="QLabel" name="label_18" >
+      <property name="font" >
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text" >
+       <string>Configuring your blog account...</string>
+      </property>
+      <property name="buddy" >
+       <cstring>txtUrl</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="3" >
      <widget class="QLabel" name="label_4" >
       <property name="sizePolicy" >
        <sizepolicy vsizetype="MinimumExpanding" hsizetype="Preferred" >
@@ -26,16 +42,8 @@
        </sizepolicy>
       </property>
       <property name="text" >
-       <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;">
-&lt;table border="0" style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">
-&lt;tr>
-&lt;td style="border: none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;">&lt;span style=" font-size:9pt;">&amp;amp;Configuring your blog account...&lt;/span>&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;">Please fill in these fields, and hit the AutoConfigure button to retrieve your blog settings&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;">You can set more options on Advanced tab.&lt;/p>&lt;/td>&lt;/tr>&lt;/table>&lt;/body>&lt;/html></string>
+       <string>Please fill in these fields, and click the "AutoConfigure" button to retrieve your blog settings.
+You can set more options on Advanced tab.</string>
       </property>
       <property name="scaledContents" >
        <bool>false</bool>
@@ -48,10 +56,10 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="1" column="0" colspan="4" >
+    <item row="3" column="0" colspan="3" >
      <widget class="KSeparator" name="kseparator" />
     </item>
-    <item row="2" column="0" >
+    <item row="4" column="0" >
      <widget class="QLabel" name="label_9" >
       <property name="font" >
        <font>
@@ -67,7 +75,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="2" column="1" colspan="3" >
+    <item row="4" column="1" colspan="2" >
      <widget class="QLabel" name="lblTitle" >
       <property name="font" >
        <font>
@@ -89,7 +97,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="3" column="0" >
+    <item row="5" column="0" >
      <widget class="QLabel" name="label" >
       <property name="text" >
        <string>Blog/Homepage &amp;URL :</string>
@@ -102,7 +110,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="3" column="1" colspan="3" >
+    <item row="5" column="1" colspan="2" >
      <widget class="KLineEdit" name="txtUrl" >
       <property name="text" >
        <string>http://</string>
@@ -115,7 +123,21 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="5" column="0" >
+    <item row="6" column="1" colspan="2" >
+     <widget class="QLabel" name="label_17" >
+      <property name="font" >
+       <font>
+        <pointsize>8</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text" >
+       <string>e.g. : http://domain.com/blog/</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0" >
      <widget class="QLabel" name="label_2" >
       <property name="text" >
        <string>User&amp;name :</string>
@@ -128,10 +150,10 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="5" column="1" colspan="3" >
+    <item row="7" column="1" colspan="2" >
      <widget class="KLineEdit" name="txtUser" />
     </item>
-    <item row="6" column="0" >
+    <item row="8" column="0" >
      <widget class="QLabel" name="label_3" >
       <property name="text" >
        <string>&amp;Password :</string>
@@ -144,7 +166,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="6" column="1" colspan="3" >
+    <item row="8" column="1" colspan="2" >
      <widget class="KLineEdit" name="txtPass" >
       <property name="echoMode" >
        <enum>QLineEdit::Password</enum>
@@ -160,7 +182,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="7" column="0" colspan="3" >
+    <item row="9" column="0" colspan="2" >
      <spacer name="horizontalSpacer_2" >
       <property name="orientation" >
        <enum>Qt::Horizontal</enum>
@@ -173,7 +195,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </spacer>
     </item>
-    <item row="7" column="3" >
+    <item row="9" column="2" >
      <widget class="KPushButton" name="btnAutoConf" >
       <property name="enabled" >
        <bool>false</bool>
@@ -183,7 +205,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="11" column="0" colspan="4" >
+    <item row="10" column="0" colspan="3" >
      <spacer name="verticalSpacer_2" >
       <property name="orientation" >
        <enum>Qt::Vertical</enum>
@@ -199,36 +221,8 @@ p, li { white-space: pre-wrap; }
       </property>
      </spacer>
     </item>
-    <item row="9" column="0" colspan="4" >
-     <widget class="KSeparator" name="kseparator_3" />
-    </item>
-    <item row="10" column="0" colspan="4" >
-     <widget class="QLabel" name="label_19" >
-      <property name="text" >
-       <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;">&lt;span style=" font-weight:600;">Note&lt;/span>: You can see a list of supported features for your blog after configuration, at &lt;span style=" font-style:italic;">Supported Features&lt;/span> tab.&lt;/p>&lt;/body>&lt;/html></string>
-      </property>
-      <property name="wordWrap" >
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="2" colspan="2" >
-     <widget class="QLabel" name="label_17" >
-      <property name="font" >
-       <font>
-        <pointsize>8</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text" >
-       <string>e.g. : http://domain.com/blog/</string>
-      </property>
-     </widget>
+    <item row="1" column="0" colspan="3" >
+     <widget class="KSeparator" name="kseparator_4" />
     </item>
    </layout>
   </widget>
@@ -239,8 +233,14 @@ p, li { white-space: pre-wrap; }
    <layout class="QGridLayout" name="gridLayout_3" >
     <item row="0" column="0" colspan="3" >
      <widget class="QLabel" name="label_5" >
+      <property name="font" >
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text" >
-       <string>&amp;Configuring your blog account...</string>
+       <string>Configuring your blog account...</string>
       </property>
       <property name="buddy" >
        <cstring>txtUrl</cstring>
@@ -294,9 +294,12 @@ p, li { white-space: pre-wrap; }
       <property name="orientation" >
        <enum>Qt::Horizontal</enum>
       </property>
+      <property name="sizeType" >
+       <enum>QSizePolicy::Preferred</enum>
+      </property>
       <property name="sizeHint" stdset="0" >
        <size>
-        <width>195</width>
+        <width>20</width>
         <height>20</height>
        </size>
       </property>
@@ -320,6 +323,12 @@ p, li { white-space: pre-wrap; }
     </item>
     <item row="3" column="2" >
      <widget class="KPushButton" name="btnFetch" >
+      <property name="sizePolicy" >
+       <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="maximumSize" >
        <size>
         <width>100</width>
@@ -384,7 +393,7 @@ p, li { white-space: pre-wrap; }
     <string>Supported Features</string>
    </attribute>
    <layout class="QGridLayout" name="gridLayout" >
-    <item row="1" column="0" >
+    <item row="2" column="0" >
      <widget class="QLabel" name="label_11" >
       <property name="text" >
        <string>Create/Modify post :</string>
@@ -394,14 +403,14 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="1" column="1" >
+    <item row="2" column="1" >
      <widget class="QLabel" name="featureCreatePost" >
       <property name="text" >
        <string>Unknown</string>
       </property>
      </widget>
     </item>
-    <item row="16" column="0" colspan="2" >
+    <item row="17" column="0" colspan="2" >
      <spacer name="verticalSpacer_3" >
       <property name="orientation" >
        <enum>Qt::Vertical</enum>
@@ -417,7 +426,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </spacer>
     </item>
-    <item row="8" column="0" >
+    <item row="9" column="0" >
      <widget class="QLabel" name="label_14" >
       <property name="text" >
        <string>Support categories :</string>
@@ -427,7 +436,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="9" column="0" >
+    <item row="10" column="0" >
      <widget class="QLabel" name="label_16" >
       <property name="text" >
        <string>Support tags :</string>
@@ -437,21 +446,21 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="8" column="1" >
+    <item row="9" column="1" >
      <widget class="QLabel" name="featureCategories" >
       <property name="text" >
        <string>Unknown</string>
       </property>
      </widget>
     </item>
-    <item row="9" column="1" >
+    <item row="10" column="1" >
      <widget class="QLabel" name="featureTags" >
       <property name="text" >
        <string>Unknown</string>
       </property>
      </widget>
     </item>
-    <item row="2" column="0" >
+    <item row="3" column="0" >
      <widget class="QLabel" name="label_22" >
       <property name="text" >
        <string>Remove post :</string>
@@ -461,14 +470,14 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="2" column="1" >
+    <item row="3" column="1" >
      <widget class="QLabel" name="featureRemovePost" >
       <property name="text" >
        <string>Unknown</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="0" >
+    <item row="4" column="0" >
      <widget class="QLabel" name="label_12" >
       <property name="text" >
        <string>Fetch recent posts :</string>
@@ -478,14 +487,14 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="3" column="1" >
+    <item row="4" column="1" >
      <widget class="QLabel" name="featurRecentPosts" >
       <property name="text" >
        <string>Unknown</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="0" >
+    <item row="5" column="0" >
      <widget class="QLabel" name="label_20" >
       <property name="text" >
        <string>Multipaged post :</string>
@@ -495,7 +504,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="4" column="1" >
+    <item row="5" column="1" >
      <widget class="QLabel" name="featureMultipagedPosts" >
       <property name="text" >
        <string>Unknown</string>
@@ -505,18 +514,14 @@ p, li { white-space: pre-wrap; }
     <item row="0" column="0" colspan="2" >
      <widget class="QLabel" name="label_10" >
       <property name="text" >
-       <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-weight:600;">Note&lt;/span>: You can see list of supported features for your blog after configuration!&lt;/p>&lt;/body>&lt;/html></string>
+       <string>Note: You can see list of supported features for your blog after configuration!</string>
       </property>
       <property name="wordWrap" >
        <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="14" column="0" >
+    <item row="15" column="0" >
      <widget class="QLabel" name="label_13" >
       <property name="text" >
        <string>Upload media :</string>
@@ -526,14 +531,14 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="14" column="1" >
+    <item row="15" column="1" >
      <widget class="QLabel" name="featureUploadMedia" >
       <property name="text" >
        <string>Unknown</string>
       </property>
      </widget>
     </item>
-    <item row="15" column="0" >
+    <item row="16" column="0" >
      <widget class="QLabel" name="label_15" >
       <property name="text" >
        <string>Create new category :</string>
@@ -543,12 +548,15 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="15" column="1" >
+    <item row="16" column="1" >
      <widget class="QLabel" name="featureCreateCategory" >
       <property name="text" >
        <string>Unknown</string>
       </property>
      </widget>
+    </item>
+    <item row="1" column="0" colspan="2" >
+     <widget class="KSeparator" name="kseparator_3" />
     </item>
    </layout>
   </widget>

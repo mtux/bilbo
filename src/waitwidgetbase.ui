@@ -16,7 +16,7 @@
       <string notr="true" />
      </property>
      <property name="text" >
-      <string>Please Wait...</string>
+      <string>Please wait...</string>
      </property>
     </widget>
    </item>

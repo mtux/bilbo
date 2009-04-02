@@ -6,11 +6,9 @@
   <kcfgfile name="bilborc"/>
   <group name="Preferences">
     <entry name="showMainOnStart" type="Bool">
-        <label>Show Bilbo Window on startup</label>
         <default>true</default>
     </entry>
     <entry name="CopyMediaUrl" type="Bool">
-        <label>Copy media URL to clipboard after upload</label>
         <default>false</default>
     </entry>
     <entry name="showToolboxOnStart" hidden="true" type="Bool">
@@ -22,17 +20,14 @@
   </group>
   <group name="Editor">
     <entry name="autosaveInterval" type="Int">
-        <label>Editor auto save interval :</label>
         <default>5</default>
     </entry>
     <entry name="addPoweredBy" type="Bool">
-        <label>Automatically insert "Powered by Bilbo Blogger"</label>
         <default>false</default>
     </entry>
   </group>
   <group name="Advanced">
     <entry name="changeNToBreak" type="Bool">
-        <label>Change '\\n' to '<br/>' On posts retrieved from server</label>
         <default>false</default>
     </entry>
   </group>
