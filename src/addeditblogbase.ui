@@ -100,7 +100,7 @@ You can set more options on Advanced tab.</string>
     <item row="5" column="0" >
      <widget class="QLabel" name="label" >
       <property name="text" >
-       <string>Blog/Homepage &amp;URL :</string>
+       <string>Blog/Homepage URL :</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -140,7 +140,7 @@ You can set more options on Advanced tab.</string>
     <item row="7" column="0" >
      <widget class="QLabel" name="label_2" >
       <property name="text" >
-       <string>User&amp;name :</string>
+       <string>Username :</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -156,7 +156,7 @@ You can set more options on Advanced tab.</string>
     <item row="8" column="0" >
      <widget class="QLabel" name="label_3" >
       <property name="text" >
-       <string>&amp;Password :</string>
+       <string>Password :</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -201,7 +201,7 @@ You can set more options on Advanced tab.</string>
        <bool>false</bool>
       </property>
       <property name="text" >
-       <string>&amp;Auto Configure</string>
+       <string>Auto Configure</string>
       </property>
      </widget>
     </item>
@@ -250,7 +250,7 @@ You can set more options on Advanced tab.</string>
     <item row="2" column="0" >
      <widget class="QLabel" name="label_6" >
       <property name="text" >
-       <string comment="Name of the API which is used to communicate with Blog" >&amp;API :</string>
+       <string comment="Name of the API which is used to communicate with Blog" >API :</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -308,7 +308,7 @@ You can set more options on Advanced tab.</string>
     <item row="3" column="0" >
      <widget class="QLabel" name="label_7" >
       <property name="text" >
-       <string>Blog &amp;ID :</string>
+       <string>Blog ID :</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -336,7 +336,7 @@ You can set more options on Advanced tab.</string>
        </size>
       </property>
       <property name="text" >
-       <string comment="verb, fetch the blog id from the web" >&amp;Fetch ID</string>
+       <string comment="verb, fetch the blog id from the web" >Fetch ID</string>
       </property>
      </widget>
     </item>
@@ -359,7 +359,7 @@ You can set more options on Advanced tab.</string>
        <number>1</number>
       </property>
       <property name="text" >
-       <string comment="Default direction of text in the blog" >Default text &amp;direction :</string>
+       <string comment="Default direction of text in the blog" >Default text direction :</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

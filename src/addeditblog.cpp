@@ -452,8 +452,8 @@ void AddEditBlog::slotButtonClicked( int button )
     if ( button == KDialog::Ok ) {
         if ( bBlog->blogid().isEmpty() && ui.txtId->text().isEmpty() ) {
             KMessageBox::sorry( this, i18n( "Sorry, BlogId not retrieved yet,\
-                                            \nYou have to Fetch blog id by hitting\
-                                            \"Auto Configure\" Or \"Fetch ID\" button or Insert your Blog Id manually." )
+\nYou can fetch blog ID by clicking on \"Auto Configure\" Or \"Fetch ID\" button otherwise you have\
+to insert it your Blog Id manually." )
                                             );
             return;
         }
@@ -478,7 +478,7 @@ void AddEditBlog::slotButtonClicked( int button )
                 } else {
                     kDebug() << blogDir << " can't be created, as blogDir";
                     KMessageBox::error(this, i18n( "Cannot create directory %1,\
-for storing media files for locally stored posts\nPlease check permissions or create it manually.",
+\nPlease check permissions or create it manually.",
                                                   blogDir));
                     return;
                 }

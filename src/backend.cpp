@@ -229,7 +229,7 @@ void Backend::uploadMedia( BilboMedia * media )
             if ( data.count() == 0 ) {
                 kError() << "Cannot read the media file, please check if it exists.";
                 tmp = i18n( "Uploading media failed : Cannot read the media file,\
-please check if it exists. path: %1", media->localUrl().pathOrUrl() );
+ please check if it exists. path: %1", media->localUrl().pathOrUrl() );
                 kDebug() << "Emitting sigError...";
                 Q_EMIT sigMediaError( tmp, media );
                 return;

@@ -52,8 +52,8 @@ StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
     kDebug();
     BilboBlog tempBlog = DBMan::self()->getBlogInfo( blogid );
     if ( tempBlog.isError() ) {
-        KMessageBox::error( mParent, i18n( "Can not fetch the selected blog style.\n\n,%1", 
-                            DBMan::self()->lastErrorText() ) );
+        KMessageBox::detailedError( mParent, i18n( "Can not fetch the selected blog style."),
+                            DBMan::self()->lastErrorText()  );
         return;
     }
     // sets cachePath to ~/.kde4/share/apps/bilbo/blog_host_name/
@@ -167,8 +167,8 @@ void StyleGetter::sltHtmlCopied( KJob *job )
 {
     kDebug();
     if ( job->error() ) {
-        KMessageBox::error( mParent, i18n( "Impossible to get html file,%1", 
-                            job->errorString() ) );
+        KMessageBox::detailedError( mParent, i18n( "Cannot get html file."),
+                            job->errorString() );
         sender()->deleteLater();
         return;
     }
@@ -191,7 +191,7 @@ void StyleGetter::sltHtmlCopied( KJob *job )
 
     KUrl dest(mCachePath + "style.html");
 //     Q_ASSERT( dest.isValid() );
-    
+
     if ( QFile::exists( dest.path() ) ) {
         QFile::remove( dest.path() );
     }
@@ -199,7 +199,7 @@ void StyleGetter::sltHtmlCopied( KJob *job )
     file.open( QIODevice::WriteOnly );
     if ( file.write( httpData ) == -1 ) {
         KMessageBox::error( mParent,
-                            i18n( "Impossible to write data to file %1", dest.path() ) );
+                            i18n( "Cannot write data to file %1", dest.path() ) );
 
         file.close();
         return;
