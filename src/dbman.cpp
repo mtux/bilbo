@@ -48,9 +48,9 @@ DBMan::DBMan()
 
     if ( !QFile::exists( CONF_DB ) ) {
         if ( !this->createDB() ) {
-            KMessageBox::detailedError( 0, i18n( "Cannot create information database" ),
+            KMessageBox::detailedError( 0, i18n( "Cannot create database" ),
                                         i18n( db.lastError().text().toUtf8().data() ) );
-            kDebug() << "Cannot create information database, SQL error: " << db.lastError().text() << endl;
+            kDebug() << "Cannot create database, SQL error: " << db.lastError().text() << endl;
             exit ( 1 );
         }
     } else if ( !connectDB() )
@@ -95,9 +95,9 @@ bool DBMan::connectDB()
     db.setDatabaseName( CONF_DB );
 
     if ( !db.open() ) {
-        KMessageBox::detailedError( 0, i18n( "Cannot connect to configuration database" ),
+        KMessageBox::detailedError( 0, i18n( "Cannot connect to database" ),
                                     i18n( db.lastError().text().toUtf8().data() ) );
-        kDebug() << "Cannot connect to configuration database, SQL error: " << db.lastError().text() << endl;
+        kDebug() << "Cannot connect to database, SQL error: " << db.lastError().text() << endl;
         return false;
     }
     return true;

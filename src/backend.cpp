@@ -203,7 +203,7 @@ void Backend::uploadMedia( BilboMedia * media )
         case BilboBlog::BLOGGER1_API:
         case BilboBlog::GDATA_API:
             kDebug() << "The Blogger1 and GData API type doesn't support uploading Media files.";
-            tmp = i18n( "Uploading media failed : Your blog api do not support uploading media objects");
+            tmp = i18n( "Uploading media failed : Your blog api doesn't support uploading media objects.");
             kDebug() << "Emitting sigError...";
             Q_EMIT sigMediaError( tmp, media );
             return;

@@ -171,36 +171,34 @@ void BilboEditor::createActions()
 
     barVisual->addSeparator();
 
-    actBold = new KAction( KIcon( "format-text-bold" ), i18nc( "Makes text bold", "Bold" ),
-                           this );
+    actBold = new KAction( KIcon( "format-text-bold" ), i18nc( 
+                          "Makes text bold, and its shortcut is (Ctrl+b)", 
+                          "Bold (Ctrl+b)" ), this );
     actBold->setShortcut( Qt::CTRL + Qt::Key_B );
-    actBold->setToolTip( i18nc( "Makes text bold, and its shortcut is (Ctrl+b)",
-                                "Bold (Ctrl+b)" ) );
     actBold->setCheckable( true );
     connect( actBold, SIGNAL( triggered( bool ) ), editor, SLOT( setTextBold( bool ) ) );
     barVisual->addAction( actBold );
 
-    actItalic = new KAction( KIcon( "format-text-italic" ), i18nc( "Makes text italic",
-                             "Italic" ), this );
+    actItalic = new KAction( KIcon( "format-text-italic" ), i18nc( 
+                            "Makes text italic, and its shortcut is (Ctrl+i)",
+                            "Italic (Ctrl+i)" ), this );
     actItalic->setShortcut( Qt::CTRL + Qt::Key_I );
-    actItalic->setToolTip( i18nc( "Makes text italic, and its shortcut is (Ctrl+i)",
-                                  "Italic (Ctrl+i)" ) );
     actItalic->setCheckable( true );
     connect( actItalic, SIGNAL( triggered( bool ) ), editor, SLOT( setTextItalic( bool ) ) );
     barVisual->addAction( actItalic );
 
-    actUnderline = new KAction( KIcon( "format-text-underline" ), i18nc( "Makes text underlined", "Underline" ), this );
+    actUnderline = new KAction( KIcon( "format-text-underline" ), i18nc( 
+                               "Makes text underlined, and its shortcut is (Ctrl+u)",
+                               "Underline (Ctrl+u)" ), this );
     actUnderline->setShortcut( Qt::CTRL + Qt::Key_U );
-    actUnderline->setToolTip( i18nc( "Makes text underlined, and its shortcut is (Ctrl+u)",
-                                     "Underline (Ctrl+u)" ) );
     actUnderline->setCheckable( true );
     connect( actUnderline, SIGNAL( triggered( bool ) ), editor, SLOT( setTextUnderline( bool ) ) );
     barVisual->addAction( actUnderline );
 
-    actStrikeout = new KAction( KIcon( "format-text-strikethrough" ), i18nc( "Strikes the text out", "Strikeout" ), this );
+    actStrikeout = new KAction( KIcon( "format-text-strikethrough" ), i18nc(
+                                "Strikes the text out, and its shortcut is (Ctrl+l)",
+                                "Strike out (Ctrl+l)" ), this );
     actStrikeout->setShortcut( Qt::CTRL + Qt::Key_L );
-    actStrikeout->setToolTip( i18nc( "Strikes the text out, and its shortcut is (Ctrl+l)",
-                                     "Underline (Ctrl+l)" ) );
     actStrikeout->setCheckable( true );
     connect( actStrikeout, SIGNAL( triggered( bool ) ), editor, SLOT( setTextStrikeOut( bool ) ) );
     barVisual->addAction( actStrikeout );
@@ -225,10 +223,10 @@ void BilboEditor::createActions()
     connect( actColorSelect, SIGNAL( triggered( bool ) ), this, SLOT( sltSelectColor() ) );
     barVisual->addAction( actColorSelect );
 
-    actRemoveFormatting = new KAction( KIcon( "draw-eraser" ), i18n( "Remove formatting" ), this );
+    actRemoveFormatting = new KAction( KIcon( "draw-eraser" ), i18nc( 
+                                       "Remove formatting, and its shortcut is (Ctrl+r)",
+                                       "Remove formatting (Ctrl+r)" ), this );
     actRemoveFormatting->setShortcut( Qt::CTRL + Qt::Key_R );
-    actRemoveFormatting->setToolTip( i18nc( "Remove formatting, and its shortcut is (Ctrl+r)",
-                                            "Remove formatting (Ctrl+r)" ) );
     connect( actRemoveFormatting, SIGNAL( triggered( bool ) ), this, SLOT( sltRemoveFormatting() ) );
     barVisual->addAction( actRemoveFormatting );
 
@@ -246,23 +244,29 @@ void BilboEditor::createActions()
     connect( actAlignRight, SIGNAL( triggered( bool ) ), this, SLOT( sltAlignRight() ) );
     barVisual->addAction( actAlignRight );
 
-    actJustify = new KAction( KIcon( "format-justify-fill" ), i18nc( "verb, to justify text",
-                              "Justify" ), this );
+    actJustify = new KAction( KIcon( "format-justify-fill" ), i18nc( 
+                             "verb, to justify text", "Justify" ), this );
     connect( actJustify, SIGNAL( triggered( bool ) ), editor, SLOT( alignJustify() ) );
     barVisual->addAction( actJustify );
 
-    actRightToLeft = new KAction( KIcon( "format-text-direction-rtl" ), i18nc( "Sets text direction to right to left", "Right to Left" ), this );
+    actRightToLeft = new KAction( KIcon( "format-text-direction-rtl" ), i18nc(
+                                 "Sets text direction as right to left", 
+                                 "Right to Left" ), this );
     actRightToLeft->setCheckable( true );
     connect( actRightToLeft, SIGNAL( triggered( bool ) ), this, SLOT( sltChangeLayoutDirection() ) );
     barVisual->addAction( actRightToLeft );
 
     barVisual->addSeparator();
 
-    actAddLink = new KAction( KIcon( "insert-link" ), i18nc( "verb, to add a new link or edit an existing one", "Add/Edit Link" ), this );
+    actAddLink = new KAction( KIcon( "insert-link" ), i18nc( 
+                             "verb, to add a new link or edit an existing one",
+                             "Add/Edit Link" ), this );
     connect( actAddLink, SIGNAL( triggered( bool ) ), this, SLOT( sltAddEditLink() ) );
     barVisual->addAction( actAddLink );
 
-    actRemoveLink = new KAction( KIcon( "remove-link" ), i18nc( "verb, to remove an existing link", "Remove Link" ), this );
+    actRemoveLink = new KAction( KIcon( "remove-link" ), i18nc( 
+                                "verb, to remove an existing link", 
+                                "Remove Link" ), this );
     connect( actRemoveLink, SIGNAL( triggered( bool ) ), this, SLOT( sltRemoveLink() ) );
     barVisual->addAction( actRemoveLink );
 
@@ -273,9 +277,9 @@ void BilboEditor::createActions()
     connect( actAddImage, SIGNAL( triggered( bool ) ), this, SLOT( sltAddImage() ) );
     barVisual->addAction( actAddImage );
     
-    actAddMedia = new KAction( KIcon( "mail-attachment" ), 
-                i18nc( "verb, to add a media file to the post as an attachment", 
-                "Attach Media" ), this );
+    actAddMedia = new KAction( KIcon( "mail-attachment" ), i18nc( 
+                              "verb, to add a media file to the post as an attachment", 
+                              "Attach Media" ), this );
     connect( actAddMedia, SIGNAL( triggered( bool ) ), this, SLOT( sltAddMedia() ) );
     barVisual->addAction( actAddMedia );
 
@@ -988,7 +992,7 @@ void BilboEditor::sltSetPostPreview()
                          currentPostTitle,
                          this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
 
-        Q_EMIT sigShowStatusMessage( i18n( "The requested blog style set." ), false );
+//         Q_EMIT sigShowStatusMessage( i18n( "The requested blog style set." ), false );
     }
     if ( qobject_cast< StyleGetter* >( sender() ) ) {
         sender()->deleteLater();

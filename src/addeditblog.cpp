@@ -267,7 +267,7 @@ void AddEditBlog::handleFetchIDTimeout()
     ui.txtId->setText( QString() );
     ui.txtId->setEnabled( true );
     hideWaitWidget();
-    KMessageBox::error( this, i18n( "Fetching the blog's id timed out. Check your internet connection,\
+    KMessageBox::error( this, i18n( "Fetching the blog id timed out. Check your internet connection,\
 and your homepage Url, username or password!\nnote that the url has to contain \"http://\"\
 \nIf you are using a self hosted Wordpress blog, you have to enable Remote Publishing on its configurations" ) );
 }
@@ -289,7 +289,7 @@ void AddEditBlog::handleFetchError( KBlog::Blog::ErrorType type, const QString &
     kDebug() << " ErrorType: " << type;
     ui.txtId->setEnabled( true );
     hideWaitWidget();
-    KMessageBox::detailedError( this, i18n( "Fetching BlogID Faild!\nplease check you internet connection." ), errorMsg );
+    KMessageBox::detailedError( this, i18n( "Fetching BlogID Faild!\nplease check your internet connection." ), errorMsg );
 }
 
 void AddEditBlog::fetchedBlogId( const QList< QMap < QString , QString > > & list )
@@ -452,8 +452,8 @@ void AddEditBlog::slotButtonClicked( int button )
     if ( button == KDialog::Ok ) {
         if ( bBlog->blogid().isEmpty() && ui.txtId->text().isEmpty() ) {
             KMessageBox::sorry( this, i18n( "Sorry, BlogId not retrieved yet,\
-\nYou can fetch blog ID by clicking on \"Auto Configure\" Or \"Fetch ID\" button otherwise you have\
-to insert it your Blog Id manually." )
+\nYou can fetch blog ID by clicking on \"Auto Configure\" Or \"Fetch ID\" button. otherwise you have\
+ to insert your Blog Id manually." )
                                             );
             return;
         }
