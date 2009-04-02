@@ -25,7 +25,7 @@
 #include <QObject>
 #include <QMap>
 #include "category.h"
-#include <blog.h>
+#include <bilbokblog/blog.h>
 #include "bilbopost.h"
 
 

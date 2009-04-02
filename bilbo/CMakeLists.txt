@@ -1,5 +1,5 @@
 include (KDE4Defaults)
-include_directories( ${KDEPIMLIBS_INCLUDE_DIR} ${KDE4_INCLUDES})
+include_directories( ${KDEPIMLIBS_INCLUDE_DIR} ${KDE4_INCLUDES} ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/bilbo/)
 
 SET(QT_USE_QTSQL 1)
 SET(QT_USE_QTWEBKIT 1)
@@ -59,7 +59,7 @@ kde4_add_ui_files(
 kde4_add_kcfg_files( bilbo_SRCS settings.kcfgc)
 kde4_add_executable( bilbo ${bilbo_SRCS})
 
-target_link_libraries( bilbo bilbokblog ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY})
+target_link_libraries( bilbo ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} bilbokblog)
 
 # target_link_libraries( bilbo bilbomarkupbuilders ${KDE4_KBLOG_LIBS} ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY})
 

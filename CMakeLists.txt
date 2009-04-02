@@ -12,9 +12,7 @@ add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-# add_definitions(-DQT3_SUPPORT)
-# add_definitions(-DQT3_SUPPORT_WARNINGS)
-
-add_subdirectory( src )
+add_subdirectory( bilbokblog )
+add_subdirectory( bilbo )
 add_subdirectory( icons )
 macro_optional_add_subdirectory( po )

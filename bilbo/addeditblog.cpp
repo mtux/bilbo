@@ -20,11 +20,11 @@
  ***************************************************************************/
 
 
-#include <gdata.h>
-#include <blogger1.h>
-#include <metaweblog.h>
-#include <movabletype.h>
-#include <wordpressbuggy.h>
+#include <bilbokblog/gdata.h>
+#include <bilbokblog/blogger1.h>
+#include <bilbokblog/metaweblog.h>
+#include <bilbokblog/movabletype.h>
+#include <bilbokblog/wordpressbuggy.h>
 #include <kurl.h>
 #include <kmessagebox.h>
 #include <kdebug.h>

@@ -1,0 +1,14 @@
+[Buildset]
+Number of Builditems=0
+
+[CMake]
+BuildDirs=/home/m/Projects/bilbokblog/build
+CMakeDir=/usr/share/cmake-2.6/Modules
+Current CMake Binary=file:///usr/bin/cmake
+CurrentBuildDir=file:///home/m/Projects/bilbokblog/build
+CurrentBuildType=debugfull
+CurrentInstallDir=file:///usr/
+ProjectRootRelative=./
+
+[Project]
+VersionControlSupport=kdevgit
