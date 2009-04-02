@@ -13,7 +13,7 @@
    <item row="0" column="0" >
     <widget class="QLabel" name="label" >
      <property name="text" >
-      <string>Category Name : </string>
+      <string>Category Name: </string>
      </property>
      <property name="alignment" >
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -26,7 +26,7 @@
    <item row="1" column="0" >
     <widget class="QLabel" name="label_2" >
      <property name="text" >
-      <string>Category Slug : </string>
+      <string>Category Slug: </string>
      </property>
      <property name="alignment" >
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -39,7 +39,7 @@
    <item row="2" column="0" >
     <widget class="QLabel" name="label_4" >
      <property name="text" >
-      <string>Parent :</string>
+      <string>Parent Category:</string>
      </property>
      <property name="alignment" >
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -52,7 +52,7 @@
    <item row="3" column="0" >
     <widget class="QLabel" name="label_3" >
      <property name="text" >
-      <string>Description</string>
+      <string>Description:</string>
      </property>
      <property name="alignment" >
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
