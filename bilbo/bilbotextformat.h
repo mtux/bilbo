@@ -33,13 +33,7 @@
 
 class BilboTextFormat
 {
-    //Q_OBJECT
 public:
-//   BilboTextCharFormat();
-//
-//   ~BilboTextCharFormat();
-
-    //BilboTextCharFormat& operator =(const BilboTextCharFormat& other);
 
     enum Property {
         /// Anchor properties
@@ -52,30 +46,7 @@ public:
         
         IsHtmlTagSign = 0x100031,
     };
-//   enum TargetStyle {
-//    OpenInCurrentWindow = 1,
-//       OpenInNewWindow = 2
-//   };
 
-//   bool isValid() const;
-//
-//   inline void setAnchorTitle(const QString &title) {
-//    setProperty(AnchorTitle, title);
-//   }
-//   inline QString anchorTitle() const {
-//    return stringProperty(AnchorTitle);
-//   }
-//   inline void setAnchorTarget(TargetStyles style) {
-//    setProperty(AnchorTarget, style);
-//   }
-//   inline TargetStyles anchorTarget() const {
-//    return static_cast<TargetStyles>(intProperty(AnchorTitle));
-//   }
-//
-//  protected:
-//   explicit BilboTextCharFormat(const QTextFormat &format);
-//
-//   friend class QTextFormat;
 };
 
 #endif
