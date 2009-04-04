@@ -615,12 +615,13 @@ void MainWindow::uploadMediaObject()
         KUrl mediaUrl(mediaPath);
         KDialog *dialog = new KDialog(this);
         dialog->setObjectName("uploadMediaDialog");
+        dialog->resize(Settings::uploadMediaDialogSize());
         KImageFilePreview *graphic= new KImageFilePreview( dialog );
         graphic->showPreview( mediaUrl );
+        graphic->setToolTip(mediaPath);
         dialog->setWindowTitle( i18n( "Upload media..." ) );
         dialog->setButtonText(KDialog::Ok, i18n("Upload") );
         dialog->setMainWidget(graphic);
-        dialog->resize(Settings::uploadMediaDialogSize());
         int i = dialog->exec();
         Settings::setUploadMediaDialogSize(dialog->size());
         dialog->deleteLater();
