@@ -23,7 +23,7 @@
 #ifndef KBLOG_BLOGCOMMENT_H
 #define KBLOG_BLOGCOMMENT_H
 
-#include <kblog/kblog_export.h>
+#include <bilbokblog/kblog_export.h>
 
 #include <QtCore/QString>
 #include <QtCore/QtAlgorithms>

@@ -10,7 +10,7 @@ add_subdirectory( tests )
 
 ########### next target ###############
 
-set(kblog_LIB_SRCS
+set(bilbokblog_LIB_SRCS
    blog.cpp
    blogpost.cpp
    blogcomment.cpp
@@ -24,7 +24,7 @@ set(kblog_LIB_SRCS
    )
 
 
-kde4_add_library(bilbokblog SHARED ${kblog_LIB_SRCS})
+kde4_add_library(bilbokblog SHARED ${bilbokblog_LIB_SRCS})
 
 target_link_libraries(bilbokblog kxmlrpcclient syndication ${KDE4_KIO_LIBS} kcal )
 

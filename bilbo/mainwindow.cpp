@@ -53,7 +53,8 @@
 #include <QMap>
 #include <KFileDialog>
 #include <KSelectAction>
-
+#include <kimagefilepreview.h>
+#include <KDialog>
 
 #define TIMEOUT 5000
 
@@ -289,16 +290,19 @@ void MainWindow::optionsPreferences()
     dialog->addPage( editorSettingsDlg, i18n( "Editor" ), "accessories-text-editor" );
     dialog->addPage( advancedSettingsDlg, i18n( "Advanced" ), "applications-utilities");
     connect( dialog, SIGNAL( settingsChanged( const QString& ) ), this, SIGNAL( settingsChanged() ) );
-    connect( dialog, SIGNAL(destroyed(QObject*)), this, SLOT(slotConfigWindowDestroyed(QObject*)));
+    connect( dialog, SIGNAL(destroyed(QObject*)), this, SLOT(slotDialogDestroyed(QObject*)));
     dialog->setAttribute( Qt::WA_DeleteOnClose );
     dialog->resize( Settings::configWindowSize() );
     dialog->show();
 }
 
-void MainWindow::slotConfigWindowDestroyed( QObject *win )
+void MainWindow::slotDialogDestroyed( QObject *win )
 {
     QSize size = qobject_cast<QWidget *>(win)->size();
-    Settings::setConfigWindowSize( size );
+    QString name = win->objectName();
+    if(name == "settings") {
+        Settings::setConfigWindowSize( size );
+    }
 }
 
 void MainWindow::addBlog()
@@ -608,18 +612,21 @@ void MainWindow::uploadMediaObject()
                                                           i18n("Select media to upload"));
         if(mediaPath.isEmpty())
             return;
+        KUrl mediaUrl(mediaPath);
         KDialog *dialog = new KDialog(this);
-        QLabel *graphic= new QLabel(dialog);
-        graphic->setPixmap( QPixmap(mediaPath) );
-//         dialog->setButtons(KDialog::Ok | KDialog::Apply | KDialog::Cancel);
+        dialog->setObjectName("uploadMediaDialog");
+        KImageFilePreview *graphic= new KImageFilePreview( dialog );
+        graphic->showPreview( mediaUrl );
         dialog->setWindowTitle( i18n( "Upload media..." ) );
         dialog->setButtonText(KDialog::Ok, i18n("Upload") );
         dialog->setMainWidget(graphic);
+        dialog->resize(Settings::uploadMediaDialogSize());
         int i = dialog->exec();
+        Settings::setUploadMediaDialogSize(dialog->size());
+        dialog->deleteLater();
         kDebug()<< i;
         ///TODO Add option to reselect media!
         if( i ) {
-            KUrl mediaUrl(mediaPath);
             BilboMedia *media = new BilboMedia(this);
             media->setLocalUrl(mediaUrl);
             media->setName( mediaUrl.fileName() );

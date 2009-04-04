@@ -17,6 +17,9 @@
     <entry name="configWindowSize" hidden="true" type="Size">
         <default>QSize(500,400)</default>
     </entry>
+    <entry name="uploadMediaDialogSize" hidden="true" type="Size">
+    <default>QSize(500,400)</default>
+    </entry>
   </group>
   <group name="Editor">
     <entry name="autosaveInterval" type="Int">

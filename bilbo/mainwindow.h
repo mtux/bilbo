@@ -96,7 +96,7 @@ private slots:
     void slotBlogEdited( const BilboBlog &blog );
     void slotBlogRemoved( int blog_id );
 
-    void slotConfigWindowDestroyed( QObject *win );
+    void slotDialogDestroyed( QObject *win );
 
 protected:
     void keyPressEvent( QKeyEvent * event );
