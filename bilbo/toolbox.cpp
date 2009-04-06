@@ -462,10 +462,14 @@ void Toolbox::reloadLocalPosts()
     for (int i=0; i < count; ++i){
         int newRow = localEntriesTable->rowCount();
         localEntriesTable->insertRow(newRow);
-        QTableWidgetItem *item1 = new QTableWidgetItem( localList[i].value( "post_title" ).toString() );
+        QString postTitle = localList[i].value( "post_title" ).toString();
+        QTableWidgetItem *item1 = new QTableWidgetItem( postTitle );
+        item1->setToolTip( postTitle );
         item1->setData(32, localList[i].value( "local_id" ).toInt());//Post_id
         localEntriesTable->setItem( newRow, 0, item1 );
-        QTableWidgetItem *item2 = new QTableWidgetItem( localList[i].value( "blog_title" ).toString() );
+        QString blogTitle = localList[i].value( "blog_title" ).toString();
+        QTableWidgetItem *item2 = new QTableWidgetItem( blogTitle );
+        item2->setToolTip( blogTitle );
         item2->setData(32, localList[i].value( "blog_id" ).toInt());//blog_id
         localEntriesTable->setItem( newRow, 1, item2 );
     }
