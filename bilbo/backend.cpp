@@ -155,16 +155,14 @@ void Backend::entriesListed( const QList< KBlog::BlogPost > & posts )
 void Backend::publishPost( BilboPost * post )
 {
     kDebug() << "Blog Id: " << mBBlog->id();
-
-    KBlog::BlogPost *bp = preparePost( post );
-    connect( mKBlog, SIGNAL( createdPost( KBlog::BlogPost * ) ),
-             this, SLOT( postPublished( KBlog::BlogPost * ) ) );
-
     if( Settings::addPoweredBy() ) {
         QString poweredStr = "<p>=-=-=-=-=<br/>"
         "<i>Powered by <b><a href='http://bilbo.gnufolks.org/'>Bilbo Blogger</a></b></i></p>";
-        bp->setContent(bp->content() + poweredStr);
+        post->setContent(post->content() + poweredStr);
     }
+    KBlog::BlogPost *bp = preparePost( post );
+    connect( mKBlog, SIGNAL( createdPost( KBlog::BlogPost * ) ),
+             this, SLOT( postPublished( KBlog::BlogPost * ) ) );
     mKBlog->createPost( bp );
 }
 
