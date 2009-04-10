@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: bilbo\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-04-02 18:34+0430\n"
-"PO-Revision-Date: 2009-04-02 08:36+0000\n"
+"PO-Revision-Date: 2009-04-07 06:38+0000\n"
 "Last-Translator: Mehrdad Momeny <mehrdad.momeny@gmail.com>\n"
 "Language-Team: Persian <fa@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-04-05 06:32+0000\n"
+"X-Launchpad-Export-Date: 2009-04-09 10:16+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: bilbo/addeditblog.cpp:50
@@ -47,7 +47,7 @@ msgstr "لطفاً منتظر بمانید..."
 
 #: bilbo/addeditblog.cpp:253
 msgid "Fetching Blog Id..."
-msgstr ""
+msgstr "در حال گرفتن آی‌دی بلاگ..."
 
 #: bilbo/addeditblog.cpp:270
 msgid ""
@@ -66,7 +66,7 @@ msgstr ""
 
 #: bilbo/addeditblog.cpp:284
 msgid "AutoConfiguration Failed"
-msgstr ""
+msgstr "تنظیمات خودکار با خطا مواجه شد"
 
 #: bilbo/addeditblog.cpp:292
 msgid ""
@@ -76,15 +76,15 @@ msgstr ""
 
 #: bilbo/addeditblog.cpp:370
 msgid "Yes"
-msgstr ""
+msgstr "آری"
 
 #: bilbo/addeditblog.cpp:372
 msgid "No, API doesn't support"
-msgstr ""
+msgstr "خیر، واسط پشتیبانی نمی‌کند"
 
 #: bilbo/addeditblog.cpp:373
 msgid "No, Bilbo doesn't support yet"
-msgstr ""
+msgstr "خیر، بیلبو هنوز پشتیبانی نمی‌کند"
 
 #: bilbo/addeditblog.cpp:454
 msgid ""
@@ -102,20 +102,20 @@ msgstr ""
 #: bilbo/addeditlink.cpp:56
 msgctxt "verb, to modify an existing link"
 msgid "Edit Link"
-msgstr ""
+msgstr "ویرایش لینک"
 
 #: bilbo/addeditlink.cpp:58
 msgctxt "verb, to insert a link into the text"
 msgid "Add Link"
-msgstr ""
+msgstr "اظافه کردن لینک"
 
 #: bilbo/addimagedialog.cpp:38
 msgid "Add Image"
-msgstr ""
+msgstr "افزودن عکس"
 
 #: bilbo/addmediadialog.cpp:51
 msgid "Choose a file"
-msgstr ""
+msgstr "یک پرونده انتخاب کنید"
 
 #: bilbo/addmediadialog.cpp:52
 msgid "Type media path here."
@@ -123,27 +123,31 @@ msgstr ""
 
 #: bilbo/addmediadialog.cpp:53
 msgid "Browse"
-msgstr ""
+msgstr "مرور کردن"
 
 #: bilbo/addmediadialog.cpp:97
 msgid "The selected media address is an invalid url."
-msgstr ""
+msgstr "آدرس فایل انتخاب شده بی اعتبار است."
 
 #: bilbo/backend.cpp:176
 msgid "Publishing/Modifying post failed : %1"
-msgstr ""
+msgstr "انتشار یا ویرایش پست با خطا مواجه شد : %1"
 
 #: bilbo/backend.cpp:206
 msgid ""
 "Uploading media failed : Your blog api doesn't support uploading media "
 "objects."
 msgstr ""
+"آپلودکردن فایل با خطا مواجه شد: واسط بلاگ شما از آپلود کردن فایل پشتیبانی "
+"نمی‌کند."
 
 #: bilbo/backend.cpp:223 bilbo/backend.cpp:231
 msgid ""
 "Uploading media failed : Cannot read the media file, please check if it "
 "exists. path: %1"
 msgstr ""
+"آپلودکردن فایل با خطا مواجه شد: فایل مورد نظر قابل خواندن نیست، لطفا وجود "
+"آنرا چک کنید. آدرس: %1"
 
 #: bilbo/backend.cpp:245
 msgid ""
@@ -159,11 +163,11 @@ msgstr ""
 
 #: bilbo/backend.cpp:268
 msgid "Api type isn't set correctly!"
-msgstr ""
+msgstr "نوع واسط به درستی تنظیم نشده‌است!"
 
 #: bilbo/backend.cpp:288
 msgid "Uploading Media failed : %1"
-msgstr ""
+msgstr "آپلودکردن فایل با خطا مواجه شد: %1"
 
 #: bilbo/backend.cpp:297
 msgid "Uploading Media failed : Check sum Error. returned error: %1"
@@ -175,15 +179,15 @@ msgstr ""
 
 #: bilbo/backend.cpp:413
 msgid "XML-RPC Error: "
-msgstr ""
+msgstr "مشکل در XML-RPC: "
 
 #: bilbo/backend.cpp:416
 msgid "Atom API Error: "
-msgstr ""
+msgstr "مشکل در واسط Atom: "
 
 #: bilbo/backend.cpp:419
 msgid "KBlog Parsing Error: "
-msgstr ""
+msgstr "خطا در خواندن: "
 
 #: bilbo/backend.cpp:422
 msgid "Authentication Error: "
@@ -191,26 +195,26 @@ msgstr ""
 
 #: bilbo/backend.cpp:425
 msgid "Not Supported Error: "
-msgstr ""
+msgstr "خطا عمل مورد نظر پشتیبانی نمی‌شود: "
 
 #: bilbo/backend.cpp:428
 msgid "Unknown Error: "
-msgstr ""
+msgstr "خطای ناشناخته: "
 
 #: bilbo/bilboeditor.cpp:73
 msgctxt "Software"
 msgid "Visual Editor"
-msgstr ""
+msgstr "ویرایشگر بصری"
 
 #: bilbo/bilboeditor.cpp:74
 msgctxt "Software"
 msgid "Html Editor"
-msgstr ""
+msgstr "ویرایشگر HTML"
 
 #: bilbo/bilboeditor.cpp:75
 msgctxt "preview of the edited post"
 msgid "Post Preview"
-msgstr ""
+msgstr "پیش‌نمایش پست"
 
 #: bilbo/bilboeditor.cpp:90
 msgid "Media list:"
@@ -218,15 +222,15 @@ msgstr ""
 
 #: bilbo/bilboeditor.cpp:130
 msgid "Get blog style"
-msgstr ""
+msgstr "گرفتن استایل گرافیکی بلاگ"
 
 #: bilbo/bilboeditor.cpp:159 bilbo/bilboeditor.cpp:894
 msgid "Post Title"
-msgstr ""
+msgstr "عنوان پست"
 
 #: bilbo/bilboeditor.cpp:165
 msgid "Enable Spell Checking"
-msgstr ""
+msgstr "فعال‌کردن غلط‌یابی املایی"
 
 #: bilbo/bilboeditor.cpp:176
 msgctxt "Makes text bold, and its shortcut is (Ctrl+b)"
@@ -251,7 +255,7 @@ msgstr ""
 #: bilbo/bilboeditor.cpp:207
 msgctxt "Sets text font to code style"
 msgid "Code"
-msgstr ""
+msgstr "کد"
 
 #: bilbo/bilboeditor.cpp:214
 msgid "Increase font size"
@@ -264,7 +268,7 @@ msgstr ""
 #: bilbo/bilboeditor.cpp:222
 msgctxt "verb, to select text color"
 msgid "Select Color"
-msgstr ""
+msgstr "انتخاب رنگ"
 
 #: bilbo/bilboeditor.cpp:228
 msgctxt "Remove formatting, and its shortcut is (Ctrl+r)"
@@ -274,42 +278,42 @@ msgstr ""
 #: bilbo/bilboeditor.cpp:235
 msgctxt "verb, to align text from left"
 msgid "Align left"
-msgstr ""
+msgstr "چپ‌چین"
 
 #: bilbo/bilboeditor.cpp:239
 msgctxt "verb, to align text from center"
 msgid "Align center"
-msgstr ""
+msgstr "وسط‌چین"
 
 #: bilbo/bilboeditor.cpp:243
 msgctxt "verb, to align text from right"
 msgid "Align right"
-msgstr ""
+msgstr "راست‌چین"
 
 #: bilbo/bilboeditor.cpp:248
 msgctxt "verb, to justify text"
 msgid "Justify"
-msgstr ""
+msgstr "تراز کردن"
 
 #: bilbo/bilboeditor.cpp:254
 msgctxt "Sets text direction as right to left"
 msgid "Right to Left"
-msgstr ""
+msgstr "راست به چپ"
 
 #: bilbo/bilboeditor.cpp:263
 msgctxt "verb, to add a new link or edit an existing one"
 msgid "Add/Edit Link"
-msgstr ""
+msgstr "افزودن/ویرایش لینک"
 
 #: bilbo/bilboeditor.cpp:269
 msgctxt "verb, to remove an existing link"
 msgid "Remove Link"
-msgstr ""
+msgstr "حذف لینک"
 
 #: bilbo/bilboeditor.cpp:276
 msgctxt "verb, to insert an image"
 msgid "Add Image"
-msgstr ""
+msgstr "افزودن عکس"
 
 #: bilbo/bilboeditor.cpp:282
 msgctxt "verb, to add a media file to the post as an attachment"
@@ -318,15 +322,15 @@ msgstr ""
 
 #: bilbo/bilboeditor.cpp:288
 msgid "Ordered List"
-msgstr ""
+msgstr "فهرست مرتب"
 
 #: bilbo/bilboeditor.cpp:292
 msgid "Unordered List"
-msgstr ""
+msgstr "فهرست بدون ترتیب"
 
 #: bilbo/bilboeditor.cpp:296
 msgid "Split text"
-msgstr ""
+msgstr "جداکردن متن"
 
 #: bilbo/bilboeditor.cpp:968
 msgid "Please select a blog from the toolbox, then try again."
@@ -334,7 +338,7 @@ msgstr ""
 
 #: bilbo/bilboeditor.cpp:969
 msgid "Select a blog"
-msgstr ""
+msgstr "انتخاب کردن یک بلاگ"
 
 #: bilbo/bilboeditor.cpp:972
 msgid "Fetching blog style from the web..."
@@ -350,31 +354,31 @@ msgstr ""
 
 #: bilbo/blogsettings.cpp:98
 msgid "Are you sure of removing selected blog?"
-msgstr ""
+msgstr "آیا از حذف کردن وبلاگ مورد نظر مطمئن هستید؟"
 
 #: bilbo/dbman.cpp:51
 msgid "Cannot create database"
-msgstr ""
+msgstr "نمی‌توان پایگاه‌داده‌ها را ایجاد کرد"
 
 #: bilbo/dbman.cpp:98
 msgid "Cannot connect to database"
-msgstr ""
+msgstr "امکان اتصال به پایگاه‌داده‌ها میسر نیست"
 
 #: bilbo/dbman.cpp:882
 msgid "There isn't any blog with requested title."
-msgstr ""
+msgstr "بلاگی با عنوان درخواست‌شده وجود ندارد."
 
 #: bilbo/dbman.cpp:922
 msgid "There isn't any blog with requested ID."
-msgstr ""
+msgstr "بلاگی با آی‌دی درخواست‌شده وجود ندارد."
 
 #: bilbo/dbman.cpp:1051
 msgid "There isn't any post with requested ID"
-msgstr ""
+msgstr "هیچ پستی با آی‌دی درخواست‌شده وجود ندارد."
 
 #: bilbo/dbman.cpp:1317
 msgid "there isn't any local post with requested ID "
-msgstr ""
+msgstr "هیچ پست محلی‌ای با آی‌دی درخواست‌شده وجود ندارد. "
 
 #: bilbokblog/blogger1.cpp:243
 msgid ""

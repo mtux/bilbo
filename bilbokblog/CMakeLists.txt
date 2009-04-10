@@ -1,5 +1,5 @@
-find_package(KDE4 4.1 REQUIRED)
-find_package(KdepimLibs 4.1 REQUIRED)
+
+find_package(Boost REQUIRED)
 
 # add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
 
