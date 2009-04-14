@@ -470,20 +470,20 @@ void AddEditBlog::slotButtonClicked( int button )
         bBlog->setUrl( KUrl( ui.txtUrl->text() ) );
 
         KUrl url( bBlog->url() );
-        QString blogDir = DATA_DIR + "/media/";
+//         QString blogDir = DATA_DIR + "/media/";
 
         if ( isNewBlog ) {
-            if( !KStandardDirs::exists( blogDir ) ) {
-                if ( KStandardDirs::makeDir( blogDir ) ) {
-                } else {
-                    kDebug() << blogDir << " can't be created, as blogDir";
-                    KMessageBox::error(this, i18n( "Cannot create directory %1,\
-\nPlease check permissions or create it manually.",
-                                                  blogDir));
-                    return;
-                }
-                bBlog->setLocalDirectory( blogDir );
-            }
+//             if( !KStandardDirs::exists( blogDir ) ) {
+//                 if ( KStandardDirs::makeDir( blogDir ) ) {
+//                 } else {
+//                     kDebug() << blogDir << " can't be created, as blogDir";
+//                     KMessageBox::error(this, i18n( "Cannot create directory %1,\
+// \nPlease check permissions or create it manually.",
+//                                                   blogDir));
+//                     return;
+//                 }
+//                 bBlog->setLocalDirectory( blogDir );
+//             }
             int blog_id = DBMan::self()->addBlog( *bBlog );
             bBlog->setId( blog_id );
             if ( blog_id != -1 ) {
@@ -495,7 +495,7 @@ void AddEditBlog::slotButtonClicked( int button )
         } else {
 //             QDir dir = QDir( bBlog->localDirectory() );
 //             if ( dir.rename( dir.dirName(), url.host().replace( '/', '_' ) ) ) {
-                bBlog->setLocalDirectory( blogDir );
+//                 bBlog->setLocalDirectory( blogDir );
 //             } else {
 //                 kDebug() << "current blog directory can't be renamed to " << blogDir;
 //             }
