@@ -58,9 +58,11 @@ StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
     }
     // sets cachePath to ~/.kde4/share/apps/bilbo/blog_host_name/
 //     QString blogDir = DBMan::self()->getBlogInfo( blogid ).url().host();
-    QString blogDir = tempBlog.url().host();
-    kDebug() << blogDir;
-    mCachePath = KStandardDirs::locateLocal( "data", "bilbo/" + blogDir + '/' , true );
+//     QString blogDir = tempBlog.url().host();
+//     kDebug() << blogDir;
+//     mCachePath = KStandardDirs::locateLocal( "data", "bilbo/" + blogDir + '/' , true );
+    QString url = QString( "bilbo/%1/" ).arg( blogid );
+    mCachePath = KStandardDirs::locateLocal( "data", url , true );
     generateRandomPostStrings();
     mParent = qobject_cast< QWidget* >( parent );
     Q_ASSERT( mParent );
@@ -105,14 +107,14 @@ QString StyleGetter::styledHtml( const int blogid,
                                       const QString &content )
 {
     kDebug();
-    BilboBlog tempBlog = DBMan::self()->getBlogInfo( blogid );
-    if ( tempBlog.isError() ) {
-        kDebug() << DBMan::self()->lastErrorText();
-        return "<html><body><b>" + title + "</b><br>" + content + "</html>";
-    }
-
-    QString blogDir = tempBlog.url().host();
-    QString url = QString( "bilbo/%1/style.html" ).arg( blogDir );
+//     BilboBlog tempBlog = DBMan::self()->getBlogInfo( blogid );
+//     if ( tempBlog.isError() ) {
+//         kDebug() << DBMan::self()->lastErrorText();
+//         return "<html><body><b>" + title + "</b><br>" + content + "</html>";
+//     }
+// 
+//     QString blogDir = tempBlog.url().host();
+    QString url = QString( "bilbo/%1/style.html" ).arg( blogid );
     KUrl dest = KStandardDirs::locate( "data", url );
     kDebug() <<  url;
 
@@ -151,6 +153,7 @@ void StyleGetter::sltTempPostPublished( int blogId, BilboPost* post )
         kDebug() << "permalink was empty";
         postUrl = post->link();
         if ( postUrl.isEmpty() ) {
+            kDebug() << "link was empty";
             postUrl = KUrl( DBMan::self()->getBlogInfo(blogId).blogUrl() );
         }
     }
