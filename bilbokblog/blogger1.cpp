@@ -279,6 +279,7 @@ void Blogger1Private::slotListBlogs( const QList<QVariant> &result, const QVaria
     const QMap<QString, QVariant> postInfo = ( *it ).toMap();
     QMap<QString,QString> blogInfo;
     blogInfo[ "id" ] = postInfo["blogid"].toString();
+    blogInfo[ "url" ] = postInfo["url"].toString();
     blogInfo[ "name" ] = postInfo["blogName"].toString();
     kDebug() << "Blog information retrieved: ID =" << blogInfo["id"]
         << ", Name =" << blogInfo["name"];

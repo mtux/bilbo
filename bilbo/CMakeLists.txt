@@ -16,7 +16,6 @@ set(bilbo_SRCS
  main.cpp
  mainwindow.cpp
  toolbox.cpp
- systray.cpp
  addeditblog.cpp
  postentry.cpp
  bilboeditor.cpp
