@@ -31,7 +31,10 @@
 #include <kcolordialog.h>
 #include <kdebug.h>
 #include <kmessagebox.h>
-#include "kseparator.h"
+#include <kseparator.h>
+#include <ktexteditor/view.h>
+#include <ktexteditor/document.h>
+
 
 #include "bilboeditor.h"
 #include "dbman.h"
@@ -48,13 +51,16 @@
 
 #include "htmlexporter.h"
 #include "stylegetter.h"
+#include "htmleditor.h"
 
 BilboEditor::BilboEditor( QWidget *parent )
         : KTabWidget( parent )
 {
     createUi();
-    connect(editor, SIGNAL(textChanged()), this, SIGNAL(textChanged()));
-    connect(htmlEditor, SIGNAL(textChanged()), this, SIGNAL(textChanged()));
+    connect( editor, SIGNAL( textChanged() ), this, SIGNAL( textChanged() ) );
+    connect( htmlEditor->document(), SIGNAL( textChanged() ), this, SIGNAL( textChanged() ) );
+//     connect( qobject_cast< QObject* >( htmlEditor->document() ), 
+//              SIGNAL( textChanged() ), this, SIGNAL( textChanged() ) );
     editor->setFocus();
 }
 
@@ -116,9 +122,10 @@ void BilboEditor::createUi()
     connect( editor, SIGNAL( cursorPositionChanged() ), this, SLOT( sltSyncToolbar() ) );
 
     ///htmlEditor:
-    htmlEditor = new QPlainTextEdit( tabHtml );
+//     htmlEditor = new QPlainTextEdit( tabHtml );
+    htmlEditor = HtmlEditor::self()->createView();
     QGridLayout *hLayout = new QGridLayout( tabHtml );
-    hLayout->addWidget( htmlEditor );
+    hLayout->addWidget( qobject_cast< QWidget* >( htmlEditor ) );
 
     ///preview:
     preview = new QWebView( tabPreview );
@@ -791,18 +798,22 @@ void BilboEditor::sltSyncEditors( int index )
 
     if ( index == 0 ) {
         doc->clear();
-        BilboTextHtmlImporter( doc, htmlEditor->toPlainText() ).import();
+//         BilboTextHtmlImporter( doc, htmlEditor->toPlainText() ).import();
+        BilboTextHtmlImporter( doc, htmlEditor->document()->text() ).import();
         editor->setTextCursor( QTextCursor( doc ) );
 
     } else if ( index == 1 ) {
-        htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
+//         htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
+        htmlEditor->document()->setText( htmlExp->toHtml( doc ) );
 
     } else {
         if ( prev_index == 1 ) {
             doc->clear();
-            BilboTextHtmlImporter( doc, htmlEditor->toPlainText() ).import();
+//             BilboTextHtmlImporter( doc, htmlEditor->toPlainText() ).import();
+            BilboTextHtmlImporter( doc, htmlEditor->document()->text() ).import();
         } else {
-            htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
+//             htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
+            htmlEditor->document()->setText( htmlExp->toHtml( doc ) );
         }
         QString baseUrl = "http://bilbo.gnufolks.org/";
 
@@ -810,9 +821,12 @@ void BilboEditor::sltSyncEditors( int index )
             baseUrl = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
         }
 
+//         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
+//                          currentPostTitle,
+//                          this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
                          currentPostTitle,
-                         this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
+                         htmlEditor->document()->text() ), QUrl( baseUrl ) );
     }
 
     prev_index = index;
@@ -842,13 +856,15 @@ QString BilboEditor::htmlContent()
         htmlExp->setDefaultCharFormat( this->defaultCharFormat );
         htmlExp->setDefaultBlockFormat( this->defaultBlockFormat );
 
-        htmlEditor->setPlainText( htmlExp->toHtml( editor->document() ) );
+//         htmlEditor->setPlainText( htmlExp->toHtml( editor->document() ) );
+        htmlEditor->document()->setText( htmlExp->toHtml( editor->document() ) );
         kDebug() << "setting Plain text done";
 
         delete htmlExp;
     }
 
-    QString htmlContent = htmlEditor->toPlainText();
+//     QString htmlContent = htmlEditor->toPlainText();
+    QString htmlContent = htmlEditor->document()->text();
     return htmlContent;
 }
 
@@ -861,7 +877,8 @@ void BilboEditor::setHtmlContent( const QString & content )
         BilboTextHtmlImporter( doc, content ).import();
     }
     this->editor->setTextCursor( QTextCursor( doc ) );
-    this->htmlEditor->setPlainText( content );
+//     this->htmlEditor->setPlainText( content );
+    this->htmlEditor->document()->setText( content );
 }
 
 void BilboEditor::setMediaList( QMap <QString, BilboMedia*> * list )
@@ -909,7 +926,8 @@ bool BilboEditor::updateMediaPaths()
         htmlExporter* htmlExp = new htmlExporter();
         htmlContent = htmlExp->toHtml( this->editor->document() );
     } else {
-        htmlContent = this->htmlEditor->toPlainText();
+//         htmlContent = this->htmlEditor->toPlainText();
+        htmlContent = htmlEditor->document()->text();
     }
 
     startIndex = htmlContent.indexOf( QRegExp( "<([^<>]*)\"file://" ), startIndex );
@@ -954,7 +972,8 @@ bool BilboEditor::updateMediaPaths()
             doc->clear();
             BilboTextHtmlImporter( doc, htmlContent ).import();
         } else {
-            this->htmlEditor->setPlainText( htmlContent );
+//             this->htmlEditor->setPlainText( htmlContent );
+            htmlEditor->document()->setText( htmlContent );
         }
     }
     return true;
@@ -988,9 +1007,12 @@ void BilboEditor::sltSetPostPreview()
         if ( __currentBlogId > -1 ) {
             baseUrl = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
         }
+//         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
+//                          currentPostTitle,
+//                          this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
                          currentPostTitle,
-                         this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
+                         htmlEditor->document()->text() ), QUrl( baseUrl ) );
 
 //         Q_EMIT sigShowStatusMessage( i18n( "The requested blog style set." ), false );
     }

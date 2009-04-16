@@ -37,6 +37,7 @@ class PostEntry;
 class SysTray;
 // class Backend;
 class BilboMedia;
+
 /**
 Main window of bilbo blogger implementation...
 
@@ -50,6 +51,8 @@ public:
     MainWindow();
 
     ~MainWindow();
+
+//     static KTextEditor::editor& htmlEditor();
 
 signals:
     void mediaFilesUploaded( int count );
@@ -126,5 +129,7 @@ private:
 
     KSelectAction *blogs;
     int &mCurrentBlogId;
+
+//     KTextEditor::Editor *mHtmlEditor;
 };
 #endif

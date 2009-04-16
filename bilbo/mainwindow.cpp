@@ -56,10 +56,12 @@
 #include <kimagefilepreview.h>
 #include <KDialog>
 
+
 #define TIMEOUT 5000
 
-MainWindow::MainWindow(): KXmlGuiWindow(),
-        tabPosts( new KTabWidget( this ) ), mCurrentBlogId(__currentBlogId)
+// MainWindow::MainWindow(): KXmlGuiWindow(),
+//         tabPosts( new KTabWidget( this ) ), mCurrentBlogId(__currentBlogId)
+MainWindow::MainWindow(): KXmlGuiWindow(), mCurrentBlogId(__currentBlogId)
 {
     kDebug();
     previousActivePostIndex = -1;
@@ -68,6 +70,8 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     busyNumber = 0;
     progress = 0;
     this->setWindowTitle( i18n("Bilbo Blogger") );
+
+    tabPosts = new KTabWidget( this );
     tabPosts->setElideMode( Qt::ElideRight );///TODO make this Optional!
     tabPosts->setTabCloseActivatePrevious( true );
     setCentralWidget( tabPosts );
