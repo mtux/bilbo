@@ -333,7 +333,8 @@ int DBMan::addPost( const BilboPost & post, int blog_id )
     q.addBindValue( post.content() );
     q.addBindValue( post.additionalContent() );
     q.addBindValue( post.creationDateTime().toString( KDateTime::ISODate ) );
-    q.addBindValue( post.modificationDateTime().toString( KDateTime::ISODate ) );
+    q.addBindValue( ( post.modificationDateTime().isNull() ? post.creationDateTime().toString( KDateTime::ISODate ) :
+                      post.modificationDateTime().toString( KDateTime::ISODate )) );
     q.addBindValue( post.isPrivate() );
     q.addBindValue( post.isCommentAllowed() );
     q.addBindValue( post.isTrackBackAllowed() );
@@ -934,7 +935,7 @@ QList< BilboPost* > DBMan::listPosts( int blog_id )
     QSqlQuery q;
     q.prepare( "SELECT id, postid, author, title, content, c_time, m_time, is_private, is_comment_allowed,\
                is_trackback_allowed, link, perma_link, summary, tags, status, text_more, slug\
-               FROM post WHERE blog_id = ? ORDER BY m_time DESC" );
+               FROM post WHERE blog_id = ? ORDER BY c_time DESC" );
     q.addBindValue( blog_id );
     if ( q.exec() ) {
         while ( q.next() ) {
@@ -1065,7 +1066,7 @@ QMap< int, QString > DBMan::listPostsTitle( int blog_id )
 {
     QMap< int, QString >list;
     QSqlQuery q;
-    q.prepare( "SELECT title, id FROM post WHERE blog_id = ? ORDER BY m_time DESC" );
+    q.prepare( "SELECT title, id FROM post WHERE blog_id = ? ORDER BY c_time DESC" );
     q.addBindValue( blog_id );
     if ( q.exec() ) {
         while ( q.next() ) {
@@ -1082,7 +1083,7 @@ QList<QVariantMap> DBMan::listPostsInfo( int blog_id )
 {
     QList<QVariantMap> list;
     QSqlQuery q;
-    q.prepare( "SELECT title, id, c_time, is_private FROM post WHERE blog_id = ? ORDER BY m_time DESC" );
+    q.prepare( "SELECT title, id, c_time, is_private FROM post WHERE blog_id = ? ORDER BY c_time DESC" );
     q.addBindValue( blog_id );
     if ( q.exec() ) {
         while ( q.next() ) {
