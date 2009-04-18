@@ -333,7 +333,7 @@ int DBMan::addPost( const BilboPost & post, int blog_id )
     q.addBindValue( post.content() );
     q.addBindValue( post.additionalContent() );
     q.addBindValue( post.creationDateTime().toString( KDateTime::ISODate ) );
-    q.addBindValue( post.creationDateTime().toString( KDateTime::ISODate ) );
+    q.addBindValue( post.modificationDateTime().toString( KDateTime::ISODate ) );
     q.addBindValue( post.isPrivate() );
     q.addBindValue( post.isCommentAllowed() );
     q.addBindValue( post.isTrackBackAllowed() );
