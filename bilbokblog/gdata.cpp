@@ -500,9 +500,6 @@ bool GDataPrivate::authenticate()
        mAuthenticationString.isEmpty() ) {
     KIO::Job *job = KIO::http_post( authGateway, QByteArray(), KIO::HideProgressInfo );
     if ( KIO::NetAccess::synchronousRun( job, (QWidget*)0, &data, &authGateway ) ) {
-      kDebug() << "Fetched authentication result for"
-                   << authGateway.prettyUrl() << ".";
-      kDebug() << "Authentication response:" << data;
       QRegExp rx( "Auth=(.+)" );
       if ( rx.indexIn( data ) != -1 ) {
         kDebug() << "RegExp got authentication string:" << rx.cap(1);
