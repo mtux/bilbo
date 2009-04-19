@@ -28,7 +28,11 @@
 
 class QTextCharFormat;
 class QWebView;
-class QPlainTextEdit;
+// class QPlainTextEdit;
+namespace KTextEditor
+{ 
+    class View;
+}
 
 class KAction;
 class KToolBar;
@@ -273,7 +277,8 @@ private:
     QWidget *tabPreview;
 
     MultiLineTextEdit *editor;
-    QPlainTextEdit *htmlEditor;
+//     QPlainTextEdit *htmlEditor;
+    KTextEditor::View *htmlEditor;
     QWebView *preview;
 
     KToolBar *barVisual;

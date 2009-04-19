@@ -8,6 +8,7 @@ SET(QT_USE_QTWEBKIT 1)
 # add_subdirectory(bilbomarkupbuilders)
 
 set(bilbo_SRCS
+ htmleditor.cpp
  stylegetter.cpp
  bilbocssparser.cpp
  bilbohtmlparser.cpp
@@ -58,7 +59,9 @@ kde4_add_ui_files(
 kde4_add_kcfg_files( bilbo_SRCS settings.kcfgc)
 kde4_add_executable( bilbo ${bilbo_SRCS})
 
-target_link_libraries( bilbo ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} bilbokblog)
+#target_link_libraries( bilbo ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} bilbokblog)
+
+target_link_libraries( bilbo ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} ${KDE4_KTEXTEDITOR_LIBS} bilbokblog)
 
 # target_link_libraries( bilbo bilbomarkupbuilders ${KDE4_KBLOG_LIBS} ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY})
 

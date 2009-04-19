@@ -31,6 +31,7 @@
 #include "bilboblog.h"
 #include "multilinetextedit.h"
 #include "blogsettings.h"
+#include "htmleditor.h"
 
 #include "ui_advancedsettingsbase.h"
 #include "ui_settingsbase.h"
@@ -56,10 +57,12 @@
 #include <kimagefilepreview.h>
 #include <KDialog>
 
+
 #define TIMEOUT 5000
 
-MainWindow::MainWindow(): KXmlGuiWindow(),
-        tabPosts( new KTabWidget( this ) ), mCurrentBlogId(__currentBlogId)
+// MainWindow::MainWindow(): KXmlGuiWindow(),
+//         tabPosts( new KTabWidget( this ) ), mCurrentBlogId(__currentBlogId)
+MainWindow::MainWindow(): KXmlGuiWindow(), mCurrentBlogId(__currentBlogId)
 {
     kDebug();
     previousActivePostIndex = -1;
@@ -68,6 +71,8 @@ MainWindow::MainWindow(): KXmlGuiWindow(),
     busyNumber = 0;
     progress = 0;
     this->setWindowTitle( i18n("Bilbo Blogger") );
+
+    tabPosts = new KTabWidget( this );
     tabPosts->setElideMode( Qt::ElideRight );///TODO make this Optional!
     tabPosts->setTabCloseActivatePrevious( true );
     setCentralWidget( tabPosts );
@@ -285,6 +290,9 @@ void MainWindow::optionsPreferences()
     advancedSettingsDlg->setAttribute( Qt::WA_DeleteOnClose );
     Ui::AdvancedSettingsBase ui_advancedsettings_base;
     ui_advancedsettings_base.setupUi( advancedSettingsDlg );
+
+//     QWidget *htmlEditorSettings = HtmlEditor::self()->configPage( 0, dialog );
+//     dialog->addPage( htmlEditorSettings, i18n( "Html Editor" ), "configure" );
     dialog->addPage( generalSettingsDlg, i18n( "General" ), "configure" );
     dialog->addPage( blogSettingsDlg, i18n( "Blogs" ), "document-properties");
     dialog->addPage( editorSettingsDlg, i18n( "Editor" ), "accessories-text-editor" );
