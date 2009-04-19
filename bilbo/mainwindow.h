@@ -34,7 +34,7 @@ class QToolButton;
 class Toolbox;
 class KSelectAction;
 class PostEntry;
-class SysTray;
+class KSystemTrayIcon;
 // class Backend;
 class BilboMedia;
 
@@ -118,7 +118,7 @@ private:
     Toolbox *toolbox;
     QDockWidget *toolboxDock;
     PostEntry *activePost;
-    SysTray *systemTray;
+    KSystemTrayIcon *systemTray;
     KTabWidget *tabPosts;
 
     QToolButton *btnRemovePost;

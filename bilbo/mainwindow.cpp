@@ -28,7 +28,6 @@
 #include "backend.h"
 #include "bilbomedia.h"
 #include "settings.h"
-#include "systray.h"
 #include "bilboblog.h"
 #include "multilinetextedit.h"
 #include "blogsettings.h"
@@ -39,6 +38,7 @@
 #include "ui_editorsettingsbase.h"
 
 #include <ktabwidget.h>
+#include <ksystemtrayicon.h>
 #include <kstatusbar.h>
 #include <kaction.h>
 #include <KToggleAction>
@@ -365,8 +365,9 @@ void MainWindow::slotBlogRemoved( int blog_id )
 
 void MainWindow::setupSystemTray()
 {
-    systemTray = new SysTray( this );
-//     systemTray->actionCollection()->addAction( "new_post", this->actNewPost );
+    systemTray = new KSystemTrayIcon( this );
+    systemTray->setIcon(this->windowIcon());
+    systemTray->setToolTip( i18n("Bilbo Blogger") );
     systemTray->contextMenu()->addAction( actionCollection()->action("new_post") );
     systemTray->show();
 }

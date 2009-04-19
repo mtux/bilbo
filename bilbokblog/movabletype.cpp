@@ -240,7 +240,7 @@ void MovableType::setPostCategories(const QString &postId, const QMap<QString, b
   xmlMarkup += "<methodCall>";
   xmlMarkup += "<methodName>mt.setPostCategories</methodName>";
   xmlMarkup += "<params><param>";
-  xmlMarkup += "<value><int><![CDATA["+postId+"]]></int></value>";
+  xmlMarkup += "<value><string><![CDATA["+postId+"]]></string></value>";
   xmlMarkup += "</param>";
   xmlMarkup += "<param>";
   xmlMarkup += "<value><string><![CDATA["+username()+"]]></string></value>";
@@ -252,11 +252,11 @@ void MovableType::setPostCategories(const QString &postId, const QMap<QString, b
   QMap<QString, bool>::ConstIterator it = categoriesList.constBegin();
   QMap<QString, bool>::ConstIterator end = categoriesList.constEnd();
   for ( ; it != end; ++it ){
-    xmlMarkup += "<value><struct><member><name>categoryId</name><value><int><![CDATA[" +
-    ( it.key() ) + "]]></int></value></member>";
+    xmlMarkup += "<value><struct><member><name>categoryId</name><value><string><![CDATA[" +
+    ( it.key() ) + "]]></string></value></member>";
     xmlMarkup += "<member><name>isPrimary</name><value><boolean><![CDATA[" +
     ( QString::number(QVariant(it.value()).toInt()) ) +
-                 "]]></boolean></value></member></struct></value>";
+                 "]]></boolean></value></member>""</struct></value>";
   }
 
   xmlMarkup += "</data></array></value></param></params></methodCall>";

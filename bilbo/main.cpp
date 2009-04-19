@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 #include "mainwindow.h"
-#include <kapplication.h>
+#include <kuniqueapplication.h>
 #include "global.h"
 #include "constants.h"
 #include "settings.h"
@@ -49,8 +49,8 @@ int main( int argc, char *argv[] )
     KCmdLineArgs::init( argc, argv, &about );
 //     KCmdLineOptions options;
 
-    KApplication app;
-
+    KUniqueApplication app;
+    app.setQuitOnLastWindowClosed(false);
     global_init();
 
     MainWindow *bilbo = new MainWindow;
