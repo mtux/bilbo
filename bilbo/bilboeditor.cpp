@@ -58,7 +58,7 @@ BilboEditor::BilboEditor( QWidget *parent )
 {
     createUi();
     connect( editor, SIGNAL( textChanged() ), this, SIGNAL( textChanged() ) );
-    connect( htmlEditor->document(), SIGNAL( textChanged() ), this, SIGNAL( textChanged() ) );
+    connect( htmlEditor->document(), SIGNAL( textChanged( KTextEditor::Document * ) ), this, SIGNAL( textChanged() ) );
 //     connect( qobject_cast< QObject* >( htmlEditor->document() ), 
 //              SIGNAL( textChanged() ), this, SIGNAL( textChanged() ) );
     editor->setFocus();
@@ -123,7 +123,7 @@ void BilboEditor::createUi()
 
     ///htmlEditor:
 //     htmlEditor = new QPlainTextEdit( tabHtml );
-    htmlEditor = HtmlEditor::self()->createView();
+    htmlEditor = HtmlEditor::self()->createView( tabHtml );
     QGridLayout *hLayout = new QGridLayout( tabHtml );
     hLayout->addWidget( qobject_cast< QWidget* >( htmlEditor ) );
 

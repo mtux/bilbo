@@ -22,27 +22,38 @@
 #ifndef HTMLEDITOR_H
 #define HTMLEDITOR_H
 
+#include <QObject>
 #include <QString>
 
+class KAction;
 namespace KTextEditor 
 {
     class Editor;
     class View;
 }
+class QWidget;
+class QMenu;
 class HtmlEditorPrivate;
 
 /**
     @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
     @author Golnaz Nilieh <g382nilieh@gmail.com>
 */
-class HtmlEditor
+class HtmlEditor : public QObject
 {
+    Q_OBJECT
 public:
     static HtmlEditor* self();
 
-    KTextEditor::View* createView();
+    KTextEditor::View* createView( QWidget* parent );
 
-    void setContent( KTextEditor::View* view, const QString &text );
+//     void setContent( KTextEditor::View* view, const QString &text );
+
+    QWidget* configPage( int number, QWidget* parent);
+
+private slots:
+    void toggleWordWrap();
+    void toggleLineNumber();
 
 private:
     friend class HtmlEditorPrivate;
@@ -50,9 +61,7 @@ private:
 
     ~HtmlEditor();
 
-//     static HtmlEditor* mSelf;
     KTextEditor::Editor* mEditor;
-
 };
 
 #endif
