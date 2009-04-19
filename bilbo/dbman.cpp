@@ -43,7 +43,7 @@ DBMan::DBMan()
         kDebug() << "Wallet successfully opened.";
     } else {
         useWallet = false;
-        kDebug() << "Could not use Wallet service";
+        kDebug() << "Could not use Wallet service, will use database to store passwords";
     }
 
     if ( !QFile::exists( CONF_DB ) ) {
@@ -91,13 +91,15 @@ void DBMan::reloadBlogList()
 bool DBMan::connectDB()
 {
     kDebug();
+    if( db.isOpen() )
+        return true;
     db = QSqlDatabase::addDatabase( "QSQLITE" );
     db.setDatabaseName( CONF_DB );
 
     if ( !db.open() ) {
         KMessageBox::detailedError( 0, i18n( "Cannot connect to database" ),
                                     i18n( db.lastError().text().toUtf8().data() ) );
-        kDebug() << "Cannot connect to database, SQL error: " << db.lastError().text() << endl;
+        kDebug() << "Cannot connect to database, SQL error: " << db.lastError().text();
         return false;
     }
     return true;

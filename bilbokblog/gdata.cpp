@@ -546,8 +546,8 @@ void GDataPrivate::slotFetchProfileId( KJob *job )
       emit q->fetchedProfileId( QString() );
     }
   } else {
-    kError() << "Could not fetch the homepage data.";
-    emit q->error( GData::Other, i18n( "Could not fetch the homepage data." ) );
+    kError() << "Job Error: "<<job->errorString();
+    emit q->error( GData::Other, job->errorString() );
     emit q->fetchedProfileId( QString() );
   }
   mFetchProfileIdBuffer[ job ].resize( 0 );
