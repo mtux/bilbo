@@ -50,7 +50,7 @@ static const char  POST_CONTENT[] = "Temporary-Post-Used-For-Style-Detection-Con
 StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
 {
     kDebug();
-    BilboBlog tempBlog = DBMan::self()->getBlogInfo( blogid );
+    BilboBlog tempBlog = DBMan::self()->blog( blogid );
     if ( tempBlog.isError() ) {
         KMessageBox::detailedError( mParent, i18n( "Can not fetch the selected blog style."),
                             DBMan::self()->lastErrorText()  );
@@ -154,7 +154,7 @@ void StyleGetter::sltTempPostPublished( int blogId, BilboPost* post )
         postUrl = post->link();
         if ( postUrl.isEmpty() ) {
             kDebug() << "link was empty";
-            postUrl = KUrl( DBMan::self()->getBlogInfo(blogId).blogUrl() );
+            postUrl = KUrl( DBMan::self()->blog(blogId).blogUrl() );
         }
     }
 

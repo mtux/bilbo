@@ -818,7 +818,7 @@ void BilboEditor::sltSyncEditors( int index )
         QString baseUrl = "http://bilbo.gnufolks.org/";
 
         if ( __currentBlogId > -1 ) {
-            baseUrl = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
+            baseUrl = DBMan::self()->blog( __currentBlogId ).blogUrl();
         }
 
 //         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
@@ -1005,7 +1005,7 @@ void BilboEditor::sltSetPostPreview()
 
         QString baseUrl = "http://bilbo.gnufolks.org/";
         if ( __currentBlogId > -1 ) {
-            baseUrl = DBMan::self()->getBlogInfo( __currentBlogId ).blogUrl();
+            baseUrl = DBMan::self()->blog( __currentBlogId ).blogUrl();
         }
 //         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
 //                          currentPostTitle,

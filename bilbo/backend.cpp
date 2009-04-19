@@ -43,7 +43,7 @@
 Backend::Backend( int blog_id, QObject* parent ): QObject( parent )
 {
     kDebug() << "with blog id: " << blog_id;
-    mBBlog = new BilboBlog( DBMan::self()->getBlogInfo( blog_id ) );
+    mBBlog = new BilboBlog( DBMan::self()->blog( blog_id ) );
     switch ( mBBlog->api() ) {
         case BilboBlog::BLOGGER1_API:
             mKBlog = new KBlog::Blogger1( KUrl(), this );
