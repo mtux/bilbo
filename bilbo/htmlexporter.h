@@ -51,7 +51,8 @@ public:
 
 private:
     enum StyleMode { EmitStyleTag, OmitStyleTag };
-    enum tag { span = 0, h1, h2, h3, h4, h5, strong, em, s, u, code, sub, sup };
+//     enum tag { span = 0, h1, h2, h3, h4, h5, strong, em, s, u, code, sub, sup };
+    enum tag { span = 0, strong, em, s, u, code, sub, sup };
 
     void emitFrame( QTextFrame::Iterator frameIt );
     void emitTable( const QTextTable *table );

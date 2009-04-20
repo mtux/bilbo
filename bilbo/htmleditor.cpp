@@ -88,6 +88,9 @@ KTextEditor::View* HtmlEditor::createView( QWidget* parent )
 
         menu->addSeparator();
         menu->addMenu( options );
+        
+        interface->setConfigValue( "dynamic-word-wrap", true );
+        actWordWrap->setChecked( true );
     }
     view->setContextMenu( menu );
     return view;

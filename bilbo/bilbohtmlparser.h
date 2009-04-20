@@ -229,6 +229,8 @@ uint displayMode :
 
     WhiteSpaceMode wsm;
 
+    int htmlHeading;  ///my code
+
     bool isHtmlTagSign;  ///my code
 
     inline bool isNotSelfNesting() const {

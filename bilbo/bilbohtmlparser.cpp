@@ -434,7 +434,7 @@ BilboTextHtmlParserNode::BilboTextHtmlParserNode()
         listStyle( QTextListFormat::ListStyleUndefined ), imageWidth( -1 ), imageHeight( -1 ),
         tableBorder( 0 ), tableCellRowSpan( 1 ), tableCellColSpan( 1 ), tableCellSpacing( 2 ),
         tableCellPadding( 0 ), cssBlockIndent( 0 ), cssListIndent( 0 ), text_indent( 0 ), 
-        wsm( WhiteSpaceModeUndefined ), isHtmlTagSign( false )
+        wsm( WhiteSpaceModeUndefined ), htmlHeading( 0 ), isHtmlTagSign( false )
 {
     margin[BilboTextHtmlParser::MarginLeft] = 0;
     margin[BilboTextHtmlParser::MarginRight] = 0;
@@ -487,7 +487,9 @@ QTextCharFormat BilboTextHtmlParserNode::charFormat() const
         format.setProperty( BilboTextFormat::AnchorTitle, QVariant( anchorTitle ) ); ///my code
         format.setProperty( BilboTextFormat::AnchorTarget, QVariant( anchorTarget ) ); ///my code
     }
-
+    if ( htmlHeading ) {
+        format.setProperty( BilboTextFormat::HtmlHeading, QVariant( htmlHeading ) );  ///my code
+    }
     return format;
 }
 
@@ -508,7 +510,10 @@ QTextBlockFormat BilboTextHtmlParserNode::blockFormat() const
 
     if ( pageBreakPolicy != QTextFormat::PageBreak_Auto )
         format.setPageBreakPolicy( pageBreakPolicy );
-
+    
+    if ( htmlHeading ) {
+        format.setProperty( BilboTextFormat::HtmlHeading, QVariant( htmlHeading ) );
+    }
     return format;
 }
 
@@ -537,6 +542,9 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
     if ( parent->id != Html_table ) {
         alignment = parent->alignment;
     }
+
+    htmlHeading = parent->htmlHeading;   ///my code
+
     // we don't paint per-row background colors, yet. so as an
     // exception inherit the background color here
     if ( parent->id == Html_tr && isTableCell ) {
@@ -596,6 +604,8 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
             fontWeight = QFont::Bold;
             break;
         case Html_h1:
+            htmlHeading = 1;   ///my code
+
             fontWeight = QFont::Bold;
             fontSizeAdjustment = 3;
             hasFontSizeAdjustment = true;
@@ -603,6 +613,8 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
             margin[BilboTextHtmlParser::MarginBottom] = 12;
             break;
         case Html_h2:
+            htmlHeading = 2;   ///my code
+
             fontWeight = QFont::Bold;
             fontSizeAdjustment = 2;
             hasFontSizeAdjustment = true;
@@ -610,6 +622,8 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
             margin[BilboTextHtmlParser::MarginBottom] = 12;
             break;
         case Html_h3:
+            htmlHeading = 3;   ///my code
+
             fontWeight = QFont::Bold;
             fontSizeAdjustment = 1;
             hasFontSizeAdjustment = true;
@@ -617,6 +631,8 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
             margin[BilboTextHtmlParser::MarginBottom] = 12;
             break;
         case Html_h4:
+            htmlHeading = 4;   ///my code
+
             fontWeight = QFont::Bold;
             fontSizeAdjustment = 0;
             hasFontSizeAdjustment = true;
@@ -624,12 +640,25 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
             margin[BilboTextHtmlParser::MarginBottom] = 12;
             break;
         case Html_h5:
+            htmlHeading = 5;   ///my code
+
             fontWeight = QFont::Bold;
             fontSizeAdjustment = -1;
             hasFontSizeAdjustment = true;
-            margin[BilboTextHtmlParser::MarginTop] = 12;
-            margin[BilboTextHtmlParser::MarginBottom] = 4;
+//             margin[BilboTextHtmlParser::MarginTop] = 12;
+//             margin[BilboTextHtmlParser::MarginBottom] = 4;
+            margin[BilboTextHtmlParser::MarginTop] = 10;
+            margin[BilboTextHtmlParser::MarginBottom] = 12;
             break;
+        case Html_h6:   ///my code
+            htmlHeading = 6;   ///my code
+
+            fontWeight = QFont::Bold;   ///my code
+            fontSizeAdjustment = -2;   ///my code
+            hasFontSizeAdjustment = true;   ///my code
+            margin[BilboTextHtmlParser::MarginTop] = 8;   ///my code
+            margin[BilboTextHtmlParser::MarginBottom] = 12;   ///my code
+            break;   ///my code
         case Html_p:
             margin[BilboTextHtmlParser::MarginTop] = 12;
             margin[BilboTextHtmlParser::MarginBottom] = 12;

@@ -139,6 +139,8 @@ protected Q_SLOTS:
     void sltToggleSpellChecking();
 
     void sltSyncSpellCheckingButton( bool check );
+    
+    void sltSetTextBold( bool bold );
 
     /*!
     Changes the current text font into Courier fontfamily, to represent code style.

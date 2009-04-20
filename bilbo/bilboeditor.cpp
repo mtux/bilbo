@@ -84,6 +84,7 @@ void BilboEditor::createUi()
 
     ///editor:
     editor = new MultiLineTextEdit( tabVisual );
+    editor->enableFindReplace( true );
     connect( editor, SIGNAL( sigRemoteImageArrived( const KUrl ) ), this, 
              SLOT( sltReloadImage( const KUrl ) ) );
     connect( editor, SIGNAL( sigMediaTypeFound( BilboMedia* ) ), this, 
@@ -183,7 +184,7 @@ void BilboEditor::createActions()
                           "Bold (Ctrl+b)" ), this );
     actBold->setShortcut( Qt::CTRL + Qt::Key_B );
     actBold->setCheckable( true );
-    connect( actBold, SIGNAL( triggered( bool ) ), editor, SLOT( setTextBold( bool ) ) );
+    connect( actBold, SIGNAL( triggered( bool ) ), this, SLOT( sltSetTextBold( bool ) ) );
     barVisual->addAction( actBold );
 
     actItalic = new KAction( KIcon( "format-text-italic" ), i18nc( 
@@ -230,10 +231,9 @@ void BilboEditor::createActions()
     connect( actColorSelect, SIGNAL( triggered( bool ) ), this, SLOT( sltSelectColor() ) );
     barVisual->addAction( actColorSelect );
 
-    actRemoveFormatting = new KAction( KIcon( "draw-eraser" ), i18nc( 
-                                       "Remove formatting, and its shortcut is (Ctrl+r)",
-                                       "Remove formatting (Ctrl+r)" ), this );
-    actRemoveFormatting->setShortcut( Qt::CTRL + Qt::Key_R );
+    actRemoveFormatting = new KAction( KIcon( "draw-eraser" ), i18n( 
+                                       "Remove formatting" ), this );
+//     actRemoveFormatting->setShortcut( Qt::CTRL + Qt::Key_R );
     connect( actRemoveFormatting, SIGNAL( triggered( bool ) ), this, SLOT( sltRemoveFormatting() ) );
     barVisual->addAction( actRemoveFormatting );
 
@@ -319,6 +319,13 @@ void BilboEditor::sltSyncSpellCheckingButton( bool check )
     actCheckSpelling->setChecked( check );
 }
 
+void BilboEditor::sltSetTextBold( bool bold )
+{
+    if ( !editor->textCursor().blockFormat().hasProperty( BilboTextFormat::HtmlHeading ) ) {
+        editor->setTextBold( bold );
+    }
+}
+
 void BilboEditor::sltToggleCode()
 {
     //TODO
@@ -334,22 +341,26 @@ void BilboEditor::sltToggleCode()
 
 void BilboEditor::sltFontSizeIncrease()
 {
-    QTextCharFormat format;
-    int idx = editor->currentCharFormat().intProperty( QTextFormat::FontSizeAdjustment );
-    if ( idx < 3 ) {
-        format.setProperty( QTextFormat::FontSizeAdjustment, QVariant( ++idx ) );
-        editor->textCursor().mergeCharFormat( format );
+    if ( !editor->textCursor().blockFormat().hasProperty( BilboTextFormat::HtmlHeading ) ) {
+        QTextCharFormat format;
+        int idx = editor->currentCharFormat().intProperty( QTextFormat::FontSizeAdjustment );
+        if ( idx < 3 ) {
+            format.setProperty( QTextFormat::FontSizeAdjustment, QVariant( ++idx ) );
+            editor->textCursor().mergeCharFormat( format );
+        }
     }
     editor->setFocus( Qt::OtherFocusReason );
 }
 
 void BilboEditor::sltFontSizeDecrease()
 {
-    QTextCharFormat format;
-    int idx = editor->currentCharFormat().intProperty( QTextFormat::FontSizeAdjustment );
-    if ( idx > -1 ) {
-        format.setProperty( QTextFormat::FontSizeAdjustment, QVariant( --idx ) );
-        editor->textCursor().mergeCharFormat( format );
+    if ( !editor->textCursor().blockFormat().hasProperty( BilboTextFormat::HtmlHeading ) ) {
+        QTextCharFormat format;
+        int idx = editor->currentCharFormat().intProperty( QTextFormat::FontSizeAdjustment );
+        if ( idx > -1 ) {
+            format.setProperty( QTextFormat::FontSizeAdjustment, QVariant( --idx ) );
+            editor->textCursor().mergeCharFormat( format );
+        }
     }
     editor->setFocus( Qt::OtherFocusReason );
 }
@@ -426,7 +437,14 @@ void BilboEditor::sltSelectColor()
 
 void BilboEditor::sltRemoveFormatting()
 {
-    editor->textCursor().mergeCharFormat( defaultCharFormat );
+    QTextCharFormat format = defaultCharFormat;
+    if ( editor->textCursor().blockFormat().hasProperty( BilboTextFormat::HtmlHeading ) ) {
+        format.setProperty( QTextFormat::FontSizeAdjustment, QVariant( 
+               editor->textCursor().charFormat().intProperty(
+               QTextFormat::FontSizeAdjustment ) ) );
+        format.setFontWeight( editor->textCursor().charFormat().fontWeight() );
+    }
+    editor->textCursor().mergeCharFormat( format );
     editor->setFocus( Qt::OtherFocusReason );
 }
 

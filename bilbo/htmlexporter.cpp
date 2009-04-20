@@ -282,7 +282,8 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
         html += QString::number( format.fontPointSize() );
         html += QLatin1String( "pt;" );
         attributesEmitted = true;
-    } else if ( format.hasProperty( QTextFormat::FontSizeAdjustment ) ) {
+    } else if ( format.hasProperty( QTextFormat::FontSizeAdjustment ) && 
+               !format.hasProperty( BilboTextFormat::HtmlHeading ) ) {
 
         ///To use <h1-5> tags for font size
 //         const int idx = format.intProperty(QTextFormat::FontSizeAdjustment) + 1;
@@ -296,7 +297,6 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
 //         }
 
         ///To use <span> tags for font size
-
         static const char * const sizeNames[] = {
             "small", "medium", "large", "x-large", "xx-large"
         };
@@ -321,7 +321,8 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
 
 //    if (format.fontWeight() > defaultCharFormat.fontWeight()) {
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-    if ( format.fontWeight() > mDefaultCharFormat.fontWeight() ) {
+    if ( format.fontWeight() > mDefaultCharFormat.fontWeight() && 
+        !format.hasProperty( BilboTextFormat::HtmlHeading )  ) {
         tags << strong;
         /*if (! attributesEmitted ) html += styleTag;
         html += QLatin1String(" font-weight:");
@@ -628,21 +629,21 @@ void htmlExporter::emitFragment( const QTextFragment &fragment )
         switch ( tags.at( i ) ) {
             case span:
                 break; //Jump
-            case h1:
-                html += QLatin1String( "<h1>" );
-                break;
-            case h2:
-                html += QLatin1String( "<h2>" );
-                break;
-            case h3:
-                html += QLatin1String( "<h3>" );
-                break;
-            case h4:
-                html += QLatin1String( "<h4>" );
-                break;
-            case h5:
-                html += QLatin1String( "<h5>" );
-                break;
+//             case h1:
+//                 html += QLatin1String( "<h1>" );
+//                 break;
+//             case h2:
+//                 html += QLatin1String( "<h2>" );
+//                 break;
+//             case h3:
+//                 html += QLatin1String( "<h3>" );
+//                 break;
+//             case h4:
+//                 html += QLatin1String( "<h4>" );
+//                 break;
+//             case h5:
+//                 html += QLatin1String( "<h5>" );
+//                 break;
             case strong:
                 html += QLatin1String( "<strong>" );
                 break;
@@ -744,21 +745,21 @@ void htmlExporter::emitFragment( const QTextFragment &fragment )
             case span:
                 html += QLatin1String( "</span>" );
                 break; //Jump
-            case h1:
-                html += QLatin1String( "</h1>" );
-                break;
-            case h2:
-                html += QLatin1String( "</h2>" );
-                break;
-            case h3:
-                html += QLatin1String( "</h3>" );
-                break;
-            case h4:
-                html += QLatin1String( "</h4>" );
-                break;
-            case h5:
-                html += QLatin1String( "</h5>" );
-                break;
+//             case h1:
+//                 html += QLatin1String( "</h1>" );
+//                 break;
+//             case h2:
+//                 html += QLatin1String( "</h2>" );
+//                 break;
+//             case h3:
+//                 html += QLatin1String( "</h3>" );
+//                 break;
+//             case h4:
+//                 html += QLatin1String( "</h4>" );
+//                 break;
+//             case h5:
+//                 html += QLatin1String( "</h5>" );
+//                 break;
             case strong:
                 html += QLatin1String( "</strong>" );
                 break;
@@ -884,30 +885,15 @@ void htmlExporter::emitBlockAttributes( const QTextBlock &block )
 
 void htmlExporter::emitBlock( const QTextBlock &block )
 {
-//     kDebug() << "html" << html;
-    /*    if (block.begin().atEnd()) {
-            // ### HACK, remove once QTextFrame::Iterator is fixed
-            int p = block.position();
-            if (p > 0)
-                --p;
-            QTextDocumentPrivate::FragmentIterator frag = doc->docHandle()->find(p);
-            QChar ch = doc->docHandle()->buffer().at(frag->stringPosition);
-            if (ch == QTextBeginningOfFrame
-                || ch == QTextEndOfFrame)
-                return;
-        }
-    */
-    //html += QLatin1Char('\n');
-
     // save and later restore, in case we 'change' the default format by
     // emitting block char format information
 
     // NOTE the bottom line is commented, to use default charFormat, which can be set from outside.
     //QTextCharFormat oldDefaultCharFormat = defaultCharFormat;
 
+    QString blockTag;
     QTextList *list = block.textList();
     if ( list ) {
-//   qDebug() << "list exists" << endl;
         if ( list->itemNumber( block ) == 0 ) { // first item? emit <ul> or appropriate
 //    qDebug() << "first item" << endl;
             const QTextListFormat format = list->format();
@@ -944,19 +930,8 @@ void htmlExporter::emitBlock( const QTextBlock &block )
 
             html += QLatin1Char( '>' );
         }
-
-//         html += QLatin1String( "<li>" );
-        html += QLatin1String( "<li " );
-        /*
-                const QTextCharFormat blockFmt = formatDifference(defaultCharFormat, block.charFormat()).toCharFormat();
-                if (!blockFmt.properties().isEmpty()) {
-                    html += QLatin1String(" style=\"");
-                    emitCharFormatStyle(blockFmt);
-                    html += QLatin1Char('\"');
-         
-                    //defaultCharFormat.merge(block.charFormat());
-                }
-         html += QLatin1Char('>');*/
+        blockTag = QLatin1String( "li" );
+//         html += QLatin1String( "<li " );
     }
 
     const QTextBlockFormat blockFormat = block.blockFormat();
@@ -986,49 +961,68 @@ void htmlExporter::emitBlock( const QTextBlock &block )
 //         if (list) {
 //             html += QLatin1Char('>');
 //   }
-        html += QLatin1String( "<pre" );
-        emitBlockAttributes( block );
-        html += QLatin1Char( '>' );
+//         html += QLatin1String( "<pre" );
+//         emitBlockAttributes( block );
+//         html += QLatin1Char( '>' );
+        blockTag = QLatin1String( "pre" );
 
     } else {
-        if (list) {
-//         html += QLatin1Char('>');
-//             html += QLatin1String( "<div" );
-        } else {
-            //html += QLatin1String("<div");
-            html += QLatin1String( "<p" );
+        if (!list) {
+            if ( blockFormat.hasProperty( BilboTextFormat::HtmlHeading ) ) {
+                const int index = blockFormat.intProperty( BilboTextFormat::HtmlHeading );
+                blockTag = QLatin1Char( 'h' ) + QString::number( index );
+            } else {
+                //html += QLatin1String("<div");
+//                 html += QLatin1String( "<p" );
+                blockTag = QLatin1String( "p" );
+            }
         }
-        emitBlockAttributes( block );
-        html += QLatin1Char( '>' );
     }
-    /*
-        const QTextCharFormat blockCharFmt = block.charFormat();
-        const QTextCharFormat diff = formatDifference(defaultCharFormat, blockCharFmt).toCharFormat();
-     
-         defaultCharFormat.merge(blockCharFmt);
-    */
+    html += QLatin1Char( '<' ) + blockTag;
+    emitBlockAttributes( block );
+    html += QLatin1Char( '>' );
+
     QTextBlock::Iterator it = block.begin();
 
     for ( ; !it.atEnd(); ++it ) {
-//   qDebug() << "next for" << endl;
         emitFragment( it.fragment() );
     }
 
-    //qDebug() << html << endl;
-    if ( pre ) {
-        html += QLatin1String( "</pre>\n" );
-    } else {
-//   if ( ! (html.right(7).contains(QRegExp("<br[\\s]*/>[\\n]*"))) ) {
-//          html += QLatin1String("<br />");//"</p>");
-//   }
-        //html += QLatin1String("</div>");
-//         html += QLatin1String( "</p>" );
-        if ( list ) {
-            html += QLatin1String( "</li>\n" );
-        } else {
-            html += QLatin1String( "</p>\n" );
-        }
-    }
+    html += QLatin1String( "</" ) + blockTag + QLatin1String( ">\n" );
+
+//     if ( pre ) {
+//         html += QLatin1String( "</pre>\n" );
+//     } else {
+//         if ( list ) {
+//             html += QLatin1String( "</li>\n" );
+//         } else {
+//             if ( blockFormat::boolProperty( BilboTextFormat::IsHtmlHeading ) ) {
+//                 const int index = format.intProperty( QTextFormat::FontSizeAdjustment );
+//                 switch ( index ) {
+//                     case -2:
+//                        html += QLatin1String( "</h6>" );
+//                        break;
+//                     case -1:
+//                        html += QLatin1String( "</h5>" );
+//                        break;
+//                     case 0:
+//                        html += QLatin1String( "</h4>" );
+//                        break;
+//                     case 1:
+//                        html += QLatin1String( "</h3>" );
+//                        break;
+//                     case 2:
+//                        html += QLatin1String( "<h2" );
+//                        break;
+//                     case 3:
+//                        html += QLatin1String( "<h1" );
+//                        break;
+//                 }
+//             } else {
+//                 html += QLatin1String( "</p>\n" );
+//             }
+//         }
+//     }
     // HACK html.replace( QRegExp("<br[\\s]*/>[\\n]*<br[\\s]*/>[\\n]*"),"<br />&nbsp;<br />" );
 
     if ( list ) {
@@ -1043,7 +1037,6 @@ void htmlExporter::emitBlock( const QTextBlock &block )
 
     // NOTE the bottom line is commented, to use default charFormat, which can be set from outside.
     //defaultCharFormat = oldDefaultCharFormat;
-    //qDebug() << html << endl;
 }
 
 QTextFormat htmlExporter::formatDifference( const QTextFormat &from, const QTextFormat &to )
