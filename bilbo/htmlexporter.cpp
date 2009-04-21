@@ -968,7 +968,8 @@ void htmlExporter::emitBlock( const QTextBlock &block )
 
     } else {
         if (!list) {
-            if ( blockFormat.hasProperty( BilboTextFormat::HtmlHeading ) ) {
+            if ( ( blockFormat.hasProperty( BilboTextFormat::HtmlHeading ) ) && (
+                blockFormat.intProperty( BilboTextFormat::HtmlHeading ) ) ) {
                 const int index = blockFormat.intProperty( BilboTextFormat::HtmlHeading );
                 blockTag = QLatin1Char( 'h' ) + QString::number( index );
             } else {

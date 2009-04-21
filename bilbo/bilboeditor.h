@@ -38,6 +38,7 @@ class KAction;
 class KToolBar;
 class KListWidget;
 class KPushButton;
+class KSelectAction;
 
 class MultiLineTextEdit;
 class AddEditLink;
@@ -148,6 +149,14 @@ protected Q_SLOTS:
      */
     void sltToggleCode();
 
+    /**
+     * Changes the current paragraph format into Heading type or simple pargraph
+     * type, according to the given parameter.
+     * 
+     * @param index is the index of the selected format type in the related
+     * combobox in toolbar.
+     */
+    void sltChangeFormatType( const QString& text );
     /*!
     Increments font size by one degree.
     there are five predefined values for font size: "small", "medium", "large",
@@ -311,6 +320,7 @@ private:
     KAction *actUnorderedList;
     KAction *actSplitPost;
     KAction *actCheckSpelling;
+    KSelectAction *actFormatType;
 
 //   QString *mHtmlContent;
 

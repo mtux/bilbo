@@ -26,7 +26,8 @@
 #include <klocalizedstring.h>
 #include <ktoolbar.h>
 #include <kaction.h>
-#include <kactioncollection.h>
+#include <kselectaction.h>
+// #include <kactioncollection.h>
 #include <kicon.h>
 #include <kcolordialog.h>
 #include <kdebug.h>
@@ -219,6 +220,23 @@ void BilboEditor::createActions()
 
     barVisual->addSeparator();
 
+    actFormatType = new KSelectAction( this );
+    actFormatType->setEditable( false );
+    QStringList formatTypes;
+    formatTypes << i18n( "Paragraph" );
+    formatTypes << i18n( "Heading 1" );
+    formatTypes << i18n( "Heading 2" );
+    formatTypes << i18n( "Heading 3" );
+    formatTypes << i18n( "Heading 4" );
+    formatTypes << i18n( "Heading 5" );
+    formatTypes << i18n( "Heading 6" );
+    actFormatType->setItems( formatTypes );
+    actFormatType->setMaxComboViewCount( 3 );
+    actFormatType->setCurrentAction( i18n( "Paragraph" ) );
+    connect( actFormatType, SIGNAL( triggered( const QString& ) ), this, SLOT( 
+             sltChangeFormatType( const QString& ) ) );
+    barVisual->addAction( actFormatType );
+
     actFontIncrease = new KAction( KIcon( "format-font-size-more" ), i18n( "Increase font size" ), this );
     connect( actFontIncrease, SIGNAL( triggered( bool ) ), this, SLOT( sltFontSizeIncrease() ) );
     barVisual->addAction( actFontIncrease );
@@ -337,6 +355,57 @@ void BilboEditor::sltToggleCode()
         editor->setFontFamily( preFontFamily );
     }
     editor->setFocus( Qt::OtherFocusReason );
+}
+
+void BilboEditor::sltChangeFormatType( const QString& text )
+{
+    editor->setFocus( Qt::OtherFocusReason );
+
+    QTextCursor cursor = editor->textCursor();
+    QTextBlockFormat bformat = cursor.blockFormat();
+    QTextCharFormat cformat = cursor.charFormat();
+
+    if ( text == i18n( "Paragraph" ) ) {
+            bformat.setProperty( BilboTextFormat::HtmlHeading, QVariant( 0 ) );
+            cformat.setFontWeight( QFont::Normal );
+            cformat.setProperty( QTextFormat::FontSizeAdjustment, QVariant( 0 ) );
+
+    } else if ( text == i18n( "Heading 1" ) ) {
+            bformat.setProperty( BilboTextFormat::HtmlHeading, QVariant( 1 ) );
+            cformat.setFontWeight( QFont::Bold );
+            cformat.setProperty( QTextFormat::FontSizeAdjustment, QVariant( 3 ) );
+
+    } else if ( text == i18n( "Heading 2" ) ) {
+            bformat.setProperty( BilboTextFormat::HtmlHeading, QVariant( 2 ) );
+            cformat.setFontWeight( QFont::Bold );
+            cformat.setProperty( QTextFormat::FontSizeAdjustment, QVariant( 2 ) );
+
+    } else if ( text == i18n( "Heading 3" ) ) {
+            bformat.setProperty( BilboTextFormat::HtmlHeading, QVariant( 3 ) );
+            cformat.setFontWeight( QFont::Bold );
+            cformat.setProperty( QTextFormat::FontSizeAdjustment, QVariant( 1 ) );
+
+    } else if ( text == i18n( "Heading 4" ) ) {
+            bformat.setProperty( BilboTextFormat::HtmlHeading, QVariant( 4 ) );
+            cformat.setFontWeight( QFont::Bold );
+            cformat.setProperty( QTextFormat::FontSizeAdjustment, QVariant( 0 ) );
+
+    } else if ( text == i18n( "Heading 5" ) ) {
+            bformat.setProperty( BilboTextFormat::HtmlHeading, QVariant( 5 ) );
+            cformat.setFontWeight( QFont::Bold );
+            cformat.setProperty( QTextFormat::FontSizeAdjustment, QVariant( -1 ) );
+
+    } else {
+        bformat.setProperty( BilboTextFormat::HtmlHeading, QVariant( 6 ) );
+        cformat.setFontWeight( QFont::Bold );
+        cformat.setProperty( QTextFormat::FontSizeAdjustment, QVariant( -2 ) );
+    }
+
+    cursor.beginEditBlock();
+    cursor.mergeBlockFormat( bformat );
+    cursor.select( QTextCursor::BlockUnderCursor );
+    cursor.mergeCharFormat( cformat );
+    cursor.endEditBlock();
 }
 
 void BilboEditor::sltFontSizeIncrease()
@@ -801,6 +870,12 @@ void BilboEditor::sltSyncToolbar()
             this->actRightToLeft->setChecked( true );
         } else {
             this->actRightToLeft->setChecked( false );
+        }
+        if ( !lastBlockFormat.hasProperty( BilboTextFormat::HtmlHeading ) ) {
+            this->actFormatType->setCurrentItem( 0 );
+        } else {
+            this->actFormatType->setCurrentItem( lastBlockFormat.intProperty(
+                                                 BilboTextFormat::HtmlHeading ) );
         }
     }
 }
