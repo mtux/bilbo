@@ -43,7 +43,7 @@ DBMan::DBMan()
         kDebug() << "Wallet successfully opened.";
     } else {
         useWallet = false;
-        kDebug() << "Could not use Wallet service";
+        kDebug() << "Could not use Wallet service, will use database to store passwords";
     }
 
     if ( !QFile::exists( CONF_DB ) ) {
@@ -91,13 +91,15 @@ void DBMan::reloadBlogList()
 bool DBMan::connectDB()
 {
     kDebug();
+    if( db.isOpen() )
+        return true;
     db = QSqlDatabase::addDatabase( "QSQLITE" );
     db.setDatabaseName( CONF_DB );
 
     if ( !db.open() ) {
         KMessageBox::detailedError( 0, i18n( "Cannot connect to database" ),
                                     i18n( db.lastError().text().toUtf8().data() ) );
-        kDebug() << "Cannot connect to database, SQL error: " << db.lastError().text() << endl;
+        kDebug() << "Cannot connect to database, SQL error: " << db.lastError().text();
         return false;
     }
     return true;
@@ -799,6 +801,10 @@ bool DBMan::clearTempEntries()
     return res;
 }
 
+const BilboBlog &DBMan::blog(int blog_id)
+{
+    return *blogList().value(blog_id);
+}
 
 QList< BilboBlog *> DBMan::listBlogs()
 {
@@ -847,86 +853,6 @@ QMap< QString, int > DBMan::listBlogsTitle()
         mLastErrorText = q.lastError().text();
     }
     return list;
-}
-
-BilboBlog DBMan::getBlogInfo( QString title )
-{
-    BilboBlog b;
-    QSqlQuery q;
-    q.prepare( "SELECT id, blogid, blog_url, username, style_url, api_type, title, \
-               direction, local_directory, password \
-               FROM blog WHERE title = ?" );
-    q.addBindValue( title );
-    if ( q.exec() ) {
-        if ( q.next() ) {
-            b.setId( q.value( 0 ).toInt() );
-            b.setBlogId( q.value( 1 ).toString() );
-            b.setUrl( QUrl( q.value( 2 ).toString() ) );
-            b.setUsername( q.value( 3 ).toString() );
-            b.setStylePath( q.value( 4 ).toString() );
-            b.setApi(( BilboBlog::ApiType )q.value( 5 ).toInt() );
-            b.setTitle( q.value( 6 ).toString() );
-            b.setDirection(( Qt::LayoutDirection )q.value( 7 ).toInt() );
-            b.setLocalDirectory( q.value( 8 ).toString() );
-            if( useWallet ) {
-                QString buffer;
-                if ( mWallet && mWallet->readPassword( b.url().url() + '_' + b.username(), buffer )
-                    == 0 && !buffer.isEmpty() ) {
-                    b.setPassword( buffer );
-                    kDebug() << "Password loaded from kde wallet.";
-                }
-            } else {
-                b.setPassword( q.value( 9 ).toString() );
-            }
-            return b;
-        } else {
-            mLastErrorText = i18n( "There isn't any blog with requested title." );
-        }
-    } else {
-        mLastErrorText = q.lastError().text();
-    }
-    b.setError(true);
-    return b;
-}
-
-BilboBlog DBMan::getBlogInfo( int blog_id )
-{
-    BilboBlog b;
-    QSqlQuery q;
-    q.prepare( "SELECT id, blogid, blog_url, username, style_url, api_type, \
-                title, direction, local_directory, password \
-               FROM blog WHERE id = ?" );
-    q.addBindValue( blog_id );
-    if ( q.exec() ) {
-        if ( q.next() ) {
-            b.setId( q.value( 0 ).toInt() );
-            b.setBlogId( q.value( 1 ).toString() );
-            b.setUrl( QUrl( q.value( 2 ).toString() ) );
-            b.setUsername( q.value( 3 ).toString() );
-            b.setStylePath( q.value( 4 ).toString() );
-            b.setApi(( BilboBlog::ApiType )q.value( 5 ).toInt() );
-            b.setTitle( q.value( 6 ).toString() );
-            b.setDirection(( Qt::LayoutDirection ) q.value( 7 ).toInt() );
-            b.setLocalDirectory( q.value( 8 ).toString() );
-            if( useWallet ) {
-                QString buffer;
-                if ( mWallet && mWallet->readPassword( b.url().url() + '_' + b.username(), buffer )
-                    == 0 && !buffer.isEmpty() ) {
-                    b.setPassword( buffer );
-                    kDebug() << "Password loaded from kde wallet.";
-                }
-            } else {
-                b.setPassword( q.value( 9 ).toString() );
-            }
-            return b;
-        } else {
-            mLastErrorText = i18n( "There isn't any blog with requested ID." );
-        }
-    } else {
-        mLastErrorText = q.lastError().text();
-    }
-    b.setError(true);
-    return b;
 }
 
 QList< BilboPost* > DBMan::listPosts( int blog_id )

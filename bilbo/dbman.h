@@ -68,10 +68,8 @@ public:
      *    return List of blogs in Database.
      * @return
      */
-    QList<BilboBlog*> listBlogs();
     QMap<QString, int> listBlogsTitle();///QString as Title, and int as blog_id
-    BilboBlog getBlogInfo( QString title );
-    BilboBlog getBlogInfo( int blog_id );
+    const BilboBlog &blog(int blog_id);
 
     QList<BilboPost*> listPosts( int blog_id );
     QMap< int, QString > listPostsTitle( int blog_id );///QString as Title, and int as post_id
@@ -142,6 +140,7 @@ public:
     ///END
 
 private:
+    QList<BilboBlog*> listBlogs();
     bool createDB();
     QSqlDatabase db;
     bool connectDB();
