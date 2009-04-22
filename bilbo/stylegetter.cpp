@@ -148,12 +148,14 @@ void StyleGetter::sltTempPostPublished( int blogId, BilboPost* post )
     kDebug();
 
     KUrl postUrl;
-    postUrl = post->permaLink();
+//     postUrl = post->permaLink();
+    postUrl = post->link();
     if ( postUrl.isEmpty() ) {
-        kDebug() << "permalink was empty";
-        postUrl = post->link();
+        kDebug() << "link was empty";
+//         postUrl = post->link();
+        postUrl = post->permaLink();
         if ( postUrl.isEmpty() ) {
-            kDebug() << "link was empty";
+            kDebug() << "permaLink was empty";
             postUrl = KUrl( DBMan::self()->blog(blogId).blogUrl() );
         }
     }
