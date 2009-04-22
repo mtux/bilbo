@@ -487,9 +487,9 @@ QTextCharFormat BilboTextHtmlParserNode::charFormat() const
         format.setProperty( BilboTextFormat::AnchorTitle, QVariant( anchorTitle ) ); ///my code
         format.setProperty( BilboTextFormat::AnchorTarget, QVariant( anchorTarget ) ); ///my code
     }
-    if ( htmlHeading ) {
-        format.setProperty( BilboTextFormat::HtmlHeading, QVariant( htmlHeading ) );  ///my code
-    }
+//     if ( htmlHeading ) {
+//         format.setProperty( BilboTextFormat::HtmlHeading, QVariant( htmlHeading ) );  ///my code
+//     }
     return format;
 }
 

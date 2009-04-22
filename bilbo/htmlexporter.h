@@ -57,12 +57,13 @@ private:
     void emitFrame( QTextFrame::Iterator frameIt );
     void emitTable( const QTextTable *table );
     void emitAttribute( const char *attribute, const QString &value );
-    QList<tag>  emitCharFormatStyle( const QTextCharFormat &format );
+    QList<tag>  emitCharFormatStyle( const QTextCharFormat &charFormat, 
+                                     const QTextBlockFormat &blockFormat );
     void emitTextLength( const char *attribute, const QTextLength &length );
     void emitAlignment( Qt::Alignment align );
     void emitFloatStyle( QTextFrameFormat::Position pos, StyleMode mode = EmitStyleTag );
     void emitMargins( const QString &top, const QString &bottom, const QString &left, const QString &right );
-    void emitFragment( const QTextFragment &fragment );
+    void emitFragment( const QTextFragment &fragment, const QTextBlockFormat &blockFormat);
     bool isOrderedList( int style );
     void emitBlockAttributes( const QTextBlock &block );
     void emitBlock( const QTextBlock &block );

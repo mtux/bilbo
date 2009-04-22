@@ -243,7 +243,8 @@ void htmlExporter::emitAttribute( const char *attribute, const QString &value )
     html += QLatin1Char( '"' );
 }
 
-QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharFormat &format )
+QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharFormat 
+                         &charFormat, const QTextBlockFormat &blockFormat  )
 {
 //     kDebug() << "html" << html;
 
@@ -251,7 +252,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
     bool attributesEmitted = false;
     QLatin1String styleTag( "<span style=\"" );
 
-    const QString family = format.fontFamily();
+    const QString family = charFormat.fontFamily();
 
     //if (!family.isEmpty() && family != defaultCharFormat.fontFamily()) {
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
@@ -273,17 +274,18 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
 //     if (format.hasProperty(QTextFormat::FontPointSize)
 //             && format.fontPointSize() != defaultCharFormat.fontPointSize()) {
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-    if ( format.hasProperty( QTextFormat::FontPointSize )
-            && format.fontPointSize() != mDefaultCharFormat.fontPointSize() ) {
+    if ( charFormat.hasProperty( QTextFormat::FontPointSize )
+         && charFormat.fontPointSize() != mDefaultCharFormat.fontPointSize() ) {
         if ( ! attributesEmitted ) {
             html += styleTag;
         }
         html += QLatin1String( " font-size:" );
-        html += QString::number( format.fontPointSize() );
+        html += QString::number( charFormat.fontPointSize() );
         html += QLatin1String( "pt;" );
         attributesEmitted = true;
-    } else if ( format.hasProperty( QTextFormat::FontSizeAdjustment ) && 
-               !format.hasProperty( BilboTextFormat::HtmlHeading ) ) {
+    } else if ( charFormat.hasProperty( QTextFormat::FontSizeAdjustment ) && 
+               !( blockFormat.hasProperty( BilboTextFormat::HtmlHeading ) &&
+                  blockFormat.intProperty( BilboTextFormat::HtmlHeading ) ) ) {
 
         ///To use <h1-5> tags for font size
 //         const int idx = format.intProperty(QTextFormat::FontSizeAdjustment) + 1;
@@ -301,7 +303,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
             "small", "medium", "large", "x-large", "xx-large"
         };
         const char *name = 0;
-        const int idx = format.intProperty( QTextFormat::FontSizeAdjustment ) + 1;
+        const int idx = charFormat.intProperty( QTextFormat::FontSizeAdjustment ) + 1;
         if ( idx == 1 ) {
             // assume default to not bloat the html too much
         } else if ( idx >= 0 && idx <= 4 ) {
@@ -321,8 +323,9 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
 
 //    if (format.fontWeight() > defaultCharFormat.fontWeight()) {
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-    if ( format.fontWeight() > mDefaultCharFormat.fontWeight() && 
-        !format.hasProperty( BilboTextFormat::HtmlHeading )  ) {
+    if ( charFormat.fontWeight() > mDefaultCharFormat.fontWeight() && 
+        !( blockFormat.hasProperty( BilboTextFormat::HtmlHeading ) &&
+           blockFormat.intProperty( BilboTextFormat::HtmlHeading ) ) ) {
         tags << strong;
         /*if (! attributesEmitted ) html += styleTag;
         html += QLatin1String(" font-weight:");
@@ -333,7 +336,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
 
 //    if (format.fontItalic() != defaultCharFormat.fontItalic()) {
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-    if ( format.fontItalic() != mDefaultCharFormat.fontItalic() ) {
+    if ( charFormat.fontItalic() != mDefaultCharFormat.fontItalic() ) {
         tags << em;
         /*
         if (! attributesEmitted ) html += styleTag;
@@ -345,21 +348,21 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
 
 //    if (format.fontUnderline() != defaultCharFormat.fontUnderline()) {
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-    if ( format.fontUnderline() != mDefaultCharFormat.fontUnderline() ) {
+    if ( charFormat.fontUnderline() != mDefaultCharFormat.fontUnderline() ) {
         tags << u;
     }
 
 
 //    if (format.fontStrikeOut() != defaultCharFormat.fontStrikeOut()) {
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-    if ( format.fontStrikeOut() != mDefaultCharFormat.fontStrikeOut() ) {
+    if ( charFormat.fontStrikeOut() != mDefaultCharFormat.fontStrikeOut() ) {
         tags << s;
     }
 
 //    if (format.fontOverline() != defaultCharFormat.fontOverline()) {
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-    if ( format.fontOverline() != mDefaultCharFormat.fontOverline() ) {
-        if ( format.fontOverline() ) {
+    if ( charFormat.fontOverline() != mDefaultCharFormat.fontOverline() ) {
+        if ( charFormat.fontOverline() ) {
             if ( ! attributesEmitted ) {
                 html += styleTag;
             }
@@ -420,8 +423,8 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
 //    if ( format.foreground() != defaultCharFormat.foreground() &&
 //            format.foreground().style() != Qt::NoBrush) {
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-    if ( format.foreground() != mDefaultCharFormat.foreground() &&
-            format.foreground().style() != Qt::NoBrush && !format.isAnchor() ) {
+    if ( charFormat.foreground() != mDefaultCharFormat.foreground() &&
+            charFormat.foreground().style() != Qt::NoBrush && !charFormat.isAnchor() ) {
         //         if ( format.foreground() != linkColor ) {
 //    if ( format.anchorHref().isNull() ) {
         if ( ! attributesEmitted ) {
@@ -432,7 +435,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
 //     html += QLatin1String(" style=\"");
 //    }
         html += QLatin1String( " color:" );
-        html += format.foreground().color().name();
+        html += charFormat.foreground().color().name();
         html += QLatin1Char( ';' );
 //    if ( !format.anchorHref().isNull() ) {
 //     html += QLatin1String("\"");
@@ -444,26 +447,26 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
 //    if (format.background() != defaultCharFormat.background()
 //            && format.background().style() != Qt::NoBrush) {
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-    if ( format.background() != mDefaultCharFormat.background()
-            && format.background().style() != Qt::NoBrush ) {
+    if ( charFormat.background() != mDefaultCharFormat.background()
+            && charFormat.background().style() != Qt::NoBrush ) {
         if ( ! attributesEmitted ) {
             html += styleTag;
         }
         html += QLatin1String( " background-color:" );
-        html += format.background().color().name();
+        html += charFormat.background().color().name();
         html += QLatin1Char( ';' );
         attributesEmitted = true;
     }
 
 //    if (format.verticalAlignment() != defaultCharFormat.verticalAlignment()) { //TODO
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-    if ( format.verticalAlignment() != mDefaultCharFormat.verticalAlignment() ) { //TODO
+    if ( charFormat.verticalAlignment() != mDefaultCharFormat.verticalAlignment() ) { //TODO
         if ( ! attributesEmitted ) {
             html += styleTag;
         }
         html += QLatin1String( " vertical-align:" );
 
-        QTextCharFormat::VerticalAlignment valign = format.verticalAlignment();
+        QTextCharFormat::VerticalAlignment valign = charFormat.verticalAlignment();
         if ( valign == QTextCharFormat::AlignSubScript ) {
             html += QLatin1String( "sub" );
         } else if ( valign == QTextCharFormat::AlignSuperScript ) {
@@ -568,7 +571,7 @@ void htmlExporter::emitMargins( const QString &top, const QString &bottom, const
     html += QLatin1String( "px;" );
 }
 
-void htmlExporter::emitFragment( const QTextFragment &fragment )
+void htmlExporter::emitFragment( const QTextFragment &fragment, const QTextBlockFormat &blockFormat )
 {
 //     kDebug() << "html" << html;
     const QTextCharFormat format = fragment.charFormat();
@@ -619,7 +622,7 @@ void htmlExporter::emitFragment( const QTextFragment &fragment )
         }
     }
 
-    QList<tag> tags = emitCharFormatStyle( format );
+    QList<tag> tags = emitCharFormatStyle( format, blockFormat );
 //  if ( !format.anchorHref().isNull() ) {
 //   html += QLatin1String(">");
 //   closeAnchor = true;
@@ -986,7 +989,7 @@ void htmlExporter::emitBlock( const QTextBlock &block )
     QTextBlock::Iterator it = block.begin();
 
     for ( ; !it.atEnd(); ++it ) {
-        emitFragment( it.fragment() );
+        emitFragment( it.fragment(), blockFormat );
     }
 
     html += QLatin1String( "</" ) + blockTag + QLatin1String( ">\n" );
