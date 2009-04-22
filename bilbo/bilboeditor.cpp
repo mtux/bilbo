@@ -410,7 +410,8 @@ void BilboEditor::sltChangeFormatType( const QString& text )
 
 void BilboEditor::sltFontSizeIncrease()
 {
-    if ( !editor->textCursor().blockFormat().hasProperty( BilboTextFormat::HtmlHeading ) ) {
+    if ( !( editor->textCursor().blockFormat().hasProperty( BilboTextFormat::HtmlHeading ) &&
+        editor->textCursor().blockFormat().intProperty( BilboTextFormat::HtmlHeading ) ) ) {
         QTextCharFormat format;
         int idx = editor->currentCharFormat().intProperty( QTextFormat::FontSizeAdjustment );
         if ( idx < 3 ) {
@@ -423,7 +424,8 @@ void BilboEditor::sltFontSizeIncrease()
 
 void BilboEditor::sltFontSizeDecrease()
 {
-    if ( !editor->textCursor().blockFormat().hasProperty( BilboTextFormat::HtmlHeading ) ) {
+    if ( !( editor->textCursor().blockFormat().hasProperty( BilboTextFormat::HtmlHeading ) &&
+        editor->textCursor().blockFormat().intProperty( BilboTextFormat::HtmlHeading ) ) ) {
         QTextCharFormat format;
         int idx = editor->currentCharFormat().intProperty( QTextFormat::FontSizeAdjustment );
         if ( idx > -1 ) {
