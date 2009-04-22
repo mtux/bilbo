@@ -57,8 +57,10 @@ HtmlEditor::HtmlEditor() : QObject()
 
 HtmlEditor::~HtmlEditor()
 {
-    delete mEditor;
-    kDebug() << "editor deleted";
+    if ( !instancePrivate.isDestroyed() ) {
+        delete mEditor;
+        kDebug() << "editor deleted";
+    }
 }
 
 KTextEditor::View* HtmlEditor::createView( QWidget* parent )
