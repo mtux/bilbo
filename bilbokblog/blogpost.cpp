@@ -42,7 +42,7 @@ BlogPost::BlogPost( const KBlog::BlogPost &post )
   d_ptr->mTitle = post.title();
   d_ptr->mContent = post.content();
   d_ptr->mAdditionalContent = post.additionalContent();
-  d_ptr->mWpSlug = post.wpSlug();
+  d_ptr->mSlug = post.slug();
   d_ptr->mCategories = post.categories();
   d_ptr->mTags = post.tags();
   d_ptr->mMood = post.mood();
@@ -193,14 +193,14 @@ void BlogPost::setAdditionalContent( const QString &additionalContent )
   d_ptr->mAdditionalContent = additionalContent;
 }
 
-QString BlogPost::wpSlug() const
+QString BlogPost::slug() const
 {
-    return d_ptr->mWpSlug;
+    return d_ptr->mSlug;
 }
 
-void BlogPost::setWpSlug( const QString &wpSlug )
+void BlogPost::setSlug( const QString &slug )
 {
-    d_ptr->mWpSlug = wpSlug;
+    d_ptr->mSlug = slug;
 }
 
 KUrl BlogPost::link() const

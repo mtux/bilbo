@@ -343,7 +343,7 @@ int DBMan::addPost( const BilboPost & post, int blog_id )
     q.addBindValue( post.link().url() );
     q.addBindValue( post.permaLink().url() );
     q.addBindValue( post.summary() );
-    q.addBindValue( post.wpSlug() );
+    q.addBindValue( post.slug() );
     q.addBindValue( post.tags().join(QString(',')) );
     q.addBindValue( post.status() );
 
@@ -407,7 +407,7 @@ bool DBMan::editPost( const BilboPost & post, int blog_id )
     q.addBindValue( post.link().url() );
     q.addBindValue( post.permaLink().url() );
     q.addBindValue( post.summary() );
-    q.addBindValue( post.wpSlug() );
+    q.addBindValue( post.slug() );
     q.addBindValue( post.tags().join(QString(',')) );
     q.addBindValue( post.status() );
 
@@ -629,7 +629,7 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
             q.addBindValue( post.link().url() );
             q.addBindValue( post.permaLink().url() );
             q.addBindValue( post.summary() );
-            q.addBindValue( post.wpSlug() );
+            q.addBindValue( post.slug() );
             q.addBindValue( post.tags().join(QString(',')) );
             q.addBindValue( post.status() );
 
@@ -661,7 +661,7 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
             q.addBindValue( post.link().url() );
             q.addBindValue( post.permaLink().url() );
             q.addBindValue( post.summary() );
-            q.addBindValue( post.wpSlug() );
+            q.addBindValue( post.slug() );
             q.addBindValue( post.tags().join(QString(',')) );
             q.addBindValue( post.status() );
 
@@ -693,7 +693,7 @@ int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPos
         q.addBindValue( post.link().url() );
         q.addBindValue( post.permaLink().url() );
         q.addBindValue( post.summary() );
-        q.addBindValue( post.wpSlug() );
+        q.addBindValue( post.slug() );
         q.addBindValue( post.tags().join(QString(',')) );
         q.addBindValue( post.status() );
 
@@ -882,7 +882,7 @@ QList< BilboPost* > DBMan::listPosts( int blog_id )
             tmp->setTags( q.value( 13 ).toString().split( ',', QString::SkipEmptyParts ) );
             tmp->setStatus(( KBlog::BlogPost::Status ) q.value( 14 ).toInt() );
             tmp->setAdditionalContent( q.value( 15 ).toString() );
-            tmp->setWpSlug( q.value( 16 ).toString() );
+            tmp->setSlug( q.value( 16 ).toString() );
 
             ///get Category list:
             QList<Category> catList;
@@ -947,7 +947,7 @@ BilboPost DBMan::getPostInfo( int post_id )
             tmp.setStatus(( KBlog::BlogPost::Status ) q.value( 14 ).toInt() );
             int blog_id = q.value( 15 ).toInt();
             tmp.setAdditionalContent(  q.value( 16 ).toString() );
-            tmp.setWpSlug(  q.value( 17 ).toString() );
+            tmp.setSlug(  q.value( 17 ).toString() );
 
             ///get Category list:
             QList<Category> catList;
@@ -1116,7 +1116,7 @@ QMap<BilboPost*, int> DBMan::listTempPosts()
             tmp->setSummary( q.value( 15 ).toString() );
             tmp->setTags( q.value( 16 ).toString().split( ',', QString::SkipEmptyParts ) );
             tmp->setStatus(( KBlog::BlogPost::Status ) q.value( 17 ).toInt() );
-            tmp->setWpSlug( q.value( 18 ).toString() );
+            tmp->setSlug( q.value( 18 ).toString() );
 
             if(tmp->status() == KBlog::BlogPost::New){
                 tmp->setId(local_id);
@@ -1208,7 +1208,7 @@ BilboPost DBMan::localPost(int local_id)
             tmp.setSummary( q.value( 15 ).toString() );
             tmp.setTags( q.value( 16 ).toString().split( ',', QString::SkipEmptyParts ) );
             tmp.setStatus(( KBlog::BlogPost::Status ) q.value( 17 ).toInt() );
-            tmp.setWpSlug( q.value( 18 ).toString() );
+            tmp.setSlug( q.value( 18 ).toString() );
 
             if(tmp.status() == KBlog::BlogPost::New){
                 tmp.setId(local_id);

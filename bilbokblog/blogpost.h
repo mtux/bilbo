@@ -193,18 +193,18 @@ public:
      Currently just wordpress supports this!
      @return wordpress slug
 
-     @see setWpSlug()
+     @see setSlug()
     */
-    QString wpSlug() const;
+    QString slug() const;
 
     /**
      Sets the Wordpress slug property! (will use to set post's permalink)
      Currently just wordpress supports this!
-     @param wpSlug wordpress slug
+     @param slug wordpress slug
 
-     @see wpSlug()
+     @see slug()
     */
-    void setWpSlug( const QString &wpSlug );
+    void setSlug( const QString &slug );
     /**
       Returns the link path.
       @return link

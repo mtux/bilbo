@@ -287,7 +287,7 @@ void Toolbox::getFieldsValue( BilboPost &currentPost )
         currentPost.setCreationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
         currentPost.setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
     }
-    currentPost.setWpSlug( txtSlug->text() );
+    currentPost.setSlug( txtSlug->text() );
     currentPost.setPrivate(( comboOptionsStatus->currentIndex() == 1 ) ? true : false );
     currentPost.setCommentAllowed( chkOptionsComments->isChecked() );
     currentPost.setTrackBackAllowed( chkOptionsTrackback->isChecked() );
@@ -319,7 +319,7 @@ void Toolbox::setFieldsValue( BilboPost* post )
     chkOptionsTime->setChecked( post->isModifyTimeStamp() );
     optionsTime->setTime( post->creationDateTime().time() );
     optionsDate->setDate( post->creationDateTime().date() );
-    txtSlug->setText( post->wpSlug() );
+    txtSlug->setText( post->slug() );
     txtSummary->setPlainText( post->summary() );
 }
 

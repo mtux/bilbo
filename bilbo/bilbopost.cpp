@@ -103,7 +103,7 @@ KBlog::BlogPost * BilboPost::toKBlogPost()
     pp->setPermaLink( this->permaLink() );
     pp->setStatus( this->status() );
     pp->setAdditionalContent( this->additionalContent() );
-    pp->setWpSlug( this->wpSlug() );
+    pp->setSlug( this->slug() );
 
     return pp;
 }
@@ -155,7 +155,7 @@ BilboPost::BilboPost( const BilboPost &post )
     this->setId( post.id() );
     this->setStatus( post.status() );
     this->setAdditionalContent( post.additionalContent() );
-    this->setWpSlug( post.wpSlug() );
+    this->setSlug( post.slug() );
 }
 
 bool BilboPost::isModifyTimeStamp() const
@@ -201,5 +201,5 @@ void BilboPost::setProperties( const BilboPost& postProp )
     this->setTrackBackAllowed( postProp.isTrackBackAllowed() );
     this->setAuthor( postProp.author() );
     this->setModifyTimeStamp( postProp.isModifyTimeStamp() );
-    this->setWpSlug( postProp.wpSlug() );
+    this->setSlug( postProp.slug() );
 }
