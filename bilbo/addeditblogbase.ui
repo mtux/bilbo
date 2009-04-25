@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>395</width>
-    <height>325</height>
+    <height>335</height>
    </rect>
   </property>
   <property name="currentIndex" >
@@ -61,46 +61,18 @@ You can set more options on Advanced tab.</string>
     </item>
     <item row="4" column="0" >
      <widget class="QLabel" name="label_9" >
-      <property name="font" >
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
       <property name="text" >
-       <string>Your blog Title is :</string>
+       <string>Title:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
-    <item row="4" column="1" colspan="2" >
-     <widget class="QLabel" name="lblTitle" >
-      <property name="font" >
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet" >
-       <string notr="true" >color: rgb(40, 21, 255);</string>
-      </property>
-      <property name="frameShape" >
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="text" >
-       <string/>
-      </property>
-      <property name="alignment" >
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
     <item row="5" column="0" >
      <widget class="QLabel" name="label" >
       <property name="text" >
-       <string>Blog/Homepage URL :</string>
+       <string>Blog/Homepage URL:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -140,7 +112,7 @@ You can set more options on Advanced tab.</string>
     <item row="7" column="0" >
      <widget class="QLabel" name="label_2" >
       <property name="text" >
-       <string>Username :</string>
+       <string>Username:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -156,7 +128,7 @@ You can set more options on Advanced tab.</string>
     <item row="8" column="0" >
      <widget class="QLabel" name="label_3" >
       <property name="text" >
-       <string>Password :</string>
+       <string>Password:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -224,6 +196,9 @@ You can set more options on Advanced tab.</string>
     <item row="1" column="0" colspan="3" >
      <widget class="KSeparator" name="kseparator_4" />
     </item>
+    <item row="4" column="1" colspan="2" >
+     <widget class="KLineEdit" name="lblTitle" />
+    </item>
    </layout>
   </widget>
   <widget class="QWidget" name="tabAdvanced" >
@@ -250,7 +225,7 @@ You can set more options on Advanced tab.</string>
     <item row="2" column="0" >
      <widget class="QLabel" name="label_6" >
       <property name="text" >
-       <string comment="Name of the API which is used to communicate with Blog" >API :</string>
+       <string comment="Name of the API which is used to communicate with Blog" >API:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -308,7 +283,7 @@ You can set more options on Advanced tab.</string>
     <item row="3" column="0" >
      <widget class="QLabel" name="label_7" >
       <property name="text" >
-       <string>Blog ID :</string>
+       <string>Blog ID:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -359,7 +334,7 @@ You can set more options on Advanced tab.</string>
        <number>1</number>
       </property>
       <property name="text" >
-       <string comment="Default direction of text in the blog" >Default text direction :</string>
+       <string comment="Default direction of text in the blog" >Default text direction:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

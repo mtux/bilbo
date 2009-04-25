@@ -40,10 +40,9 @@
 static const int TIMEOUT = 45000;
 
 AddEditBlog::AddEditBlog( int blog_id, QWidget *parent, Qt::WFlags flags )
-        : KDialog( parent, flags )
+        : KDialog( parent, flags ), wait(0)
 {
     kDebug();
-    wait = 0;
     mainW = new KTabWidget( this );
     ui.setupUi( mainW );
     this->setMainWidget( mainW );
@@ -64,7 +63,7 @@ AddEditBlog::AddEditBlog( int blog_id, QWidget *parent, Qt::WFlags flags )
     connect( ui.txtId, SIGNAL( returnPressed() ), this, SLOT( sltReturnPressed() ) );
 
     if ( blog_id > -1 ) {
-        this->setWindowTitle( i18n( "Edit Blog Settings" ) );
+        this->setWindowTitle( i18n( "Edit blog settings" ) );
         this->enableButtonOk( true );
         ui.btnFetch->setEnabled( true );
         ui.btnAutoConf->setEnabled( true );

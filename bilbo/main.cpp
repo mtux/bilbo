@@ -32,8 +32,6 @@
 static const char description[] =
     I18N_NOOP( "A KDE Blogging Client" );
 
-// static const char version[] = "0.2";
-
 int main( int argc, char *argv[] )
 {
     KAboutData about( "bilbo", 0, ki18n( APPNAME ), VERSION, ki18n( description ),
@@ -54,10 +52,9 @@ int main( int argc, char *argv[] )
     global_init();
 
     MainWindow *bilbo = new MainWindow;
-    bilbo->setAttribute(Qt::WA_DeleteOnClose, false);
+//     bilbo->setAttribute(Qt::WA_DeleteOnClose, false);
 
-    if ( Settings::showMainOnStart() )
-        bilbo->show();
+    bilbo->show();
     int r = app.exec();
 
     global_end();

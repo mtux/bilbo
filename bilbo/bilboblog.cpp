@@ -25,6 +25,7 @@ BilboBlog::BilboBlog( QObject *parent )
         : QObject( parent )
 {
     mError = false;
+    setApi(BLOGGER1_API);
 }
 
 BilboBlog::BilboBlog( const BilboBlog &blog, QObject *parent )
@@ -36,7 +37,7 @@ BilboBlog::BilboBlog( const BilboBlog &blog, QObject *parent )
     mPassword = blog.password();
     mTitle = blog.title();
     mStylePath = blog.stylePath();
-    mApi = blog.api();
+    setApi( blog.api() );
     mId = blog.id();
     mDir = blog.direction();
     mLocalDirectory = blog.localDirectory();
@@ -125,6 +126,38 @@ BilboBlog::ApiType BilboBlog::api() const
 void BilboBlog::setApi( const ApiType api )
 {
     mApi = api;
+    switch(api) {
+        case BLOGGER1_API:
+            mSupportedFeatures["uploadMedia"] = false;
+            mSupportedFeatures["category"] = false;
+            mSupportedFeatures["tag"] = false;
+            break;
+        case METAWEBLOG_API:
+            mSupportedFeatures["uploadMedia"] = true;
+            mSupportedFeatures["category"] = true;
+            mSupportedFeatures["tag"] = false;
+            break;
+        case MOVABLETYPE_API:
+            mSupportedFeatures["uploadMedia"] = true;
+            mSupportedFeatures["category"] = true;
+            mSupportedFeatures["tag"] = true;
+            break;
+        case WORDPRESSBUGGY_API:
+            mSupportedFeatures["uploadMedia"] = true;
+            mSupportedFeatures["category"] = true;
+            mSupportedFeatures["tag"] = true;
+            break;
+        case GDATA_API:
+            mSupportedFeatures["uploadMedia"] = false;
+            mSupportedFeatures["category"] = false;
+            mSupportedFeatures["tag"] = true;
+            break;
+        default:
+            mSupportedFeatures["uploadMedia"] = false;
+            mSupportedFeatures["category"] = false;
+            mSupportedFeatures["tag"] = false;
+            break;
+    }
 }
 
 int BilboBlog::id() const
@@ -175,11 +208,17 @@ QString BilboBlog::blogUrl() const
     return url;
 }
 
-bool BilboBlog::supportMediaObjectUploading() const
+bool BilboBlog::supportUploadMedia() const
 {
-    if(mApi == WORDPRESSBUGGY_API || mApi == METAWEBLOG_API || mApi == MOVABLETYPE_API) {
-        return true;
-    } else {
-        return false;
-    }
+    return mSupportedFeatures["uploadMedia"];
+}
+
+bool BilboBlog::supportCategory() const
+{
+    return mSupportedFeatures["category"];
+}
+
+bool BilboBlog::supportTag() const
+{
+    return mSupportedFeatures["tag"];
 }
