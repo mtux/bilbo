@@ -27,12 +27,13 @@
 #include <ktabwidget.h>
 
 class QTextCharFormat;
-class QWebView;
+// class QWebView;
 // class QPlainTextEdit;
 namespace KTextEditor
 { 
     class View;
 }
+class KHTMLPart;
 
 class KAction;
 class KToolBar;
@@ -290,7 +291,8 @@ private:
     MultiLineTextEdit *editor;
 //     QPlainTextEdit *htmlEditor;
     KTextEditor::View *htmlEditor;
-    QWebView *preview;
+//     QWebView *preview;
+    KHTMLPart *browserPart;
 
     KToolBar *barVisual;
 

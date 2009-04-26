@@ -22,7 +22,10 @@
 #include <QtGui>
 #include <QImage>
 #include <QTextCharFormat>
-#include <QWebView>
+// #include <QWebView>
+#include <khtml_part.h>
+#include <khtmlview.h>
+
 #include <klocalizedstring.h>
 #include <ktoolbar.h>
 #include <kaction.h>
@@ -130,10 +133,12 @@ void BilboEditor::createUi()
     hLayout->addWidget( qobject_cast< QWidget* >( htmlEditor ) );
 
     ///preview:
-    preview = new QWebView( tabPreview );
+//     preview = new QWebView( tabPreview );
 //     preview->settings()->setAttribute( QWebSettings::AutoLoadImages, true );
 //     preview->settings()->setAttribute( QWebSettings::JavaEnabled, true );
 //     preview->settings()->setAttribute( QWebSettings::JavascriptEnabled, true );
+
+    browserPart = new KHTMLPart( tabPreview, tabPreview );
 
     btnGetStyle = new KPushButton ( tabPreview );
     btnGetStyle->setText( i18n( "Get blog style" ) );
@@ -150,7 +155,8 @@ void BilboEditor::createUi()
     pLayout2->addWidget( btnGetStyle );
     pLayout1->addLayout( pLayout2 );
     pLayout1->addWidget( separator );
-    pLayout1->addWidget( preview );
+//     pLayout1->addWidget( preview );
+    pLayout1->addWidget( browserPart->view() );
 
     this->setCurrentIndex( 0 );
 
@@ -919,9 +925,14 @@ void BilboEditor::sltSyncEditors( int index )
 //         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
 //                          currentPostTitle,
 //                          this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
-        this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
+//         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
+//                          currentPostTitle,
+//                          htmlEditor->document()->text() ), QUrl( baseUrl ) );
+        browserPart->begin();
+        browserPart->write( StyleGetter::styledHtml( __currentBlogId, 
                          currentPostTitle,
-                         htmlEditor->document()->text() ), QUrl( baseUrl ) );
+                         htmlEditor->document()->text() ) );
+        browserPart->end();
     }
 
     prev_index = index;
@@ -1105,9 +1116,14 @@ void BilboEditor::sltSetPostPreview()
 //         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
 //                          currentPostTitle,
 //                          this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
-        this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
+//         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
+//                          currentPostTitle,
+//                          htmlEditor->document()->text() ), QUrl( baseUrl ) );
+        browserPart->begin();
+        browserPart->write( StyleGetter::styledHtml( __currentBlogId, 
                          currentPostTitle,
-                         htmlEditor->document()->text() ), QUrl( baseUrl ) );
+                         htmlEditor->document()->text() ) );
+        browserPart->end();
 
 //         Q_EMIT sigShowStatusMessage( i18n( "The requested blog style set." ), false );
     }
