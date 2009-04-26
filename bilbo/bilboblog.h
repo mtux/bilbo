@@ -61,8 +61,8 @@ public:
     void setPassword( const QString& );
     QString title() const;
     void setTitle( const QString& );
-    QString stylePath() const;
-    void setStylePath( const QString& );
+//     QString stylePath() const;
+//     void setStylePath( const QString& );
     ApiType api() const;
     void setApi( const ApiType );
     int id() const;//id in DB
@@ -86,9 +86,11 @@ public:
      * @return Blog actual url.
      */
     QString blogUrl() const;
+    void setBlogUrl(const QString &blogUrl);
 
 private:
     KUrl mUrl;
+    QString mBlogUrl;
     QString mBlogid;
     QString mUsername;
     QString mPassword;

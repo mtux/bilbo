@@ -32,11 +32,11 @@ BilboBlog::BilboBlog( const BilboBlog &blog, QObject *parent )
         : QObject( parent )
 {
     mUrl = blog.url();
+    mBlogUrl = blog.blogUrl();
     mBlogid = blog.blogid();
     mUsername = blog.username();
     mPassword = blog.password();
     mTitle = blog.title();
-    mStylePath = blog.stylePath();
     setApi( blog.api() );
     mId = blog.id();
     mDir = blog.direction();
@@ -108,6 +108,7 @@ void BilboBlog::setTitle( const QString &title )
     mTitle = title;
 }
 
+/*
 QString BilboBlog::stylePath() const
 {
     return mStylePath;
@@ -117,6 +118,7 @@ void BilboBlog::setStylePath( const QString &path )
 {
     mStylePath = path;
 }
+*/
 
 BilboBlog::ApiType BilboBlog::api() const
 {
@@ -192,20 +194,15 @@ void BilboBlog::setLocalDirectory( const QString &directory )
 
 QString BilboBlog::blogUrl() const
 {
-    //QString url=this->url().toString();
-    QString url = this->url().url();
-    switch ( this->api() ) {
-        case BLOGGER1_API:
-            break;
-        case METAWEBLOG_API:
-        case MOVABLETYPE_API:
-        case WORDPRESSBUGGY_API:
-            url = url.remove( "xmlrpc.php", Qt::CaseInsensitive );
-            break;
-        case GDATA_API:
-            break;
-    }
-    return url;
+    if(mBlogUrl.isEmpty())
+        return mUrl.prettyUrl();
+    else
+        return mBlogUrl;
+}
+
+void BilboBlog::setBlogUrl(const QString &blogUrl)
+{
+    mBlogUrl = blogUrl;
 }
 
 bool BilboBlog::supportUploadMedia() const

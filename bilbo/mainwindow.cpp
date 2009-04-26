@@ -173,11 +173,6 @@ void MainWindow::setupActions()
     actionCollection()->addAction( QLatin1String( "clear_image_cache" ), actClearImageCache );
     connect( actClearImageCache, SIGNAL( triggered( bool ) ), this, SLOT( sltClearCache() ) );
 
-    KAction *actHide = new KAction( KIcon( "dialog-close" ), i18n( "Hide Bilbo Window" ), this );
-    actionCollection()->addAction( QLatin1String( "hide_mainwin" ), actHide );
-    actHide->setShortcut( Qt::Key_Escape );
-    connect( actHide, SIGNAL( triggered( bool ) ), this, SLOT( hide() ) );
-
     blogs = new KSelectAction( this );
     actionCollection()->addAction( QLatin1String( "blogs_list" ), blogs );
 }

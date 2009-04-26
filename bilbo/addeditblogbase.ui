@@ -42,7 +42,7 @@
        </sizepolicy>
       </property>
       <property name="text" >
-       <string>Please fill in these fields, and click the "AutoConfigure" button to retrieve your blog settings.
+       <string>Please fill in these fields, and click the "AutoConfigure" button to program guess your blog settings.
 You can set more options on Advanced tab.</string>
       </property>
       <property name="scaledContents" >
@@ -197,7 +197,7 @@ You can set more options on Advanced tab.</string>
      <widget class="KSeparator" name="kseparator_4" />
     </item>
     <item row="4" column="1" colspan="2" >
-     <widget class="KLineEdit" name="lblTitle" />
+     <widget class="KLineEdit" name="txtTitle" />
     </item>
    </layout>
   </widget>
@@ -371,7 +371,7 @@ You can set more options on Advanced tab.</string>
     <item row="2" column="0" >
      <widget class="QLabel" name="label_11" >
       <property name="text" >
-       <string>Create/Modify post :</string>
+       <string>Create/Modify post:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -404,7 +404,7 @@ You can set more options on Advanced tab.</string>
     <item row="9" column="0" >
      <widget class="QLabel" name="label_14" >
       <property name="text" >
-       <string>Support categories :</string>
+       <string>Support categories:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -414,7 +414,7 @@ You can set more options on Advanced tab.</string>
     <item row="10" column="0" >
      <widget class="QLabel" name="label_16" >
       <property name="text" >
-       <string>Support tags :</string>
+       <string>Support tags:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -438,7 +438,7 @@ You can set more options on Advanced tab.</string>
     <item row="3" column="0" >
      <widget class="QLabel" name="label_22" >
       <property name="text" >
-       <string>Remove post :</string>
+       <string>Remove post:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -455,7 +455,7 @@ You can set more options on Advanced tab.</string>
     <item row="4" column="0" >
      <widget class="QLabel" name="label_12" >
       <property name="text" >
-       <string>Fetch recent posts :</string>
+       <string>Fetch recent posts:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -472,7 +472,7 @@ You can set more options on Advanced tab.</string>
     <item row="5" column="0" >
      <widget class="QLabel" name="label_20" >
       <property name="text" >
-       <string>Multipaged post :</string>
+       <string>Multipaged post:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -499,7 +499,7 @@ You can set more options on Advanced tab.</string>
     <item row="15" column="0" >
      <widget class="QLabel" name="label_13" >
       <property name="text" >
-       <string>Upload media :</string>
+       <string>Upload media:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -516,7 +516,7 @@ You can set more options on Advanced tab.</string>
     <item row="16" column="0" >
      <widget class="QLabel" name="label_15" >
       <property name="text" >
-       <string>Create new category :</string>
+       <string>Create new category:</string>
       </property>
       <property name="alignment" >
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

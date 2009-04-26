@@ -112,6 +112,12 @@ DBMan::~DBMan()
     mSelf = 0L;
 }
 
+/**
+Will create configuration database!
+
+    Notes about database:
+        * blog.style_url will use for BilboBlog::BlogUrl.
+*/
 bool DBMan::createDB()
 {
     kDebug();
@@ -251,7 +257,7 @@ int DBMan::addBlog( const BilboBlog & blog )
     q.addBindValue( blog.blogid() );
     q.addBindValue( blog.url().url() );
     q.addBindValue( blog.username() );
-    q.addBindValue( blog.stylePath() );
+    q.addBindValue( blog.blogUrl() );
     q.addBindValue( blog.api() );
     q.addBindValue( blog.title() );
     q.addBindValue( blog.direction() );
@@ -284,7 +290,7 @@ bool DBMan::editBlog( const BilboBlog & blog )
     q.addBindValue( blog.blogid() );
     q.addBindValue( blog.url().url() );
     q.addBindValue( blog.username() );
-    q.addBindValue( blog.stylePath() );
+    q.addBindValue( blog.blogUrl() );
     q.addBindValue( blog.api() );
     q.addBindValue( blog.title() );
     q.addBindValue( blog.direction() );
@@ -818,7 +824,7 @@ QList< BilboBlog *> DBMan::listBlogs()
             tmp->setBlogId( q.value( 1 ).toString() );
             tmp->setUrl( QUrl( q.value( 2 ).toString() ) );
             tmp->setUsername( q.value( 3 ).toString() );
-            tmp->setStylePath( q.value( 4 ).toString() );
+            tmp->setBlogUrl( q.value( 4 ).toString() );
             tmp->setApi(( BilboBlog::ApiType )q.value( 5 ).toInt() );
             tmp->setTitle( q.value( 6 ).toString() );
             tmp->setDirection(( Qt::LayoutDirection )q.value( 7 ).toInt() );
