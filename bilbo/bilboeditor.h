@@ -27,24 +27,26 @@
 #include <ktabwidget.h>
 
 class QTextCharFormat;
+// class QProgressBar;
 // class QWebView;
 // class QPlainTextEdit;
 namespace KTextEditor
 { 
     class View;
 }
-class KHTMLPart;
 
 class KAction;
 class KToolBar;
 class KListWidget;
-class KPushButton;
+// class KPushButton;
 class KSelectAction;
+// class KStatusBar;
 
 class MultiLineTextEdit;
 class AddEditLink;
 class BilboMedia;
 class BilboPost;
+class BilboBrowser;
 
 
 /**
@@ -59,7 +61,7 @@ class BilboEditor : public KTabWidget
 public:
 
     /**
-     * @brief BilboEditor destructor.
+     * @brief BilboEditor constructor.
      * Creates a new instance of BilboEditor, and calls createUi() function to 
      * initialize its widgets.
      */
@@ -258,8 +260,8 @@ protected Q_SLOTS:
      */
     void sltSyncEditors( int index );
 
-    void sltGetBlogStyle();
-
+//     void sltGetBlogStyle();
+// 
     void sltSetPostPreview();
 
 private:
@@ -292,12 +294,13 @@ private:
 //     QPlainTextEdit *htmlEditor;
     KTextEditor::View *htmlEditor;
 //     QWebView *preview;
-    KHTMLPart *browserPart;
+//     KHTMLPart *browserPart;
+    BilboBrowser *preview;
 
     KToolBar *barVisual;
 
     KListWidget *lstMediaFiles;
-    KPushButton *btnGetStyle;
+//     KPushButton *btnGetStyle;
 
     KAction *actBold;
     KAction *actItalic;
@@ -323,6 +326,9 @@ private:
     KAction *actSplitPost;
     KAction *actCheckSpelling;
     KSelectAction *actFormatType;
+
+//     QProgressBar *previewProgress;
+//     KStatusBar *previewStatus;
 
 //   QString *mHtmlContent;
 

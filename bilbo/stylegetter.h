@@ -84,6 +84,8 @@ Q_SIGNALS:
      */
     void sigStyleFetched();
 
+    void sigGetStyleProgress( int percent );
+
 private Q_SLOTS:
 //     void slotPostSent();
     void sltTempPostPublished( int blogId, BilboPost* post );

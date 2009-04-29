@@ -23,8 +23,6 @@
 #include <QImage>
 #include <QTextCharFormat>
 // #include <QWebView>
-#include <khtml_part.h>
-#include <khtmlview.h>
 
 #include <klocalizedstring.h>
 #include <ktoolbar.h>
@@ -34,19 +32,19 @@
 #include <kicon.h>
 #include <kcolordialog.h>
 #include <kdebug.h>
-#include <kmessagebox.h>
+// #include <kmessagebox.h>
 #include <kseparator.h>
 #include <ktexteditor/view.h>
 #include <ktexteditor/document.h>
 
 
 #include "bilboeditor.h"
-#include "dbman.h"
+// #include "dbman.h"
 #include "multilinetextedit.h"
 #include "addeditlink.h"
 #include "addimagedialog.h"
 #include "bilbomedia.h"
-#include "global.h"
+// #include "global.h"
 #include "bilboblog.h"
 #include "bilbopost.h"
 #include "medialistwidget.h"
@@ -56,6 +54,7 @@
 #include "htmlexporter.h"
 #include "stylegetter.h"
 #include "htmleditor.h"
+#include "bilbobrowser.h"
 
 BilboEditor::BilboEditor( QWidget *parent )
         : KTabWidget( parent )
@@ -127,36 +126,17 @@ void BilboEditor::createUi()
     connect( editor, SIGNAL( cursorPositionChanged() ), this, SLOT( sltSyncToolbar() ) );
 
     ///htmlEditor:
-//     htmlEditor = new QPlainTextEdit( tabHtml );
     htmlEditor = HtmlEditor::self()->createView( tabHtml );
     QGridLayout *hLayout = new QGridLayout( tabHtml );
     hLayout->addWidget( qobject_cast< QWidget* >( htmlEditor ) );
 
     ///preview:
-//     preview = new QWebView( tabPreview );
-//     preview->settings()->setAttribute( QWebSettings::AutoLoadImages, true );
-//     preview->settings()->setAttribute( QWebSettings::JavaEnabled, true );
-//     preview->settings()->setAttribute( QWebSettings::JavascriptEnabled, true );
+    preview = new BilboBrowser( tabPreview );
+    QGridLayout *gLayout = new QGridLayout( tabPreview );
+    gLayout->addWidget( qobject_cast< QWidget* >( preview ) );
+    connect( preview, SIGNAL( sigSetBlogStyle() ), this, SLOT( 
+            sltSetPostPreview() ) );
 
-    browserPart = new KHTMLPart( tabPreview, tabPreview );
-
-    btnGetStyle = new KPushButton ( tabPreview );
-    btnGetStyle->setText( i18n( "Get blog style" ) );
-    connect( btnGetStyle, SIGNAL( clicked( bool ) ), this, SLOT( sltGetBlogStyle() ) );
-
-    QSpacerItem *horizontalSpacer = new QSpacerItem( 40, 20,
-                    QSizePolicy::Expanding, QSizePolicy::Minimum );
-    KSeparator *separator = new KSeparator( tabPreview );
-
-    QVBoxLayout *pLayout1 = new QVBoxLayout( tabPreview );
-    QHBoxLayout *pLayout2 = new QHBoxLayout();
-
-    pLayout2->addItem( horizontalSpacer );
-    pLayout2->addWidget( btnGetStyle );
-    pLayout1->addLayout( pLayout2 );
-    pLayout1->addWidget( separator );
-//     pLayout1->addWidget( preview );
-    pLayout1->addWidget( browserPart->view() );
 
     this->setCurrentIndex( 0 );
 
@@ -916,23 +896,8 @@ void BilboEditor::sltSyncEditors( int index )
 //             htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
             htmlEditor->document()->setText( htmlExp->toHtml( doc ) );
         }
-        QString baseUrl = "http://bilbo.gnufolks.org/";
 
-        if ( __currentBlogId > -1 ) {
-            baseUrl = DBMan::self()->blog( __currentBlogId ).blogUrl();
-        }
-
-//         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
-//                          currentPostTitle,
-//                          this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
-//         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
-//                          currentPostTitle,
-//                          htmlEditor->document()->text() ), QUrl( baseUrl ) );
-        browserPart->begin();
-        browserPart->write( StyleGetter::styledHtml( __currentBlogId, 
-                         currentPostTitle,
-                         htmlEditor->document()->text() ) );
-        browserPart->end();
+        preview->setHtml( currentPostTitle, htmlEditor->document()->text() );
     }
 
     prev_index = index;
@@ -1085,50 +1050,10 @@ bool BilboEditor::updateMediaPaths()
     return true;
 }
 
-void BilboEditor::sltGetBlogStyle()
-{
-    int blogid = __currentBlogId;
-    if ( blogid < 0 ) {
-        KMessageBox::information( this,
-               i18n( "Please select a blog, then try again." ), 
-               i18n( "Select a blog" ) );
-    }
-
-    Q_EMIT sigShowStatusMessage( i18n( "Fetching blog style from the web..." ), true );
-    Q_EMIT sigBusy( true );
-
-    StyleGetter *styleGetter = new StyleGetter( __currentBlogId, this );
-    connect( styleGetter, SIGNAL( sigStyleFetched() ), this, SLOT( sltSetPostPreview() ) );
-}
-
 void BilboEditor::sltSetPostPreview()
 {
-    Q_EMIT sigShowStatusMessage( i18n( "The requested blog style fetched." ), false );
-    Q_EMIT sigBusy( false );
-
     if ( this->currentIndex() == 2 ) {
-        Q_EMIT sigShowStatusMessage( i18n( "Setting blog style..." ), true );
-
-        QString baseUrl = "http://bilbo.gnufolks.org/";
-        if ( __currentBlogId > -1 ) {
-            baseUrl = DBMan::self()->blog( __currentBlogId ).blogUrl();
-        }
-//         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
-//                          currentPostTitle,
-//                          this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
-//         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
-//                          currentPostTitle,
-//                          htmlEditor->document()->text() ), QUrl( baseUrl ) );
-        browserPart->begin();
-        browserPart->write( StyleGetter::styledHtml( __currentBlogId, 
-                         currentPostTitle,
-                         htmlEditor->document()->text() ) );
-        browserPart->end();
-
-//         Q_EMIT sigShowStatusMessage( i18n( "The requested blog style set." ), false );
-    }
-    if ( qobject_cast< StyleGetter* >( sender() ) ) {
-        sender()->deleteLater();
+        preview->setHtml( currentPostTitle, htmlEditor->document()->text() );
     }
 }
 

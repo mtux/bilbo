@@ -8,6 +8,7 @@ SET(QT_USE_QTWEBKIT 1)
 # add_subdirectory(bilbomarkupbuilders)
 
 set(bilbo_SRCS
+ bilbobrowser.cpp
  htmleditor.cpp
  stylegetter.cpp
  bilbocssparser.cpp
