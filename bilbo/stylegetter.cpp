@@ -93,7 +93,7 @@ StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
              SLOT( sltTempPostPublished( int, BilboPost* ) ) );
 //     connect( b, SIGNAL( sigPostFetched( BilboPost * ) ), this, SLOT( sltTempPostFetched( BilboPost * ) ) );
     connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
-    
+
     Q_EMIT sigGetStyleProgress( 10 );
 
     b->publishPost( mTempPost );
@@ -218,7 +218,7 @@ void StyleGetter::sltHtmlCopied( KJob *job )
     file.close();
     Q_EMIT sigGetStyleProgress( 70 );
 //     Q_EMIT sigStyleFetched();
-    
+
 
     //Remove temp post from the server.
     b->removePost( *mTempPost );
