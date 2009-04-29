@@ -43,7 +43,7 @@ Main window of bilbo blogger implementation...
 
  @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
  @author Golnaz Nilieh <g382nilieh@gmail.com>
- */
+*/
 class MainWindow : public KXmlGuiWindow
 {
     Q_OBJECT
@@ -59,6 +59,7 @@ signals:
     void settingsChanged();
 
 protected slots:
+    void slotSettingsChanged();
     void sltCreateNewPost();
     void addBlog();
     void sltUploadAllChanges();

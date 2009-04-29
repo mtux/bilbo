@@ -60,14 +60,13 @@
 
 #define TIMEOUT 5000
 
-// MainWindow::MainWindow(): KXmlGuiWindow(),
-//         tabPosts( new KTabWidget( this ) ), mCurrentBlogId(__currentBlogId)
-MainWindow::MainWindow(): KXmlGuiWindow(), mCurrentBlogId(__currentBlogId)
+MainWindow::MainWindow()
+    : KXmlGuiWindow(), mCurrentBlogId(__currentBlogId)
 {
     kDebug();
     previousActivePostIndex = -1;
-    mCurrentBlogId = -1;
     activePost = 0;
+    systemTray = 0;
     busyNumber = 0;
     progress = 0;
     this->setWindowTitle( i18n("Bilbo Blogger") );
@@ -173,11 +172,6 @@ void MainWindow::setupActions()
     KAction *actClearImageCache = new KAction( KIcon( "edit-clear" ), i18n( "Clear cached images" ), this );
     actionCollection()->addAction( QLatin1String( "clear_image_cache" ), actClearImageCache );
     connect( actClearImageCache, SIGNAL( triggered( bool ) ), this, SLOT( sltClearCache() ) );
-
-    KAction *actHide = new KAction( KIcon( "dialog-close" ), i18n( "Hide Bilbo Window" ), this );
-    actionCollection()->addAction( QLatin1String( "hide_mainwin" ), actHide );
-    actHide->setShortcut( Qt::Key_Escape );
-    connect( actHide, SIGNAL( triggered( bool ) ), this, SLOT( hide() ) );
 
     blogs = new KSelectAction( this );
     actionCollection()->addAction( QLatin1String( "blogs_list" ), blogs );
@@ -298,10 +292,16 @@ void MainWindow::optionsPreferences()
     dialog->addPage( editorSettingsDlg, i18n( "Editor" ), "accessories-text-editor" );
     dialog->addPage( advancedSettingsDlg, i18n( "Advanced" ), "applications-utilities");
     connect( dialog, SIGNAL( settingsChanged( const QString& ) ), this, SIGNAL( settingsChanged() ) );
+    connect( dialog, SIGNAL(settingsChanged(const QString& )), this, SLOT(slotSettingsChanged()) );
     connect( dialog, SIGNAL(destroyed(QObject*)), this, SLOT(slotDialogDestroyed(QObject*)));
     dialog->setAttribute( Qt::WA_DeleteOnClose );
     dialog->resize( Settings::configWindowSize() );
     dialog->show();
+}
+
+void MainWindow::slotSettingsChanged()
+{
+    setupSystemTray();
 }
 
 void MainWindow::slotDialogDestroyed( QObject *win )
@@ -365,11 +365,20 @@ void MainWindow::slotBlogRemoved( int blog_id )
 
 void MainWindow::setupSystemTray()
 {
-    systemTray = new KSystemTrayIcon( this );
-    systemTray->setIcon(this->windowIcon());
-    systemTray->setToolTip( i18n("Bilbo Blogger") );
-    systemTray->contextMenu()->addAction( actionCollection()->action("new_post") );
-    systemTray->show();
+    if( Settings::enableSysTrayIcon()) {
+        if ( !systemTray ) {
+            systemTray = new KSystemTrayIcon( this );
+            systemTray->setIcon(this->windowIcon());
+            systemTray->setToolTip( i18n("Bilbo Blogger") );
+            systemTray->contextMenu()->addAction( actionCollection()->action("new_post") );
+            systemTray->show();
+            this->setAttribute(Qt::WA_DeleteOnClose, false);
+        }
+    } else if( systemTray ) {
+        this->setAttribute(Qt::WA_DeleteOnClose, true);
+        systemTray->deleteLater();
+        systemTray = 0;
+    }
 }
 
 void MainWindow::sltUploadAllChanges()
@@ -439,8 +448,6 @@ void MainWindow::sltPublishPost()
     toolbox->getFieldsValue( post );
 //     post.setPrivate( false );
     activePost->publishPost( mCurrentBlogId, post );
-    this->setCursor( Qt::BusyCursor );
-    toolbox->setCursor( Qt::BusyCursor );
 }
 
 void MainWindow::sltRemovePostEntry( PostEntry *widget )
@@ -615,7 +622,7 @@ void MainWindow::uploadMediaObject()
         KMessageBox::sorry( this, i18n( "You have to select a blog to upload media to it." ) );
         return;
     }
-    if(  DBMan::self()->blogList().value(mCurrentBlogId)->supportMediaObjectUploading() ) {
+    if(  DBMan::self()->blogList().value(mCurrentBlogId)->supportUploadMedia() ) {
         QString mediaPath = KFileDialog::getOpenFileName( KUrl("kfiledialog:///image?global"),
                                                       "image/png image/jpeg image/gif", this,
                                                           i18n("Select media to upload"));
@@ -672,19 +679,5 @@ void MainWindow::slotMediaObjectUploaded( BilboMedia *media )
     media->deleteLater();
     sender()->deleteLater();
 }
-
-// void MainWindow::slotPostModified()
-// {
-//     kDebug();
-//     int index = tabPosts->indexOf(qobject_cast< QWidget* >(sender()));
-//     tabPosts->setTabIcon(index, KIcon("document-save"));
-// }
-// 
-// void MainWindow::slotPostSaved()
-// {
-//     kDebug();
-//     int index = tabPosts->indexOf(qobject_cast< QWidget* >(sender()));
-//     tabPosts->setTabIcon(index, KIcon());
-// }
 
 #include "mainwindow.moc"

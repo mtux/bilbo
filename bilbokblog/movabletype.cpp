@@ -139,7 +139,7 @@ bool MovableTypePrivate::readPostFromMap( BlogPost *post, const QMap<QString, QV
   QStringList categories( postInfo["categories"].toStringList() );
   //TODO 2 new keys are:
   // String mt_convert_breaks, the value for the convert_breaks field
-  post->setWpSlug( postInfo["wp_slug"].toString() );
+  post->setSlug( postInfo["wp_slug"].toString() );
   post->setAdditionalContent( postInfo["mt_text_more"].toString() );
   post->setTitle( title );
   post->setContent( description );

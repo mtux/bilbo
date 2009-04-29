@@ -25,7 +25,7 @@
 #include "constants.h"
 #include <QObject>
 #include <kurl.h>
-
+#include <QHash>
 /**
 Blog definition class!
 
@@ -46,9 +46,9 @@ public:
 
     /**
      * returns blog xmlrpc Url!
-        * For http://bilbo.wordpress.com :
-        * it's url() is http://bilbo.wordpress.com/xmlrpc.php
-        * and it's blogUrl() is http://bilbo.wordpress.com/
+     * For http://bilbo.wordpress.com :
+     * it's url() is http://bilbo.wordpress.com/xmlrpc.php
+     * and it's blogUrl() is http://bilbo.wordpress.com/
      * @return url usable for xmlrpc!
      */
     KUrl url() const;
@@ -61,8 +61,8 @@ public:
     void setPassword( const QString& );
     QString title() const;
     void setTitle( const QString& );
-    QString stylePath() const;
-    void setStylePath( const QString& );
+//     QString stylePath() const;
+//     void setStylePath( const QString& );
     ApiType api() const;
     void setApi( const ApiType );
     int id() const;//id in DB
@@ -74,7 +74,10 @@ public:
     bool isError() const;
     void setError(bool isError);
 
-    bool supportMediaObjectUploading() const;
+    bool supportUploadMedia() const;
+    bool supportCategory() const;
+    bool supportTag() const;
+//     bool supportComments() const;
     /**
      * return Blog Actual Url!
      * For http://bilbo.wordpress.com :
@@ -83,9 +86,11 @@ public:
      * @return Blog actual url.
      */
     QString blogUrl() const;
+    void setBlogUrl(const QString &blogUrl);
 
 private:
     KUrl mUrl;
+    QString mBlogUrl;
     QString mBlogid;
     QString mUsername;
     QString mPassword;
@@ -96,6 +101,7 @@ private:
     Qt::LayoutDirection mDir;
     QString mLocalDirectory;
     bool mError;
+    QHash<QString, bool> mSupportedFeatures;
 };
 
 #endif

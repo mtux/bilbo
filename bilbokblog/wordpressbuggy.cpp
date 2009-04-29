@@ -113,7 +113,7 @@ void WordpressBuggy::createPost( KBlog::BlogPost *post )
     xmlMarkup += "</member><member>";
   }
   xmlMarkup += "<name>wp_slug</name>";
-  xmlMarkup += "<value><string><![CDATA[" + post->wpSlug() + "]]></string></value>";
+  xmlMarkup += "<value><string><![CDATA[" + post->slug() + "]]></string></value>";
   xmlMarkup += "</member><member>";
   xmlMarkup += "<name>mt_excerpt</name>";
   xmlMarkup += "<value><string><![CDATA[" + post->summary() + "]]></string></value>";
@@ -217,7 +217,7 @@ void WordpressBuggy::modifyPost( KBlog::BlogPost *post )
       xmlMarkup += "</member><member>";
   }
   xmlMarkup += "<name>wp_slug</name>";
-  xmlMarkup += "<value><string><![CDATA[" + post->wpSlug() + "]]></string></value>";
+  xmlMarkup += "<value><string><![CDATA[" + post->slug() + "]]></string></value>";
   xmlMarkup += "</member><member>";
   xmlMarkup += "<name>mt_excerpt</name>";
   xmlMarkup += "<value><string><![CDATA[" + post->summary() + "]]></string></value>";

@@ -36,14 +36,14 @@
 #include "addeditblog.h"
 #include "dbman.h"
 #include "global.h"
+#include <QTableWidget>
 
 static const int TIMEOUT = 45000;
 
 AddEditBlog::AddEditBlog( int blog_id, QWidget *parent, Qt::WFlags flags )
-        : KDialog( parent, flags )
+        : KDialog( parent, flags ), wait(0)
 {
     kDebug();
-    wait = 0;
     mainW = new KTabWidget( this );
     ui.setupUi( mainW );
     this->setMainWidget( mainW );
@@ -64,7 +64,7 @@ AddEditBlog::AddEditBlog( int blog_id, QWidget *parent, Qt::WFlags flags )
     connect( ui.txtId, SIGNAL( returnPressed() ), this, SLOT( sltReturnPressed() ) );
 
     if ( blog_id > -1 ) {
-        this->setWindowTitle( i18n( "Edit Blog Settings" ) );
+        this->setWindowTitle( i18n( "Edit blog settings" ) );
         this->enableButtonOk( true );
         ui.btnFetch->setEnabled( true );
         ui.btnAutoConf->setEnabled( true );
@@ -74,13 +74,15 @@ AddEditBlog::AddEditBlog( int blog_id, QWidget *parent, Qt::WFlags flags )
         ui.txtUser->setText( bBlog->username() );
         ui.txtPass->setText( bBlog->password() );
         ui.txtId->setText( bBlog->blogid() );
-        ui.lblTitle->setText( bBlog->title() );
+        ui.txtTitle->setText( bBlog->title() );
         ui.comboApi->setCurrentIndex( bBlog->api() );
         ui.comboDir->setCurrentIndex( bBlog->direction() );
+        ui.txtTitle->setEnabled(true);
     } else {
         bBlog = new BilboBlog( this );
         bBlog->setBlogId( 0 );
         this->enableButtonOk( false );
+        ui.txtTitle->setEnabled(false);
     }
 
     slotComboApiChanged( ui.comboApi->currentIndex() );
@@ -203,7 +205,7 @@ void AddEditBlog::gotXmlRpcTest( KJob *job )
         return;
     }
 
-    ui.comboApi->setCurrentIndex( 3 );
+    ui.comboApi->setCurrentIndex( 2 );
     ui.txtUrl->setText( ui.txtUrl->text() + "/xmlrpc.php" );
     fetchBlogId();
 }
@@ -300,22 +302,70 @@ void AddEditBlog::fetchedBlogId( const QList< QMap < QString , QString > > & lis
         mFetchBlogIdTimer = 0;
     }
     hideWaitWidget();
+    QString blogId, blogName, blogUrl, apiUrl;
     if ( list.count() > 1 ) {
         ///TODO handle more than one blog!
         kDebug() << "User has more than ONE blog!";
+        KDialog *blogsDialog = new KDialog(this);
+        QTableWidget *blogsList = new QTableWidget(blogsDialog);
+        blogsList->setSelectionBehavior(QAbstractItemView::SelectRows);
+        QList< QMap<QString,QString> >::const_iterator it = list.constBegin();
+        QList< QMap<QString,QString> >::const_iterator endIt = list.constEnd();
+        int i=0;
+        blogsList->setColumnCount(4);
+//         blogsList->horizontalHeaderItem(0)->setText( i18nc("Blog title", "Title") );
+//         blogsList->horizontalHeaderItem(1)->setText( i18nc("Blog url", "Url") );
+        blogsList->setColumnHidden(2, true);
+        blogsList->setColumnHidden(3, true);
+        for(;it != endIt; ++it){
+            kDebug()<<it->value("title");
+            blogsList->insertRow(i);
+            blogsList->setCellWidget(i, 0, new QLabel( it->value("title")) );
+            blogsList->setCellWidget(i, 1, new QLabel( it->value("url")) );
+            blogsList->setCellWidget(i, 2, new QLabel( it->value("id")) );
+            blogsList->setCellWidget(i, 3, new QLabel( it->value("apiUrl")) );
+            ++i;
+        }
+        blogsDialog->setMainWidget(blogsList);
+        blogsDialog->setWindowTitle( i18n("Which blog?") );
+        if( blogsDialog->exec() ) {
+            int row = blogsList->currentRow();
+            if( row == -1 )
+                return;
+            blogId = qobject_cast<QLabel*>( blogsList->cellWidget(row, 2) )->text();
+            blogName = qobject_cast<QLabel*>( blogsList->cellWidget(row, 0) )->text();
+            blogUrl = qobject_cast<QLabel*>( blogsList->cellWidget(row, 1) )->text();
+            apiUrl = qobject_cast<QLabel*>( blogsList->cellWidget(row, 3) )->text();
+        } else
+            return;
+    } else {
+        blogId = list.begin()->value("id");
+        blogName = list.begin()->value("title");
+        blogUrl = list.begin()->value("url");
+        apiUrl = list.begin()->value("apiUrl");
     }
-    ui.txtId->setText( list.first().values().first() );
-    ui.lblTitle->setText( list.first().values().last() );
+    ui.txtId->setText( blogId );
+    ui.txtTitle->setText( blogName );
     ui.txtId->setEnabled( true );
     ui.btnFetch->setEnabled( true );
     ui.btnAutoConf->setEnabled( true );
 
-    bBlog->setUrl( QUrl( ui.txtUrl->text() ) );
+    if( !apiUrl.isEmpty() ){
+        ui.txtUrl->setText( apiUrl );
+    } else {
+        apiUrl = ui.txtUrl->text();
+    }
+    if( !blogUrl.isEmpty() ) {
+        bBlog->setBlogUrl( blogUrl );
+    } else {
+        bBlog->setBlogUrl( apiUrl );
+    }
+
+    bBlog->setUrl( QUrl( apiUrl ) );
     bBlog->setUsername( ui.txtUser->text() );
     bBlog->setPassword( ui.txtPass->text() );
-    bBlog->setBlogId( ui.txtId->text() );
-    bBlog->setTitle( list.first().values().last() );
-    this->enableButtonOk( true );
+    bBlog->setBlogId( blogId );
+    bBlog->setTitle( blogName );
 }
 
 void AddEditBlog::fetchedProfileId( const QString &id )
@@ -337,10 +387,9 @@ void AddEditBlog::fetchedProfileId( const QString &id )
 
 void AddEditBlog::enableOkButton( const QString & txt )
 {
-    if ( txt.isEmpty() )
-        this->enableButtonOk( false );
-    else
-        this->enableButtonOk( true );
+    bool check = !txt.isEmpty();
+    this->enableButtonOk( check );
+    ui.txtTitle->setEnabled( check );
 }
 
 void AddEditBlog::sltReturnPressed()
@@ -459,31 +508,15 @@ void AddEditBlog::slotButtonClicked( int button )
         }
         bBlog->setApi(( BilboBlog::ApiType )ui.comboApi->currentIndex() );
         bBlog->setDirection(( Qt::LayoutDirection )ui.comboDir->currentIndex() );
-
-        //  if(bBlog->password().isEmpty())
+        bBlog->setTitle( ui.txtTitle->text() );
         bBlog->setPassword( ui.txtPass->text() );
-        //  if(bBlog->username().isEmpty())
         bBlog->setUsername( ui.txtUser->text() );
-        //  if(bBlog->blogid().isEmpty())
         bBlog->setBlogId( ui.txtId->text() );
-        //  if(bBlog->url().isEmpty())
         bBlog->setUrl( KUrl( ui.txtUrl->text() ) );
-
-        KUrl url( bBlog->url() );
-//         QString blogDir = DATA_DIR + "/media/";
+        if(bBlog->blogUrl().isEmpty())
+            bBlog->setBlogUrl(ui.txtUrl->text());
 
         if ( isNewBlog ) {
-//             if( !KStandardDirs::exists( blogDir ) ) {
-//                 if ( KStandardDirs::makeDir( blogDir ) ) {
-//                 } else {
-//                     kDebug() << blogDir << " can't be created, as blogDir";
-//                     KMessageBox::error(this, i18n( "Cannot create directory %1,\
-// \nPlease check permissions or create it manually.",
-//                                                   blogDir));
-//                     return;
-//                 }
-//                 bBlog->setLocalDirectory( blogDir );
-//             }
             int blog_id = DBMan::self()->addBlog( *bBlog );
             bBlog->setId( blog_id );
             if ( blog_id != -1 ) {
@@ -493,12 +526,6 @@ void AddEditBlog::slotButtonClicked( int button )
                 kDebug() << "Cannot add blog";
             }
         } else {
-//             QDir dir = QDir( bBlog->localDirectory() );
-//             if ( dir.rename( dir.dirName(), url.host().replace( '/', '_' ) ) ) {
-//                 bBlog->setLocalDirectory( blogDir );
-//             } else {
-//                 kDebug() << "current blog directory can't be renamed to " << blogDir;
-//             }
             if ( DBMan::self()->editBlog( *bBlog ) ) {
                 kDebug() << "Emitting sigBlogEdited() ...";
                 Q_EMIT sigBlogEdited( *bBlog );
@@ -532,4 +559,5 @@ void AddEditBlog::hideWaitWidget()
         wait->deleteLater();
     wait = 0;
 }
+
 #include "addeditblog.moc"

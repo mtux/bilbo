@@ -3,7 +3,6 @@
 <MenuBar>
   <Menu name="file"><text>File</text>
       <Action name="toggle_toolbox" />
-      <Action name="hide_mainwin" />
   </Menu>
   <Menu name="blog"><text>Blog</text>
     <Action name="add_blog" />
