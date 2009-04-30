@@ -19,54 +19,52 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "addeditlink.h"
+#ifndef MEDIALISTWIDGET_H
+#define MEDIALISTWIDGET_H
 
-AddEditLink::AddEditLink( QWidget *parent )
-        : KDialog( parent )
+#include <klistwidget.h>
+#include "ui_editimagebase.h"
+// #include <ui_editimagewidget.h>
+
+/**
+    @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+    @author Golnaz Nilieh <g382nilieh@gmail.com>
+*/
+class KAction;
+class MediaListWidget : public KListWidget
 {
-    QWidget *dialog = new QWidget( this );
-    ui.setupUi( dialog );
-    this->setMainWidget( dialog );
+    Q_OBJECT
+public:
+    MediaListWidget( QWidget *parent );
 
-    this->resize( dialog->width(), dialog->height() );
-    
-    connect( this, SIGNAL( accepted() ), this, SLOT( sltAccepted() ) );
-    ui.txtAddress->setFocus();
-}
+    ~MediaListWidget();
 
-void AddEditLink::sltAccepted()
-{
-    if ( ui.txtAddress->text().isEmpty() ) return;
-    QString linkTarget;
-    if ( ui.comboTarget->currentIndex() == 1 ) {
-        linkTarget = "_self";
-    } else if ( ui.comboTarget->currentIndex() == 2 ) {
-        linkTarget = "_blank";
-    }
-    const QString target = linkTarget;
+    void contextMenuEvent( QContextMenuEvent *event );
 
-    Q_EMIT addLink( ui.txtAddress->text(), target, ui.txtTitle->text() );
-}
+    enum ItemType {
+        ImageType = 1001,
+        OtherType = 1002
+    };
 
-void AddEditLink::show( const QString& address, const QString& title, const QString& target )
-{
-    KDialog::show();
-    if ( !address.isEmpty() ) {
-        ui.txtAddress->setText( address );
-        this->setWindowTitle( i18nc( "verb, to modify an existing link", "Edit Link" ) );
-    } else {
-        this->setWindowTitle( i18nc( "verb, to insert a link into the text", "Add Link" ) );
-    }
-    if ( !title.isEmpty() ) {
-        ui.txtTitle->setText( title );
-    }
-    if ( !target.isEmpty() ) {
-        if ( target == "_self" ) {
-            ui.comboTarget->setCurrentIndex( 1 );
-        } else if ( target == "_blank" ) {
-            ui.comboTarget->setCurrentIndex( 2 );
-        }
-    }
-}
+Q_SIGNALS:
+    void sigRemoveMedia( const int index );
+    void sigSetProperties( const int index, const int width, const int height,
+                           const QString title, const QString link, const QString Alt_text );
 
-#include "addeditlink.moc"
+protected Q_SLOTS:
+    void sltEditProperties();
+    void sltSetProperties();
+    void sltCopyUrl();
+    void sltRemoveMedia();
+
+private:
+    KAction *actEdit;
+    KAction *actCopyUrl;
+    KAction *actRemove;
+
+    Ui::EditImageBase ui;
+//     Ui::EditImageWidget ui;
+
+};
+
+#endif

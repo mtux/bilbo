@@ -19,9 +19,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "medialistwidget.h"
+#include "composer/medialistwidget.h"
+
 #include <QContextMenuEvent>
 #include <QtGui/QClipboard>
+
 #include <kmenu.h>
 #include <kaction.h>
 #include <klocalizedstring.h>
@@ -92,4 +94,4 @@ void MediaListWidget::sltRemoveMedia()
     Q_EMIT( sigRemoveMedia( this->currentRow() ) );
 }
 
-#include "medialistwidget.moc"
+#include "composer/medialistwidget.moc"

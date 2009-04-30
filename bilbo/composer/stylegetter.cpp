@@ -28,7 +28,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "stylegetter.h"
+#include "composer/stylegetter.h"
 
 #include <kio/job.h>
 #include <kstandarddirs.h>
@@ -256,4 +256,4 @@ void StyleGetter::sltError( const QString & errMsg )
     b->deleteLater();
 }
 
-#include "stylegetter.moc"
+#include "composer/stylegetter.moc"

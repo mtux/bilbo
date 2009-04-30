@@ -18,38 +18,55 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef ADDIMAGEDIALOG_H
-#define ADDIMAGEDIALOG_H
 
-#include <addmediadialog.h>
+#include "composer/dialogs/addeditlink.h"
 
-#include <ui_editimagebase.h>
-
-class QFrame;
-class BilboMedia;
-/**
-	@author 
-*/
-
-class AddImageDialog : public AddMediaDialog
+AddEditLink::AddEditLink( QWidget *parent )
+        : KDialog( parent )
 {
-    Q_OBJECT
-public:
-    AddImageDialog(QWidget* parent);
+    QWidget *dialog = new QWidget( this );
+    ui.setupUi( dialog );
+    this->setMainWidget( dialog );
 
-    ~AddImageDialog();
+    this->resize( dialog->width(), dialog->height() );
     
-Q_SIGNALS:
-    void sigAddImage( BilboMedia *media, const int width, const int height, 
-                      const QString title, const QString link, const QString Alt_text  );
+    connect( this, SIGNAL( accepted() ), this, SLOT( sltAccepted() ) );
+    ui.txtAddress->setFocus();
+}
 
-protected:
-    virtual void addOtherMediaAttributes();
-    
-private:
-    QFrame *editFrame;
-    Ui::EditImageBase editImageWidgetUi;
+void AddEditLink::sltAccepted()
+{
+    if ( ui.txtAddress->text().isEmpty() ) return;
+    QString linkTarget;
+    if ( ui.comboTarget->currentIndex() == 1 ) {
+        linkTarget = "_self";
+    } else if ( ui.comboTarget->currentIndex() == 2 ) {
+        linkTarget = "_blank";
+    }
+    const QString target = linkTarget;
 
-};
+    Q_EMIT addLink( ui.txtAddress->text(), target, ui.txtTitle->text() );
+}
 
-#endif
+void AddEditLink::show( const QString& address, const QString& title, const QString& target )
+{
+    KDialog::show();
+    if ( !address.isEmpty() ) {
+        ui.txtAddress->setText( address );
+        this->setWindowTitle( i18nc( "verb, to modify an existing link", "Edit Link" ) );
+    } else {
+        this->setWindowTitle( i18nc( "verb, to insert a link into the text", "Add Link" ) );
+    }
+    if ( !title.isEmpty() ) {
+        ui.txtTitle->setText( title );
+    }
+    if ( !target.isEmpty() ) {
+        if ( target == "_self" ) {
+            ui.comboTarget->setCurrentIndex( 1 );
+        } else if ( target == "_blank" ) {
+            ui.comboTarget->setCurrentIndex( 2 );
+        }
+    }
+}
+
+#include "composer/dialogs/addeditlink.moc"

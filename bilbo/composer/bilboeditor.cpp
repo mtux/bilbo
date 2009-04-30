@@ -37,24 +37,25 @@
 #include <ktexteditor/view.h>
 #include <ktexteditor/document.h>
 
-
-#include "bilboeditor.h"
 // #include "dbman.h"
-#include "multilinetextedit.h"
-#include "addeditlink.h"
-#include "addimagedialog.h"
 #include "bilbomedia.h"
 // #include "global.h"
 #include "bilboblog.h"
 #include "bilbopost.h"
-#include "medialistwidget.h"
-#include "bilbotextformat.h"
-#include "bilbotexthtmlimporter.h"
 
-#include "htmlexporter.h"
-#include "stylegetter.h"
-#include "htmleditor.h"
-#include "bilbobrowser.h"
+#include "composer/multilinetextedit.h"
+#include "composer/medialistwidget.h"
+#include "composer/stylegetter.h"
+#include "composer/htmleditor.h"
+#include "composer/bilbobrowser.h"
+#include "composer/bilboeditor.h"
+
+#include "composer/dialogs/addeditlink.h"
+#include "composer/dialogs/addimagedialog.h"
+
+#include "htmlconvertors/bilbotextformat.h"
+#include "htmlconvertors/bilbotexthtmlimporter.h"
+#include "htmlconvertors/htmlexporter.h"
 
 BilboEditor::BilboEditor( QWidget *parent )
         : KTabWidget( parent )
@@ -1057,4 +1058,4 @@ void BilboEditor::sltSetPostPreview()
     }
 }
 
-#include "bilboeditor.moc"
+#include "composer/bilboeditor.moc"

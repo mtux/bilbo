@@ -25,7 +25,7 @@
 #include <klineedit.h>
 #include <KMessageBox>
 #include "postentry.h"
-#include "bilboeditor.h"
+#include "composer/bilboeditor.h"
 #include "bilbomedia.h"
 #include "backend.h"
 #include "dbman.h"

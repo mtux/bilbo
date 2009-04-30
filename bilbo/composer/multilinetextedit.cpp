@@ -32,7 +32,7 @@
 #include <kaction.h>
 #include <klocalizedstring.h>
 
-#include "multilinetextedit.h"
+#include "composer/multilinetextedit.h"
 #include "constants.h"
 #include "bilbomedia.h"
 
@@ -182,4 +182,4 @@ void MultiLineTextEdit::setMediaList( QMap <QString, BilboMedia*> * list )
 }
 
 
-#include <multilinetextedit.moc>
+#include "composer/multilinetextedit.moc"

@@ -19,7 +19,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "bilbobrowser.h"
+#include "composer/bilbobrowser.h"
 
 #include <QtGui>
 
@@ -32,7 +32,7 @@
 #include <kjob.h>
 #include <kio/jobclasses.h>
 
-#include "stylegetter.h"
+#include "composer/stylegetter.h"
 #include "global.h"
 
 BilboBrowser::BilboBrowser( QWidget *parent ) : QWidget( parent )
@@ -158,4 +158,4 @@ void BilboBrowser::sltSetStatusBarText( const QString& text )
     browserStatus->showMessage( statusText );
 }
 
-#include "bilbobrowser.moc"
+#include "composer/bilbobrowser.moc"

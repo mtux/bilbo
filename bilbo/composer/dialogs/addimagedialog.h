@@ -18,51 +18,37 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef ADDIMAGEDIALOG_H
+#define ADDIMAGEDIALOG_H
 
-#ifndef MEDIALISTWIDGET_H
-#define MEDIALISTWIDGET_H
+#include "composer/dialogs/addmediadialog.h"
 
-#include <klistwidget.h>
 #include <ui_editimagebase.h>
-// #include <ui_editimagewidget.h>
 
+class QFrame;
+class BilboMedia;
 /**
- @author
+	@author 
 */
-class KAction;
-class MediaListWidget : public KListWidget
+
+class AddImageDialog : public AddMediaDialog
 {
     Q_OBJECT
 public:
-    MediaListWidget( QWidget *parent );
+    AddImageDialog(QWidget* parent);
 
-    ~MediaListWidget();
-
-    void contextMenuEvent( QContextMenuEvent *event );
-
-    enum ItemType {
-        ImageType = 1001,
-        OtherType = 1002
-    };
-
+    ~AddImageDialog();
+    
 Q_SIGNALS:
-    void sigRemoveMedia( const int index );
-    void sigSetProperties( const int index, const int width, const int height,
-                           const QString title, const QString link, const QString Alt_text );
+    void sigAddImage( BilboMedia *media, const int width, const int height, 
+                      const QString title, const QString link, const QString Alt_text  );
 
-protected Q_SLOTS:
-    void sltEditProperties();
-    void sltSetProperties();
-    void sltCopyUrl();
-    void sltRemoveMedia();
-
+protected:
+    virtual void addOtherMediaAttributes();
+    
 private:
-    KAction *actEdit;
-    KAction *actCopyUrl;
-    KAction *actRemove;
-
-    Ui::EditImageBase ui;
-//     Ui::EditImageWidget ui;
+    QFrame *editFrame;
+    Ui::EditImageBase editImageWidgetUi;
 
 };
 

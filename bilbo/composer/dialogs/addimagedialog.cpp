@@ -22,7 +22,7 @@
 #include <kmessagebox.h>
 #include <kdebug.h>
 
-#include "addimagedialog.h"
+#include "composer/dialogs/addimagedialog.h"
 #include "bilbomedia.h"
 
 AddImageDialog::AddImageDialog(QWidget* parent): AddMediaDialog(parent)
@@ -76,4 +76,4 @@ void AddImageDialog::addOtherMediaAttributes()
 //     }
 }
 
-#include "addimagedialog.moc"
+#include "composer/dialogs/addimagedialog.moc"
