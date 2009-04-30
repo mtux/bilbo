@@ -32,7 +32,8 @@
 #include "bilbohtmlparser.h"
 
 /**
- *  Parses html text via BilboTextHtmlParser functions, then organizes returned node list as a QTextDocument object.
+ *  Parses html text via BilboTextHtmlParser functions, then organizes returned 
+ *  node list as a QTextDocument object.
  *
 */
 class BilboTextHtmlImporter : public BilboTextHtmlParser

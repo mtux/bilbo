@@ -40,13 +40,30 @@ class BilboBrowser: public QWidget
 {
     Q_OBJECT
 public:
-    BilboBrowser( QWidget *parent );
+    /**
+     * @brief BilboBrowser constructor.
+     * Creates a widget that consists of a KHTMLView, some common browsing 
+     * tools, and a button for getting blog style.
+     * @param parent is parent widget
+     */
+    BilboBrowser( QWidget *parent = 0 );
 
+    /**
+     * @brief BilboBrowser destructor.
+     */
     ~BilboBrowser();
 
+    /**
+     * Shows a post with given title and content in the browser.
+     * @param title is the post title.
+     * @param content is the post content.
+     */
     void setHtml( const QString& title, const QString& content );
 
 Q_SIGNALS:
+    /**
+     * This signal is emmited when the browser finishes getting blog style.
+     */
     void sigSetBlogStyle();
 
 protected Q_SLOTS:

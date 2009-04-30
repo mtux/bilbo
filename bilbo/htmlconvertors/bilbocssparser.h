@@ -3,6 +3,10 @@
  *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
  *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
+ *   It is a modified version of qcssparser_p.h, which is part             *
+ *   of the QtGui module of the Qt Toolkit. It has been costomized for     *
+ *   use in Bilbo Blogger project.                                         *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 3 of the License, or     *
@@ -17,12 +21,8 @@
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************
- *                                                                         *
- *  This file is a modified version of qcssparser_p.h, which is part      *
- *   of the QtGui module of the Qt Toolkit. It has been costomized for     *
- *   use in Bilbo Blogger project.                                         *
  ***************************************************************************/
+
 #ifndef BILBOCSSPARSER_H
 #define BILBOCSSPARSER_H
 
