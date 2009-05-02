@@ -48,6 +48,7 @@ BilboBrowser::BilboBrowser( QWidget *parent ) : QWidget( parent )
         connect( browserPart->browserExtension(), SIGNAL( loadingProgress( int ) ), 
                 browserProgress, SLOT( setValue( int ) ) );
     }
+
     connect( browserPart, SIGNAL( completed() ), this, SLOT( sltCompleted() ) );
     connect( browserPart, SIGNAL( canceled( const QString& ) ), this, SLOT( 
             sltCanceled( const QString& ) ) );
@@ -66,6 +67,11 @@ void BilboBrowser::createUi()
     btnGetStyle->setText( i18n( "Get blog style" ) );
     connect( btnGetStyle, SIGNAL( clicked( bool ) ), this, SLOT( sltGetBlogStyle() ) );
 
+    viewInBlogStyle = new QCheckBox( "View post in the blog style", this );
+    viewInBlogStyle->setChecked( true );
+    connect( viewInBlogStyle, SIGNAL( toggled( bool ) ), this, SLOT( 
+            sltViewModeChanged() ) );
+
     QSpacerItem *horizontalSpacer = new QSpacerItem( 40, 20,
                     QSizePolicy::Expanding, QSizePolicy::Minimum );
     KSeparator *separator = new KSeparator( this );
@@ -73,6 +79,7 @@ void BilboBrowser::createUi()
     QVBoxLayout *vlayout = new QVBoxLayout( this );
     QHBoxLayout *hlayout = new QHBoxLayout( this );
 
+    hlayout->addWidget( viewInBlogStyle );
     hlayout->addItem( horizontalSpacer );
     hlayout->addWidget( btnGetStyle );
     vlayout->addLayout( hlayout );
@@ -90,6 +97,9 @@ void BilboBrowser::createUi()
 
 void BilboBrowser::setHtml( const QString& title, const QString& content )
 {
+    currentTitle = title;
+    currentContent = content;
+
     if ( browserProgress->isHidden() ) {
         browserProgress->show();
     }
@@ -97,9 +107,19 @@ void BilboBrowser::setHtml( const QString& title, const QString& content )
     browserStatus->showMessage( i18n( "loading page items..." ) );
 
     browserPart->begin();
-    browserPart->write( StyleGetter::styledHtml( __currentBlogId, title, content ) );
+    if ( viewInBlogStyle->isChecked() ) {
+        browserPart->write( StyleGetter::styledHtml( __currentBlogId, title, content ) );
+    } else {
+        browserPart->write( 
+              "<html><body><b>" + title + "</b><br>" + content + "</html>" );
+    }
     browserPart->end();
 }
+/*
+void BilboBrowser::setBrowserDirection( Qt::LayoutDirection direction )
+{
+    browserPart->view()->setLayoutDirection( direction );
+}*/
 
 void BilboBrowser::sltGetBlogStyle()
 {
@@ -156,6 +176,12 @@ void BilboBrowser::sltSetStatusBarText( const QString& text )
     QString statusText = text;
     statusText.remove( "<qt>" );
     browserStatus->showMessage( statusText );
+}
+
+void BilboBrowser::sltViewModeChanged()
+{
+    browserPart->closeUrl();
+    setHtml( currentTitle, currentContent );
 }
 
 #include "composer/bilbobrowser.moc"

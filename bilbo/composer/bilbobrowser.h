@@ -24,6 +24,7 @@
 
 #include <QWidget>
 
+class QCheckBox;
 class QProgressBar;
 class KHTMLPart;
 class KPushButton;
@@ -59,6 +60,8 @@ public:
      * @param content is the post content.
      */
     void setHtml( const QString& title, const QString& content );
+/*
+    void setBrowserDirection( Qt::LayoutDirection direction );*/
 
 Q_SIGNALS:
     /**
@@ -77,14 +80,20 @@ protected Q_SLOTS:
 
     void sltSetStatusBarText( const QString& text );
 
+    void sltViewModeChanged();
+
 private:
     void createUi();
 
     KHTMLPart *browserPart;
 
+    QCheckBox *viewInBlogStyle;
     KPushButton *btnGetStyle;
     QProgressBar *browserProgress;
     KStatusBar *browserStatus;
+
+    QString currentTitle;
+    QString currentContent;
 };
 
 #endif
