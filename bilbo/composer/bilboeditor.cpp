@@ -141,6 +141,11 @@ void BilboEditor::createUi()
 
     this->setCurrentIndex( 0 );
 
+    currentPostTitle = i18n( "Post Title" );
+
+    QPalette palette = QApplication::palette();
+    codeBackground = palette.color( QPalette::Active, QPalette::Mid );
+
     ///defaultCharFormat
     defaultCharFormat = editor->currentCharFormat();
 
@@ -148,11 +153,13 @@ void BilboEditor::createUi()
     defaultCharFormat.setFont( defaultFont );
     defaultCharFormat.setForeground( editor->currentCharFormat().foreground() );
     defaultCharFormat.setProperty( QTextFormat::FontSizeAdjustment, QVariant( 0 ) );
+    defaultCharFormat.setBackground( palette.color( QPalette::Active,
+                                                    QPalette::Base ) );
+    defaultCharFormat.setProperty( BilboTextFormat::HasCodeStyle, QVariant( false ) );
 
     ///defaultBlockFormat
     defaultBlockFormat = editor->textCursor().blockFormat();
-    
-    currentPostTitle = i18n( "Post Title" );
+
     createActions();
 }
 
@@ -333,13 +340,23 @@ void BilboEditor::sltSetTextBold( bool bold )
 
 void BilboEditor::sltToggleCode()
 {
-    //TODO
     static QString preFontFamily;
-    if ( editor->fontFamily() != "Courier New,courier" ) {
-        preFontFamily = editor->fontFamily();
-        editor->setFontFamily( "Courier New,courier" );
+
+    QTextCharFormat f = editor->currentCharFormat();
+//     if ( f->fontFamily() != "Courier New,courier" ) {
+    if ( f.hasProperty( BilboTextFormat::HasCodeStyle ) && f.boolProperty(
+            BilboTextFormat::HasCodeStyle ) ) {
+        f.setProperty( BilboTextFormat::HasCodeStyle, QVariant( false ) );
+        f.setBackground( defaultCharFormat.background() );
+        f.setFontFamily( preFontFamily );
+        editor->textCursor().mergeCharFormat( f );
+
     } else {
-        editor->setFontFamily( preFontFamily );
+        preFontFamily = editor->fontFamily();
+        f.setProperty( BilboTextFormat::HasCodeStyle, QVariant( true ) );
+        f.setBackground( codeBackground );
+        f.setFontFamily( "Courier New,courier" );
+        editor->textCursor().mergeCharFormat( f );
     }
     editor->setFocus( Qt::OtherFocusReason );
 }

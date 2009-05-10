@@ -343,6 +343,7 @@ private:
 
     QString currentPostTitle;
     int prev_index;
+    QColor codeBackground;
 };
 
 #endif

@@ -262,10 +262,14 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
 
     //if (!family.isEmpty() && family != defaultCharFormat.fontFamily()) {
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-    if ( !family.isEmpty() && family != mDefaultCharFormat.fontFamily() ) {
-        if ( family.right( 7 ) == "courier" ) {
-            tags << code;
-        } else {
+    if ( charFormat.hasProperty( BilboTextFormat::HasCodeStyle ) && 
+         charFormat.boolProperty( BilboTextFormat::HasCodeStyle ) ) {
+        tags << code;
+
+    } else if ( !family.isEmpty() && family != mDefaultCharFormat.fontFamily() ) {
+//         if ( family.right( 7 ) == "courier" ) {
+//             tags << code;
+//         } else {
             if ( ! attributesEmitted ) {
                 html += styleTag;
             }
@@ -273,7 +277,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
             html += family;
             html += QLatin1String( "';" );
             attributesEmitted = true;
-        }
+//         }
     }
 
 
@@ -453,17 +457,19 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
 //    if (format.background() != defaultCharFormat.background()
 //            && format.background().style() != Qt::NoBrush) {
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
-    if ( charFormat.background() != mDefaultCharFormat.background()
-            && charFormat.background().style() != Qt::NoBrush ) {
-        if ( ! attributesEmitted ) {
-            html += styleTag;
+    if ( !( charFormat.hasProperty( BilboTextFormat::HasCodeStyle ) && 
+         charFormat.boolProperty( BilboTextFormat::HasCodeStyle ) ) ) {
+        if ( charFormat.background() != mDefaultCharFormat.background()
+                && charFormat.background().style() != Qt::NoBrush ) {
+            if ( ! attributesEmitted ) {
+                html += styleTag;
+            }
+            html += QLatin1String( " background-color:" );
+            html += charFormat.background().color().name();
+            html += QLatin1Char( ';' );
+            attributesEmitted = true;
         }
-        html += QLatin1String( " background-color:" );
-        html += charFormat.background().color().name();
-        html += QLatin1Char( ';' );
-        attributesEmitted = true;
     }
-
 //    if (format.verticalAlignment() != defaultCharFormat.verticalAlignment()) { //TODO
     // NOTE the above line replaced with the bottom line to use default charFormat, which can be set from outside.
     if ( charFormat.verticalAlignment() != mDefaultCharFormat.verticalAlignment() ) { //TODO

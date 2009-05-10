@@ -45,10 +45,12 @@ public:
         ImageTitle = 0x100020,
         ImageAlternateText = 0x100021,
         
-        /// Block Properties
-        HtmlHeading = 0x100030, //zero if block is not in heading format, 1 for Heading 1, and so on.
+        HasCodeStyle = 0x100030,
 
-        IsHtmlTagSign = 0x100031,
+        /// Block Properties
+        HtmlHeading = 0x100040, //zero if block is not in heading format, 1 for Heading 1, and so on.
+
+        IsHtmlTagSign = 0x100041,
     };
 
 };

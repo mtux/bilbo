@@ -229,6 +229,8 @@ uint displayMode :
 
     WhiteSpaceMode wsm;
 
+    bool hasCodeStyle;   ///my code
+
     int htmlHeading;  ///my code
 
     bool isHtmlTagSign;  ///my code
