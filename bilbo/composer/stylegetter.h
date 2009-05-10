@@ -84,6 +84,13 @@ Q_SIGNALS:
      */
     void sigStyleFetched();
 
+    /**
+     * While the class is fetching blog style from the web, this signal shows
+     * the operation progress.
+     * @param percent is a number between 0 to 100, showing the progress in percent
+     */
+    void sigGetStyleProgress( int percent );
+
 private Q_SLOTS:
 //     void slotPostSent();
     void sltTempPostPublished( int blogId, BilboPost* post );

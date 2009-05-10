@@ -22,7 +22,8 @@
 #include <QtGui>
 #include <QImage>
 #include <QTextCharFormat>
-#include <QWebView>
+// #include <QWebView>
+
 #include <klocalizedstring.h>
 #include <ktoolbar.h>
 #include <kaction.h>
@@ -31,28 +32,30 @@
 #include <kicon.h>
 #include <kcolordialog.h>
 #include <kdebug.h>
-#include <kmessagebox.h>
+// #include <kmessagebox.h>
 #include <kseparator.h>
 #include <ktexteditor/view.h>
 #include <ktexteditor/document.h>
 
-
-#include "bilboeditor.h"
-#include "dbman.h"
-#include "multilinetextedit.h"
-#include "addeditlink.h"
-#include "addimagedialog.h"
+// #include "dbman.h"
 #include "bilbomedia.h"
-#include "global.h"
+// #include "global.h"
 #include "bilboblog.h"
 #include "bilbopost.h"
-#include "medialistwidget.h"
-#include "bilbotextformat.h"
-#include "bilbotexthtmlimporter.h"
 
-#include "htmlexporter.h"
-#include "stylegetter.h"
-#include "htmleditor.h"
+#include "composer/multilinetextedit.h"
+#include "composer/medialistwidget.h"
+#include "composer/stylegetter.h"
+#include "composer/htmleditor.h"
+#include "composer/bilbobrowser.h"
+#include "composer/bilboeditor.h"
+
+#include "composer/dialogs/addeditlink.h"
+#include "composer/dialogs/addimagedialog.h"
+
+#include "htmlconvertors/bilbotextformat.h"
+#include "htmlconvertors/bilbotexthtmlimporter.h"
+#include "htmlconvertors/htmlexporter.h"
 
 BilboEditor::BilboEditor( QWidget *parent )
         : KTabWidget( parent )
@@ -124,35 +127,24 @@ void BilboEditor::createUi()
     connect( editor, SIGNAL( cursorPositionChanged() ), this, SLOT( sltSyncToolbar() ) );
 
     ///htmlEditor:
-//     htmlEditor = new QPlainTextEdit( tabHtml );
     htmlEditor = HtmlEditor::self()->createView( tabHtml );
     QGridLayout *hLayout = new QGridLayout( tabHtml );
     hLayout->addWidget( qobject_cast< QWidget* >( htmlEditor ) );
 
     ///preview:
-    preview = new QWebView( tabPreview );
-//     preview->settings()->setAttribute( QWebSettings::AutoLoadImages, true );
-//     preview->settings()->setAttribute( QWebSettings::JavaEnabled, true );
-//     preview->settings()->setAttribute( QWebSettings::JavascriptEnabled, true );
+    preview = new BilboBrowser( tabPreview );
+    QGridLayout *gLayout = new QGridLayout( tabPreview );
+    gLayout->addWidget( qobject_cast< QWidget* >( preview ) );
+    connect( preview, SIGNAL( sigSetBlogStyle() ), this, SLOT( 
+            sltSetPostPreview() ) );
 
-    btnGetStyle = new KPushButton ( tabPreview );
-    btnGetStyle->setText( i18n( "Get blog style" ) );
-    connect( btnGetStyle, SIGNAL( clicked( bool ) ), this, SLOT( sltGetBlogStyle() ) );
-
-    QSpacerItem *horizontalSpacer = new QSpacerItem( 40, 20,
-                    QSizePolicy::Expanding, QSizePolicy::Minimum );
-    KSeparator *separator = new KSeparator( tabPreview );
-
-    QVBoxLayout *pLayout1 = new QVBoxLayout( tabPreview );
-    QHBoxLayout *pLayout2 = new QHBoxLayout();
-
-    pLayout2->addItem( horizontalSpacer );
-    pLayout2->addWidget( btnGetStyle );
-    pLayout1->addLayout( pLayout2 );
-    pLayout1->addWidget( separator );
-    pLayout1->addWidget( preview );
 
     this->setCurrentIndex( 0 );
+
+    currentPostTitle = i18n( "Post Title" );
+
+    QPalette palette = QApplication::palette();
+    codeBackground = palette.color( QPalette::Active, QPalette::Mid );
 
     ///defaultCharFormat
     defaultCharFormat = editor->currentCharFormat();
@@ -161,11 +153,13 @@ void BilboEditor::createUi()
     defaultCharFormat.setFont( defaultFont );
     defaultCharFormat.setForeground( editor->currentCharFormat().foreground() );
     defaultCharFormat.setProperty( QTextFormat::FontSizeAdjustment, QVariant( 0 ) );
+    defaultCharFormat.setBackground( palette.color( QPalette::Active,
+                                                    QPalette::Base ) );
+    defaultCharFormat.setProperty( BilboTextFormat::HasCodeStyle, QVariant( false ) );
 
     ///defaultBlockFormat
     defaultBlockFormat = editor->textCursor().blockFormat();
-    
-    currentPostTitle = i18n( "Post Title" );
+
     createActions();
 }
 
@@ -346,13 +340,23 @@ void BilboEditor::sltSetTextBold( bool bold )
 
 void BilboEditor::sltToggleCode()
 {
-    //TODO
     static QString preFontFamily;
-    if ( editor->fontFamily() != "Courier New,courier" ) {
-        preFontFamily = editor->fontFamily();
-        editor->setFontFamily( "Courier New,courier" );
+
+    QTextCharFormat f = editor->currentCharFormat();
+//     if ( f->fontFamily() != "Courier New,courier" ) {
+    if ( f.hasProperty( BilboTextFormat::HasCodeStyle ) && f.boolProperty(
+            BilboTextFormat::HasCodeStyle ) ) {
+        f.setProperty( BilboTextFormat::HasCodeStyle, QVariant( false ) );
+        f.setBackground( defaultCharFormat.background() );
+        f.setFontFamily( preFontFamily );
+        editor->textCursor().mergeCharFormat( f );
+
     } else {
-        editor->setFontFamily( preFontFamily );
+        preFontFamily = editor->fontFamily();
+        f.setProperty( BilboTextFormat::HasCodeStyle, QVariant( true ) );
+        f.setBackground( codeBackground );
+        f.setFontFamily( "Courier New,courier" );
+        editor->textCursor().mergeCharFormat( f );
     }
     editor->setFocus( Qt::OtherFocusReason );
 }
@@ -363,7 +367,7 @@ void BilboEditor::sltChangeFormatType( const QString& text )
 
     QTextCursor cursor = editor->textCursor();
     QTextBlockFormat bformat = cursor.blockFormat();
-    QTextCharFormat cformat = cursor.charFormat();
+    QTextCharFormat cformat;
 
     if ( text == i18n( "Paragraph" ) ) {
             bformat.setProperty( BilboTextFormat::HtmlHeading, QVariant( 0 ) );
@@ -400,6 +404,7 @@ void BilboEditor::sltChangeFormatType( const QString& text )
         cformat.setFontWeight( QFont::Bold );
         cformat.setProperty( QTextFormat::FontSizeAdjustment, QVariant( -2 ) );
     }
+//     cformat.clearProperty( BilboTextFormat::HasCodeStyle );
 
     cursor.beginEditBlock();
     cursor.mergeBlockFormat( bformat );
@@ -859,7 +864,8 @@ void BilboEditor::sltSyncToolbar()
         this->actItalic->setChecked( lastCharFormat.fontItalic() );
         this->actUnderline->setChecked( lastCharFormat.fontUnderline() );
         this->actStrikeout->setChecked( lastCharFormat.fontStrikeOut() );
-        if ( lastCharFormat.fontFamily() == QString::fromLatin1( "Courier New,courier" ) ) {
+        if ( lastCharFormat.hasProperty( BilboTextFormat::HasCodeStyle ) && 
+             lastCharFormat.boolProperty( BilboTextFormat::HasCodeStyle ) ) {
             this->actCode->setChecked( true );
         } else {
             this->actCode->setChecked( false );
@@ -910,18 +916,8 @@ void BilboEditor::sltSyncEditors( int index )
 //             htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
             htmlEditor->document()->setText( htmlExp->toHtml( doc ) );
         }
-        QString baseUrl = "http://bilbo.gnufolks.org/";
 
-        if ( __currentBlogId > -1 ) {
-            baseUrl = DBMan::self()->blog( __currentBlogId ).blogUrl();
-        }
-
-//         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
-//                          currentPostTitle,
-//                          this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
-        this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
-                         currentPostTitle,
-                         htmlEditor->document()->text() ), QUrl( baseUrl ) );
+        preview->setHtml( currentPostTitle, htmlEditor->document()->text() );
     }
 
     prev_index = index;
@@ -1074,46 +1070,11 @@ bool BilboEditor::updateMediaPaths()
     return true;
 }
 
-void BilboEditor::sltGetBlogStyle()
-{
-    int blogid = __currentBlogId;
-    if ( blogid < 0 ) {
-        KMessageBox::information( this,
-               i18n( "Please select a blog, then try again." ), 
-               i18n( "Select a blog" ) );
-    }
-
-    Q_EMIT sigShowStatusMessage( i18n( "Fetching blog style from the web..." ), true );
-    Q_EMIT sigBusy( true );
-
-    StyleGetter *styleGetter = new StyleGetter( __currentBlogId, this );
-    connect( styleGetter, SIGNAL( sigStyleFetched() ), this, SLOT( sltSetPostPreview() ) );
-}
-
 void BilboEditor::sltSetPostPreview()
 {
-    Q_EMIT sigShowStatusMessage( i18n( "The requested blog style fetched." ), false );
-    Q_EMIT sigBusy( false );
-
     if ( this->currentIndex() == 2 ) {
-        Q_EMIT sigShowStatusMessage( i18n( "Setting blog style..." ), true );
-
-        QString baseUrl = "http://bilbo.gnufolks.org/";
-        if ( __currentBlogId > -1 ) {
-            baseUrl = DBMan::self()->blog( __currentBlogId ).blogUrl();
-        }
-//         this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
-//                          currentPostTitle,
-//                          this->htmlEditor->toPlainText() ), QUrl( baseUrl ) );
-        this->preview->setHtml( StyleGetter::styledHtml( __currentBlogId, 
-                         currentPostTitle,
-                         htmlEditor->document()->text() ), QUrl( baseUrl ) );
-
-//         Q_EMIT sigShowStatusMessage( i18n( "The requested blog style set." ), false );
-    }
-    if ( qobject_cast< StyleGetter* >( sender() ) ) {
-        sender()->deleteLater();
+        preview->setHtml( currentPostTitle, htmlEditor->document()->text() );
     }
 }
 
-#include "bilboeditor.moc"
+#include "composer/bilboeditor.moc"

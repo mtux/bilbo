@@ -28,7 +28,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "stylegetter.h"
+#include "composer/stylegetter.h"
 
 #include <kio/job.h>
 #include <kstandarddirs.h>
@@ -93,6 +93,8 @@ StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
              SLOT( sltTempPostPublished( int, BilboPost* ) ) );
 //     connect( b, SIGNAL( sigPostFetched( BilboPost * ) ), this, SLOT( sltTempPostFetched( BilboPost * ) ) );
     connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
+
+    Q_EMIT sigGetStyleProgress( 10 );
 
     b->publishPost( mTempPost );
 }
@@ -160,6 +162,8 @@ void StyleGetter::sltTempPostPublished( int blogId, BilboPost* post )
         }
     }
 
+    Q_EMIT sigGetStyleProgress( 30 );
+
     mTempPost = post;
     KIO::StoredTransferJob *job = KIO::storedGet( postUrl, KIO::NoReload, KIO::HideProgressInfo );
 
@@ -176,6 +180,9 @@ void StyleGetter::sltHtmlCopied( KJob *job )
         sender()->deleteLater();
         return;
     }
+
+    Q_EMIT sigGetStyleProgress( 50 );
+
     QByteArray httpData( qobject_cast<KIO::StoredTransferJob*>( job )->data() );
 
     QString href( mTempPost->permaLink().url() );
@@ -209,8 +216,9 @@ void StyleGetter::sltHtmlCopied( KJob *job )
         return;
     }
     file.close();
+    Q_EMIT sigGetStyleProgress( 70 );
 //     Q_EMIT sigStyleFetched();
-    
+
 
     //Remove temp post from the server.
     b->removePost( *mTempPost );
@@ -226,6 +234,7 @@ void StyleGetter::sltTempPostRemoved( int blog_id, const BilboPost &post)
     delete mTempPost;
     b->deleteLater();
 
+    Q_EMIT sigGetStyleProgress( 100 );
     Q_EMIT sigStyleFetched();
 }
 
@@ -247,4 +256,4 @@ void StyleGetter::sltError( const QString & errMsg )
     b->deleteLater();
 }
 
-#include "stylegetter.moc"
+#include "composer/stylegetter.moc"

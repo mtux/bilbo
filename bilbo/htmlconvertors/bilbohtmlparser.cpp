@@ -3,6 +3,10 @@
  *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
  *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
+ *   It is a modified version of qtexthtmlparser.cpp, which is part        *
+ *   of the QtGui module of the Qt Toolkit. It has been costomized for     *
+ *   use in Bilbo Blogger project.                                         *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 3 of the License, or     *
@@ -17,15 +21,14 @@
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************
- *                                                                         *
- *  This file is a modified version of qtexthtmlparser.cpp, which is part *
- *   of the QtGui module of the Qt Toolkit. It has been costomized for     *
- *   use in Bilbo Blogger project.                                         *
  ***************************************************************************/
+
 #include "bilbohtmlparser.h"
 #include "bilbocssparser.h"
 #include <QUrl>
+#include <QApplication>
+#include <QPalette>
+#include <QColor>
 #include "kdebug.h"
 #include "bilbotextformat.h"
 
@@ -434,7 +437,8 @@ BilboTextHtmlParserNode::BilboTextHtmlParserNode()
         listStyle( QTextListFormat::ListStyleUndefined ), imageWidth( -1 ), imageHeight( -1 ),
         tableBorder( 0 ), tableCellRowSpan( 1 ), tableCellColSpan( 1 ), tableCellSpacing( 2 ),
         tableCellPadding( 0 ), cssBlockIndent( 0 ), cssListIndent( 0 ), text_indent( 0 ), 
-        wsm( WhiteSpaceModeUndefined ), htmlHeading( 0 ), isHtmlTagSign( false )
+        wsm( WhiteSpaceModeUndefined ), hasCodeStyle( false ), 
+        htmlHeading( 0 ), isHtmlTagSign( false )
 {
     margin[BilboTextHtmlParser::MarginLeft] = 0;
     margin[BilboTextHtmlParser::MarginRight] = 0;
@@ -487,6 +491,8 @@ QTextCharFormat BilboTextHtmlParserNode::charFormat() const
         format.setProperty( BilboTextFormat::AnchorTitle, QVariant( anchorTitle ) ); ///my code
         format.setProperty( BilboTextFormat::AnchorTarget, QVariant( anchorTarget ) ); ///my code
     }
+    
+    format.setProperty( BilboTextFormat::HasCodeStyle, QVariant( hasCodeStyle ) );   ///my code
 //     if ( htmlHeading ) {
 //         format.setProperty( BilboTextFormat::HtmlHeading, QVariant( htmlHeading ) );  ///my code
 //     }
@@ -545,11 +551,13 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
 
     htmlHeading = parent->htmlHeading;   ///my code
 
+    hasCodeStyle = parent->hasCodeStyle;    ///my code
+
     // we don't paint per-row background colors, yet. so as an
     // exception inherit the background color here
-    if ( parent->id == Html_tr && isTableCell ) {
+//     if ( parent->id == Html_tr && isTableCell ) {
         background = parent->background;
-    }
+//     }
 
     listStyle = parent->listStyle;
     anchorHref = parent->anchorHref;
@@ -685,6 +693,14 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
             // no left margin as we use indenting instead
             break;
         case Html_code:
+        {
+            hasCodeStyle = true;    ///my code
+            QColor c = QApplication::palette().color( QPalette::Active, 
+                                                      QPalette::Mid );   ///my code
+            background = c;    ///my code
+            fontFamily = QString::fromLatin1( "Courier New,courier" );
+            break;
+        }
         case Html_tt:
         case Html_kbd:
         case Html_samp:

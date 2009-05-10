@@ -18,37 +18,40 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef ADDIMAGEDIALOG_H
-#define ADDIMAGEDIALOG_H
+#ifndef BILBOTEXTFORMAT_H
+#define BILBOTEXTFORMAT_H
 
-#include <addmediadialog.h>
+#include <qtextformat.h>
 
-#include <ui_editimagebase.h>
-
-class QFrame;
-class BilboMedia;
 /**
-	@author 
+ * Adds some textformat attributes which don't exist in QTextFormat class.
+ * this class may be removed in future, if all editor related staff be ordered as a lib.
+ *
+ @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
+ @author Golnaz Nilieh <g382nilieh@gmail.com>
 */
+// class BilboTextCharFormat : public QTextCharFormat
 
-class AddImageDialog : public AddMediaDialog
+class BilboTextFormat
 {
-    Q_OBJECT
 public:
-    AddImageDialog(QWidget* parent);
 
-    ~AddImageDialog();
-    
-Q_SIGNALS:
-    void sigAddImage( BilboMedia *media, const int width, const int height, 
-                      const QString title, const QString link, const QString Alt_text  );
+    enum Property {
+        /// Anchor properties
+        AnchorTitle = 0x100010,
+        AnchorTarget = 0x100011,
 
-protected:
-    virtual void addOtherMediaAttributes();
-    
-private:
-    QFrame *editFrame;
-    Ui::EditImageBase editImageWidgetUi;
+        /// Image properties
+        ImageTitle = 0x100020,
+        ImageAlternateText = 0x100021,
+        
+        HasCodeStyle = 0x100030,
+
+        /// Block Properties
+        HtmlHeading = 0x100040, //zero if block is not in heading format, 1 for Heading 1, and so on.
+
+        IsHtmlTagSign = 0x100041,
+    };
 
 };
 

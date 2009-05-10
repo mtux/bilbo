@@ -19,7 +19,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "addeditlink.h"
+#include "composer/dialogs/addeditlink.h"
 
 AddEditLink::AddEditLink( QWidget *parent )
         : KDialog( parent )
@@ -69,4 +69,4 @@ void AddEditLink::show( const QString& address, const QString& title, const QStr
     }
 }
 
-#include "addeditlink.moc"
+#include "composer/dialogs/addeditlink.moc"

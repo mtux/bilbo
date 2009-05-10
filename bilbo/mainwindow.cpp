@@ -29,9 +29,9 @@
 #include "bilbomedia.h"
 #include "settings.h"
 #include "bilboblog.h"
-#include "multilinetextedit.h"
+#include "composer/multilinetextedit.h"
 #include "blogsettings.h"
-#include "htmleditor.h"
+// #include "htmleditor.h"
 
 #include "ui_advancedsettingsbase.h"
 #include "ui_settingsbase.h"

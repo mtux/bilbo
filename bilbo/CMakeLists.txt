@@ -6,31 +6,20 @@ SET(QT_USE_QTWEBKIT 1)
 
 # TODO uncomment this line for using bilbomarkupbuilders library.
 # add_subdirectory(bilbomarkupbuilders)
+add_subdirectory(htmlconvertors)
 
 set(bilbo_SRCS
- htmleditor.cpp
- stylegetter.cpp
- bilbocssparser.cpp
- bilbohtmlparser.cpp
- bilbotexthtmlimporter.cpp
- medialistwidget.cpp
  main.cpp
  mainwindow.cpp
  toolbox.cpp
  addeditblog.cpp
  postentry.cpp
- bilboeditor.cpp
- htmlexporter.cpp
- addeditlink.cpp
  dbman.cpp
  global.cpp
  bilbopost.cpp
  bilboblog.cpp
  backend.cpp
  entriescountdialog.cpp
- multilinetextedit.cpp
- addmediadialog.cpp
- addimagedialog.cpp
  bilbomedia.cpp
  addcategory.cpp
  catcheckbox.cpp
@@ -38,16 +27,22 @@ set(bilbo_SRCS
  waitwidget.cpp
  blogsettings.cpp
  uploadmediadialog.cpp
+ composer/bilbobrowser.cpp
+ composer/htmleditor.cpp
+ composer/stylegetter.cpp
+ composer/medialistwidget.cpp
+ composer/bilboeditor.cpp
+ composer/multilinetextedit.cpp
+ composer/dialogs/addeditlink.cpp
+ composer/dialogs/addmediadialog.cpp
+ composer/dialogs/addimagedialog.cpp
 )
 
 kde4_add_ui_files(
    bilbo_SRCS 
   toolboxbase.ui
   addeditblogbase.ui
-  addeditlinkbase.ui
   entriescountdialogbase.ui
-  addmediadialogbase.ui
-  editimagebase.ui
   addcategorybase.ui
   settingsbase.ui
   editorsettingsbase.ui
@@ -56,6 +51,9 @@ kde4_add_ui_files(
   waitwidgetbase.ui
   blogsettingsbase.ui
   uploadmediabase.ui
+  composer/dialogs/addmediadialogbase.ui
+  composer/dialogs/editimagebase.ui
+  composer/dialogs/addeditlinkbase.ui
 )
 
 kde4_add_kcfg_files( bilbo_SRCS settings.kcfgc)
@@ -63,7 +61,7 @@ kde4_add_executable( bilbo ${bilbo_SRCS})
 
 #target_link_libraries( bilbo ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} bilbokblog)
 
-target_link_libraries( bilbo ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} ${KDE4_KTEXTEDITOR_LIBS} bilbokblog)
+target_link_libraries( bilbo ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} ${KDE4_KTEXTEDITOR_LIBS} ${KDE4_KHTML_LIBS} bilbokblog htmlconvertors )
 
 # target_link_libraries( bilbo bilbomarkupbuilders ${KDE4_KBLOG_LIBS} ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY})
 

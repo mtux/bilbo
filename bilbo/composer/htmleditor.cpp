@@ -20,7 +20,7 @@
  ***************************************************************************/
 #include <QMenu>
 
-#include "htmleditor.h"
+#include "composer/htmleditor.h"
 
 #include <kglobal.h>
 #include <ktexteditor/editor.h>
@@ -129,4 +129,4 @@ void HtmlEditor::toggleLineNumber()
     interface->setConfigValue( "line-numbers", !( result ) );
 }
 
-#include "htmleditor.moc"
+#include "composer/htmleditor.moc"

@@ -27,7 +27,7 @@
 #include <kio/job.h>
 // #include <kio/jobuidelegate.h>
 
-#include "addmediadialog.h"
+#include "composer/dialogs/addmediadialog.h"
 #include "bilbomedia.h"
 #include "global.h"
 #include "settings.h"
@@ -126,4 +126,4 @@ void AddMediaDialog::sltMediaSourceChanged()
         ui.kurlreqMediaUrl->button()->setEnabled( true );
     }
 }
-#include "addmediadialog.moc"
+#include "composer/dialogs/addmediadialog.moc"
