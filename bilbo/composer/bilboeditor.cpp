@@ -367,7 +367,7 @@ void BilboEditor::sltChangeFormatType( const QString& text )
 
     QTextCursor cursor = editor->textCursor();
     QTextBlockFormat bformat = cursor.blockFormat();
-    QTextCharFormat cformat = cursor.charFormat();
+    QTextCharFormat cformat;
 
     if ( text == i18n( "Paragraph" ) ) {
             bformat.setProperty( BilboTextFormat::HtmlHeading, QVariant( 0 ) );
@@ -404,6 +404,7 @@ void BilboEditor::sltChangeFormatType( const QString& text )
         cformat.setFontWeight( QFont::Bold );
         cformat.setProperty( QTextFormat::FontSizeAdjustment, QVariant( -2 ) );
     }
+//     cformat.clearProperty( BilboTextFormat::HasCodeStyle );
 
     cursor.beginEditBlock();
     cursor.mergeBlockFormat( bformat );
@@ -863,7 +864,8 @@ void BilboEditor::sltSyncToolbar()
         this->actItalic->setChecked( lastCharFormat.fontItalic() );
         this->actUnderline->setChecked( lastCharFormat.fontUnderline() );
         this->actStrikeout->setChecked( lastCharFormat.fontStrikeOut() );
-        if ( lastCharFormat.fontFamily() == QString::fromLatin1( "Courier New,courier" ) ) {
+        if ( lastCharFormat.hasProperty( BilboTextFormat::HasCodeStyle ) && 
+             lastCharFormat.boolProperty( BilboTextFormat::HasCodeStyle ) ) {
             this->actCode->setChecked( true );
         } else {
             this->actCode->setChecked( false );
