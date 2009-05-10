@@ -227,6 +227,7 @@ void Toolbox::slotPostRemoved( int blog_id, const BilboPost &post )
     statusbar->showMessage( i18n( "Post removed" ), STATUSTIMEOUT );
     sender()->deleteLater();
 }
+
 void Toolbox::clearFields()
 {
     kDebug();

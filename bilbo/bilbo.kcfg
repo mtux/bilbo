@@ -34,4 +34,7 @@
         <default>false</default>
     </entry>
   </group>
+  <group name="Ftp">
+    <entry name="ftpServerPath" type="String"/>
+  </group>
 </kcfg>

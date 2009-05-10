@@ -50,12 +50,12 @@
 #include <KDE/KLocale>
 #include <QDir>
 #include <QFile>
-#include <KApplication>
 #include <QMap>
 #include <KFileDialog>
 #include <KSelectAction>
 #include <kimagefilepreview.h>
 #include <KDialog>
+#include "uploadmediadialog.h"
 
 
 #define TIMEOUT 5000
@@ -489,7 +489,7 @@ void MainWindow::sltSavePostLocally()
 void MainWindow::sltError( const QString & errorMessage )
 {
     kDebug() << "Error message: " << errorMessage;
-    KMessageBox::detailedError( this, i18n( "An error ocurred on latest transaction " ), errorMessage );
+    KMessageBox::detailedError( this, i18n( "An error ocurred on latest transaction" ), errorMessage );
     statusBar()->clearMessage();
     slotBusy(false);
 }
@@ -618,66 +618,12 @@ void MainWindow::slotShowStatusMessage(const QString &message, bool isPermanent)
 
 void MainWindow::uploadMediaObject()
 {
-    if( mCurrentBlogId == -1 ) {
-        KMessageBox::sorry( this, i18n( "You have to select a blog to upload media to it." ) );
-        return;
-    }
-    if(  DBMan::self()->blogList().value(mCurrentBlogId)->supportUploadMedia() ) {
-        QString mediaPath = KFileDialog::getOpenFileName( KUrl("kfiledialog:///image?global"),
-                                                      "image/png image/jpeg image/gif", this,
-                                                          i18n("Select media to upload"));
-        if(mediaPath.isEmpty())
-            return;
-        KUrl mediaUrl(mediaPath);
-        KDialog *dialog = new KDialog(this);
-        dialog->setObjectName("uploadMediaDialog");
-        dialog->resize(Settings::uploadMediaDialogSize());
-        KImageFilePreview *graphic= new KImageFilePreview( dialog );
-        graphic->showPreview( mediaUrl );
-        graphic->setToolTip(mediaPath);
-        dialog->setWindowTitle( i18n( "Upload media..." ) );
-        dialog->setButtonText(KDialog::Ok, i18n("Upload") );
-        dialog->setMainWidget(graphic);
-        int i = dialog->exec();
-        Settings::setUploadMediaDialogSize(dialog->size());
-        dialog->deleteLater();
-        kDebug()<< i;
-        ///TODO Add option to reselect media!
-        if( i ) {
-            BilboMedia *media = new BilboMedia(this);
-            media->setLocalUrl(mediaUrl);
-            media->setName( mediaUrl.fileName() );
-            media->setBlogId( mCurrentBlogId );
-            media->setMimeType( KMimeType::findByUrl( mediaUrl, 0, true )->name() );
-            Backend *b = new Backend( mCurrentBlogId, this);
-            connect( b, SIGNAL( sigMediaUploaded(BilboMedia*) ),
-                    this, SLOT( slotMediaObjectUploaded(BilboMedia*) ) );
-            connect( b, SIGNAL( sigError(QString)), this, SLOT( sltError(QString) ) );
-            connect( b, SIGNAL( sigMediaError(QString,BilboMedia*) ), this, SLOT(sltError(QString)) );
-            b->uploadMedia( media );
-            slotBusy(true);
-        }
-    } else {
-        KMessageBox::error(this, i18n( "API of current selected blog doesn't support uploading media objects." ));
-    }
-}
-
-void MainWindow::slotMediaObjectUploaded( BilboMedia *media )
-{
-    slotBusy(false);
-    QString msg;
-    if( Settings::copyMediaUrl() ) {
-        KApplication::clipboard()->setText( media->remoteUrl().prettyUrl() );
-        msg = i18n( "Media uploaded, and URL copied to clipboard.\nYou can find it here:\n%1",
-                                         media->remoteUrl().prettyUrl() );
-    } else {
-        msg = i18n( "Media uploaded.\nYou can find it here:\n%1",
-                                         media->remoteUrl().prettyUrl() );
-    }
-    KMessageBox::information(this, msg, i18n( "Successfully uploaded" ), QString(), KMessageBox::AllowLink);
-    ///TODO Add to Post!
-    media->deleteLater();
-    sender()->deleteLater();
+    UploadMediaDialog *uploadDlg = new UploadMediaDialog(this);
+    connect(uploadDlg, SIGNAL(sigBusy(bool)), SLOT(slotBusy(bool)));
+    if(mCurrentBlogId == -1)
+        uploadDlg->init( 0 );
+    else
+        uploadDlg->init( &DBMan::self()->blog(mCurrentBlogId) );
 }
 
 #include "mainwindow.moc"

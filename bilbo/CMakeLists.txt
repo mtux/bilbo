@@ -37,6 +37,7 @@ set(bilbo_SRCS
  sendtoblogdialog.cpp
  waitwidget.cpp
  blogsettings.cpp
+ uploadmediadialog.cpp
 )
 
 kde4_add_ui_files(
@@ -54,6 +55,7 @@ kde4_add_ui_files(
   sendtoblogbase.ui
   waitwidgetbase.ui
   blogsettingsbase.ui
+  uploadmediabase.ui
 )
 
 kde4_add_kcfg_files( bilbo_SRCS settings.kcfgc)

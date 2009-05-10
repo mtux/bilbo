@@ -35,8 +35,8 @@ class Toolbox;
 class KSelectAction;
 class PostEntry;
 class KSystemTrayIcon;
-// class Backend;
 class BilboMedia;
+class UploadMediaDialog;
 
 /**
 Main window of bilbo blogger implementation...
@@ -93,7 +93,6 @@ private slots:
     void postManipulationDone( bool isError, const QString &customMessage );
     void slotBusy( bool isBusy );
     void slotShowStatusMessage(const QString &message, bool isPermanent);
-    void slotMediaObjectUploaded( BilboMedia* );
     void currentBlogChanged( QAction* );
 
     void slotBlogAdded( const BilboBlog &blog );
@@ -130,7 +129,6 @@ private:
 
     KSelectAction *blogs;
     int &mCurrentBlogId;
-
 //     KTextEditor::Editor *mHtmlEditor;
 };
 #endif

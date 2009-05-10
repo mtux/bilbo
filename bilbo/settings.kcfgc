@@ -1,4 +1,4 @@
 File=bilbo.kcfg
 ClassName=Settings
 Singleton=true
-Mutators=showToolboxOnStart,configWindowSize,uploadMediaDialogSize
+Mutators=showToolboxOnStart,configWindowSize,uploadMediaDialogSize,ftpServerPath
