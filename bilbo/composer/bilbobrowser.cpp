@@ -34,6 +34,7 @@
 
 #include "composer/stylegetter.h"
 #include "global.h"
+#include "settings.h"
 
 BilboBrowser::BilboBrowser( QWidget *parent ) : QWidget( parent )
 {
@@ -68,7 +69,7 @@ void BilboBrowser::createUi()
     connect( btnGetStyle, SIGNAL( clicked( bool ) ), this, SLOT( sltGetBlogStyle() ) );
 
     viewInBlogStyle = new QCheckBox( "View post in the blog style", this );
-    viewInBlogStyle->setChecked( true );
+    viewInBlogStyle->setChecked( Settings::previewInBlogStyle() );
     connect( viewInBlogStyle, SIGNAL( toggled( bool ) ), this, SLOT( 
             sltViewModeChanged() ) );
 
