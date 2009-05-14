@@ -696,7 +696,7 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
         {
             hasCodeStyle = true;    ///my code
             QColor c = QApplication::palette().color( QPalette::Active, 
-                                                      QPalette::Mid );   ///my code
+                                                      QPalette::Midlight );   ///my code
             background = c;    ///my code
             fontFamily = QString::fromLatin1( "Courier New,courier" );
             break;

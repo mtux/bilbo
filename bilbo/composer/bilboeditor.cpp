@@ -144,7 +144,7 @@ void BilboEditor::createUi()
     currentPostTitle = i18n( "Post Title" );
 
     QPalette palette = QApplication::palette();
-    codeBackground = palette.color( QPalette::Active, QPalette::Mid );
+    codeBackground = palette.color( QPalette::Active, QPalette::Midlight );
 
     ///defaultCharFormat
     defaultCharFormat = editor->currentCharFormat();
