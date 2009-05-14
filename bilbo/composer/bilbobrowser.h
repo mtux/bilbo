@@ -24,6 +24,10 @@
 
 #include <QWidget>
 
+#include "kurl.h"
+// #include "kparts/part.h"
+// #include "kparts/browserextension.h"
+
 class QCheckBox;
 class QProgressBar;
 class KHTMLPart;
@@ -60,6 +64,8 @@ public:
      * @param content is the post content.
      */
     void setHtml( const QString& title, const QString& content );
+
+    void stop();
 /*
     void setBrowserDirection( Qt::LayoutDirection direction );*/
 
@@ -81,6 +87,8 @@ protected Q_SLOTS:
     void sltSetStatusBarText( const QString& text );
 
     void sltViewModeChanged();
+
+    void sltOpenRequested( const KUrl& url );
 
 private:
     void createUi();

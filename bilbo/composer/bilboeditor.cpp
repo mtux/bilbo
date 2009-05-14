@@ -902,10 +902,16 @@ void BilboEditor::sltSyncEditors( int index )
 //         BilboTextHtmlImporter( doc, htmlEditor->toPlainText() ).import();
         BilboTextHtmlImporter( doc, htmlEditor->document()->text() ).import();
         editor->setTextCursor( QTextCursor( doc ) );
+        if ( prev_index == 2 ) {
+            preview->stop();
+        }
 
     } else if ( index == 1 ) {
 //         htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
         htmlEditor->document()->setText( htmlExp->toHtml( doc ) );
+        if ( prev_index == 2 ) {
+            preview->stop();
+        }
 
     } else {
         if ( prev_index == 1 ) {
