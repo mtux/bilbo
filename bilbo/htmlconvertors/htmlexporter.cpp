@@ -907,10 +907,20 @@ void htmlExporter::emitBlock( const QTextBlock &block )
     //QTextCharFormat oldDefaultCharFormat = defaultCharFormat;
 
     QString blockTag;
+    bool isBlockQuote = false;
+    const QTextBlockFormat blockFormat = block.blockFormat();
+
+    if ( blockFormat.hasProperty( BilboTextFormat::IsBlockQuote ) && 
+         blockFormat.boolProperty( BilboTextFormat::IsBlockQuote ) ) {
+        isBlockQuote = true;
+    }
     QTextList *list = block.textList();
     if ( list ) {
         if ( list->itemNumber( block ) == 0 ) { // first item? emit <ul> or appropriate
 //    qDebug() << "first item" << endl;
+            if ( isBlockQuote ) {
+                html += QLatin1String( "<blockquote>" );
+            }
             const QTextListFormat format = list->format();
             const int style = format.style();
             switch ( style ) {
@@ -949,7 +959,7 @@ void htmlExporter::emitBlock( const QTextBlock &block )
 //         html += QLatin1String( "<li " );
     }
 
-    const QTextBlockFormat blockFormat = block.blockFormat();
+//     const QTextBlockFormat blockFormat = block.blockFormat();
     if ( blockFormat.hasProperty( QTextFormat::BlockTrailingHorizontalRulerWidth ) ) { 
         if ( ( blockFormat.hasProperty( BilboTextFormat::IsHtmlTagSign ) ) && 
             ( blockFormat.boolProperty( BilboTextFormat::IsHtmlTagSign ) ) ) {
@@ -983,6 +993,10 @@ void htmlExporter::emitBlock( const QTextBlock &block )
 
     } else {
         if (!list) {
+            if ( isBlockQuote ) {
+                html += QLatin1String( "<blockquote>" );
+            }
+
             if ( ( blockFormat.hasProperty( BilboTextFormat::HtmlHeading ) ) && (
                 blockFormat.intProperty( BilboTextFormat::HtmlHeading ) ) ) {
                 const int index = blockFormat.intProperty( BilboTextFormat::HtmlHeading );
@@ -994,9 +1008,11 @@ void htmlExporter::emitBlock( const QTextBlock &block )
             }
         }
     }
-    html += QLatin1Char( '<' ) + blockTag;
-    emitBlockAttributes( block );
-    html += QLatin1Char( '>' );
+    if ( !blockTag.isEmpty() ) {
+        html += QLatin1Char( '<' ) + blockTag;
+        emitBlockAttributes( block );
+        html += QLatin1Char( '>' );
+    }
 
     QTextBlock::Iterator it = block.begin();
 
@@ -1004,7 +1020,9 @@ void htmlExporter::emitBlock( const QTextBlock &block )
         emitFragment( it.fragment(), blockFormat );
     }
 
-    html += QLatin1String( "</" ) + blockTag + QLatin1String( ">\n" );
+    if ( !blockTag.isEmpty() ) {
+        html += QLatin1String( "</" ) + blockTag + QLatin1String( ">\n" );
+    }
 
 //     if ( pre ) {
 //         html += QLatin1String( "</pre>\n" );
@@ -1048,9 +1066,15 @@ void htmlExporter::emitBlock( const QTextBlock &block )
             } else {
                 html += QLatin1String( "</ul>\n" );
             }
+            if ( isBlockQuote ) {
+                html += QLatin1String( "</blockquote>\n" );
+            }
+        }
+    } else {
+        if ( isBlockQuote ) {
+            html += QLatin1String( "</blockquote>\n" );
         }
     }
-
     // NOTE the bottom line is commented, to use default charFormat, which can be set from outside.
     //defaultCharFormat = oldDefaultCharFormat;
 }
