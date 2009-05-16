@@ -250,7 +250,7 @@ protected Q_SLOTS:
 
     void sltAddUnorderedList();
 
-    void sltInsertBlockQuote();
+    void sltToggleBlockQuote();
 
     void sltAddPostSplitter();
 

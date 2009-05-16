@@ -314,7 +314,7 @@ void BilboEditor::createActions()
 
     actBlockQuote = new KAction( KIcon( "insert-more-mark" ), i18n( "Blockquote" ), this );
     actBlockQuote->setCheckable( true );
-    connect( actBlockQuote, SIGNAL( triggered( bool ) ), this, SLOT( sltInsertBlockQuote() ) );
+    connect( actBlockQuote, SIGNAL( triggered( bool ) ), this, SLOT( sltToggleBlockQuote() ) );
     barVisual->addAction( actBlockQuote );
 
     actSplitPost = new KAction( KIcon( "insert-more-mark" ), i18n( "Split text" ), this );
@@ -840,7 +840,7 @@ void BilboEditor::sltAddUnorderedList()
 //  }
 }
 
-void BilboEditor::sltInsertBlockQuote()
+void BilboEditor::sltToggleBlockQuote()
 {
     QTextBlockFormat blockFormat = editor->textCursor().blockFormat();
     QTextBlockFormat f;
@@ -848,12 +848,12 @@ void BilboEditor::sltInsertBlockQuote()
     if ( blockFormat.hasProperty( BilboTextFormat::IsBlockQuote ) && 
          blockFormat.boolProperty( BilboTextFormat::IsBlockQuote ) ) {
         f.setProperty( BilboTextFormat::IsBlockQuote, QVariant( false ) );
-        f.setLeftMargin( 40 );
-        f.setRightMargin( 40 );
-    } else {
-        f.setProperty( BilboTextFormat::IsBlockQuote, QVariant( true ) );
         f.setLeftMargin( 0 );
         f.setRightMargin( 0 );
+    } else {
+        f.setProperty( BilboTextFormat::IsBlockQuote, QVariant( true ) );
+        f.setLeftMargin( 40 );
+        f.setRightMargin( 40 );
     }
     editor->textCursor().mergeBlockFormat( f );
 }
