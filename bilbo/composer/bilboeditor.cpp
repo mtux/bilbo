@@ -311,7 +311,12 @@ void BilboEditor::createActions()
     actUnorderedList = new KAction( KIcon( "format-list-unordered" ), i18n( "Unordered List" ), this );
     connect( actUnorderedList, SIGNAL( triggered( bool ) ), this, SLOT( sltAddUnorderedList() ) );
     barVisual->addAction( actUnorderedList );
-    
+
+    actBlockQuote = new KAction( KIcon( "insert-more-mark" ), i18n( "Blockquote" ), this );
+    actBlockQuote->setCheckable( true );
+    connect( actBlockQuote, SIGNAL( triggered( bool ) ), this, SLOT( sltInsertBlockQuote() ) );
+    barVisual->addAction( actBlockQuote );
+
     actSplitPost = new KAction( KIcon( "insert-more-mark" ), i18n( "Split text" ), this );
     connect( actSplitPost, SIGNAL( triggered( bool ) ), this, SLOT( sltAddPostSplitter() ) );
     barVisual->addAction( actSplitPost );
@@ -835,6 +840,24 @@ void BilboEditor::sltAddUnorderedList()
 //  }
 }
 
+void BilboEditor::sltInsertBlockQuote()
+{
+    QTextBlockFormat blockFormat = editor->textCursor().blockFormat();
+    QTextBlockFormat f;
+
+    if ( blockFormat.hasProperty( BilboTextFormat::IsBlockQuote ) && 
+         blockFormat.boolProperty( BilboTextFormat::IsBlockQuote ) ) {
+        f.setProperty( BilboTextFormat::IsBlockQuote, QVariant( false ) );
+        f.setLeftMargin( 40 );
+        f.setRightMargin( 40 );
+    } else {
+        f.setProperty( BilboTextFormat::IsBlockQuote, QVariant( true ) );
+        f.setLeftMargin( 0 );
+        f.setRightMargin( 0 );
+    }
+    editor->textCursor().mergeBlockFormat( f );
+}
+
 void BilboEditor::sltAddPostSplitter()
 {
     QTextBlockFormat f = editor->textCursor().blockFormat();
@@ -884,6 +907,12 @@ void BilboEditor::sltSyncToolbar()
         } else {
             this->actFormatType->setCurrentItem( lastBlockFormat.intProperty(
                                                  BilboTextFormat::HtmlHeading ) );
+        }
+        if ( lastBlockFormat.hasProperty( BilboTextFormat::IsBlockQuote ) &&
+             lastBlockFormat.boolProperty( BilboTextFormat::IsBlockQuote ) ) {
+            this->actBlockQuote->setChecked( true );
+        } else {
+            this->actBlockQuote->setChecked( false );
         }
     }
 }
