@@ -438,7 +438,7 @@ BilboTextHtmlParserNode::BilboTextHtmlParserNode()
         tableBorder( 0 ), tableCellRowSpan( 1 ), tableCellColSpan( 1 ), tableCellSpacing( 2 ),
         tableCellPadding( 0 ), cssBlockIndent( 0 ), cssListIndent( 0 ), text_indent( 0 ), 
         wsm( WhiteSpaceModeUndefined ), hasCodeStyle( false ), 
-        htmlHeading( 0 ), isHtmlTagSign( false )
+        htmlHeading( 0 ), isBlockQuote( false ), isHtmlTagSign( false )
 {
     margin[BilboTextHtmlParser::MarginLeft] = 0;
     margin[BilboTextHtmlParser::MarginRight] = 0;
@@ -519,7 +519,8 @@ QTextBlockFormat BilboTextHtmlParserNode::blockFormat() const
     
     if ( htmlHeading ) {
         format.setProperty( BilboTextFormat::HtmlHeading, QVariant( htmlHeading ) );
-    }
+    }   ///my code
+    format.setProperty( BilboTextFormat::IsBlockQuote, QVariant( isBlockQuote ) );  ///my code
     return format;
 }
 
@@ -550,6 +551,7 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
     }
 
     htmlHeading = parent->htmlHeading;   ///my code
+    isBlockQuote = parent->isBlockQuote;    ///my code
 
     hasCodeStyle = parent->hasCodeStyle;    ///my code
 
@@ -696,9 +698,9 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
         {
             hasCodeStyle = true;    ///my code
             QColor c = QApplication::palette().color( QPalette::Active, 
-                                                      QPalette::Mid );   ///my code
+                                                      QPalette::Midlight );   ///my code
             background = c;    ///my code
-            fontFamily = QString::fromLatin1( "Courier New,courier" );
+            fontFamily = QString::fromLatin1( "Dejavu Sans Mono" );
             break;
         }
         case Html_tt:
@@ -723,6 +725,7 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
         case Html_blockquote:
             margin[BilboTextHtmlParser::MarginLeft] = 40;
             margin[BilboTextHtmlParser::MarginRight] = 40;
+            isBlockQuote = true;    ///my code
             break;
         case Html_dl:
             margin[BilboTextHtmlParser::MarginTop] = 8;

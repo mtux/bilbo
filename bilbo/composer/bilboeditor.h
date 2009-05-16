@@ -250,6 +250,8 @@ protected Q_SLOTS:
 
     void sltAddUnorderedList();
 
+    void sltToggleBlockQuote();
+
     void sltAddPostSplitter();
 
     void sltSyncToolbar();
@@ -323,6 +325,7 @@ private:
     KAction *actAddMedia;
     KAction *actOrderedList;
     KAction *actUnorderedList;
+    KAction *actBlockQuote;
     KAction *actSplitPost;
     KAction *actCheckSpelling;
     KSelectAction *actFormatType;

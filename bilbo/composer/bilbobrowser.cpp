@@ -44,10 +44,15 @@ BilboBrowser::BilboBrowser( QWidget *parent ) : QWidget( parent )
 
     createUi();
 
-    if ( browserPart->browserExtension() ) {
+    KParts::BrowserExtension *browserExtension = browserPart->browserExtension();
+    if ( browserExtension ) {
         kDebug() << "extention isn't null.";
-        connect( browserPart->browserExtension(), SIGNAL( loadingProgress( int ) ), 
+        connect( browserExtension, SIGNAL( loadingProgress( int ) ), 
                 browserProgress, SLOT( setValue( int ) ) );
+        connect( browserExtension, SIGNAL( openUrlRequestDelayed( const KUrl &, 
+                                          const KParts::OpenUrlArguments &, 
+                                          const KParts::BrowserArguments & ) ), 
+                this, SLOT( sltOpenRequested( const KUrl & ) ) );
     }
 
     connect( browserPart, SIGNAL( completed() ), this, SLOT( sltCompleted() ) );
@@ -116,6 +121,12 @@ void BilboBrowser::setHtml( const QString& title, const QString& content )
     }
     browserPart->end();
 }
+
+void BilboBrowser::stop()
+{
+    browserPart->closeUrl();
+    sltCanceled( "" );
+}
 /*
 void BilboBrowser::setBrowserDirection( Qt::LayoutDirection direction )
 {
@@ -183,6 +194,11 @@ void BilboBrowser::sltViewModeChanged()
 {
     browserPart->closeUrl();
     setHtml( currentTitle, currentContent );
+}
+
+void BilboBrowser::sltOpenRequested( const KUrl& url )
+{
+    browserPart->openUrl( url );
 }
 
 #include "composer/bilbobrowser.moc"

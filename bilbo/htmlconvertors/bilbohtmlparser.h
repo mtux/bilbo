@@ -232,6 +232,7 @@ uint displayMode :
     bool hasCodeStyle;   ///my code
 
     int htmlHeading;  ///my code
+    bool isBlockQuote;  ///my code
 
     bool isHtmlTagSign;  ///my code
 
