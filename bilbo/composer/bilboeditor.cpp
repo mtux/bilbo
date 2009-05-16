@@ -360,7 +360,7 @@ void BilboEditor::sltToggleCode()
         preFontFamily = editor->fontFamily();
         f.setProperty( BilboTextFormat::HasCodeStyle, QVariant( true ) );
         f.setBackground( codeBackground );
-        f.setFontFamily( "Courier New,courier" );
+        f.setFontFamily( "Dejavu Sans Mono" );
         editor->textCursor().mergeCharFormat( f );
     }
     editor->setFocus( Qt::OtherFocusReason );

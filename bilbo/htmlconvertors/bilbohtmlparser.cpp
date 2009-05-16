@@ -700,7 +700,7 @@ void BilboTextHtmlParserNode::initializeProperties( const BilboTextHtmlParserNod
             QColor c = QApplication::palette().color( QPalette::Active, 
                                                       QPalette::Midlight );   ///my code
             background = c;    ///my code
-            fontFamily = QString::fromLatin1( "Courier New,courier" );
+            fontFamily = QString::fromLatin1( "Dejavu Sans Mono" );
             break;
         }
         case Html_tt:
