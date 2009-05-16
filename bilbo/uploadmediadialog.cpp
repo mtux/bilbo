@@ -36,13 +36,14 @@ UploadMediaDialog::UploadMediaDialog( QWidget *parent ) :
     KDialog(parent), mCurrentBlog(0)
 {
     kDebug();
-    QWidget *widget = new QWidget(parent);
+    QWidget *widget = new QWidget;
     ui.setupUi(widget);
     this->setMainWidget(widget);
-    this->setAttribute(Qt::WA_DeleteOnClose, false);//should delete manually after upload!
+    this->setAttribute(Qt::WA_DeleteOnClose);//should delete manually after upload!
     setButtonText(KDialog::Ok, i18n("Upload") );
     setWindowTitle( i18n( "Upload media..." ) );
     ui.kcfg_FtpPath->setText(Settings::ftpServerPath());
+    ui.kcfg_httpUrl->setText(Settings::httpUrl());
     setWindowModality(Qt::ApplicationModal);
 
     connect(ui.kcfg_FileBrowser, SIGNAL(textChanged(const QString)), this, SLOT(mediaChanged(const QString)));
@@ -53,6 +54,7 @@ UploadMediaDialog::~UploadMediaDialog()
 {
     kDebug();
     Settings::setFtpServerPath(ui.kcfg_FtpPath->text());
+    Settings::setHttpUrl(ui.kcfg_httpUrl->text());
     Settings::self()->writeConfig();
 }
 
@@ -139,7 +141,6 @@ Note that url must start with \"ftp\" or \"sftp\",\
         }
     } else {
         close();
-        deleteLater();
     }
 }
 
@@ -148,10 +149,18 @@ void UploadMediaDialog::slotMediaObjectUploaded(KJob *job)
     emit sigBusy(false);
     if(job->error()) {
         kDebug()<<"Job error: "<<job->errorString();
-        KMessageBox::detailedSorry(this, i18n("Uploading to ftp server failed!"), job->errorString());
+        slotError(job->errorString());
     } else {
         KIO::FileCopyJob *fcj = qobject_cast<KIO::FileCopyJob*>(job);
-        QString destUrl = fcj->destUrl().prettyUrl();
+        KUrl tmpUrl(ui.kcfg_httpUrl->text());
+        QString destUrl;
+        if(tmpUrl.isValid()){
+            tmpUrl.adjustPath(KUrl::AddTrailingSlash);
+            tmpUrl.setFileName(ui.kcfg_Name->text());
+            destUrl = tmpUrl.prettyUrl();
+        } else {
+            destUrl = fcj->destUrl().prettyUrl();
+        }
         QString msg;
         if( Settings::copyMediaUrl() ) {
             KApplication::clipboard()->setText( destUrl );
@@ -162,9 +171,8 @@ void UploadMediaDialog::slotMediaObjectUploaded(KJob *job)
                         destUrl );
         }
         KMessageBox::information(this, msg, i18n( "Successfully uploaded" ), QString(), KMessageBox::AllowLink);
+        close();
     }
-    close();
-    deleteLater();
 }
 
 void UploadMediaDialog::slotMediaObjectUploaded(BilboMedia *media)
@@ -181,16 +189,15 @@ void UploadMediaDialog::slotMediaObjectUploaded(BilboMedia *media)
     }
     KMessageBox::information(this, msg, i18n( "Successfully uploaded" ), QString(), KMessageBox::AllowLink);
     close();
-    deleteLater();
 }
 
 void UploadMediaDialog::slotError( const QString &msg )
 {
-    if( KMessageBox::questionYesNo( this, i18n( "Media uploading failed with this result:\n%1\nTry again?", msg) ) == KMessageBox::Yes ) {
+    if( KMessageBox::questionYesNo( this, i18n( "Media uploading failed with this result:\n%1\nTry again?", msg) )
+        == KMessageBox::Yes ) {
         show();
     } else {
         close();
-        deleteLater();
     }
 }
 

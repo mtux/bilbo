@@ -39,5 +39,6 @@
   </group>
   <group name="Ftp">
     <entry name="ftpServerPath" type="String"/>
+    <entry name="httpUrl" type="String" />
   </group>
 </kcfg>
