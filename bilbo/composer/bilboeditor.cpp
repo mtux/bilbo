@@ -86,7 +86,7 @@ void BilboEditor::createUi()
     connect( this, SIGNAL( currentChanged( int ) ), this, SLOT( sltSyncEditors( int ) ) );
     prev_index = 0;
 
-    ///editor:
+    /// Visual editor:
     editor = new MultiLineTextEdit( tabVisual );
     editor->enableFindReplace( true );
     connect( editor, SIGNAL( sigRemoteImageArrived( const KUrl ) ), this, 
@@ -347,10 +347,11 @@ void BilboEditor::sltToggleCode()
 {
     static QString preFontFamily;
 
-    QTextCharFormat f = editor->currentCharFormat();
+    QTextCharFormat charFormat = editor->currentCharFormat();
+    QTextCharFormat f;
 //     if ( f->fontFamily() != "Courier New,courier" ) {
-    if ( f.hasProperty( BilboTextFormat::HasCodeStyle ) && f.boolProperty(
-            BilboTextFormat::HasCodeStyle ) ) {
+    if ( charFormat.hasProperty( BilboTextFormat::HasCodeStyle ) &&
+         charFormat.boolProperty( BilboTextFormat::HasCodeStyle ) ) {
         f.setProperty( BilboTextFormat::HasCodeStyle, QVariant( false ) );
         f.setBackground( defaultCharFormat.background() );
         f.setFontFamily( preFontFamily );
@@ -371,7 +372,8 @@ void BilboEditor::sltChangeFormatType( const QString& text )
     editor->setFocus( Qt::OtherFocusReason );
 
     QTextCursor cursor = editor->textCursor();
-    QTextBlockFormat bformat = cursor.blockFormat();
+//     QTextBlockFormat bformat = cursor.blockFormat();
+    QTextBlockFormat bformat;
     QTextCharFormat cformat;
 
     if ( text == i18n( "Paragraph" ) ) {
@@ -467,10 +469,12 @@ void BilboEditor::sltSetLink( const QString& address, const QString& target,
 {
     editor->setFocus( Qt::OtherFocusReason );
 
-    QTextCharFormat f = editor->currentCharFormat();
+//     QTextCharFormat f = editor->currentCharFormat();
+    QTextCharFormat charFormat = editor->currentCharFormat();
+    QTextCharFormat f;
     QTextCursor cursor = editor->textCursor();
 
-    if ( ( f.isAnchor() ) && ( !editor->textCursor().hasSelection() ) ) {
+    if ( ( charFormat.isAnchor() ) && ( !editor->textCursor().hasSelection() ) ) {
 
         QTextBlock block = cursor.block();
         QTextBlock::iterator i;
@@ -497,7 +501,8 @@ void BilboEditor::sltSetLink( const QString& address, const QString& target,
 
 void BilboEditor::sltRemoveLink()
 {
-    QTextCharFormat f = editor->textCursor().charFormat();
+//     QTextCharFormat f = editor->textCursor().charFormat();
+    QTextCharFormat f;
     f.setAnchor( false );
     f.setUnderlineStyle( this->defaultCharFormat.underlineStyle() );
     f.setForeground( this->defaultCharFormat.foreground() );
@@ -549,7 +554,8 @@ void BilboEditor::sltAlignLeft()
 void BilboEditor::sltChangeLayoutDirection()
 {
     kDebug();
-    QTextBlockFormat f = editor->textCursor().blockFormat();
+//     QTextBlockFormat f = editor->textCursor().blockFormat();
+    QTextBlockFormat f;
     if ( actRightToLeft->isChecked() ) {
         f.setLayoutDirection( Qt::RightToLeft );
     } else {
@@ -582,30 +588,28 @@ void BilboEditor::sltAddImage()
 void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int height, 
                         const QString title, const QString link, const QString Alt_text )
 {
-    kDebug();
+    QTextImageFormat imageFormat;
 
-            QTextImageFormat imageFormat;
+    imageFormat.setName( media->remoteUrl().url() );
+    if ( width != 0 ) {
+        imageFormat.setWidth( width );
+    }
+    if ( height != 0 ) {;
+        imageFormat.setHeight( height );
+    }
+    if ( !title.isEmpty() ) {
+        imageFormat.setProperty( BilboTextFormat::ImageTitle, QVariant( title ) );
+    }
+    if ( !Alt_text.isEmpty() ) {
+        imageFormat.setProperty( BilboTextFormat::ImageAlternateText, QVariant( Alt_text ) );
+    }
+    if ( !link.isEmpty() ) {
+        imageFormat.setAnchor( true );
+        imageFormat.setAnchorHref( link );
+    }
+    editor->textCursor().insertImage( imageFormat );
 
-            imageFormat.setName( media->remoteUrl().url() );
-            if ( width != 0 ) {
-                imageFormat.setWidth( width );
-            }
-            if ( height != 0 ) {;
-                imageFormat.setHeight( height );
-            }
-            if ( !title.isEmpty() ) {
-                imageFormat.setProperty( BilboTextFormat::ImageTitle, QVariant( title ) );
-            }
-            if ( !Alt_text.isEmpty() ) {
-                imageFormat.setProperty( BilboTextFormat::ImageAlternateText, QVariant( Alt_text ) );
-            }
-            if ( !link.isEmpty() ) {
-                imageFormat.setAnchor( true );
-                imageFormat.setAnchorHref( link );
-            }
-            editor->textCursor().insertImage( imageFormat );
-
-            editor->setFocus( Qt::OtherFocusReason );
+    editor->setFocus( Qt::OtherFocusReason );
 }
 
 void BilboEditor::sltReloadImage( const KUrl imagePath )
@@ -677,7 +681,7 @@ void BilboEditor::sltSetMedia( BilboMedia *media )
 {
     QTextCharFormat f;
     f.setAnchor( true );
-            f.setAnchorHref( media->remoteUrl().url() );
+    f.setAnchorHref( media->remoteUrl().url() );
     editor->textCursor().insertText( media->name(), f );
 
     editor->setFocus( Qt::OtherFocusReason );
