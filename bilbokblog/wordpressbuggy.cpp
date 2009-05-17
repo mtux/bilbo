@@ -98,7 +98,7 @@ void WordpressBuggy::createPost( KBlog::BlogPost *post )
 
   xmlMarkup += "<name>dateCreated</name>";
   xmlMarkup += "<value><dateTime.iso8601>" +
-               post->creationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ss" ) +
+               post->creationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ssZ" ) +
                "</dateTime.iso8601></value>";
   xmlMarkup += "</member><member>";
   xmlMarkup += "<name>mt_allow_comments</name>";
@@ -197,12 +197,12 @@ void WordpressBuggy::modifyPost( KBlog::BlogPost *post )
 
   xmlMarkup += "<name>lastModified</name>";
   xmlMarkup += "<value><dateTime.iso8601>" +
-               post->modificationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ss" ) +
+               post->modificationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ssZ" ) +
                "</dateTime.iso8601></value>";
   xmlMarkup += "</member><member>";
   xmlMarkup += "<name>dateCreated</name>";
   xmlMarkup += "<value><dateTime.iso8601>" +
-               post->creationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ss" ) +
+               post->creationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ssZ" ) +
                "</dateTime.iso8601></value>";
   xmlMarkup += "</member><member>";
   xmlMarkup += "<name>mt_allow_comments</name>";
