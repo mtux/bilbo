@@ -150,6 +150,7 @@ void AddEditBlog::gotHtml( KJob *job )
     if ( job->error() ) {
         kDebug() << "Auto configuration failed! Error: " << job->errorString();
         hideWaitWidget();
+        KMessageBox::sorry(this, i18n("Auto configuration failed. You have to set Blog API on Advanced tab manually."));
         return;
     }
     QString httpData( dynamic_cast<KIO::StoredTransferJob*>( job )->data() );
@@ -202,9 +203,12 @@ void AddEditBlog::gotXmlRpcTest( KJob *job )
     if ( job->error() ) {
         kDebug() << "Auto configuration failed! Error: " << job->errorString();
         hideWaitWidget();
+        KMessageBox::sorry(this, i18n("Auto configuration failed. You have to set Blog API on Advanced tab manually."));
         return;
     }
-
+    KMessageBox::information("Program could no guess API of your blog, \
+But have found an XMLRPC inteface and trying to use it.\
+\nWe assume MovableType API for now, Choose another API if you know the server support it.");
     ui.comboApi->setCurrentIndex( 2 );
     ui.txtUrl->setText( ui.txtUrl->text() + "/xmlrpc.php" );
     fetchBlogId();
