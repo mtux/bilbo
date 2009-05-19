@@ -91,7 +91,7 @@ protected Q_SLOTS:
     void sltOpenRequested( const KUrl& url );
 
 private:
-    void createUi();
+    void createUi( QWidget *parent = 0 );
 
     KHTMLPart *browserPart;
 
