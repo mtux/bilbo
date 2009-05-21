@@ -42,7 +42,9 @@ BilboBrowser::BilboBrowser( QWidget *parent ) : QWidget( parent )
     browserPart->setStatusMessagesEnabled( true );
     browserPart->setOnlyLocalReferences( false );
 
-    createUi();
+//     viewInBlogStyle = new QCheckBox( "View post in the blog style", parent );
+
+    createUi( parent );
 
     KParts::BrowserExtension *browserExtension = browserPart->browserExtension();
     if ( browserExtension ) {
@@ -60,16 +62,15 @@ BilboBrowser::BilboBrowser( QWidget *parent ) : QWidget( parent )
             sltCanceled( const QString& ) ) );
     connect( browserPart, SIGNAL( setStatusBarText( const QString& ) ), this,
             SLOT( sltSetStatusBarText( const QString& ) ) );
-    
 }
 
 BilboBrowser::~BilboBrowser()
 {
 }
 
-void BilboBrowser::createUi()
+void BilboBrowser::createUi( QWidget *parent )
 {
-    btnGetStyle = new KPushButton ( this );
+    btnGetStyle = new KPushButton( this );
     btnGetStyle->setText( i18n( "Get blog style" ) );
     connect( btnGetStyle, SIGNAL( clicked( bool ) ), this, SLOT( sltGetBlogStyle() ) );
 
@@ -82,8 +83,8 @@ void BilboBrowser::createUi()
                     QSizePolicy::Expanding, QSizePolicy::Minimum );
     KSeparator *separator = new KSeparator( this );
 
-    QVBoxLayout *vlayout = new QVBoxLayout( this );
-    QHBoxLayout *hlayout = new QHBoxLayout( this );
+    QVBoxLayout *vlayout = new QVBoxLayout( parent );
+    QHBoxLayout *hlayout = new QHBoxLayout( parent );
 
     hlayout->addWidget( viewInBlogStyle );
     hlayout->addItem( horizontalSpacer );
