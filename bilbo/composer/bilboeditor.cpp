@@ -452,6 +452,7 @@ void BilboEditor::sltAddEditLink()
 {
     linkDialog = new AddEditLink( this );
     linkDialog->setAttribute( Qt::WA_DeleteOnClose );
+    linkDialog->setWindowModality( Qt::WindowModal );
     connect( linkDialog, SIGNAL( addLink( const QString&, const QString&, const QString& ) ),
              this, SLOT( sltSetLink( const QString&, const QString&, const QString& ) ) );
 
@@ -576,6 +577,7 @@ void BilboEditor::sltAddImage()
 {
     AddImageDialog *imageDialog = new AddImageDialog( this );
 //     imageDialog->setAttribute( Qt::WA_DeleteOnClose );
+    imageDialog->setWindowModality( Qt::WindowModal );
     
     connect( imageDialog, SIGNAL( sigAddImage( BilboMedia *, const int, const int, 
              const QString, const QString, const QString ) ), this, SLOT( sltSetImage( BilboMedia *, 
@@ -670,6 +672,7 @@ void BilboEditor::sltAddMedia()
 {
     AddMediaDialog *mediaDialog = new AddMediaDialog( this );
 //     mediaDialog->setAttribute( Qt::WA_DeleteOnClose );
+    mediaDialog->setWindowModality( Qt::WindowModal );
     
     connect( mediaDialog, SIGNAL( sigAddMedia( BilboMedia * ) ), this, SLOT( sltSetMedia( BilboMedia * ) ) );
     connect( mediaDialog, SIGNAL( sigMediaTypeFound( BilboMedia * ) ), this, 
