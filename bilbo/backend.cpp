@@ -152,15 +152,16 @@ void Backend::entriesListed( const QList< KBlog::BlogPost > & posts )
     Q_EMIT sigEntriesListFetched( mBBlog->id() );
 }
 
-void Backend::publishPost( BilboPost * post )
+void Backend::publishPost( const BilboPost &post )
 {
     kDebug() << "Blog Id: " << mBBlog->id();
+    BilboPost tmpPost = post;
     if( Settings::addPoweredBy() ) {
         QString poweredStr = "<p>=-=-=-=-=<br/>"
         "<i>Powered by <b><a href='http://bilbo.gnufolks.org/'>Bilbo Blogger</a></b></i></p>";
-        post->setContent(post->content() + poweredStr);
+        tmpPost.setContent(post.content() + poweredStr);
     }
-    KBlog::BlogPost *bp = preparePost( post );
+    KBlog::BlogPost *bp = preparePost( tmpPost );
     connect( mKBlog, SIGNAL( createdPost( KBlog::BlogPost * ) ),
              this, SLOT( postPublished( KBlog::BlogPost * ) ) );
     mKBlog->createPost( bp );
@@ -304,11 +305,11 @@ void Backend::mediaUploaded( KBlog::BlogMedia * media )
     Q_EMIT sigMediaUploaded( m );
 }
 
-void Backend::modifyPost( BilboPost * post )
+void Backend::modifyPost( const BilboPost &post )
 {
     kDebug() << "Blog Id: " << mBBlog->id();
-
-    KBlog::BlogPost *bp = preparePost( post );
+    BilboPost tmpPost = post;
+    KBlog::BlogPost *bp = preparePost( tmpPost );
     connect( mKBlog, SIGNAL( modifiedPost(KBlog::BlogPost*)),
              this, SLOT( postPublished(KBlog::BlogPost*)) );
     mKBlog->modifyPost( bp );
@@ -452,22 +453,22 @@ void Backend::savePostInDbAndEmitResult( KBlog::BlogPost *post )
     delete post;
 }
 
-KBlog::BlogPost * Backend::preparePost( BilboPost *post )
+KBlog::BlogPost * Backend::preparePost( BilboPost &post )
 {
-    post->setContent( post->content().remove('\n') );
-    post->setAdditionalContent( post->additionalContent().remove( '\n' ) );
+    post.setContent( post.content().remove('\n') );
+    post.setAdditionalContent( post.additionalContent().remove( '\n' ) );
     if ( mBBlog->api() == BilboBlog::MOVABLETYPE_API || mBBlog->api() == BilboBlog::WORDPRESSBUGGY_API ) {
-        QStringList content = post->content().split("<!--split-->");
+        QStringList content = post.content().split("<!--split-->");
         if( content.count() == 2 ) {
-            post->setContent(content[0]);
-            post->setAdditionalContent( content[1] );
+            post.setContent(content[0]);
+            post.setAdditionalContent( content[1] );
         }
     }
-    if( mBBlog->api() == BilboBlog::MOVABLETYPE_API && post->categoryList().count() > 0 ) {
-        mCreatePostCategories = post->categoryList();
+    if( mBBlog->api() == BilboBlog::MOVABLETYPE_API && post.categoryList().count() > 0 ) {
+        mCreatePostCategories = post.categoryList();
         categoryListNotSet = true;
     }
-    return post->toKBlogPost();
+    return post.toKBlogPost();
 }
 
 #include "backend.moc"

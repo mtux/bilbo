@@ -329,9 +329,9 @@ void PostEntry::publishPostAfterUploadMediaFiles()
     connect( b, SIGNAL( sigPostPublished( int, BilboPost* ) ), this, SLOT( sltPostPublished( int, BilboPost* ) ) );
     connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
     if(isNewPost)
-        b->publishPost( &mCurrentPost );
+        b->publishPost( mCurrentPost );
     else
-        b->modifyPost( &mCurrentPost );
+        b->modifyPost( mCurrentPost );
 }
 
 void PostEntry::sltPostPublished( int blog_id, BilboPost *post )

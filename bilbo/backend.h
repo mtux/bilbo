@@ -67,7 +67,7 @@ public:
      *    Use this to publish a post to server.
      * @param post Post to publish.
      */
-    void publishPost( BilboPost *post );
+    void publishPost( const BilboPost &post );
 
     /**
      * Upload a new Media object e.g. image to server.
@@ -80,7 +80,7 @@ public:
      * Note: posiId must sets correctly.
      * @param post post to modify.
      */
-    void modifyPost( BilboPost *post );
+    void modifyPost( const BilboPost &post );
 
     /**
      * Remove an existing post from server
@@ -158,7 +158,7 @@ Q_SIGNALS:
     void sigMediaError( const QString &errorMessage, BilboMedia* media );
 
 private:
-    KBlog::BlogPost * preparePost( BilboPost *post );
+    KBlog::BlogPost * preparePost( BilboPost &post );
     QString errorTypeToString( KBlog::Blog::ErrorType type );
     KBlog::Blog *mKBlog;
     BilboBlog *mBBlog;
