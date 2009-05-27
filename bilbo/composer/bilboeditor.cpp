@@ -611,6 +611,9 @@ void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int hei
     }
     editor->textCursor().insertImage( imageFormat );
 
+    editor->document()->setUndoRedoEnabled( false );
+    editor->document()->setUndoRedoEnabled( true );
+
     editor->setFocus( Qt::OtherFocusReason );
 }
 
@@ -664,6 +667,8 @@ void BilboEditor::sltReloadImage( const KUrl imagePath )
             }
         }
     }
+    editor->document()->setUndoRedoEnabled( false );
+    editor->document()->setUndoRedoEnabled( true );
 }
 
 ///FIXME because AddMediaDialog gets files from remote server asyncronously, we can't delete the dialog when it's closed. try to find a good time for deleting it.
@@ -686,6 +691,9 @@ void BilboEditor::sltSetMedia( BilboMedia *media )
     f.setAnchor( true );
     f.setAnchorHref( media->remoteUrl().url() );
     editor->textCursor().insertText( media->name(), f );
+
+    editor->document()->setUndoRedoEnabled( false );
+    editor->document()->setUndoRedoEnabled( true );
 
     editor->setFocus( Qt::OtherFocusReason );
 }
@@ -792,6 +800,9 @@ void BilboEditor::sltRemoveMedia( const int index )
         kDebug() << "at next";
         
     } while ( block.isValid() );
+
+    editor->document()->setUndoRedoEnabled( false );
+    editor->document()->setUndoRedoEnabled( true );
 }
 
 void BilboEditor::sltMediaTypeFound( BilboMedia * media )
@@ -1109,6 +1120,10 @@ bool BilboEditor::updateMediaPaths()
             htmlEditor->document()->setText( htmlContent );
         }
     }
+
+    editor->document()->setUndoRedoEnabled( false );
+    editor->document()->setUndoRedoEnabled( true );
+
     return true;
 }
 
