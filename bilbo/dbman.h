@@ -46,8 +46,6 @@ public:
     DBMan();
 
     ~DBMan();
-    enum LocalPostState {Local=0, Temp=1};
-   
     const QMap<int, BilboBlog*> & blogList() const;
 
     QString lastErrorText();
@@ -132,7 +130,8 @@ public:
     bool removeFile( int fileid );
     bool clearFiles( int blog_id );
 
-    int saveTemp_LocalEntry( const BilboPost& post, int blog_id, LocalPostState state );
+    int saveLocalEntry( const BilboPost& post, int blog_id );
+    int saveTempEntry( const BilboPost& post, int blog_id );
     bool removeLocalEntry( const BilboPost &post );
     bool removeLocalEntry( int local_id );
     bool removeTempEntry( const BilboPost &post );
@@ -140,6 +139,8 @@ public:
     ///END
 
 private:
+    enum LocalPostState {Local=0, Temp=1};
+    int saveTemp_LocalEntry( const BilboPost& post, int blog_id, LocalPostState state );
     QList<BilboBlog*> listBlogs();
     bool createDB();
     QSqlDatabase db;

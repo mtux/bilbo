@@ -27,6 +27,7 @@ set(bilbo_SRCS
  waitwidget.cpp
  blogsettings.cpp
  uploadmediadialog.cpp
+ syncuploader.cpp
  composer/bilbobrowser.cpp
  composer/htmleditor.cpp
  composer/stylegetter.cpp
