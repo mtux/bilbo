@@ -224,7 +224,7 @@ void WordpressBuggy::modifyPost( KBlog::BlogPost *post )
   xmlMarkup += "</member><member>";
   xmlMarkup += "<name>mt_keywords</name>";
   xmlMarkup += "<value><string><![CDATA[" + post->tags().join( "," ) + "]]></string></value>";
-  xmlMarkup += "</member></struct><value></param>";
+  xmlMarkup += "</member></struct></value></param>";
   xmlMarkup += "<param><value><boolean>" +
                QString( "%1" ).arg( (int)( !post->isPrivate() ) ) +
                "</boolean></value></param>";
