@@ -36,6 +36,7 @@
 #include "settings.h"
 #include <KApplication>
 #include "bilboblog.h"
+#include "syncuploader.h"
 
 #define MINUTE 60000
 
@@ -202,54 +203,44 @@ QMap< QString, BilboMedia * > & PostEntry::mediaList()
     return mMediaList;
 }
 
-bool PostEntry::uploadMediaFiles()
+bool PostEntry::uploadMediaFiles( Backend *backend )
 {
     kDebug();
-    bool result = false;
-    Backend *b = new Backend( mCurrentPostBlogId, this );
-    connect( b, SIGNAL( sigMediaUploaded( BilboMedia* ) ), this, SLOT( sltMediaFileUploaded( BilboMedia* ) ) );
-    connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
-    connect( b, SIGNAL( sigMediaError( const QString&, BilboMedia* ) ),
-                this, SLOT( sltMediaError( const QString&, BilboMedia* ) ) );
-    QMap <QString, BilboMedia*>::iterator it = mMediaList.begin();
-    QMap <QString, BilboMedia*>::iterator endIt = mMediaList.end();
-    for ( ; it != endIt; ++it ) {
-        if( !it.value()->isUploaded() ){
-            result = true;
-            b->uploadMedia( it.value() );
-            ++mNumOfFilesToBeUploaded;
-        }
+    bool localBackend = false;
+    bool result = true;
+    if( !backend ) {
+        localBackend = true;
+        backend = new Backend( mCurrentPostBlogId, this );
     }
-    if ( result ) {
-        kDebug()<<"Uploading "<<mNumOfFilesToBeUploaded<<" files";
+    if( mMediaList.size()>0 ) {
         progress = new QProgressBar( this );
         this->layout()->addWidget( progress );
-        progress->setMaximum( mNumOfFilesToBeUploaded );
-        progress->setValue( 0 );
-    }
-    isUploadingMediaFilesFailed = false;
-    return result;
-}
-
-void PostEntry::sltMediaFileUploaded( BilboMedia * media )
-{
-    kDebug()<<media->name();
-    --mNumOfFilesToBeUploaded;
-    kDebug()<<"Remains: "<<mNumOfFilesToBeUploaded;
-    progress->setValue( progress->value() + 1 );
-    if ( mNumOfFilesToBeUploaded <= 0 ) {
-        deleteProgressBar();
-        if ( !isUploadingMediaFilesFailed ) {
-            if ( editPostWidget->updateMediaPaths() ) {
-                mCurrentPost.setContent( this->editPostWidget->htmlContent() );
-                publishPostAfterUploadMediaFiles();
-            } else {
-                kDebug() << "Updateing media pathes failed!";
+        progress->setRange( 0, 0 );
+        QMap <QString, BilboMedia*>::iterator it = mMediaList.begin();
+        QMap <QString, BilboMedia*>::iterator endIt = mMediaList.end();
+        for ( ; it != endIt; ++it ) {
+            if( !it.value()->isUploaded() ){
+                BilboMedia *media = it.value();
+                SyncUploader *uploader = new SyncUploader(this);
+                if( !uploader->uploadMedia( backend, media ) ){
+                    QString err = i18n( "Uploading media file %1 failed.\n%3", media->name(), uploader->errorMessage());
+                    emit postPublishingDone( true, err );
+                    uploader->deleteLater();
+                    result = false;
+                    break;
+                }
+                uploader->deleteLater();
             }
         }
-        sender()->deleteLater();
-        mNumOfFilesToBeUploaded = 0;
     }
+    if ( editPostWidget->updateMediaPaths() ) {
+        mCurrentPost.setContent( this->editPostWidget->htmlContent() );
+    } else {
+        kDebug() << "Updateing media pathes failed!";
+    }
+    if(localBackend)
+        backend->deleteLater();
+    return result;
 }
 
 void PostEntry::sltError( const QString & errMsg )
@@ -261,18 +252,7 @@ void PostEntry::sltError( const QString & errMsg )
     sender()->deleteLater();
 }
 
-void PostEntry::sltMediaError( const QString & errorMessage, BilboMedia * media )
-{
-    kDebug();
-    isUploadingMediaFilesFailed = true;
-    kDebug() << " AN ERROR OCCURRED ON UPLOADING,\tError message is: " << errorMessage;
-    QString err = i18n( "Uploading media file %1 failed.\n%3", media->name(), media->localUrl().prettyUrl(), errorMessage);
-    emit postPublishingDone( true, err );
-    deleteProgressBar();
-    sender()->deleteLater();
-}
-
-void PostEntry::publishPost( int blogId, const BilboPost &postData )
+void PostEntry::submitPost( int blogId, const BilboPost &postData )
 {
     kDebug();
     setCurrentPostFromEditor();
@@ -311,27 +291,24 @@ void PostEntry::publishPost( int blogId, const BilboPost &postData )
         }
 
         emit showStatusMessage(statusMsg, true);
-
-        if ( !this->uploadMediaFiles() )
-            publishPostAfterUploadMediaFiles();
+        Backend *b = new Backend(mCurrentPostBlogId, this);
+        connect( b, SIGNAL(sigError(const QString&)), this, SLOT(sltError(const QString&)) );
+        if ( uploadMediaFiles(b) ) {
+            kDebug()<<"Uploading";
+            if( !progress ) {
+                progress = new QProgressBar( this );
+                this->layout()->addWidget( progress );
+                progress->setRange( 0, 0 );
+            }
+            connect( b, SIGNAL( sigPostPublished( int, BilboPost* ) ), this, SLOT( sltPostPublished( int, BilboPost* ) ) );
+            if(isNewPost)
+                b->publishPost( mCurrentPost );
+            else
+                b->modifyPost( mCurrentPost );
+        } else {
+            deleteProgressBar();
+        }
     }
-}
-
-void PostEntry::publishPostAfterUploadMediaFiles()
-{
-    kDebug();
-    progress = new QProgressBar( this );
-    this->layout()->addWidget( progress );
-    progress->setMaximum( 0 );
-    progress->setMinimum( 0 );
-
-    Backend *b = new Backend( mCurrentPostBlogId );
-    connect( b, SIGNAL( sigPostPublished( int, BilboPost* ) ), this, SLOT( sltPostPublished( int, BilboPost* ) ) );
-    connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
-    if(isNewPost)
-        b->publishPost( &mCurrentPost );
-    else
-        b->modifyPost( &mCurrentPost );
 }
 
 void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
@@ -371,8 +348,7 @@ void PostEntry::saveLocally()
 are you sure of saving an empty post?")) == KMessageBox::No )
             return;
     }
-    mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry( *currentPost(), mCurrentPostBlogId,
-                                                            DBMan::Local ) );
+    mCurrentPost.setId( DBMan::self()->saveLocalEntry( *currentPost(), mCurrentPostBlogId ) );
     emit postSavedLocally();
     emit showStatusMessage(i18n( "Post saved locally." ), false);
     kDebug()<<"Locally saved";
@@ -382,7 +358,7 @@ void PostEntry::saveTemporary( bool force )
 {
     kDebug();
     if( isPostContentModified || ( !currentPost()->content().isEmpty() && force ) ) {
-        mCurrentPost.setId( DBMan::self()->saveTemp_LocalEntry( *currentPost(), mCurrentPostBlogId, DBMan::Temp) );
+        mCurrentPost.setId( DBMan::self()->saveTempEntry( *currentPost(), mCurrentPostBlogId) );
         emit postSavedTemporary();
         kDebug()<<"Temporary saved";
     }

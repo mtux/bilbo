@@ -600,6 +600,16 @@ bool DBMan::clearFiles( int blog_id )
     return res;
 }
 
+int DBMan::saveLocalEntry( const BilboPost& post, int blog_id )
+{
+    return saveTemp_LocalEntry(post, blog_id, Local);
+}
+
+int DBMan::saveTempEntry( const BilboPost& post, int blog_id )
+{
+    return saveTemp_LocalEntry(post, blog_id, Temp);
+}
+
 int DBMan::saveTemp_LocalEntry( const BilboPost& basePost, int blog_id, LocalPostState state )
 {
     kDebug();

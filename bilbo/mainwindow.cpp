@@ -447,7 +447,7 @@ void MainWindow::sltPublishPost()
     BilboPost post = *activePost->currentPost();
     toolbox->getFieldsValue( post );
 //     post.setPrivate( false );
-    activePost->publishPost( mCurrentBlogId, post );
+    activePost->submitPost( mCurrentBlogId, post );
 }
 
 void MainWindow::sltRemovePostEntry( PostEntry *widget )

@@ -34,11 +34,12 @@ class KLineEdit;
 class BilboMedia;
 class QProgressBar;
 class QTimer;
+class Backend;
 /**
  * Post Entry Widget
  * contains Editor, and Title box.
- @author Mehrdad Momeny <mehrdad.momeny@gmail.com>
- @author Golnaz Nilieh <g382nilieh@gmail.com>
+ @author Mehrdad Momeny \<mehrdad.momeny@gmail.com\>
+ @author Golnaz Nilieh \<g382nilieh@gmail.com\>
  */
 class PostEntry: public QFrame
 {
@@ -63,13 +64,13 @@ public:
     QMap <QString, BilboMedia*> & mediaList();
 
     /**
-     * Will Upload media files not uploaded yet, and return true if there's any file to upload
-     * and False if there isn't any file!
-     * @return True if there's any file to upload, otherwise false.
+     * Will Upload media files not uploaded yet, and return true on success and false on failure.
+     * @param backend A Backend instant to use! will create one if NULL
+     * @return true on success and false on failure.
      */
-    bool uploadMediaFiles();
+    bool uploadMediaFiles( Backend *backend=0 );
 
-    void publishPost ( int blogId, const BilboPost &postData );
+    void submitPost ( int blogId, const BilboPost &postData );
 
     void saveLocally();
 
@@ -118,9 +119,7 @@ public Q_SLOTS:
     void settingsChanged();
 
 protected Q_SLOTS:
-    void sltMediaFileUploaded( BilboMedia *media );
     void sltError( const QString& errMsg );
-    void sltMediaError( const QString &errorMessage, BilboMedia* media );
     void sltPostPublished( int blog_id, BilboPost *post );
 
 private Q_SLOTS:
@@ -132,7 +131,6 @@ private Q_SLOTS:
 
 private:
     void createUi();
-    void publishPostAfterUploadMediaFiles();
     void setCurrentPostFromEditor();
 
     QProgressBar *progress;

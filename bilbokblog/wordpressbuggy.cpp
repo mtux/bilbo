@@ -75,7 +75,7 @@ void WordpressBuggy::createPost( KBlog::BlogPost *post )
   xmlMarkup += "</param><param>";
   xmlMarkup += "<value><string><![CDATA["+password()+"]]></string></value>";
   xmlMarkup += "</param>";
-  xmlMarkup += "<param><struct>";
+  xmlMarkup += "<param><value><struct>";
   xmlMarkup += "<member><name>description</name>";
   xmlMarkup += "<value><string><![CDATA["+post->content()+"]]></string></value>";
   xmlMarkup += "</member><member>";
@@ -120,7 +120,7 @@ void WordpressBuggy::createPost( KBlog::BlogPost *post )
   xmlMarkup += "</member><member>";
   xmlMarkup += "<name>mt_keywords</name>";
   xmlMarkup += "<value><string><![CDATA[" + post->tags().join(",") + "]]></string></value>";
-  xmlMarkup += "</member></struct></param>";
+  xmlMarkup += "</member></struct></value></param>";
   xmlMarkup += "<param><value><boolean>" +
                QString( "%1" ).arg( (int)(!post->isPrivate() ) ) +
                "</boolean></value></param>";
@@ -174,7 +174,7 @@ void WordpressBuggy::modifyPost( KBlog::BlogPost *post )
   xmlMarkup += "</param><param>";
   xmlMarkup += "<value><string><![CDATA["+password()+"]]></string></value>";
   xmlMarkup += "</param>";
-  xmlMarkup += "<param><struct>";
+  xmlMarkup += "<param><value><struct>";
   xmlMarkup += "<member><name>description</name>";
   xmlMarkup += "<value><string><![CDATA["+post->content()+"]]></string></value>";
   xmlMarkup += "</member><member>";
@@ -224,7 +224,7 @@ void WordpressBuggy::modifyPost( KBlog::BlogPost *post )
   xmlMarkup += "</member><member>";
   xmlMarkup += "<name>mt_keywords</name>";
   xmlMarkup += "<value><string><![CDATA[" + post->tags().join( "," ) + "]]></string></value>";
-  xmlMarkup += "</member></struct></param>";
+  xmlMarkup += "</member></struct><value></param>";
   xmlMarkup += "<param><value><boolean>" +
                QString( "%1" ).arg( (int)( !post->isPrivate() ) ) +
                "</boolean></value></param>";
