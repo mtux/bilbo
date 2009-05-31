@@ -585,6 +585,7 @@ void BilboEditor::sltAddImage()
     connect( imageDialog, SIGNAL( sigMediaTypeFound( BilboMedia * ) ), this, 
              SLOT( sltMediaTypeFound( BilboMedia * ) ) );
     imageDialog->exec();
+    imageDialog->deleteLater();
 }
 
 void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int height, 
@@ -683,14 +684,19 @@ void BilboEditor::sltAddMedia()
     connect( mediaDialog, SIGNAL( sigMediaTypeFound( BilboMedia * ) ), this, 
              SLOT( sltMediaTypeFound( BilboMedia * ) ) );
     mediaDialog->exec();
+    mediaDialog->deleteLater();
 }
 
 void BilboEditor::sltSetMedia( BilboMedia *media )
 {
     QTextCharFormat f;
+    QString url = media->remoteUrl().url();
+
     f.setAnchor( true );
-    f.setAnchorHref( media->remoteUrl().url() );
+    f.setAnchorHref( url );
     editor->textCursor().insertText( media->name(), f );
+//     editor->document()->addResource( QTextDocument::UserResource, 
+//                                      QUrl( url ), QVariant( url ) );
 
     editor->document()->setUndoRedoEnabled( false );
     editor->document()->setUndoRedoEnabled( true );
