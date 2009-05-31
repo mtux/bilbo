@@ -45,6 +45,7 @@ AddImageDialog::AddImageDialog(QWidget* parent): AddMediaDialog(parent)
 
 AddImageDialog::~AddImageDialog()
 {
+    kDebug();
 }
 
 

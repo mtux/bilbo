@@ -249,6 +249,30 @@ void BilboEditor::createActions()
     connect( actRemoveFormatting, SIGNAL( triggered( bool ) ), this, SLOT( sltRemoveFormatting() ) );
     barVisual->addAction( actRemoveFormatting );
 
+    actBlockQuote = new KAction( KIcon( "insert-more-mark" ), i18n( "Blockquote" ), this );
+    actBlockQuote->setCheckable( true );
+    connect( actBlockQuote, SIGNAL( triggered( bool ) ), this, SLOT( sltToggleBlockQuote() ) );
+    barVisual->addAction( actBlockQuote );
+
+    barVisual->addSeparator();
+
+    actAddLink = new KAction( KIcon( "insert-link" ), i18nc( 
+                             "verb, to add a new link or edit an existing one",
+                             "Add/Edit Link" ), this );
+    connect( actAddLink, SIGNAL( triggered( bool ) ), this, SLOT( sltAddEditLink() ) );
+    barVisual->addAction( actAddLink );
+
+    actRemoveLink = new KAction( KIcon( "remove-link" ), i18nc( 
+                                "verb, to remove an existing link", 
+                                "Remove Link" ), this );
+    connect( actRemoveLink, SIGNAL( triggered( bool ) ), this, SLOT( sltRemoveLink() ) );
+    barVisual->addAction( actRemoveLink );
+
+    actAddImage = new KAction( KIcon( "insert-image" ), i18nc( "verb, to insert an image",
+                               "Add Image" ), this );
+    connect( actAddImage, SIGNAL( triggered( bool ) ), this, SLOT( sltAddImage() ) );
+    barVisual->addAction( actAddImage );
+
     barVisual->addSeparator();
 
     actAlignLeft = new KAction( KIcon( "format-justify-left" ), i18nc( "verb, to align text from left", "Align left" ), this );
@@ -275,32 +299,12 @@ void BilboEditor::createActions()
     connect( actRightToLeft, SIGNAL( triggered( bool ) ), this, SLOT( sltChangeLayoutDirection() ) );
     barVisual->addAction( actRightToLeft );
 
-    barVisual->addSeparator();
 
-    actAddLink = new KAction( KIcon( "insert-link" ), i18nc( 
-                             "verb, to add a new link or edit an existing one",
-                             "Add/Edit Link" ), this );
-    connect( actAddLink, SIGNAL( triggered( bool ) ), this, SLOT( sltAddEditLink() ) );
-    barVisual->addAction( actAddLink );
-
-    actRemoveLink = new KAction( KIcon( "remove-link" ), i18nc( 
-                                "verb, to remove an existing link", 
-                                "Remove Link" ), this );
-    connect( actRemoveLink, SIGNAL( triggered( bool ) ), this, SLOT( sltRemoveLink() ) );
-    barVisual->addAction( actRemoveLink );
-
-    barVisual->addSeparator();
-
-    actAddImage = new KAction( KIcon( "insert-image" ), i18nc( "verb, to insert an image",
-                               "Add Image" ), this );
-    connect( actAddImage, SIGNAL( triggered( bool ) ), this, SLOT( sltAddImage() ) );
-    barVisual->addAction( actAddImage );
-    
-    actAddMedia = new KAction( KIcon( "mail-attachment" ), i18nc( 
-                              "verb, to add a media file to the post as an attachment", 
-                              "Attach Media" ), this );
-    connect( actAddMedia, SIGNAL( triggered( bool ) ), this, SLOT( sltAddMedia() ) );
-    barVisual->addAction( actAddMedia );
+//     actAddMedia = new KAction( KIcon( "mail-attachment" ), i18nc( 
+//                               "verb, to add a media file to the post as an attachment", 
+//                               "Attach Media" ), this );
+//     connect( actAddMedia, SIGNAL( triggered( bool ) ), this, SLOT( sltAddMedia() ) );
+//     barVisual->addAction( actAddMedia );
 
     barVisual->addSeparator();
 
@@ -311,11 +315,6 @@ void BilboEditor::createActions()
     actUnorderedList = new KAction( KIcon( "format-list-unordered" ), i18n( "Unordered List" ), this );
     connect( actUnorderedList, SIGNAL( triggered( bool ) ), this, SLOT( sltAddUnorderedList() ) );
     barVisual->addAction( actUnorderedList );
-
-    actBlockQuote = new KAction( KIcon( "insert-more-mark" ), i18n( "Blockquote" ), this );
-    actBlockQuote->setCheckable( true );
-    connect( actBlockQuote, SIGNAL( triggered( bool ) ), this, SLOT( sltToggleBlockQuote() ) );
-    barVisual->addAction( actBlockQuote );
 
     actSplitPost = new KAction( KIcon( "insert-more-mark" ), i18n( "Split text" ), this );
     connect( actSplitPost, SIGNAL( triggered( bool ) ), this, SLOT( sltAddPostSplitter() ) );
@@ -585,6 +584,7 @@ void BilboEditor::sltAddImage()
     connect( imageDialog, SIGNAL( sigMediaTypeFound( BilboMedia * ) ), this, 
              SLOT( sltMediaTypeFound( BilboMedia * ) ) );
     imageDialog->exec();
+    imageDialog->deleteLater();
 }
 
 void BilboEditor::sltSetImage( BilboMedia *media, const int width, const int height, 
@@ -671,32 +671,35 @@ void BilboEditor::sltReloadImage( const KUrl imagePath )
     editor->document()->setUndoRedoEnabled( true );
 }
 
-///FIXME because AddMediaDialog gets files from remote server asyncronously, we can't delete the dialog when it's closed. try to find a good time for deleting it.
+// void BilboEditor::sltAddMedia()
+// {
+//     AddMediaDialog *mediaDialog = new AddMediaDialog( this );
+// //     mediaDialog->setAttribute( Qt::WA_DeleteOnClose );
+//     mediaDialog->setWindowModality( Qt::WindowModal );
+//     
+//     connect( mediaDialog, SIGNAL( sigAddMedia( BilboMedia * ) ), this, SLOT( sltSetMedia( BilboMedia * ) ) );
+//     connect( mediaDialog, SIGNAL( sigMediaTypeFound( BilboMedia * ) ), this, 
+//              SLOT( sltMediaTypeFound( BilboMedia * ) ) );
+//     mediaDialog->exec();
+//     mediaDialog->deleteLater();
+// }
 
-void BilboEditor::sltAddMedia()
-{
-    AddMediaDialog *mediaDialog = new AddMediaDialog( this );
-//     mediaDialog->setAttribute( Qt::WA_DeleteOnClose );
-    mediaDialog->setWindowModality( Qt::WindowModal );
-    
-    connect( mediaDialog, SIGNAL( sigAddMedia( BilboMedia * ) ), this, SLOT( sltSetMedia( BilboMedia * ) ) );
-    connect( mediaDialog, SIGNAL( sigMediaTypeFound( BilboMedia * ) ), this, 
-             SLOT( sltMediaTypeFound( BilboMedia * ) ) );
-    mediaDialog->exec();
-}
-
-void BilboEditor::sltSetMedia( BilboMedia *media )
-{
-    QTextCharFormat f;
-    f.setAnchor( true );
-    f.setAnchorHref( media->remoteUrl().url() );
-    editor->textCursor().insertText( media->name(), f );
-
-    editor->document()->setUndoRedoEnabled( false );
-    editor->document()->setUndoRedoEnabled( true );
-
-    editor->setFocus( Qt::OtherFocusReason );
-}
+// void BilboEditor::sltSetMedia( BilboMedia *media )
+// {
+//     QTextCharFormat f;
+//     QString url = media->remoteUrl().url();
+// 
+//     f.setAnchor( true );
+//     f.setAnchorHref( url );
+//     editor->textCursor().insertText( media->name(), f );
+// //     editor->document()->addResource( QTextDocument::UserResource, 
+// //                                      QUrl( url ), QVariant( url ) );
+// 
+//     editor->document()->setUndoRedoEnabled( false );
+//     editor->document()->setUndoRedoEnabled( true );
+// 
+//     editor->setFocus( Qt::OtherFocusReason );
+// }
 
 void BilboEditor::sltSetImageProperties( const int index, const int width,
                     const int height, const QString title, const QString link,
@@ -771,9 +774,9 @@ void BilboEditor::sltRemoveMedia( const int index )
         while ( !i.atEnd() ) {
             kDebug() << "start iterating";
             f = i.fragment().charFormat();
-            if ( ( f.isImageFormat() && f.toImageFormat().name() == path ) ||
-                  ( f.isAnchor() && f.anchorHref() == path ) )
-            {
+//             if ( ( f.isImageFormat() && f.toImageFormat().name() == path ) ||
+//                   ( f.isAnchor() && f.anchorHref() == path ) )
+            if ( ( f.isImageFormat() ) && ( f.toImageFormat().name() == path ) ) {
                 kDebug() << "found";
 
                 cursor = this->editor->textCursor();
@@ -1082,7 +1085,6 @@ bool BilboEditor::updateMediaPaths()
         kDebug() << path << "is found";
 
         if ( mMediaList->contains( path ) ) {
-//    if (mMediaList->value(path)->isUploaded()) {
             BilboMedia *media = mMediaList->value( path );
 
             htmlContent.replace( startIndex, ( endIndex - startIndex ),
