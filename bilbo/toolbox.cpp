@@ -41,6 +41,7 @@
 #include <KMenu>
 #include <KAction>
 #include <KToolInvocation>
+#include <settings.h>
 
 Toolbox::Toolbox( QWidget *parent )
         : QWidget( parent )
@@ -127,7 +128,7 @@ you have to select a blog from Blogs page before asking for Category list" ) );
     emit sigBusy( true );
 }
 
-void Toolbox::sltUpdateEntries()
+void Toolbox::sltUpdateEntries(int count)
 {
     kDebug();
     if ( mCurrentBlogId == -1 ) {
@@ -136,15 +137,17 @@ you have to select a blog from Blogs page before asking for Entries list" ) );
         kDebug() << "There isn't any selected blog.";
         return;
     }
-    EntriesCountDialog *dia = new EntriesCountDialog( this );
-    dia->setAttribute( Qt::WA_DeleteOnClose );
-    connect( dia, SIGNAL( sigAccepted( int ) ), this, SLOT( sltGetEntriesCount( int ) ) );
-    dia->show();
-}
-
-void Toolbox::sltGetEntriesCount( int count )
-{
-    kDebug();
+    if(count == 0) {
+        count = Settings::updateEntriesCount();
+        if( Settings::showUpdateEntriesDialog() ) {
+            EntriesCountDialog *dia = new EntriesCountDialog( this );
+            dia->setAttribute( Qt::WA_DeleteOnClose, false );
+            if( dia->exec() == 0 )
+                return;
+            count = dia->count();
+            dia->deleteLater();
+        }
+    }
     Backend *entryB = new Backend( mCurrentBlogId, this);
     entryB->getEntriesListFromServer( count );
     connect( entryB, SIGNAL( sigEntriesListFetched( int ) ), this, SLOT( sltLoadEntriesFromDB( int ) ) );

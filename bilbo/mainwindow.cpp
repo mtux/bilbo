@@ -332,7 +332,7 @@ void MainWindow::slotBlogAdded( const BilboBlog &blog )
     blogs->setCurrentAction( act );
     currentBlogChanged( act );
     toolbox->sltReloadCategoryList();
-    toolbox->sltGetEntriesCount( 20 );
+    toolbox->sltUpdateEntries( 20 );
 }
 
 void MainWindow::slotBlogEdited( const BilboBlog &blog )
@@ -538,8 +538,8 @@ void MainWindow::postManipulationDone( bool isError, const QString &customMessag
     if(isError){
         KMessageBox::detailedError(this, i18n("Submiting post failed"), customMessage);
     } else {
-        if(KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?",
-            customMessage)) == KMessageBox::No) {
+        if(KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?", customMessage),
+            QString(), KStandardGuiItem::yes(), KStandardGuiItem::no(), "KeepPostOpen") == KMessageBox::No) {
             sltRemovePostEntry(qobject_cast<PostEntry*>(sender()));
         }
         toolbox->sltLoadEntriesFromDB( mCurrentBlogId );

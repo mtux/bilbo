@@ -20,6 +20,9 @@
     <entry name="uploadMediaDialogSize" hidden="true" type="Size">
     <default>QSize(500,400)</default>
     </entry>
+    <entry name="updateEntriesCount" type="Int">
+        <default>20</default>
+    </entry>
   </group>
   <group name="Editor">
     <entry name="autosaveInterval" type="Int">
@@ -40,5 +43,10 @@
   <group name="Ftp">
     <entry name="ftpServerPath" type="String"/>
     <entry name="httpUrl" type="String" />
+  </group>
+  <group name="Notification Messages">
+    <entry name="showUpdateEntriesDialog" type="Bool">
+        <default>true</default>
+    </entry>
   </group>
 </kcfg>

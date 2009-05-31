@@ -1,9 +1,6 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui name="bilbo" version="7">
+<kpartgui name="bilbo" version="8">
 <MenuBar>
-  <Menu name="file"><text>File</text>
-      <Action name="toggle_toolbox" />
-  </Menu>
   <Menu name="blog"><text>Blog</text>
     <Action name="add_blog" />
     <Action name="upload_media" />
@@ -15,12 +12,9 @@
   </Menu>
   <Menu name="settings"><text>Settings</text>
     <Action name="clear_image_cache" />
+    <Action name="toggle_toolbox" />
   </Menu>
 </MenuBar>
-<!--<Toolbar name="blogsToolbar">
-    <text>Blogs Toolbar</text>
-    <Action name="blogs_list" />
-</Toolbar>-->
 <Toolbar name="postToolbar">
     <text>Toolbar</text>
     <Action name="new_post" />

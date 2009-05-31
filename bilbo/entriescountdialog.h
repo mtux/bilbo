@@ -35,12 +35,8 @@ class EntriesCountDialog: public KDialog
     Q_OBJECT
 public:
     EntriesCountDialog( QWidget *parent = 0 );
-
-Q_SIGNALS:
-    void sigAccepted( int count );
-
-protected Q_SLOTS:
-    void sltAccepted();
+    ~EntriesCountDialog();
+    int count();
 
 private:
     Ui::EntriesCountDialogBase ui;
