@@ -234,13 +234,13 @@ protected Q_SLOTS:
     /**
      * Creates an instance of AddMediaDialog class,and opens it, to select a media file.
      */
-    void sltAddMedia();
+//     void sltAddMedia();
     
     /**
      * Puts the given media object in the current cursor position, of the editor.
      * @param media is a BilboMedia object, which contains media path, mimetype and other needed information about it.
      */
-    void sltSetMedia( BilboMedia *media );
+//     void sltSetMedia( BilboMedia *media );
     
     void sltRemoveMedia( const int index );
     
@@ -322,7 +322,7 @@ private:
     KAction *actRemoveFormatting;
     KAction *actColorSelect;
     KAction *actAddImage;
-    KAction *actAddMedia;
+//     KAction *actAddMedia;
     KAction *actOrderedList;
     KAction *actUnorderedList;
     KAction *actBlockQuote;

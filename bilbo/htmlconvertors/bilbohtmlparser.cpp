@@ -1554,14 +1554,8 @@ void BilboTextHtmlParser::applyAttributes( const QStringList &attributes )
                 }
                 break;
             case Html_a:
-                if ( key == QLatin1String( "href" ) ) {
+                if ( key == QLatin1String( "href" ) )
                     node->anchorHref = value;
-//                     QUrl url = QUrl( value );
-//                     if ( url.scheme() == "file" ) {
-//                         resourceProvider->->addResource( QTextDocument::UserResource, 
-//                                                     url, QVariant( value ) );
-//                     }
-                }
                 else if ( key == QLatin1String( "name" ) )
                     node->anchorName = value;
                 else if ( key == QLatin1String( "title" ) )  ///my code
