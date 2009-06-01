@@ -29,6 +29,7 @@
 #include <kurl.h>
 #include <kmessagebox.h>
 #include <kwallet.h>
+#include <kio/deletejob.h>
 
 DBMan::DBMan()
 {
@@ -323,6 +324,8 @@ bool DBMan::removeBlog( int blog_id )
         kDebug() << q.lastError().text();
         return res;
     }
+    QString path = KStandardDirs::locateLocal( "data", QString( "bilbo/%1/" ).arg( blog_id ) , false );
+    KIO::del(KUrl(path), KIO::HideProgressInfo);
     reloadBlogList();
     return res;
 }
