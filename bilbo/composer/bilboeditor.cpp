@@ -249,7 +249,7 @@ void BilboEditor::createActions()
     connect( actRemoveFormatting, SIGNAL( triggered( bool ) ), this, SLOT( sltRemoveFormatting() ) );
     barVisual->addAction( actRemoveFormatting );
 
-    actBlockQuote = new KAction( KIcon( "insert-more-mark" ), i18n( "Blockquote" ), this );
+    actBlockQuote = new KAction( KIcon( "format-text-blockquote" ), i18n( "Blockquote" ), this );
     actBlockQuote->setCheckable( true );
     connect( actBlockQuote, SIGNAL( triggered( bool ) ), this, SLOT( sltToggleBlockQuote() ) );
     barVisual->addAction( actBlockQuote );
