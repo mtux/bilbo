@@ -29,8 +29,8 @@
 #include <kmessagebox.h>
 #include <kseparator.h>
 #include <kpushbutton.h>
-#include <kjob.h>
-#include <kio/jobclasses.h>
+// #include <kjob.h>
+// #include <kio/jobclasses.h>
 
 #include "composer/stylegetter.h"
 #include "global.h"

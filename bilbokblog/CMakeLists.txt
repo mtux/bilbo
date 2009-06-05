@@ -28,7 +28,7 @@ kde4_add_library(bilbokblog SHARED ${bilbokblog_LIB_SRCS})
 
 target_link_libraries(bilbokblog kxmlrpcclient syndication ${KDE4_KIO_LIBS} kcal )
 
-set_target_properties(bilbokblog PROPERTIES VERSION 4.2.1 SOVERSION 4 )
+set_target_properties(bilbokblog PROPERTIES VERSION 4.2.2 SOVERSION 4 )
 
 install(TARGETS bilbokblog EXPORT kdepimlibsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS} )
 

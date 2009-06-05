@@ -7,8 +7,8 @@
   </Menu>
   <Menu name="post"><text>Post</text>
     <Action name="new_post" />
-    <Action name="publish_post" />
     <Action name="save_locally" />
+    <Action name="publish_post" />
   </Menu>
   <Menu name="settings"><text>Settings</text>
     <Action name="clear_image_cache" />
