@@ -1,11 +1,8 @@
 include (KDE4Defaults)
-include_directories( ${QT_INCLUDES} ${KDEPIMLIBS_INCLUDE_DIR} ${KDE4_INCLUDES} ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/bilbo/)
+include_directories( ${QT_INCLUDES} ${KDEPIMLIBS_INCLUDE_DIR} ${KDE4_INCLUDES} ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/bilbo/ )
 
 SET(QT_USE_QTSQL 1)
-SET(QT_USE_QTWEBKIT 1)
 
-# TODO uncomment this line for using bilbomarkupbuilders library.
-# add_subdirectory(bilbomarkupbuilders)
 add_subdirectory(htmlconvertors)
 
 set(bilbo_SRCS
@@ -62,7 +59,7 @@ kde4_add_executable( bilbo ${bilbo_SRCS})
 
 #target_link_libraries( bilbo ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} bilbokblog)
 
-target_link_libraries( bilbo ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} ${KDE4_KTEXTEDITOR_LIBS} ${KDE4_KHTML_LIBS} bilbokblog htmlconvertors )
+target_link_libraries( bilbo ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${KDE4_KTEXTEDITOR_LIBS} ${KDE4_KHTML_LIBS} bilbokblog htmlconvertors )
 
 # target_link_libraries( bilbo bilbomarkupbuilders ${KDE4_KBLOG_LIBS} ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY})
 
