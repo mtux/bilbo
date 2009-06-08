@@ -164,7 +164,6 @@ void PostEntry::setCurrentPostFromEditor()
 
 BilboPost* PostEntry::currentPost()
 {
-    kDebug();
     setCurrentPostFromEditor();
     return &mCurrentPost;
 }
@@ -356,7 +355,6 @@ are you sure of saving an empty post?")) == KMessageBox::No )
 
 void PostEntry::saveTemporary( bool force )
 {
-    kDebug();
     if( isPostContentModified || ( !currentPost()->content().isEmpty() && force ) ) {
         mCurrentPost.setId( DBMan::self()->saveTempEntry( *currentPost(), mCurrentPostBlogId) );
         emit postSavedTemporary();

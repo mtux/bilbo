@@ -467,7 +467,8 @@ bool Blogger1Private::readPostFromMap(
   if ( dt.isValid() && !dt.isNull() ) {
     post->setModificationDateTime( dt.toLocalZone() );
   }
-  post->setPostId( postInfo["postid"].toString() );
+  post->setPostId( postInfo["postid"].toString().isEmpty() ? postInfo["postId"].toString() :
+                   postInfo["postid"].toString() );
 
   QString title( postInfo["title"].toString() );
   QString description( postInfo["description"].toString() );
@@ -477,16 +478,16 @@ bool Blogger1Private::readPostFromMap(
   // Check for hacked title/category support (e.g. in Wordpress)
   QRegExp titleMatch = QRegExp( "<title>([^<]*)</title>" );
   QRegExp categoryMatch = QRegExp( "<category>([^<]*)</category>" );
-  contents.remove( titleMatch );
-  if ( titleMatch.numCaptures() > 0 ) {
+  if(contents.indexOf(titleMatch) != -1) {
     // Get the title value from the regular expression match
     title = titleMatch.cap( 1 );
   }
-  contents.remove( categoryMatch );
-  if ( categoryMatch.numCaptures() > 0 ) {
-    // Get the category value from the regular expression match
-    category = categoryMatch.capturedTexts();
+  if ( contents.indexOf(categoryMatch) != -1 ) {
+      // Get the category value from the regular expression match
+      category = categoryMatch.capturedTexts();
   }
+  contents.remove( titleMatch );
+  contents.remove( categoryMatch );
 
   post->setTitle( title );
   post->setContent( contents );

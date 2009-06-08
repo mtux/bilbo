@@ -85,6 +85,7 @@ private:
     QTimer* mFetchAPITimer;
     bool isIdFetched;
     WaitWidget *wait;
+    QString tmpBlogUrl;
 };
 
 #endif
