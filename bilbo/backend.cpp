@@ -409,13 +409,13 @@ QString Backend::errorTypeToString( KBlog::Blog::ErrorType type )
     QString errType;
     switch ( type ) {
         case KBlog::Blog::XmlRpc:
-            errType = i18n( "XML-RPC Error: " );
+            errType = i18n( "Server(XMLRPC) Error: " );
             break;
         case KBlog::Blog::Atom:
-            errType = i18n( "Atom API Error: " );
+            errType = i18n( "Server(Atom) Error: " );
             break;
         case KBlog::Blog::ParsingError:
-            errType = i18n( "KBlog Parsing Error: " );
+            errType = i18n( "Parsing Error: " );
             break;
         case KBlog::Blog::AuthenticationError:
             errType = i18n( "Authentication Error: " );

@@ -83,6 +83,7 @@ protected slots:
     void openPostInBrowser();
     void copyPostTitle();
     void requestEntriesListContextMenu( const QPoint & pos );
+    void slotError(const QString& errorMessage);
 
 private:
     QStringList selectedCategoriesTitle();

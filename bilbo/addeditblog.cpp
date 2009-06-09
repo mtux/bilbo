@@ -132,6 +132,7 @@ void AddEditBlog::autoConfigure()
         tmpBlogUrl = ui.txtUrl->text();
         ui.txtUrl->setText( "http://www.livejournal.com/interface/blogger/" );
         ui.txtId->setText( ui.txtUser->text() );
+        ui.txtTitle->setText( ui.txtUser->text() );
         hideWaitWidget();
         return;
     }

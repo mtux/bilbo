@@ -401,7 +401,7 @@ void Blogger1Private::slotModifyPost( const QList<QVariant> &result, const QVari
   // dateCreated, String userid, String postid, String content;
   // TODO: Time zone for the dateCreated!
   kDebug() << "TOP:" << result[0].typeName();
-  if ( result[0].type() != QVariant::Bool ) {
+  if ( result[0].type() != QVariant::Bool && result[0].type() != QVariant::Int ) {
     kError() << "Could not read the result, not a boolean.";
     emit q->errorPost( Blogger1::ParsingError,
                           i18n( "Could not read the result, not a boolean." ),
@@ -425,7 +425,7 @@ void Blogger1Private::slotRemovePost( const QList<QVariant> &result, const QVari
   // dateCreated, String userid, String postid, String content;
   // TODO: Time zone for the dateCreated!
   kDebug() << "TOP:" << result[0].typeName();
-  if ( result[0].type() != QVariant::Bool ) {
+  if ( result[0].type() != QVariant::Bool && result[0].type() != QVariant::Int ) {
     kError() << "Could not read the result, not a boolean.";
     emit q->errorPost( Blogger1::ParsingError,
                           i18n( "Could not read the result, not a boolean." ),

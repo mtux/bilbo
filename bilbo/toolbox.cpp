@@ -217,6 +217,7 @@ void Toolbox::sltRemoveSelectedEntryFromServer()
         BilboPost post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data(32).toInt() );
         Backend *b = new Backend( mCurrentBlogId, this);
         connect(b, SIGNAL(sigPostRemoved(int,const BilboPost&)), this, SLOT(slotPostRemoved(int,const BilboPost&)) );
+        connect(b, SIGNAL(sigError(const QString&)), this, SLOT(slotError(const QString&)));
         b->removePost(post);
         statusbar->showMessage( i18n( "Removing post..." ) );
     }
@@ -228,6 +229,14 @@ void Toolbox::slotPostRemoved( int blog_id, const BilboPost &post )
                                           post.title(), DBMan::self()->blogList().value(blog_id)->title() ) );
     sltLoadEntriesFromDB( blog_id );
     statusbar->showMessage( i18n( "Post removed" ), STATUSTIMEOUT );
+    sender()->deleteLater();
+}
+
+
+void Toolbox::slotError(const QString& errorMessage)
+{
+    KMessageBox::detailedError( this, i18n( "An error ocurred on latest transaction" ), errorMessage );
+    statusbar->showMessage( i18n( "Failed" ), STATUSTIMEOUT );
     sender()->deleteLater();
 }
 
