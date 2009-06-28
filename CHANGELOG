@@ -1,0 +1,16 @@
+=== Version 0.9.95 -- 28-Jun-2009 ===
+* Using system tray icon made optional, and disabled by default.
+* Add/Edit blog dialog improved.
+* Media uploader improved. Support for uploading to FTP server added.
+* Support for LiveJournal improved. (Use Blogger 1.0 API for it)
+* Support for Drupal improved. (Use MovableType API for it)
+* Support for html syntax highlighting.
+* Support for blockquote tags.
+* Support for html heading tags.
+* Improvements on UI.
+* Some improvements and cleaning in the code.
+* Some reported bugs fixed.
+* Code cleaning
+
+=== Version 0.9 -- 05-Apr-2009 ===
+* Initial version.

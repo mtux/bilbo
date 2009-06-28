@@ -1,4 +1,4 @@
-# French translation for bilbo
+# Dutch translation for bilbo
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the bilbo package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: bilbo\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-06-27 19:07+0430\n"
-"PO-Revision-Date: 2009-05-19 19:00+0000\n"
-"Last-Translator: Mathieu Pasquet <Unknown>\n"
-"Language-Team: French <fr@li.org>\n"
+"PO-Revision-Date: 2009-05-27 22:11+0000\n"
+"Last-Translator: Berend Dekens <Unknown>\n"
+"Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,55 +19,40 @@ msgstr ""
 
 #: bilbo/addeditblog.cpp:50
 msgid "Add a new blog"
-msgstr "Ajouter un nouveau blog"
+msgstr "Blog toevoegen"
+
+#: bilbo/addeditblog.cpp:67
+msgid "Edit blog settings"
+msgstr "Blog instellingen"
 
 #: bilbo/addeditblog.cpp:108
 msgid ""
 "You have to set the username, password and url of your blog or website."
 msgstr ""
-"Vous devez spécifier le nom d'utilisateur, le mot de passe et l'url de votre "
-"blog ou site web."
+"U moet de gebruikersnaam, wachtwoord en url van uw blog of website opgeven."
 
 #: bilbo/addeditblog.cpp:109
 msgid "Incomplete fields"
-msgstr "Certains champs sont incomplets"
-
-#. i18n: file: bilbo/waitwidgetbase.ui:19
-#. i18n: ectx: property (text), widget (QLabel, operationNameLabel)
-#: bilbo/addeditblog.cpp:259 l10n/rc.cpp:400 rc.cpp:400
-msgid "Please wait..."
-msgstr "Veuillez patienter..."
-
-#: bilbo/addeditblog.cpp:292
-msgid "AutoConfiguration Failed"
-msgstr "L'AutoConfiguration a échoué"
-
-#: bilbo/mainwindow.cpp:167
-msgid "Show Toolbox"
-msgstr "Montrer la Boîte à outils"
-
-#. i18n: file: bilbo/toolboxbase.ui:504
-#. i18n: ectx: property (text), widget (QLabel, label_2)
-#: l10n/rc.cpp:343 rc.cpp:343
-msgid "Summary :"
-msgstr "Sommaire :"
-
-#: bilbo/addeditblog.cpp:67
-msgid "Edit blog settings"
-msgstr "Éditer les paramètres du blog"
+msgstr "Incomplete velden"
 
 #: bilbo/addeditblog.cpp:112
 msgid "Trying to guess blog and API type..."
-msgstr ""
+msgstr "Bezig met detecteren van blog en API type..."
 
 #: bilbo/addeditblog.cpp:155 bilbo/addeditblog.cpp:208
 msgid ""
 "Auto configuration failed. You have to set Blog API on Advanced tab manually."
 msgstr ""
 
+#. i18n: file: bilbo/waitwidgetbase.ui:19
+#. i18n: ectx: property (text), widget (QLabel, operationNameLabel)
+#: bilbo/addeditblog.cpp:259 l10n/rc.cpp:400 rc.cpp:400
+msgid "Please wait..."
+msgstr "Een ogenblik geduld a.u.b..."
+
 #: bilbo/addeditblog.cpp:261
 msgid "Fetching Blog Id..."
-msgstr "Récupération de l'ID du blog..."
+msgstr "Bezig met ophalen van blog Id..."
 
 #: bilbo/addeditblog.cpp:278
 msgid ""
@@ -77,34 +62,48 @@ msgid ""
 "If you are using a self hosted Wordpress blog, you have to enable Remote "
 "Publishing on its configurations"
 msgstr ""
+"Ophalen van blog Id duurt te lang. Controleer uw internet verbinding, blog "
+"url, gebruikersnaam en wachtwoord!\n"
+"Let op: de url moet beginnen met \"http://\"\n"
+"Als u een eigen Wordpress blog heeft dient u \"Remote Publishing\" in de "
+"instellingen aan te zetten."
 
 #: bilbo/addeditblog.cpp:290
 msgid ""
 "Sorry, Bilbo cannot get API type automatically,please check your internet "
 "connection, otherwise you have to set API type on advanced tab manually."
 msgstr ""
+"Helaas, Bilbo kan het blog API type niet automatisch detecteren. Controleer "
+"uw internet verbinding of stel het API type in op het tabblad "
+"\"geavanceerd\"."
+
+#: bilbo/addeditblog.cpp:292
+msgid "AutoConfiguration Failed"
+msgstr "Auto-Configuratie Probleem"
 
 #: bilbo/addeditblog.cpp:300
 msgid ""
 "Fetching BlogID Faild!\n"
 "please check your internet connection."
 msgstr ""
+"Probleem bij ophalen blog Id!\n"
+"Controleer uw internet verbinding."
 
 #: bilbo/addeditblog.cpp:336
 msgid "Which blog?"
-msgstr "Quel blog?"
+msgstr "Welk blog?"
 
 #: bilbo/addeditblog.cpp:428
 msgid "Yes"
-msgstr "Oui"
+msgstr "Ja"
 
 #: bilbo/addeditblog.cpp:430
 msgid "No, API doesn't support"
-msgstr ""
+msgstr "Nee, wordt niet door API ondersteund"
 
 #: bilbo/addeditblog.cpp:431
 msgid "No, Bilbo doesn't support yet"
-msgstr ""
+msgstr "Nee, wordt nog niet door Bilbo ondersteund"
 
 #: bilbo/addeditblog.cpp:512
 msgid ""
@@ -112,50 +111,62 @@ msgid ""
 "You can fetch blog ID by clicking on \"Auto Configure\" Or \"Fetch ID\" "
 "button. otherwise you have to insert your Blog Id manually."
 msgstr ""
+"Sorry, blog Id is nog niet opgehaald.\n"
+"U kunt het blog Id ophalen door op \"Automatisch Configureren\" of \"ID "
+"Ophalen\" te klikken. U kunt tevens het blog Id met de hand ingeven."
 
 #: bilbo/backend.cpp:175
 msgid "Publishing/Modifying post failed : %1"
-msgstr ""
+msgstr "Probleem met publiceren/bewerken bericht: %1"
 
 #: bilbo/backend.cpp:205
 msgid ""
 "Uploading media failed : Your blog api doesn't support uploading media "
 "objects."
 msgstr ""
+"Probleem met uploaden media: uw blog API ondersteund niet het uploaden van "
+"media objecten."
 
 #: bilbo/backend.cpp:222 bilbo/backend.cpp:230
 msgid ""
 "Uploading media failed : Cannot read the media file, please check if it "
 "exists. path: %1"
 msgstr ""
+"Probleem met uploaden media: Kan het bestand niet lezen, controleer of het "
+"bestand bestaat en leesbaar is: %1"
 
 #: bilbo/backend.cpp:244
 msgid ""
 "Uploading media failed : Media file checksum is zero, please check file "
 "path. path: %1"
 msgstr ""
+"Probleem met uploaden media: Media bestand checksom is leeg, controleer of "
+"het bestand bestaat en leesbaar is: %1"
 
 #: bilbo/backend.cpp:253
 msgid ""
 "INTERNAL ERROR: MWBlog is NULL: casting has not worked, this should NEVER "
 "happen."
 msgstr ""
+"INTERNE FOUT: MWBlog is NULL: cast heeft niet gewerk, dit mag NOOIT gebeuren."
 
 #: bilbo/backend.cpp:267
 msgid "Api type isn't set correctly!"
-msgstr ""
+msgstr "API type is incorrect ingesteld"
 
 #: bilbo/backend.cpp:287
 msgid "Uploading Media failed : %1"
-msgstr ""
+msgstr "Probleem met upload media: %1"
 
 #: bilbo/backend.cpp:296
 msgid "Uploading Media failed : Check sum Error. returned error: %1"
-msgstr ""
+msgstr "Probleem met upload media: Checksom fout. Fout: %1"
 
 #: bilbo/backend.cpp:379
 msgid "The registred blog API doesn't support setting categories for a post."
 msgstr ""
+"De geselecteerde blog API ondersteund niet het gebruik van categorieën voor "
+"een bericht."
 
 #: bilbo/backend.cpp:412
 msgid "Server(XMLRPC) Error: "
@@ -171,149 +182,149 @@ msgstr ""
 
 #: bilbo/backend.cpp:421
 msgid "Authentication Error: "
-msgstr ""
+msgstr "Authenticatie Fout: "
 
 #: bilbo/backend.cpp:424
 msgid "Not Supported Error: "
-msgstr ""
+msgstr "Niet Ondersteunde Fout: "
 
 #: bilbo/backend.cpp:427
 msgid "Unknown Error: "
-msgstr ""
+msgstr "Onbekende Fout: "
 
 #: bilbo/blogsettings.cpp:98
 msgid "Are you sure of removing selected blog?"
-msgstr ""
+msgstr "Weet u zeker dat u het geselecteerde blog wilt verwijderen?"
 
 #: bilbo/composer/bilbobrowser.cpp:74
 msgid "Get blog style"
-msgstr ""
+msgstr "Haal blog stijl op"
 
 #: bilbo/composer/bilbobrowser.cpp:114
 msgid "loading page items..."
-msgstr "chargement des objets de la page..."
+msgstr "bezig met laden pagina onderdelen..."
 
 #: bilbo/composer/bilbobrowser.cpp:142
 msgid "Please select a blog, then try again."
-msgstr "Veuillez sélectionner un blog, puis réessayez."
+msgstr "Selecteer een blog en probeer opnieuw."
 
 #: bilbo/composer/bilbobrowser.cpp:143
 msgid "Select a blog"
-msgstr "Sélectionner un blog"
+msgstr "Selecteer een blog"
 
 #: bilbo/composer/bilbobrowser.cpp:148
 msgid "Fetching blog style from the web..."
-msgstr ""
+msgstr "Bezig met ophalen van blog stijl..."
 
 #: bilbo/composer/bilbobrowser.cpp:162
 msgid "Blog style fetched."
-msgstr ""
+msgstr "Blog stijl opgehaald."
 
 #: bilbo/composer/bilbobrowser.cpp:181
 msgid "An error occurred in the latest transaction."
-msgstr ""
+msgstr "Er is een fout opgetreden bij de laatste transactie."
 
 #: bilbo/composer/bilbobrowser.cpp:183
 msgid "Operation canceled."
-msgstr "Opération annulée."
+msgstr "Operatie afgebroken."
 
 #: bilbo/composer/bilboeditor.cpp:83
 msgctxt "Software"
 msgid "Visual Editor"
-msgstr ""
+msgstr "Grafisch Bewerken"
 
 #: bilbo/composer/bilboeditor.cpp:84
 msgctxt "Software"
 msgid "Html Editor"
-msgstr ""
+msgstr "Html Bewerken"
 
 #: bilbo/composer/bilboeditor.cpp:85
 msgctxt "preview of the edited post"
 msgid "Post Preview"
-msgstr ""
+msgstr "Bericht Preview"
 
 #: bilbo/composer/bilboeditor.cpp:101
 msgid "Media list:"
-msgstr ""
+msgstr "Media lijst:"
 
 #: bilbo/composer/bilboeditor.cpp:144 bilbo/composer/bilboeditor.cpp:1059
 msgid "Post Title"
-msgstr ""
+msgstr "Bericht Titel"
 
 #: bilbo/composer/bilboeditor.cpp:168
 msgid "Enable Spell Checking"
-msgstr ""
+msgstr "Spellingscontrole"
 
 #: bilbo/composer/bilboeditor.cpp:179
 msgctxt "Makes text bold, and its shortcut is (Ctrl+b)"
 msgid "Bold (Ctrl+b)"
-msgstr ""
+msgstr "Dik (Ctrl+b)"
 
 #: bilbo/composer/bilboeditor.cpp:187
 msgctxt "Makes text italic, and its shortcut is (Ctrl+i)"
 msgid "Italic (Ctrl+i)"
-msgstr ""
+msgstr "Cursief (Ctrl+i)"
 
 #: bilbo/composer/bilboeditor.cpp:195
 msgctxt "Makes text underlined, and its shortcut is (Ctrl+u)"
 msgid "Underline (Ctrl+u)"
-msgstr ""
+msgstr "Onderstrepen (Ctrl+u)"
 
 #: bilbo/composer/bilboeditor.cpp:203
 msgctxt "Strikes the text out, and its shortcut is (Ctrl+l)"
 msgid "Strike out (Ctrl+l)"
-msgstr ""
+msgstr "Doorstrepen (Ctrl+l)"
 
 #: bilbo/composer/bilboeditor.cpp:210
 msgctxt "Sets text font to code style"
 msgid "Code"
-msgstr ""
+msgstr "Broncode"
 
 #: bilbo/composer/bilboeditor.cpp:220 bilbo/composer/bilboeditor.cpp:229
 #: bilbo/composer/bilboeditor.cpp:378
 msgid "Paragraph"
-msgstr ""
+msgstr "Paragraaf"
 
 #: bilbo/composer/bilboeditor.cpp:221 bilbo/composer/bilboeditor.cpp:383
 msgid "Heading 1"
-msgstr ""
+msgstr "Kop 1"
 
 #: bilbo/composer/bilboeditor.cpp:222 bilbo/composer/bilboeditor.cpp:388
 msgid "Heading 2"
-msgstr ""
+msgstr "Kop 2"
 
 #: bilbo/composer/bilboeditor.cpp:223 bilbo/composer/bilboeditor.cpp:393
 msgid "Heading 3"
-msgstr ""
+msgstr "Kop 3"
 
 #: bilbo/composer/bilboeditor.cpp:224 bilbo/composer/bilboeditor.cpp:398
 msgid "Heading 4"
-msgstr ""
+msgstr "Kop 4"
 
 #: bilbo/composer/bilboeditor.cpp:225 bilbo/composer/bilboeditor.cpp:403
 msgid "Heading 5"
-msgstr ""
+msgstr "Kop 5"
 
 #: bilbo/composer/bilboeditor.cpp:226
 msgid "Heading 6"
-msgstr ""
+msgstr "Kop 6"
 
 #: bilbo/composer/bilboeditor.cpp:234
 msgid "Increase font size"
-msgstr ""
+msgstr "Vergroot lettertype"
 
 #: bilbo/composer/bilboeditor.cpp:238
 msgid "Decrease font size"
-msgstr ""
+msgstr "Verklein lettertype"
 
 #: bilbo/composer/bilboeditor.cpp:242
 msgctxt "verb, to select text color"
 msgid "Select Color"
-msgstr ""
+msgstr "Selecteer Kleur"
 
 #: bilbo/composer/bilboeditor.cpp:247
 msgid "Remove formatting"
-msgstr ""
+msgstr "Verwijder Opmaak"
 
 #: bilbo/composer/bilboeditor.cpp:252
 msgid "Blockquote"
@@ -322,487 +333,518 @@ msgstr ""
 #: bilbo/composer/bilboeditor.cpp:261
 msgctxt "verb, to add a new link or edit an existing one"
 msgid "Add/Edit Link"
-msgstr ""
+msgstr "Toevoegen/Bewerken Link"
 
 #: bilbo/composer/bilboeditor.cpp:267
 msgctxt "verb, to remove an existing link"
 msgid "Remove Link"
-msgstr ""
+msgstr "Verwijder Link"
 
 #: bilbo/composer/bilboeditor.cpp:272
 msgctxt "verb, to insert an image"
 msgid "Add Image"
-msgstr ""
+msgstr "Afbeelding Toevoegen"
 
 #: bilbo/composer/bilboeditor.cpp:278
 msgctxt "verb, to align text from left"
 msgid "Align left"
-msgstr ""
+msgstr "Links uitlijnen"
 
 #: bilbo/composer/bilboeditor.cpp:282
 msgctxt "verb, to align text from center"
 msgid "Align center"
-msgstr ""
+msgstr "Midden uitlijnen"
 
 #: bilbo/composer/bilboeditor.cpp:286
 msgctxt "verb, to align text from right"
 msgid "Align right"
-msgstr ""
+msgstr "Rechts uitlijnen"
 
 #: bilbo/composer/bilboeditor.cpp:291
 msgctxt "verb, to justify text"
 msgid "Justify"
-msgstr ""
+msgstr "Vullen"
 
 #: bilbo/composer/bilboeditor.cpp:297
 msgctxt "Sets text direction as right to left"
 msgid "Right to Left"
-msgstr ""
+msgstr "Rechts naar Links"
 
 #: bilbo/composer/bilboeditor.cpp:311
 msgid "Ordered List"
-msgstr ""
+msgstr "Genummerde Lijst"
 
 #: bilbo/composer/bilboeditor.cpp:315
 msgid "Unordered List"
-msgstr ""
+msgstr "Opsomming"
 
 #: bilbo/composer/bilboeditor.cpp:319
 msgid "Split text"
-msgstr ""
+msgstr "Split Tekst"
 
 #: bilbo/composer/dialogs/addeditlink.cpp:56
 msgctxt "verb, to modify an existing link"
 msgid "Edit Link"
-msgstr ""
+msgstr "Bewerk Link"
 
 #: bilbo/composer/dialogs/addeditlink.cpp:58
 msgctxt "verb, to insert a link into the text"
 msgid "Add Link"
-msgstr ""
+msgstr "Voeg Link Toe"
 
 #: bilbo/composer/dialogs/addimagedialog.cpp:38
 msgid "Add Image"
-msgstr ""
+msgstr "Voeg Afbeelding Toe"
 
 #: bilbo/composer/dialogs/addmediadialog.cpp:51
 msgid "Choose a file"
-msgstr ""
+msgstr "Kies een bestand"
 
 #: bilbo/composer/dialogs/addmediadialog.cpp:52
 msgid "Type media path here."
-msgstr ""
+msgstr "Tiep het pad naar de media hier."
 
 #: bilbo/composer/dialogs/addmediadialog.cpp:53
 msgid "Browse"
-msgstr ""
+msgstr "Verkennen"
 
 #: bilbo/composer/dialogs/addmediadialog.cpp:97
 msgid "The selected media address is an invalid url."
-msgstr ""
+msgstr "Het opgegeven media adres is een ongeldige url."
 
 #: bilbo/composer/htmleditor.cpp:79
 msgid "Dynamic Word Wrap"
-msgstr ""
+msgstr "Automatische Terugloop"
 
 #: bilbo/composer/htmleditor.cpp:83
 msgid "Show line numbers"
-msgstr ""
+msgstr "Toon lijn nummers"
 
 #: bilbo/composer/htmleditor.cpp:87
 msgid "Options"
-msgstr ""
+msgstr "Opties"
 
 #: bilbo/composer/medialistwidget.cpp:35
 msgid "Edit properties"
-msgstr ""
+msgstr "Bewerk eigenschappen"
 
 #: bilbo/composer/medialistwidget.cpp:37
 msgid "Copy Url"
-msgstr ""
+msgstr "Kopieer Url"
 
 #: bilbo/composer/medialistwidget.cpp:39
 msgid "Remove media"
-msgstr ""
+msgstr "Verwijder media"
 
 #: bilbo/composer/stylegetter.cpp:55
 msgid "Can not fetch the selected blog style."
-msgstr ""
+msgstr "Kan de blog stijl niet ophalen."
 
 #: bilbo/composer/stylegetter.cpp:169
 msgid "Cannot get html file."
-msgstr ""
+msgstr "Kan html bestand niet ophalen."
 
 #: bilbo/composer/stylegetter.cpp:204
 msgid "Cannot write data to file %1"
-msgstr ""
+msgstr "Kan gegevens niet naar bestand %1 schrijven"
 
 #: bilbo/composer/stylegetter.cpp:245
 msgid "An error ocurred on latest transaction "
-msgstr ""
+msgstr "Er is een fout opgetreden bij de laatste transactie "
 
 #: bilbo/dbman.cpp:52
 msgid "Cannot create database"
-msgstr ""
+msgstr "Kan database niet aanmaken"
 
 #: bilbo/dbman.cpp:101
 msgid "Cannot connect to database"
-msgstr ""
+msgstr "Kan niet verbinden met database"
 
 #: bilbo/dbman.cpp:997
 msgid "There isn't any post with requested ID"
-msgstr ""
+msgstr "Kan bericht met de opgegeven ID niet ophalen"
 
 #: bilbo/dbman.cpp:1263
 msgid "there isn't any local post with requested ID "
-msgstr ""
+msgstr "Kan lokaal bericht met de opgegeven ID niet vinden "
 
 #: bilbokblog/blogger1.cpp:243
 msgid ""
 "Could not fetch user's info out of the result from the server, not a map."
 msgstr ""
+"Kan de gebruikersgegevens niet uit de reactie van de server lezen, niet een "
+"map."
 
 #: bilbokblog/blogger1.cpp:270
 msgid "Could not fetch blogs out of the result from the server, not a list."
 msgstr ""
+"Kan niet de blogs uit de reactie van de server lezen, niet een lijst."
 
 #: bilbokblog/blogger1.cpp:307
 msgid ""
 "Could not fetch list of posts out of the result from the server, not a list."
 msgstr ""
+"Kan niet de lijst met berichten uit de reactie van de server lezen, niet een "
+"lijst."
 
 #: bilbokblog/blogger1.cpp:326
 msgid "Could not read post."
-msgstr ""
+msgstr "Kan bericht niet lezen."
 
 #: bilbokblog/blogger1.cpp:353 bilbokblog/blogger1.cpp:356
 msgid "Could not fetch post out of the result from the server."
-msgstr ""
+msgstr "Kan het bericht niet uit de reactie van de server lezen."
 
 #: bilbokblog/blogger1.cpp:374
 msgid "Could not read the postId, not a string or an integer."
-msgstr ""
+msgstr "Kan de postId niet lezen, niet een string of integer."
 
 #: bilbokblog/blogger1.cpp:407 bilbokblog/blogger1.cpp:431
 msgid "Could not read the result, not a boolean."
-msgstr ""
+msgstr "Kan het resultaat niet lezen, niet een boolean."
 
 #: bilbokblog/gdata.cpp:216 bilbokblog/gdata.cpp:283 bilbokblog/gdata.cpp:345
 #: bilbokblog/gdata.cpp:391 bilbokblog/gdata.cpp:448
 msgid "Authentication failed."
-msgstr ""
+msgstr "Authenticatie geweigerd."
 
 #: bilbokblog/gdata.cpp:543
 msgid "Could not regexp the Profile ID."
-msgstr ""
+msgstr "Kan de profiel ID niet met een reguliere expressie uitlezen."
 
 #: bilbokblog/gdata.cpp:565
 msgid "Could not get blogs."
-msgstr ""
+msgstr "Kan de lijst met blogs niet lezen."
 
 #: bilbokblog/gdata.cpp:587 bilbokblog/gdata.cpp:803
 msgid "Could not regexp the blog id path."
-msgstr ""
+msgstr "Kan het blog ID pad niet met een reguliere expressie uitlezen."
 
 #: bilbokblog/gdata.cpp:608 bilbokblog/gdata.cpp:654
 msgid "Could not get comments."
-msgstr ""
+msgstr "Kan commentaar niet ophalen."
 
 #: bilbokblog/gdata.cpp:622 bilbokblog/gdata.cpp:668
 msgid "Could not regexp the comment id path."
-msgstr ""
+msgstr "Kan het comment ID pad niet met een reguliere expressie uitlezen."
 
 #: bilbokblog/gdata.cpp:700 bilbokblog/gdata.cpp:773
 msgid "Could not get posts."
-msgstr ""
+msgstr "Kan berichten niet ophalen."
 
 #: bilbokblog/gdata.cpp:720
 msgid "Could not regexp the post id path."
-msgstr ""
+msgstr "Kan het bericht ID pad niet met een reguliere expressie uitlezen."
 
 #: bilbokblog/gdata.cpp:844 bilbokblog/gdata.cpp:909 bilbokblog/gdata.cpp:1012
 #: bilbokblog/wordpressbuggy.cpp:343 bilbokblog/wordpressbuggy.cpp:391
 msgid "Could not regexp the id out of the result."
-msgstr ""
+msgstr "Kan het ID niet met een reguliere expressie uit het resultaat lezen."
 
 #: bilbokblog/gdata.cpp:853 bilbokblog/gdata.cpp:918 bilbokblog/gdata.cpp:1021
 msgid "Could not regexp the published time out of the result."
 msgstr ""
+"Kan de publicatietijd niet met een reguliere expressie uit het resultaat "
+"lezen."
 
 #: bilbokblog/gdata.cpp:862 bilbokblog/gdata.cpp:927 bilbokblog/gdata.cpp:1030
 msgid "Could not regexp the update time out of the result."
 msgstr ""
+"Kan de bijwerktijd niet met een reguliere expressie uit het resultaat lezen."
 
 #: bilbokblog/livejournal.cpp:344 bilbokblog/livejournal.cpp:453
 #: bilbokblog/livejournal.cpp:478
 msgid "Could not read the post ID, result not a map."
-msgstr ""
+msgstr "Kan de bericht ID niet lezen, resultaat is geen map."
 
 #: bilbokblog/livejournal.cpp:491
 msgid "The returned post ID did not match the sent one: "
-msgstr ""
+msgstr "De teruggegeven bericht ID komt niet overeen met de opgegeven ID: "
 
 #: bilbokblog/metaweblog.cpp:74
 msgid "Media is a null pointer."
-msgstr ""
+msgstr "Media is een null pointer."
 
 #: bilbokblog/metaweblog.cpp:133
 msgid "Could not list categories out of the result from the server."
-msgstr ""
+msgstr "Kan de categorieën niet uit het resultaat van de server lezen."
 
 #: bilbokblog/metaweblog.cpp:194
 msgid "Could not read the result, not a map."
-msgstr ""
+msgstr "Kan het resultaat niet lezen, niet een map."
 
 #: bilbokblog/movabletype.cpp:181
 msgid ""
 "Could not fetch list of trackback pings out of the result from the server."
 msgstr ""
+"Kan de lijst met traceback pings niet uit het resultaat van de server lezen."
 
 #: bilbokblog/movabletype.cpp:234
 msgid "The category list is empty"
-msgstr ""
+msgstr "De lijst met categorieën is leeg."
 
 #: bilbokblog/movabletype.cpp:308
 msgid "Could not regexp the result out of the result."
 msgstr ""
+"Kan het resultaat niet met een reguliere expressie verkrijgen uit het "
+"resultaat."
 
 #: bilbokblog/movabletype.cpp:317
 msgid "Error on server, Post categories couldn't sets"
-msgstr ""
+msgstr "Fout op de server, bericht categorieën kunnen niet worden ingesteld."
 
 #: bilbokblog/wordpressbuggy.cpp:62 bilbokblog/wordpressbuggy.cpp:160
 msgid "Post is a null pointer."
-msgstr ""
+msgstr "Bericht is een null pointer."
 
 #: bilbokblog/wordpressbuggy.cpp:263
 msgid "Category name isn't set."
-msgstr ""
+msgstr "categorie naam is niet ingesteld."
 
 #: bilbo/main.cpp:33
 msgid "A KDE Blogging Client"
-msgstr ""
+msgstr "Een Blogging Programma voor KDE"
 
 #: bilbo/main.cpp:38
 msgid "(C) 2008-2009 Bilbo Developers"
-msgstr ""
+msgstr "(C) 2008-2009 Bilbo Developers"
 
 #: bilbo/main.cpp:41
 msgid "Mehrdad Momeny"
-msgstr ""
+msgstr "Mehrdad Momeny"
 
 #: bilbo/main.cpp:41 bilbo/main.cpp:42
 msgid "Core Developer"
-msgstr ""
+msgstr "Kern Ontwikkelaar"
 
 #: bilbo/main.cpp:42
 msgid "Golnaz Nilieh"
-msgstr ""
+msgstr "Golnaz Nilieh"
 
 #: bilbo/main.cpp:43
 msgid "Roozbeh Shafiee"
-msgstr ""
+msgstr "Roozbeh Shafiee"
 
 #: bilbo/main.cpp:43
 msgid "Icon designer"
-msgstr ""
+msgstr "Icoon ontwerper"
 
 #: bilbo/main.cpp:45 l10n/rc.cpp:401 rc.cpp:401
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr " ,Launchpad Contributions:,Maijin,Mathieu Pasquet,Nicolas Dusart"
+msgstr " ,Launchpad Contributions:,Berend Dekens"
 
 #: bilbo/main.cpp:46 l10n/rc.cpp:402 rc.cpp:402
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr ",,,,"
+msgstr ",,"
 
 #: bilbo/mainwindow.cpp:72 bilbo/mainwindow.cpp:372
 msgid "Bilbo Blogger"
-msgstr ""
+msgstr "Bilbo Blogger"
 
 #: bilbo/mainwindow.cpp:81
 msgid "Toolbox"
-msgstr ""
+msgstr "Gereedschap"
 
 #: bilbo/mainwindow.cpp:91
 msgid "Remove current post"
-msgstr ""
+msgstr "Verwijder huidig bericht"
 
 #: bilbo/mainwindow.cpp:145
 msgid "New Post"
-msgstr ""
+msgstr "Nieuw bericht"
 
 #: bilbo/mainwindow.cpp:150
 msgid "Add Blog..."
-msgstr ""
+msgstr "Voeg blog toe..."
 
 #: bilbo/mainwindow.cpp:154
 msgid "Submit..."
-msgstr ""
+msgstr "Verzenden..."
 
 #: bilbo/mainwindow.cpp:158
 msgid "Upload Media..."
-msgstr ""
+msgstr "Media Uploaden..."
 
 #: bilbo/mainwindow.cpp:162
 msgid "Save Locally"
-msgstr ""
+msgstr "Lokaal Opslaan"
+
+#: bilbo/mainwindow.cpp:167
+msgid "Show Toolbox"
+msgstr "Toon Gereedschap"
 
 #: bilbo/mainwindow.cpp:172
 msgid "Clear cached images"
-msgstr ""
+msgstr "Verwijder Tijdelijke Plaatjes"
 
 #: bilbo/mainwindow.cpp:290
 msgid "General"
-msgstr ""
+msgstr "Algemeen"
 
 #: bilbo/mainwindow.cpp:291
 msgid "Blogs"
-msgstr ""
+msgstr "Blogs"
 
 #: bilbo/mainwindow.cpp:292
 msgid "Editor"
-msgstr ""
+msgstr "Editor"
 
 #. i18n: file: bilbo/addeditblogbase.ui:206
 #. i18n: ectx: attribute (title), widget (QWidget, tabAdvanced)
 #: bilbo/mainwindow.cpp:293 l10n/rc.cpp:49 rc.cpp:49
 msgid "Advanced"
-msgstr ""
+msgstr "Geavanceerd"
 
 #: bilbo/mainwindow.cpp:438
 msgid "You have to select a blog to publish this post to it."
-msgstr ""
+msgstr "U dient een blog te selecteren om dit bericht te kunnen publiceren."
 
 #: bilbo/mainwindow.cpp:443
 msgid "There isn't any open post to submit!"
-msgstr ""
+msgstr "Er is geen bericht open om te publiceren!"
 
 #: bilbo/mainwindow.cpp:492 bilbo/toolbox.cpp:238
 msgid "An error ocurred on latest transaction"
-msgstr ""
+msgstr "Er is een fout opgetreden bij de laatste transactie"
 
 #: bilbo/mainwindow.cpp:539
 msgid "Submiting post failed"
-msgstr ""
+msgstr "Probleem bij verzenden bericht"
 
 #: bilbo/mainwindow.cpp:541
 msgid ""
 "%1\n"
 "Do you want to keep post open?"
 msgstr ""
+"%1\n"
+"Wilt u dit bericht open houden?"
 
 #: bilbo/postentry.cpp:90
 msgctxt "noun, the post title"
 msgid "Title:"
-msgstr ""
+msgstr "Titel:"
 
 #: bilbo/postentry.cpp:225
 msgid ""
 "Uploading media file %1 failed.\n"
 "%3"
 msgstr ""
+"Probleem bij upload media bestand %1.\n"
+"%3"
 
 #: bilbo/postentry.cpp:248
 msgid ""
 "An Error occurred on latest transaction.\n"
 "%1"
 msgstr ""
+"Er is een fout opgetreden bij de laatste transactie.\n"
+"%1"
 
 #: bilbo/postentry.cpp:260
 msgid ""
 "Your post title or body is empty!\n"
 "Are you sure of submiting this post?"
 msgstr ""
+"Berichttitel of tekst is leeg!\n"
+"Weet u zeker dat u dit bericht wilt verzenden?"
 
 #: bilbo/postentry.cpp:276
 msgctxt "Post status, e.g Draft or Published Post"
 msgid "draft"
-msgstr ""
+msgstr "concept"
 
 #: bilbo/postentry.cpp:279
 msgctxt "Post status, e.g Draft or Published Post"
 msgid "post"
-msgstr ""
+msgstr "bericht"
 
 #: bilbo/postentry.cpp:285
 msgid "Submiting new %1..."
-msgstr ""
+msgstr "Bezig met verzenden van nieuw %1..."
 
 #: bilbo/postentry.cpp:288
 msgid "Modifying %1..."
-msgstr ""
+msgstr "Bezig met bewerken van %1..."
 
 #: bilbo/postentry.cpp:320
 msgid "Draft with title \"%1\" saved successfully."
-msgstr ""
+msgstr "Concept genaamd \"%1\" is opgeslagen."
 
 #: bilbo/postentry.cpp:322
 msgid "Post with title \"%1\" modified successfully."
-msgstr ""
+msgstr "Bericht genaamd \"%1\" is bewerkt."
 
 #: bilbo/postentry.cpp:324
 msgid "Post with title \"%1\" published successfully."
-msgstr ""
+msgstr "Bericht genaamd \"%1\" is gepubliceerd."
 
 #: bilbo/postentry.cpp:346
 msgid "Current post content is empty, are you sure of saving an empty post?"
 msgstr ""
+"Het huidige bericht heeft geen tekst, weet u zeker dat u dit bericht op wilt "
+"slaan?"
 
 #: bilbo/postentry.cpp:352
 msgid "Post saved locally."
-msgstr ""
+msgstr "Bericht lokaal opgeslagen."
 
 #: bilbo/sendtoblogdialog.cpp:33
 msgid "Submitting as ..."
-msgstr ""
+msgstr "Verzenden als..."
 
 #: bilbo/toolbox.cpp:117
 msgid ""
 "There isn't any selected blog, you have to select a blog from Blogs page "
 "before asking for Category list"
 msgstr ""
+"Er is geen blog geselecteerd, u dient een blog te selecteren op de Blogs "
+"pagina voordat de lijst met categorieën kan worden opgevraagd."
 
 #: bilbo/toolbox.cpp:126
 msgid "Requesting category list..."
-msgstr ""
+msgstr "Bezig met opvragen van categorieën..."
 
 #: bilbo/toolbox.cpp:135
 msgid ""
 "There isn't any selected blog, you have to select a blog from Blogs page "
 "before asking for Entries list"
 msgstr ""
+"Er is geen blog geselecteerd, u dient een blog te selecteren op de Blogs "
+"pagina voordat de lijst met berichten kan worden opgevraagd."
 
 #: bilbo/toolbox.cpp:155
 msgid "Requesting Entries list..."
-msgstr ""
+msgstr "Bezig met opvragen van berichten..."
 
 #: bilbo/toolbox.cpp:181
 msgid "Entries list received."
-msgstr ""
+msgstr "Lijst met berichten ontvangen."
 
 #: bilbo/toolbox.cpp:205
 msgid "Category list received."
-msgstr ""
+msgstr "Lijst met categorieën ontvangen."
 
 #: bilbo/toolbox.cpp:214
 msgid ""
 "Removing a post from your blog is not undoable!\n"
 "Are you sure of removing post with title \"%1\" from your blog?"
 msgstr ""
+"Het verwijderen van een bericht van uw blog is niet ongedaan te maken!\n"
+"Weet u zeker dat u bericht genaamd \"%1\" wilt verwijderen van uw blog?"
 
 #: bilbo/toolbox.cpp:222
 msgid "Removing post..."
-msgstr ""
+msgstr "Bericht verwijderen..."
 
 #: bilbo/toolbox.cpp:228
 msgid "Post with title \"%1\" removed from \"%2\"."
-msgstr ""
+msgstr "Bericht genaamd \"%1\" is verwijderd van \"%2\"."
 
 #: bilbo/toolbox.cpp:231
 msgid "Post removed"
-msgstr ""
+msgstr "Bericht verwijderd"
 
 #: bilbo/toolbox.cpp:239
 msgid "Failed"
@@ -812,60 +854,62 @@ msgstr ""
 msgid ""
 "Sorry, There isn't any link field available for this entry on Database."
 msgstr ""
+"Sorry, er is geen link veld beschikbaar voor dit bericht in de database."
 
 #: bilbo/toolbox.cpp:504
 msgid "Are you sure of removing selected local entry?"
 msgstr ""
+"Weet u zeker dat u het geselecteerde lokale bericht wilt verwijderen?"
 
 #: bilbo/toolbox.cpp:511
 msgid "Cannot remove selected local entry!"
-msgstr ""
+msgstr "Kan het geselecteerde lokale bericht niet verwijderen!"
 
 #: bilbo/toolbox.cpp:514
 msgid "You have to select at least one entry from list."
-msgstr ""
+msgstr "U dient tenminste een bericht te selecteren van de lijst."
 
 #: bilbo/toolbox.cpp:527
 msgid "Can not clear entries list."
-msgstr ""
+msgstr "Kan lijst met berichten niet leegmaken."
 
 #: bilbo/toolbox.cpp:541
 msgid "Open in browser"
-msgstr ""
+msgstr "Open in browser"
 
 #: bilbo/toolbox.cpp:544
 msgid "Copy URL"
-msgstr ""
+msgstr "Kopieer URL"
 
 #: bilbo/toolbox.cpp:547
 msgid "Copy title"
-msgstr ""
+msgstr "Kopieer titel"
 
 #: bilbo/uploadmediadialog.cpp:43
 msgid "Upload"
-msgstr ""
+msgstr "Uploaden"
 
 #: bilbo/uploadmediadialog.cpp:44
 msgid "Upload media..."
-msgstr ""
+msgstr "Media uploaden..."
 
 #. i18n: file: bilbo/uploadmediabase.ui:17
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: bilbo/uploadmediadialog.cpp:65 l10n/rc.cpp:361 rc.cpp:361
 msgid "Select media to upload"
-msgstr ""
+msgstr "Selecteer media om te uploaden"
 
 #: bilbo/uploadmediadialog.cpp:73
 msgid "Blog API"
-msgstr ""
+msgstr "Blog API"
 
 #: bilbo/uploadmediadialog.cpp:76
 msgid "FTP"
-msgstr ""
+msgstr "FTP"
 
 #: bilbo/uploadmediadialog.cpp:122
 msgid "Please insert FTP Url."
-msgstr ""
+msgstr "Geef FTP adres op."
 
 #: bilbo/uploadmediadialog.cpp:138
 msgid ""
@@ -873,6 +917,9 @@ msgid ""
 "Note that url must start with \"ftp\" or \"sftp\", and end with a / that "
 "indicate the directory which file should upload to it."
 msgstr ""
+"Opgegeven FTP adres is geen geldig adres.\n"
+"Let op: een FTP adres begint met \"ftp://\" of \"sftp://\" en eindigd met "
+"een \"/\" achter de laatste directorie naam."
 
 #: bilbo/uploadmediadialog.cpp:167 bilbo/uploadmediadialog.cpp:184
 msgid ""
@@ -880,6 +927,9 @@ msgid ""
 "You can find it here:\n"
 "%1"
 msgstr ""
+"Media is geupload en de URL is in het klembord gekopieërd.\n"
+"Het staat hier:\n"
+"%1"
 
 #: bilbo/uploadmediadialog.cpp:170 bilbo/uploadmediadialog.cpp:187
 msgid ""
@@ -887,10 +937,13 @@ msgid ""
 "You can find it here:\n"
 "%1"
 msgstr ""
+"Media is geupload.\n"
+"Het staat hier:\n"
+"%1"
 
 #: bilbo/uploadmediadialog.cpp:173 bilbo/uploadmediadialog.cpp:190
 msgid "Successfully uploaded"
-msgstr ""
+msgstr "Upload gelukt"
 
 #: bilbo/uploadmediadialog.cpp:196
 msgid ""
@@ -898,36 +951,39 @@ msgid ""
 "%1\n"
 "Try again?"
 msgstr ""
+"Media upload is mislukt:\n"
+"%1\n"
+"Opnieuw proberen?"
 
 #. i18n: file: bilbo/addcategorybase.ui:16
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:3 rc.cpp:3
 msgid "Category Name: "
-msgstr ""
+msgstr "Categorie Naam: "
 
 #. i18n: file: bilbo/addcategorybase.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: l10n/rc.cpp:6 rc.cpp:6
 msgid "Category Slug: "
-msgstr ""
+msgstr "Categorie Slug: "
 
 #. i18n: file: bilbo/addcategorybase.ui:42
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: l10n/rc.cpp:9 rc.cpp:9
 msgid "Parent Category:"
-msgstr ""
+msgstr "Categorie Eigenaar:"
 
 #. i18n: file: bilbo/addcategorybase.ui:55
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: l10n/rc.cpp:12 rc.cpp:12
 msgid "Description:"
-msgstr ""
+msgstr "Beschrijving:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:17
 #. i18n: ectx: attribute (title), widget (QWidget, tabBasic)
 #: l10n/rc.cpp:15 rc.cpp:15
 msgid "Basic"
-msgstr ""
+msgstr "Basis"
 
 #. i18n: file: bilbo/addeditblogbase.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label_18)
@@ -939,7 +995,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: l10n/rc.cpp:18 l10n/rc.cpp:52 rc.cpp:18 rc.cpp:52
 msgid "Configuring your blog account..."
-msgstr ""
+msgstr "Configureren van blog account..."
 
 #. i18n: file: bilbo/addeditblogbase.ui:46
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -949,18 +1005,21 @@ msgid ""
 "program guess your blog settings.\n"
 "You can set more options on Advanced tab."
 msgstr ""
+"Vul de volgende velden in en klik op \"Automatisch Configureren\" om uw blog "
+"instellingen te detecteren.\n"
+"U kunt meer instellingen vinden op het tabblad \"Geavanceerd\"."
 
 #. i18n: file: bilbo/addeditblogbase.ui:65
 #. i18n: ectx: property (text), widget (QLabel, label_9)
 #: l10n/rc.cpp:25 rc.cpp:25
 msgid "Title:"
-msgstr ""
+msgstr "Titel:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:75
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:28 rc.cpp:28
 msgid "Blog/Homepage URL:"
-msgstr ""
+msgstr "Blog/Website URL:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:88
 #. i18n: ectx: property (text), widget (KLineEdit, txtUrl)
@@ -977,118 +1036,118 @@ msgstr ""
 #: l10n/rc.cpp:31 l10n/rc.cpp:178 l10n/rc.cpp:379 rc.cpp:31 rc.cpp:178
 #: rc.cpp:379
 msgid "http://"
-msgstr ""
+msgstr "http://"
 
 #. i18n: file: bilbo/addeditblogbase.ui:91
 #. i18n: ectx: property (clickMessage), widget (KLineEdit, txtUrl)
 #: l10n/rc.cpp:34 rc.cpp:34
 msgid "http://YourHomePage.com"
-msgstr ""
+msgstr "http://UwWebsite.nl"
 
 #. i18n: file: bilbo/addeditblogbase.ui:108
 #. i18n: ectx: property (text), widget (QLabel, label_17)
 #: l10n/rc.cpp:37 rc.cpp:37
 msgid "e.g. : http://domain.com/blog/"
-msgstr ""
+msgstr "http://domein.nl/blog/"
 
 #. i18n: file: bilbo/addeditblogbase.ui:115
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: l10n/rc.cpp:40 rc.cpp:40
 msgid "Username:"
-msgstr ""
+msgstr "Gebruikersnaam:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:131
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: l10n/rc.cpp:43 rc.cpp:43
 msgid "Password:"
-msgstr ""
+msgstr "Wachtwoord:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:176
 #. i18n: ectx: property (text), widget (KPushButton, btnAutoConf)
 #: l10n/rc.cpp:46 rc.cpp:46
 msgid "Auto Configure"
-msgstr ""
+msgstr "Automatisch Configureren"
 
 #. i18n: file: bilbo/addeditblogbase.ui:228
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: l10n/rc.cpp:55 rc.cpp:55
 msgctxt "Name of the API which is used to communicate with Blog"
 msgid "API:"
-msgstr ""
+msgstr "API:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:242
 #. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
 #: l10n/rc.cpp:58 rc.cpp:58
 msgid "Blogger 1.0 API"
-msgstr ""
+msgstr "Blogger 1.0 API"
 
 #. i18n: file: bilbo/addeditblogbase.ui:247
 #. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
 #: l10n/rc.cpp:61 rc.cpp:61
 msgid "MetaWeblog API"
-msgstr ""
+msgstr "MetaWeblog API"
 
 #. i18n: file: bilbo/addeditblogbase.ui:252
 #. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
 #: l10n/rc.cpp:64 rc.cpp:64
 msgid "MovableType API"
-msgstr ""
+msgstr "MovableType API"
 
 #. i18n: file: bilbo/addeditblogbase.ui:257
 #. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
 #: l10n/rc.cpp:67 rc.cpp:67
 msgid "Wordpress"
-msgstr ""
+msgstr "Wordpress"
 
 #. i18n: file: bilbo/addeditblogbase.ui:262
 #. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
 #: l10n/rc.cpp:70 rc.cpp:70
 msgid "Blogspot.com"
-msgstr ""
+msgstr "Blogspot.com"
 
 #. i18n: file: bilbo/addeditblogbase.ui:286
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: l10n/rc.cpp:73 rc.cpp:73
 msgid "Blog ID:"
-msgstr ""
+msgstr "Blog ID:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:314
 #. i18n: ectx: property (text), widget (KPushButton, btnFetch)
 #: l10n/rc.cpp:76 rc.cpp:76
 msgctxt "verb, fetch the blog id from the web"
 msgid "Fetch ID"
-msgstr ""
+msgstr "Haal ID op"
 
 #. i18n: file: bilbo/addeditblogbase.ui:337
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: l10n/rc.cpp:79 rc.cpp:79
 msgctxt "Default direction of text in the blog"
 msgid "Default text direction:"
-msgstr ""
+msgstr "Standaard leesrichting:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:351
 #. i18n: ectx: property (text), item, widget (KComboBox, comboDir)
 #: l10n/rc.cpp:82 rc.cpp:82
 msgid "Left to right"
-msgstr ""
+msgstr "Links naar rechts"
 
 #. i18n: file: bilbo/addeditblogbase.ui:356
 #. i18n: ectx: property (text), item, widget (KComboBox, comboDir)
 #: l10n/rc.cpp:85 rc.cpp:85
 msgid "Right to left"
-msgstr ""
+msgstr "Rechts naar links"
 
 #. i18n: file: bilbo/addeditblogbase.ui:368
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: l10n/rc.cpp:88 rc.cpp:88
 msgid "Supported Features"
-msgstr ""
+msgstr "Ondersteunde Eigenschappen"
 
 #. i18n: file: bilbo/addeditblogbase.ui:374
 #. i18n: ectx: property (text), widget (QLabel, label_11)
 #: l10n/rc.cpp:91 rc.cpp:91
 msgid "Create/Modify post:"
-msgstr ""
+msgstr "Maak/Bewerk bericht:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:384
 #. i18n: ectx: property (text), widget (QLabel, featureCreatePost)
@@ -1127,37 +1186,37 @@ msgstr ""
 #: rc.cpp:103 rc.cpp:106 rc.cpp:112 rc.cpp:118 rc.cpp:124 rc.cpp:133
 #: rc.cpp:139
 msgid "Unknown"
-msgstr ""
+msgstr "Onbekend"
 
 #. i18n: file: bilbo/addeditblogbase.ui:407
 #. i18n: ectx: property (text), widget (QLabel, label_14)
 #: l10n/rc.cpp:97 rc.cpp:97
 msgid "Support categories:"
-msgstr ""
+msgstr "Categorie ondersteuning:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:417
 #. i18n: ectx: property (text), widget (QLabel, label_16)
 #: l10n/rc.cpp:100 rc.cpp:100
 msgid "Support tags:"
-msgstr ""
+msgstr "Tags ondersteuning:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:441
 #. i18n: ectx: property (text), widget (QLabel, label_22)
 #: l10n/rc.cpp:109 rc.cpp:109
 msgid "Remove post:"
-msgstr ""
+msgstr "Bericht verwijderen:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:458
 #. i18n: ectx: property (text), widget (QLabel, label_12)
 #: l10n/rc.cpp:115 rc.cpp:115
 msgid "Fetch recent posts:"
-msgstr ""
+msgstr "Recente berichten tonen:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:475
 #. i18n: ectx: property (text), widget (QLabel, label_20)
 #: l10n/rc.cpp:121 rc.cpp:121
 msgid "Multipaged post:"
-msgstr ""
+msgstr "Bericht met meerdere pagina's:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:492
 #. i18n: ectx: property (text), widget (QLabel, label_10)
@@ -1166,18 +1225,20 @@ msgid ""
 "Note: You can see list of supported features for your blog after "
 "configuration!"
 msgstr ""
+"Opmerking: De lijst met eigenschappen wordt na opslaan van de configuratie "
+"bijgewerkt!"
 
 #. i18n: file: bilbo/addeditblogbase.ui:502
 #. i18n: ectx: property (text), widget (QLabel, label_13)
 #: l10n/rc.cpp:130 rc.cpp:130
 msgid "Upload media:"
-msgstr ""
+msgstr "Media uploaden:"
 
 #. i18n: file: bilbo/addeditblogbase.ui:519
 #. i18n: ectx: property (text), widget (QLabel, label_15)
 #: l10n/rc.cpp:136 rc.cpp:136
 msgid "Create new category:"
-msgstr ""
+msgstr "Categorie toevoegen:"
 
 #. i18n: file: bilbo/advancedsettingsbase.ui:16
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_changeNToBreak)
@@ -1186,12 +1247,14 @@ msgid ""
 "It could be useful on some blogs like Wordpress that do not store posts as "
 "HTML"
 msgstr ""
+"Dit kan gebruikt worden bij sommige blog types zoals Wordpress die berichten "
+"niet als HTML opslaan"
 
 #. i18n: file: bilbo/advancedsettingsbase.ui:19
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_changeNToBreak)
 #: l10n/rc.cpp:145 rc.cpp:145
 msgid "Change \\n to <br/> On posts retrieved from server"
-msgstr ""
+msgstr "Verander \\n naar <br/> bij inlezen berichten van server"
 
 #. i18n: file: bilbo/bilboui.rc:4
 #. i18n: ectx: Menu (blog)
@@ -1203,25 +1266,25 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QTableWidget, localEntriesTable)
 #: l10n/rc.cpp:148 l10n/rc.cpp:352 rc.cpp:148 rc.cpp:352
 msgid "Blog"
-msgstr ""
+msgstr "Blog"
 
 #. i18n: file: bilbo/bilboui.rc:8
 #. i18n: ectx: Menu (post)
 #: l10n/rc.cpp:151 rc.cpp:151
 msgid "Post"
-msgstr ""
+msgstr "Bericht"
 
 #. i18n: file: bilbo/bilboui.rc:13
 #. i18n: ectx: Menu (settings)
 #: l10n/rc.cpp:154 rc.cpp:154
 msgid "Settings"
-msgstr ""
+msgstr "Instellingen"
 
 #. i18n: file: bilbo/bilboui.rc:19
 #. i18n: ectx: Menu (settings)
 #: l10n/rc.cpp:157 rc.cpp:157
 msgid "Toolbar"
-msgstr ""
+msgstr "Knoppenbalk"
 
 #. i18n: file: bilbo/blogsettingsbase.ui:44
 #. i18n: ectx: property (text), widget (QTableWidget, blogsTable)
@@ -1233,95 +1296,95 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QTableWidget, localEntriesTable)
 #: l10n/rc.cpp:160 l10n/rc.cpp:349 rc.cpp:160 rc.cpp:349
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #. i18n: file: bilbo/blogsettingsbase.ui:49
 #. i18n: ectx: property (text), widget (QTableWidget, blogsTable)
 #: l10n/rc.cpp:163 rc.cpp:163
 msgid "Url"
-msgstr ""
+msgstr "URL"
 
 #. i18n: file: bilbo/blogsettingsbase.ui:75
 #. i18n: ectx: property (text), widget (KPushButton, btnAdd)
 #: l10n/rc.cpp:166 rc.cpp:166
 msgid "&Add..."
-msgstr ""
+msgstr "&Toevoegen..."
 
 #. i18n: file: bilbo/blogsettingsbase.ui:85
 #. i18n: ectx: property (text), widget (KPushButton, btnEdit)
 #: l10n/rc.cpp:169 rc.cpp:169
 msgid "&Modify..."
-msgstr ""
+msgstr "&Bewerken..."
 
 #. i18n: file: bilbo/blogsettingsbase.ui:95
 #. i18n: ectx: property (text), widget (KPushButton, btnRemove)
 #: l10n/rc.cpp:172 rc.cpp:172
 msgid "&Remove"
-msgstr ""
+msgstr "&Verwijderen..."
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:22
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:175 rc.cpp:175
 msgctxt "the web address of the link"
 msgid "Link &Address :"
-msgstr ""
+msgstr "Link &Adres:"
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:45
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: l10n/rc.cpp:181 rc.cpp:181
 msgctxt "the word which is showed as a link"
 msgid "Link &Title :"
-msgstr ""
+msgstr "Link &Titel:"
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:61
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: l10n/rc.cpp:184 rc.cpp:184
 msgid "&Target :"
-msgstr ""
+msgstr "&Doel:"
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:75
 #. i18n: ectx: property (text), item, widget (QComboBox, comboTarget)
 #: l10n/rc.cpp:187 rc.cpp:187
 msgid "not set"
-msgstr ""
+msgstr "niet ingesteld"
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:80
 #. i18n: ectx: property (text), item, widget (QComboBox, comboTarget)
 #: l10n/rc.cpp:190 rc.cpp:190
 msgid "Current window"
-msgstr ""
+msgstr "Huidig venster"
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:85
 #. i18n: ectx: property (text), item, widget (QComboBox, comboTarget)
 #: l10n/rc.cpp:193 rc.cpp:193
 msgid "New window"
-msgstr ""
+msgstr "Nieuw venster"
 
 #. i18n: file: bilbo/composer/dialogs/addmediadialogbase.ui:31
 #. i18n: ectx: property (text), widget (QRadioButton, radiobtnLocalUrl)
 #: l10n/rc.cpp:196 rc.cpp:196
 msgid "From your computer"
-msgstr ""
+msgstr "Vanaf deze computer"
 
 #. i18n: file: bilbo/composer/dialogs/addmediadialogbase.ui:44
 #. i18n: ectx: property (text), widget (QRadioButton, radiobtnRemoteUrl)
 #: l10n/rc.cpp:199 rc.cpp:199
 msgid "From the web"
-msgstr ""
+msgstr "Vanaf het internet"
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:13
 #. i18n: ectx: property (windowTitle), widget (QWidget, EditImageBase)
 #: l10n/rc.cpp:202 rc.cpp:202
 msgctxt "verb, to modify selected image attributes."
 msgid "Edit image properties"
-msgstr ""
+msgstr "Bewerk eigenschappen afbeelding"
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:19
 #. i18n: ectx: property (text), widget (QLabel, labelWidth)
 #: l10n/rc.cpp:205 rc.cpp:205
 msgctxt "noun, with of the image in pixels."
 msgid "Image width:"
-msgstr ""
+msgstr "Afbeelding breedte:"
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:32
 #. i18n: ectx: property (suffix), widget (KIntSpinBox, spinboxWidth)
@@ -1333,20 +1396,20 @@ msgstr ""
 #. i18n: ectx: property (suffix), widget (KIntSpinBox, spinboxHeight)
 #: l10n/rc.cpp:208 l10n/rc.cpp:211 rc.cpp:208 rc.cpp:211
 msgid " pixel"
-msgstr ""
+msgstr " pixels"
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:58
 #. i18n: ectx: property (text), widget (QLabel, labelTitle)
 #: l10n/rc.cpp:214 rc.cpp:214
 msgid "Image Title:"
-msgstr ""
+msgstr "Afbeelding Titel:"
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:68
 #. i18n: ectx: property (text), widget (QLabel, labelHeight)
 #: l10n/rc.cpp:217 rc.cpp:217
 msgctxt "noun, height of the image in pixels."
 msgid "Image height:"
-msgstr ""
+msgstr "Afbeelding hoogte:"
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:85
 #. i18n: ectx: property (text), widget (QLabel, labelAltText)
@@ -1355,37 +1418,37 @@ msgctxt ""
 "the alternative text which is displayed to the user, if the image can not be "
 "loaded."
 msgid "Alternative text:"
-msgstr ""
+msgstr "Alternatieve tekst:"
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:102
 #. i18n: ectx: property (text), widget (QLabel, labelLink)
 #: l10n/rc.cpp:223 rc.cpp:223
 msgid "Image Link To:"
-msgstr ""
+msgstr "Afbeelding Link Naar:"
 
 #. i18n: file: bilbo/editorsettingsbase.ui:16
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:226 rc.cpp:226
 msgid "Editor auto save interval :"
-msgstr ""
+msgstr "Automatisch opslaan interval:"
 
 #. i18n: file: bilbo/editorsettingsbase.ui:29
 #. i18n: ectx: property (specialValueText), widget (KIntSpinBox, kcfg_autosaveInterval)
 #: l10n/rc.cpp:229 rc.cpp:229
 msgid "Disbaled"
-msgstr ""
+msgstr "Disabled"
 
 #. i18n: file: bilbo/editorsettingsbase.ui:32
 #. i18n: ectx: property (suffix), widget (KIntSpinBox, kcfg_autosaveInterval)
 #: l10n/rc.cpp:232 rc.cpp:232
 msgid " minute"
-msgstr ""
+msgstr " minuut"
 
 #. i18n: file: bilbo/editorsettingsbase.ui:45
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_addPoweredBy)
 #: l10n/rc.cpp:235 rc.cpp:235
 msgid "Automatically insert \"Powered by Bilbo Blogger\""
-msgstr ""
+msgstr "Voeg automatisch \"Powered by Bilbo Blogger\" in"
 
 #. i18n: file: bilbo/editorsettingsbase.ui:65
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_previewInBlogStyle)
@@ -1397,7 +1460,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:241 rc.cpp:241
 msgid "How many entries would you like to fetch? :"
-msgstr ""
+msgstr "Hoeveel berichten wilt u ophalen? :"
 
 #. i18n: file: bilbo/entriescountdialogbase.ui:40
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_remember)
@@ -1409,43 +1472,43 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QRadioButton, pubAsModify)
 #: l10n/rc.cpp:247 rc.cpp:247
 msgid "Publish as an edit of the original entry"
-msgstr ""
+msgstr "Publiceer als een bewerking van het orignele bericht"
 
 #. i18n: file: bilbo/sendtoblogbase.ui:23
 #. i18n: ectx: property (text), widget (QRadioButton, pubAsNewPost)
 #: l10n/rc.cpp:250 rc.cpp:250
 msgid "Publish as a new post"
-msgstr ""
+msgstr "Publiceer als nieuw bericht"
 
 #. i18n: file: bilbo/sendtoblogbase.ui:36
 #. i18n: ectx: property (text), widget (QCheckBox, saveDraft)
 #: l10n/rc.cpp:253 rc.cpp:253
 msgid "Save entry in drafts"
-msgstr ""
+msgstr "Sla op als concept"
 
 #. i18n: file: bilbo/settingsbase.ui:16
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_enableSysTrayIcon)
 #: l10n/rc.cpp:256 rc.cpp:256
 msgid "Enable system tray icon"
-msgstr ""
+msgstr "Schakel system tray icoon in"
 
 #. i18n: file: bilbo/settingsbase.ui:23
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_CopyMediaUrl)
 #: l10n/rc.cpp:259 rc.cpp:259
 msgid "Copy media URL to clipboard after upload"
-msgstr ""
+msgstr "Kopieer media URL naar klembord na uploaden"
 
 #. i18n: file: bilbo/toolboxbase.ui:33
 #. i18n: ectx: attribute (label), widget (QWidget, pgEntries)
 #: l10n/rc.cpp:262 rc.cpp:262
 msgid "Blog Posts"
-msgstr ""
+msgstr "Blog Berichten"
 
 #. i18n: file: bilbo/toolboxbase.ui:79
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnEntriesReload)
 #: l10n/rc.cpp:265 rc.cpp:265
 msgid "Reload entries list"
-msgstr ""
+msgstr "Herlaad lijst met berichten"
 
 #. i18n: file: bilbo/toolboxbase.ui:82
 #. i18n: ectx: property (text), widget (KPushButton, btnEntriesReload)
@@ -1457,37 +1520,37 @@ msgstr ""
 #. i18n: ectx: property (text), widget (KPushButton, btnCatReload)
 #: l10n/rc.cpp:268 l10n/rc.cpp:295 rc.cpp:268 rc.cpp:295
 msgid "Reload"
-msgstr ""
+msgstr "Herladen"
 
 #. i18n: file: bilbo/toolboxbase.ui:89
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnEntriesUpdate)
 #: l10n/rc.cpp:271 rc.cpp:271
 msgid "Update entries list"
-msgstr ""
+msgstr "Werk berichtenlijst bij"
 
 #. i18n: file: bilbo/toolboxbase.ui:92
 #. i18n: ectx: property (text), widget (KPushButton, btnEntriesUpdate)
 #: l10n/rc.cpp:274 rc.cpp:274
 msgid "Update..."
-msgstr ""
+msgstr "Bijwerken..."
 
 #. i18n: file: bilbo/toolboxbase.ui:99
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnEntriesClear)
 #: l10n/rc.cpp:277 rc.cpp:277
 msgid "Clear entries list"
-msgstr ""
+msgstr "Leeg berichtenlijst"
 
 #. i18n: file: bilbo/toolboxbase.ui:102
 #. i18n: ectx: property (text), widget (KPushButton, btnEntriesClear)
 #: l10n/rc.cpp:280 rc.cpp:280
 msgid "Clear"
-msgstr ""
+msgstr "Leegmaken"
 
 #. i18n: file: bilbo/toolboxbase.ui:116
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnEntriesRemove)
 #: l10n/rc.cpp:283 rc.cpp:283
 msgid "Remove selected entry from server"
-msgstr ""
+msgstr "Verwijder geselecteerde bericht van server"
 
 #. i18n: file: bilbo/toolboxbase.ui:119
 #. i18n: ectx: property (text), widget (KPushButton, btnEntriesRemove)
@@ -1499,146 +1562,152 @@ msgstr ""
 #. i18n: ectx: property (text), widget (KPushButton, btnLocalRemove)
 #: l10n/rc.cpp:286 l10n/rc.cpp:358 rc.cpp:286 rc.cpp:358
 msgid "Remove"
-msgstr ""
+msgstr "Verwijderen"
 
 #. i18n: file: bilbo/toolboxbase.ui:152
 #. i18n: ectx: attribute (label), widget (QWidget, pgCat)
 #: l10n/rc.cpp:289 rc.cpp:289
 msgid "Post &Categories"
-msgstr ""
+msgstr "Bericht &Categorieën"
 
 #. i18n: file: bilbo/toolboxbase.ui:206
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnCatReload)
 #: l10n/rc.cpp:292 rc.cpp:292
 msgid "Reload categories list"
-msgstr ""
+msgstr "Herlaad categorieën"
 
 #. i18n: file: bilbo/toolboxbase.ui:216
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnCatAdd)
 #: l10n/rc.cpp:298 rc.cpp:298
 msgid "Add a new category to selected blog"
-msgstr ""
+msgstr "Voeg nieuwe categorie toe aan geselecteerde blog"
 
 #. i18n: file: bilbo/toolboxbase.ui:219
 #. i18n: ectx: property (text), widget (KPushButton, btnCatAdd)
 #: l10n/rc.cpp:301 rc.cpp:301
 msgid "Add Category..."
-msgstr ""
+msgstr "Voeg categorie toe..."
 
 #. i18n: file: bilbo/toolboxbase.ui:243
 #. i18n: ectx: property (text), widget (QLabel, lblCatTags)
 #: l10n/rc.cpp:304 rc.cpp:304
 msgid "&Tags :"
-msgstr ""
+msgstr "&Tags:"
 
 #. i18n: file: bilbo/toolboxbase.ui:269
 #. i18n: ectx: attribute (label), widget (QWidget, pgOptions)
 #: l10n/rc.cpp:307 rc.cpp:307
 msgid "Post &Options"
-msgstr ""
+msgstr "Bericht &Opties"
 
 #. i18n: file: bilbo/toolboxbase.ui:286
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: l10n/rc.cpp:310 rc.cpp:310
 msgctxt "Status of the current post"
 msgid "Status :"
-msgstr ""
+msgstr "Status :"
 
 #. i18n: file: bilbo/toolboxbase.ui:303
 #. i18n: ectx: property (text), item, widget (KComboBox, comboOptionsStatus)
 #: l10n/rc.cpp:313 rc.cpp:313
 msgid "Published"
-msgstr ""
+msgstr "Gepubliceerd"
 
 #. i18n: file: bilbo/toolboxbase.ui:308
 #. i18n: ectx: property (text), item, widget (KComboBox, comboOptionsStatus)
 #: l10n/rc.cpp:316 rc.cpp:316
 msgid "Draft"
-msgstr ""
+msgstr "Concept"
 
 #. i18n: file: bilbo/toolboxbase.ui:313
 #. i18n: ectx: property (text), item, widget (KComboBox, comboOptionsStatus)
 #: l10n/rc.cpp:319 rc.cpp:319
 msgid "Local Draft"
-msgstr ""
+msgstr "Lokaal Concept"
 
 #. i18n: file: bilbo/toolboxbase.ui:351
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:322 rc.cpp:322
 msgid "Feedback: "
-msgstr ""
+msgstr "Terugkoppeling: "
 
 #. i18n: file: bilbo/toolboxbase.ui:360
 #. i18n: ectx: property (text), widget (QCheckBox, chkOptionsComments)
 #: l10n/rc.cpp:325 rc.cpp:325
 msgid "Comments"
-msgstr ""
+msgstr "Commentaar"
 
 #. i18n: file: bilbo/toolboxbase.ui:370
 #. i18n: ectx: property (text), widget (QCheckBox, chkOptionsTrackback)
 #: l10n/rc.cpp:328 rc.cpp:328
 msgid "Trackback"
-msgstr ""
+msgstr "Trackback"
 
 #. i18n: file: bilbo/toolboxbase.ui:387
 #. i18n: ectx: property (text), widget (QCheckBox, chkOptionsTime)
 #: l10n/rc.cpp:331 rc.cpp:331
 msgid "Modify time&stamp"
-msgstr ""
+msgstr "Tijd aanpassen"
 
 #. i18n: file: bilbo/toolboxbase.ui:469
 #. i18n: ectx: property (text), widget (KPushButton, btnOptionsNow)
 #: l10n/rc.cpp:334 rc.cpp:334
 msgid "Now"
-msgstr ""
+msgstr "Nu"
 
 #. i18n: file: bilbo/toolboxbase.ui:481
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: l10n/rc.cpp:337 rc.cpp:337
 msgid "Permalink (wordpress) :"
-msgstr ""
+msgstr "Permalink (wordpress) :"
 
 #. i18n: file: bilbo/toolboxbase.ui:491
 #. i18n: ectx: property (text), widget (QLabel, lblOptionsTrackBack)
 #: l10n/rc.cpp:340 rc.cpp:340
 msgid "&Trackback URLs :"
-msgstr ""
+msgstr "&Trackback URL's:"
+
+#. i18n: file: bilbo/toolboxbase.ui:504
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: l10n/rc.cpp:343 rc.cpp:343
+msgid "Summary :"
+msgstr "Samenvatting:"
 
 #. i18n: file: bilbo/toolboxbase.ui:543
 #. i18n: ectx: attribute (label), widget (QWidget, pgNotes)
 #: l10n/rc.cpp:346 rc.cpp:346
 msgid "&Local entries"
-msgstr ""
+msgstr "&Lokale berichten"
 
 #. i18n: file: bilbo/toolboxbase.ui:596
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnLocalRemove)
 #: l10n/rc.cpp:355 rc.cpp:355
 msgid "Remove selected entry"
-msgstr ""
+msgstr "Verwijder geselecteerde bericht"
 
 #. i18n: file: bilbo/uploadmediabase.ui:26
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: l10n/rc.cpp:364 rc.cpp:364
 msgid "From your computer:"
-msgstr ""
+msgstr "Van deze computer:"
 
 #. i18n: file: bilbo/uploadmediabase.ui:39
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: l10n/rc.cpp:367 rc.cpp:367
 msgid "Name on server:"
-msgstr ""
+msgstr "Naam op server:"
 
 #. i18n: file: bilbo/uploadmediabase.ui:70
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:370 rc.cpp:370
 msgid "Upload via:"
-msgstr ""
+msgstr "Upload via:"
 
 #. i18n: file: bilbo/uploadmediabase.ui:98
 #. i18n: ectx: property (title), widget (QGroupBox, kcfg_ftpBox)
 #: l10n/rc.cpp:373 rc.cpp:373
 msgid "FTP Configurations"
-msgstr ""
+msgstr "FTP Configuraties"
 
 #. i18n: file: bilbo/uploadmediabase.ui:107
 #. i18n: ectx: property (toolTip), widget (KLineEdit, kcfg_httpUrl)
@@ -1662,7 +1731,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (KLineEdit, kcfg_FtpPath)
 #: l10n/rc.cpp:388 rc.cpp:388
 msgid "ftp://"
-msgstr ""
+msgstr "ftp://"
 
 #. i18n: file: bilbo/uploadmediabase.ui:137
 #. i18n: ectx: property (text), widget (QLabel, label_2)

@@ -1,4 +1,4 @@
-# French translation for bilbo
+# Italian translation for bilbo
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the bilbo package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: bilbo\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-06-27 19:07+0430\n"
-"PO-Revision-Date: 2009-05-19 19:00+0000\n"
-"Last-Translator: Mathieu Pasquet <Unknown>\n"
-"Language-Team: French <fr@li.org>\n"
+"PO-Revision-Date: 2009-06-12 20:11+0000\n"
+"Last-Translator: Jacopo A <Unknown>\n"
+"Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,55 +19,31 @@ msgstr ""
 
 #: bilbo/addeditblog.cpp:50
 msgid "Add a new blog"
-msgstr "Ajouter un nouveau blog"
+msgstr "Aggiungi un blog"
 
 #: bilbo/addeditblog.cpp:108
 msgid ""
 "You have to set the username, password and url of your blog or website."
 msgstr ""
-"Vous devez spécifier le nom d'utilisateur, le mot de passe et l'url de votre "
-"blog ou site web."
+"Devi indicare il nome utente, la password e l'indirizzo del tuo blog o sito."
 
 #: bilbo/addeditblog.cpp:109
 msgid "Incomplete fields"
-msgstr "Certains champs sont incomplets"
+msgstr "Campi incompleti"
+
+#: bilbo/addeditblog.cpp:112
+msgid "Trying to guess blog and API type..."
+msgstr "Rilevamento del tipo di blog e API..."
 
 #. i18n: file: bilbo/waitwidgetbase.ui:19
 #. i18n: ectx: property (text), widget (QLabel, operationNameLabel)
 #: bilbo/addeditblog.cpp:259 l10n/rc.cpp:400 rc.cpp:400
 msgid "Please wait..."
-msgstr "Veuillez patienter..."
-
-#: bilbo/addeditblog.cpp:292
-msgid "AutoConfiguration Failed"
-msgstr "L'AutoConfiguration a échoué"
-
-#: bilbo/mainwindow.cpp:167
-msgid "Show Toolbox"
-msgstr "Montrer la Boîte à outils"
-
-#. i18n: file: bilbo/toolboxbase.ui:504
-#. i18n: ectx: property (text), widget (QLabel, label_2)
-#: l10n/rc.cpp:343 rc.cpp:343
-msgid "Summary :"
-msgstr "Sommaire :"
-
-#: bilbo/addeditblog.cpp:67
-msgid "Edit blog settings"
-msgstr "Éditer les paramètres du blog"
-
-#: bilbo/addeditblog.cpp:112
-msgid "Trying to guess blog and API type..."
-msgstr ""
-
-#: bilbo/addeditblog.cpp:155 bilbo/addeditblog.cpp:208
-msgid ""
-"Auto configuration failed. You have to set Blog API on Advanced tab manually."
-msgstr ""
+msgstr "Attendere prego..."
 
 #: bilbo/addeditblog.cpp:261
 msgid "Fetching Blog Id..."
-msgstr "Récupération de l'ID du blog..."
+msgstr "Acquisizione ID del blog..."
 
 #: bilbo/addeditblog.cpp:278
 msgid ""
@@ -77,85 +53,341 @@ msgid ""
 "If you are using a self hosted Wordpress blog, you have to enable Remote "
 "Publishing on its configurations"
 msgstr ""
+"Acquisizione ID del blog fallita. Controlla la connessione alla rete, "
+"l'indirizzo della tua homepage, il nome utente e la password!\n"
+"(l'url deve contenere \"http://\")\n"
+"Se stai usando un blog Wordpress sul tuo spazio web devi abilitare la "
+"pubblicazione remota nelle impostazioni."
 
 #: bilbo/addeditblog.cpp:290
 msgid ""
 "Sorry, Bilbo cannot get API type automatically,please check your internet "
 "connection, otherwise you have to set API type on advanced tab manually."
 msgstr ""
+"Spiacente, Bilbo non può recuperare automaticamente il tipo di API. Per "
+"favore controlla la tua connessione alla rete, altrimenti imposta "
+"manualmente il tipo di API nella voce \"avanzate\"."
+
+#: bilbo/addeditblog.cpp:292
+msgid "AutoConfiguration Failed"
+msgstr "Configurazione automatica fallita"
 
 #: bilbo/addeditblog.cpp:300
 msgid ""
 "Fetching BlogID Faild!\n"
 "please check your internet connection."
-msgstr ""
-
-#: bilbo/addeditblog.cpp:336
-msgid "Which blog?"
-msgstr "Quel blog?"
+msgstr "Recupero ID del blog fallito!"
 
 #: bilbo/addeditblog.cpp:428
 msgid "Yes"
-msgstr "Oui"
+msgstr "Sì"
 
 #: bilbo/addeditblog.cpp:430
 msgid "No, API doesn't support"
-msgstr ""
+msgstr "No, API non supporta"
 
 #: bilbo/addeditblog.cpp:431
 msgid "No, Bilbo doesn't support yet"
-msgstr ""
+msgstr "No, Bilbo non supporta ancora"
 
 #: bilbo/addeditblog.cpp:512
 msgid ""
 "Sorry, BlogId not retrieved yet,\n"
 "You can fetch blog ID by clicking on \"Auto Configure\" Or \"Fetch ID\" "
 "button. otherwise you have to insert your Blog Id manually."
-msgstr ""
+msgstr "Spiacente, ID del blog non ancora recuperato"
 
 #: bilbo/backend.cpp:175
 msgid "Publishing/Modifying post failed : %1"
-msgstr ""
+msgstr "Pubblicazione/Modifica dell'intervento fallita: %1"
 
 #: bilbo/backend.cpp:205
 msgid ""
 "Uploading media failed : Your blog api doesn't support uploading media "
 "objects."
 msgstr ""
+"Caricamento file multimediali fallito: il tuo blog non supporta il "
+"caricamento di elementi multimediali."
 
 #: bilbo/backend.cpp:222 bilbo/backend.cpp:230
 msgid ""
 "Uploading media failed : Cannot read the media file, please check if it "
 "exists. path: %1"
 msgstr ""
+"Caricamento file multimediale fallito: impossibile leggere il file, "
+"controllare che esista. Percorso: %1"
 
 #: bilbo/backend.cpp:244
 msgid ""
 "Uploading media failed : Media file checksum is zero, please check file "
 "path. path: %1"
 msgstr ""
+"Caricamento file multimediale fallito: il checksum del file è zero, prego "
+"controllare il percorso. Percorso: %1"
 
 #: bilbo/backend.cpp:253
 msgid ""
 "INTERNAL ERROR: MWBlog is NULL: casting has not worked, this should NEVER "
 "happen."
 msgstr ""
+"ERRORE DEL PROGRAMMA: MWBlog è INVALIDO: il cambiamento non ha funzionato, "
+"questo non dovrebbe MAI accadere."
 
 #: bilbo/backend.cpp:267
 msgid "Api type isn't set correctly!"
-msgstr ""
+msgstr "Il tipo di API non è impostato correttamente!"
 
 #: bilbo/backend.cpp:287
 msgid "Uploading Media failed : %1"
-msgstr ""
+msgstr "Caricamento file multimediale fallito: %1"
 
 #: bilbo/backend.cpp:296
 msgid "Uploading Media failed : Check sum Error. returned error: %1"
 msgstr ""
+"Caricamento file multimediale fallito: errore del checksum. Errore "
+"riscontrato: 1%"
 
 #: bilbo/backend.cpp:379
 msgid "The registred blog API doesn't support setting categories for a post."
 msgstr ""
+"Le API del blog registrato non supportano l'impostazione di categorie per un "
+"intervento."
+
+#: bilbo/backend.cpp:421
+msgid "Authentication Error: "
+msgstr "Errore di autenticazione: "
+
+#: bilbo/backend.cpp:424
+msgid "Not Supported Error: "
+msgstr "Errore non convalidato: "
+
+#: bilbo/backend.cpp:427
+msgid "Unknown Error: "
+msgstr "Errore sconosciuto: "
+
+#: bilbo/blogsettings.cpp:98
+msgid "Are you sure of removing selected blog?"
+msgstr "Sei sicuro di voler rimuovere il blog selezionato?"
+
+#: bilbo/composer/bilbobrowser.cpp:74
+msgid "Get blog style"
+msgstr "Recupera lo stile del blog"
+
+#: bilbo/composer/bilbobrowser.cpp:143
+msgid "Select a blog"
+msgstr "Seleziona un blog"
+
+#: bilbo/composer/bilboeditor.cpp:83
+msgctxt "Software"
+msgid "Visual Editor"
+msgstr "Editor visuale"
+
+#: bilbo/composer/bilboeditor.cpp:84
+msgctxt "Software"
+msgid "Html Editor"
+msgstr "Editor Html"
+
+#: bilbo/composer/bilboeditor.cpp:85
+msgctxt "preview of the edited post"
+msgid "Post Preview"
+msgstr "Anteprima dell'intervento"
+
+#: bilbo/composer/bilboeditor.cpp:101
+msgid "Media list:"
+msgstr "Lista dei file multimediali:"
+
+#: bilbo/composer/bilboeditor.cpp:144 bilbo/composer/bilboeditor.cpp:1059
+msgid "Post Title"
+msgstr "Titolo dell'intervento"
+
+#: bilbo/composer/bilboeditor.cpp:168
+msgid "Enable Spell Checking"
+msgstr "Abilita il controllo ortografico"
+
+#: bilbo/composer/bilboeditor.cpp:179
+msgctxt "Makes text bold, and its shortcut is (Ctrl+b)"
+msgid "Bold (Ctrl+b)"
+msgstr "Grassetto (Ctrl + b)"
+
+#: bilbo/composer/bilboeditor.cpp:187
+msgctxt "Makes text italic, and its shortcut is (Ctrl+i)"
+msgid "Italic (Ctrl+i)"
+msgstr "Corsivo (Ctrl +i)"
+
+#: bilbo/composer/bilboeditor.cpp:195
+msgctxt "Makes text underlined, and its shortcut is (Ctrl+u)"
+msgid "Underline (Ctrl+u)"
+msgstr "Sottolineato (Ctrl + u)"
+
+#: bilbo/composer/bilboeditor.cpp:203
+msgctxt "Strikes the text out, and its shortcut is (Ctrl+l)"
+msgid "Strike out (Ctrl+l)"
+msgstr "Sbarrato (Ctrl + l)"
+
+#: bilbo/composer/bilboeditor.cpp:210
+msgctxt "Sets text font to code style"
+msgid "Code"
+msgstr "Codice"
+
+#: bilbo/composer/bilboeditor.cpp:234
+msgid "Increase font size"
+msgstr "Aumenta dimensioni carattere"
+
+#: bilbo/composer/bilboeditor.cpp:238
+msgid "Decrease font size"
+msgstr "Diminuisci dimensioni carattere"
+
+#: bilbo/composer/bilboeditor.cpp:242
+msgctxt "verb, to select text color"
+msgid "Select Color"
+msgstr "Scegli il colore"
+
+#: bilbo/composer/bilboeditor.cpp:261
+msgctxt "verb, to add a new link or edit an existing one"
+msgid "Add/Edit Link"
+msgstr "Aggiungi/Modifica collegamento"
+
+#: bilbo/composer/bilboeditor.cpp:267
+msgctxt "verb, to remove an existing link"
+msgid "Remove Link"
+msgstr "Rimuovi collegamento"
+
+#: bilbo/composer/bilboeditor.cpp:272
+msgctxt "verb, to insert an image"
+msgid "Add Image"
+msgstr "Aggiungi immagine"
+
+#: bilbo/composer/bilboeditor.cpp:278
+msgctxt "verb, to align text from left"
+msgid "Align left"
+msgstr "Allinea a sinistra"
+
+#: bilbo/composer/bilboeditor.cpp:282
+msgctxt "verb, to align text from center"
+msgid "Align center"
+msgstr "Allinea al centro"
+
+#: bilbo/composer/bilboeditor.cpp:286
+msgctxt "verb, to align text from right"
+msgid "Align right"
+msgstr "Allinea a destra"
+
+#: bilbo/composer/bilboeditor.cpp:291
+msgctxt "verb, to justify text"
+msgid "Justify"
+msgstr "Giustifica"
+
+#: bilbo/composer/bilboeditor.cpp:297
+msgctxt "Sets text direction as right to left"
+msgid "Right to Left"
+msgstr "Da destra a sinistra"
+
+#: bilbo/composer/bilboeditor.cpp:315
+msgid "Unordered List"
+msgstr "Lista non ordinata"
+
+#: bilbo/composer/dialogs/addeditlink.cpp:56
+msgctxt "verb, to modify an existing link"
+msgid "Edit Link"
+msgstr "Modifica Collegamento"
+
+#: bilbo/composer/dialogs/addeditlink.cpp:58
+msgctxt "verb, to insert a link into the text"
+msgid "Add Link"
+msgstr "Aggiungi Collegamento"
+
+#: bilbo/composer/dialogs/addimagedialog.cpp:38
+msgid "Add Image"
+msgstr "Aggiungi immagine"
+
+#: bilbo/composer/dialogs/addmediadialog.cpp:51
+msgid "Choose a file"
+msgstr "Scegli un file"
+
+#: bilbo/composer/dialogs/addmediadialog.cpp:52
+msgid "Type media path here."
+msgstr "Scrivi qui il percorso del file multimediale"
+
+#: bilbo/composer/dialogs/addmediadialog.cpp:53
+msgid "Browse"
+msgstr "Sfoglia"
+
+#: bilbo/composer/dialogs/addmediadialog.cpp:97
+msgid "The selected media address is an invalid url."
+msgstr "Il percorso indicato è un indirizzo non valido"
+
+#: bilbo/dbman.cpp:52
+msgid "Cannot create database"
+msgstr "Non è possibile creare il database"
+
+#: bilbo/dbman.cpp:101
+msgid "Cannot connect to database"
+msgstr "Non è possibile connettersi al database"
+
+#: bilbo/dbman.cpp:997
+msgid "There isn't any post with requested ID"
+msgstr "Non è presente alcun intervento con l'ID richiesto."
+
+#: bilbo/dbman.cpp:1263
+msgid "there isn't any local post with requested ID "
+msgstr "Non è presente alcun intervento locale con l'ID richiesto. "
+
+#: bilbokblog/blogger1.cpp:243
+msgid ""
+"Could not fetch user's info out of the result from the server, not a map."
+msgstr ""
+"Non si possono recuperare le informazioni sull'utente dal server, non è una "
+"mappa."
+
+#: bilbokblog/blogger1.cpp:270
+msgid "Could not fetch blogs out of the result from the server, not a list."
+msgstr "Non si possono recuperare i blog dal server, non è una lista."
+
+#: bilbokblog/blogger1.cpp:307
+msgid ""
+"Could not fetch list of posts out of the result from the server, not a list."
+msgstr ""
+"Non si può recuperare la lista degli interventi dal server, non è una lista."
+
+#: bilbokblog/blogger1.cpp:326
+msgid "Could not read post."
+msgstr "Impossibile leggere l'intervento."
+
+#: bilbokblog/blogger1.cpp:353 bilbokblog/blogger1.cpp:356
+msgid "Could not fetch post out of the result from the server."
+msgstr "Non è possibile recuperare l'intervento dal server."
+
+#: bilbokblog/blogger1.cpp:374
+msgid "Could not read the postId, not a string or an integer."
+msgstr ""
+"Non è possibile leggere l'ID dell'intervento, non è una stringa od un numero "
+"intero."
+
+#: bilbokblog/blogger1.cpp:407 bilbokblog/blogger1.cpp:431
+msgid "Could not read the result, not a boolean."
+msgstr "Non è possibile leggere il risultato, non è un booleano."
+
+#: bilbokblog/gdata.cpp:216 bilbokblog/gdata.cpp:283 bilbokblog/gdata.cpp:345
+#: bilbokblog/gdata.cpp:391 bilbokblog/gdata.cpp:448
+msgid "Authentication failed."
+msgstr "Autenticazione fallita."
+
+#: bilbokblog/gdata.cpp:543
+msgid "Could not regexp the Profile ID."
+msgstr "Impossibile estrarre l'identificativo del profilo."
+
+#: bilbo/addeditblog.cpp:67
+msgid "Edit blog settings"
+msgstr "Modifica Impostazioni del Blog"
+
+#: bilbo/addeditblog.cpp:155 bilbo/addeditblog.cpp:208
+msgid ""
+"Auto configuration failed. You have to set Blog API on Advanced tab manually."
+msgstr ""
+
+#: bilbo/addeditblog.cpp:336
+msgid "Which blog?"
+msgstr "Quale blog?"
 
 #: bilbo/backend.cpp:412
 msgid "Server(XMLRPC) Error: "
@@ -169,37 +401,13 @@ msgstr ""
 msgid "Parsing Error: "
 msgstr ""
 
-#: bilbo/backend.cpp:421
-msgid "Authentication Error: "
-msgstr ""
-
-#: bilbo/backend.cpp:424
-msgid "Not Supported Error: "
-msgstr ""
-
-#: bilbo/backend.cpp:427
-msgid "Unknown Error: "
-msgstr ""
-
-#: bilbo/blogsettings.cpp:98
-msgid "Are you sure of removing selected blog?"
-msgstr ""
-
-#: bilbo/composer/bilbobrowser.cpp:74
-msgid "Get blog style"
-msgstr ""
-
 #: bilbo/composer/bilbobrowser.cpp:114
 msgid "loading page items..."
-msgstr "chargement des objets de la page..."
+msgstr "Caricamento oggetti della pagina..."
 
 #: bilbo/composer/bilbobrowser.cpp:142
 msgid "Please select a blog, then try again."
-msgstr "Veuillez sélectionner un blog, puis réessayez."
-
-#: bilbo/composer/bilbobrowser.cpp:143
-msgid "Select a blog"
-msgstr "Sélectionner un blog"
+msgstr "Selezionare un blog e riprovare nuovamente"
 
 #: bilbo/composer/bilbobrowser.cpp:148
 msgid "Fetching blog style from the web..."
@@ -211,194 +419,55 @@ msgstr ""
 
 #: bilbo/composer/bilbobrowser.cpp:181
 msgid "An error occurred in the latest transaction."
-msgstr ""
+msgstr "Si è registrato un errore nell'ultima operazione"
 
 #: bilbo/composer/bilbobrowser.cpp:183
 msgid "Operation canceled."
-msgstr "Opération annulée."
-
-#: bilbo/composer/bilboeditor.cpp:83
-msgctxt "Software"
-msgid "Visual Editor"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:84
-msgctxt "Software"
-msgid "Html Editor"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:85
-msgctxt "preview of the edited post"
-msgid "Post Preview"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:101
-msgid "Media list:"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:144 bilbo/composer/bilboeditor.cpp:1059
-msgid "Post Title"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:168
-msgid "Enable Spell Checking"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:179
-msgctxt "Makes text bold, and its shortcut is (Ctrl+b)"
-msgid "Bold (Ctrl+b)"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:187
-msgctxt "Makes text italic, and its shortcut is (Ctrl+i)"
-msgid "Italic (Ctrl+i)"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:195
-msgctxt "Makes text underlined, and its shortcut is (Ctrl+u)"
-msgid "Underline (Ctrl+u)"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:203
-msgctxt "Strikes the text out, and its shortcut is (Ctrl+l)"
-msgid "Strike out (Ctrl+l)"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:210
-msgctxt "Sets text font to code style"
-msgid "Code"
-msgstr ""
+msgstr "Operazione annullata"
 
 #: bilbo/composer/bilboeditor.cpp:220 bilbo/composer/bilboeditor.cpp:229
 #: bilbo/composer/bilboeditor.cpp:378
 msgid "Paragraph"
-msgstr ""
+msgstr "Paragrafo"
 
 #: bilbo/composer/bilboeditor.cpp:221 bilbo/composer/bilboeditor.cpp:383
 msgid "Heading 1"
-msgstr ""
+msgstr "Intestazione 1"
 
 #: bilbo/composer/bilboeditor.cpp:222 bilbo/composer/bilboeditor.cpp:388
 msgid "Heading 2"
-msgstr ""
+msgstr "Intestazione 2"
 
 #: bilbo/composer/bilboeditor.cpp:223 bilbo/composer/bilboeditor.cpp:393
 msgid "Heading 3"
-msgstr ""
+msgstr "Intestazione 3"
 
 #: bilbo/composer/bilboeditor.cpp:224 bilbo/composer/bilboeditor.cpp:398
 msgid "Heading 4"
-msgstr ""
+msgstr "Intestazione 4"
 
 #: bilbo/composer/bilboeditor.cpp:225 bilbo/composer/bilboeditor.cpp:403
 msgid "Heading 5"
-msgstr ""
+msgstr "Intestazione 5"
 
 #: bilbo/composer/bilboeditor.cpp:226
 msgid "Heading 6"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:234
-msgid "Increase font size"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:238
-msgid "Decrease font size"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:242
-msgctxt "verb, to select text color"
-msgid "Select Color"
-msgstr ""
+msgstr "Intestazione 6"
 
 #: bilbo/composer/bilboeditor.cpp:247
 msgid "Remove formatting"
-msgstr ""
+msgstr "Rimuovere la formattazione"
 
 #: bilbo/composer/bilboeditor.cpp:252
 msgid "Blockquote"
 msgstr ""
 
-#: bilbo/composer/bilboeditor.cpp:261
-msgctxt "verb, to add a new link or edit an existing one"
-msgid "Add/Edit Link"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:267
-msgctxt "verb, to remove an existing link"
-msgid "Remove Link"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:272
-msgctxt "verb, to insert an image"
-msgid "Add Image"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:278
-msgctxt "verb, to align text from left"
-msgid "Align left"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:282
-msgctxt "verb, to align text from center"
-msgid "Align center"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:286
-msgctxt "verb, to align text from right"
-msgid "Align right"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:291
-msgctxt "verb, to justify text"
-msgid "Justify"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:297
-msgctxt "Sets text direction as right to left"
-msgid "Right to Left"
-msgstr ""
-
 #: bilbo/composer/bilboeditor.cpp:311
 msgid "Ordered List"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:315
-msgid "Unordered List"
-msgstr ""
+msgstr "Lista ordinata"
 
 #: bilbo/composer/bilboeditor.cpp:319
 msgid "Split text"
-msgstr ""
-
-#: bilbo/composer/dialogs/addeditlink.cpp:56
-msgctxt "verb, to modify an existing link"
-msgid "Edit Link"
-msgstr ""
-
-#: bilbo/composer/dialogs/addeditlink.cpp:58
-msgctxt "verb, to insert a link into the text"
-msgid "Add Link"
-msgstr ""
-
-#: bilbo/composer/dialogs/addimagedialog.cpp:38
-msgid "Add Image"
-msgstr ""
-
-#: bilbo/composer/dialogs/addmediadialog.cpp:51
-msgid "Choose a file"
-msgstr ""
-
-#: bilbo/composer/dialogs/addmediadialog.cpp:52
-msgid "Type media path here."
-msgstr ""
-
-#: bilbo/composer/dialogs/addmediadialog.cpp:53
-msgid "Browse"
-msgstr ""
-
-#: bilbo/composer/dialogs/addmediadialog.cpp:97
-msgid "The selected media address is an invalid url."
 msgstr ""
 
 #: bilbo/composer/htmleditor.cpp:79
@@ -411,19 +480,19 @@ msgstr ""
 
 #: bilbo/composer/htmleditor.cpp:87
 msgid "Options"
-msgstr ""
+msgstr "Opzioni"
 
 #: bilbo/composer/medialistwidget.cpp:35
 msgid "Edit properties"
-msgstr ""
+msgstr "Modifica proprietà"
 
 #: bilbo/composer/medialistwidget.cpp:37
 msgid "Copy Url"
-msgstr ""
+msgstr "Copia Url"
 
 #: bilbo/composer/medialistwidget.cpp:39
 msgid "Remove media"
-msgstr ""
+msgstr "Elimina file multimediale"
 
 #: bilbo/composer/stylegetter.cpp:55
 msgid "Can not fetch the selected blog style."
@@ -435,66 +504,11 @@ msgstr ""
 
 #: bilbo/composer/stylegetter.cpp:204
 msgid "Cannot write data to file %1"
-msgstr ""
+msgstr "Impossibile scrivere dati sul file %1"
 
 #: bilbo/composer/stylegetter.cpp:245
 msgid "An error ocurred on latest transaction "
-msgstr ""
-
-#: bilbo/dbman.cpp:52
-msgid "Cannot create database"
-msgstr ""
-
-#: bilbo/dbman.cpp:101
-msgid "Cannot connect to database"
-msgstr ""
-
-#: bilbo/dbman.cpp:997
-msgid "There isn't any post with requested ID"
-msgstr ""
-
-#: bilbo/dbman.cpp:1263
-msgid "there isn't any local post with requested ID "
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:243
-msgid ""
-"Could not fetch user's info out of the result from the server, not a map."
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:270
-msgid "Could not fetch blogs out of the result from the server, not a list."
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:307
-msgid ""
-"Could not fetch list of posts out of the result from the server, not a list."
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:326
-msgid "Could not read post."
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:353 bilbokblog/blogger1.cpp:356
-msgid "Could not fetch post out of the result from the server."
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:374
-msgid "Could not read the postId, not a string or an integer."
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:407 bilbokblog/blogger1.cpp:431
-msgid "Could not read the result, not a boolean."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:216 bilbokblog/gdata.cpp:283 bilbokblog/gdata.cpp:345
-#: bilbokblog/gdata.cpp:391 bilbokblog/gdata.cpp:448
-msgid "Authentication failed."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:543
-msgid "Could not regexp the Profile ID."
-msgstr ""
+msgstr "Si è verificato un errore null'ultima operazione "
 
 #: bilbokblog/gdata.cpp:565
 msgid "Could not get blogs."
@@ -561,7 +575,7 @@ msgstr ""
 
 #: bilbokblog/movabletype.cpp:234
 msgid "The category list is empty"
-msgstr ""
+msgstr "L'elenco categoria è vuoto"
 
 #: bilbokblog/movabletype.cpp:308
 msgid "Could not regexp the result out of the result."
@@ -585,7 +599,7 @@ msgstr ""
 
 #: bilbo/main.cpp:38
 msgid "(C) 2008-2009 Bilbo Developers"
-msgstr ""
+msgstr "(C) 2009-2009 Sviluppatori Bilbo"
 
 #: bilbo/main.cpp:41
 msgid "Mehrdad Momeny"
@@ -610,7 +624,7 @@ msgstr ""
 #: bilbo/main.cpp:45 l10n/rc.cpp:401 rc.cpp:401
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr " ,Launchpad Contributions:,Maijin,Mathieu Pasquet,Nicolas Dusart"
+msgstr " ,Launchpad Contributions:,G.Mara,Jacopo A,Luigi Di Gaetano"
 
 #: bilbo/main.cpp:46 l10n/rc.cpp:402 rc.cpp:402
 msgctxt "EMAIL OF TRANSLATORS"
@@ -623,31 +637,35 @@ msgstr ""
 
 #: bilbo/mainwindow.cpp:81
 msgid "Toolbox"
-msgstr ""
+msgstr "Strumenti"
 
 #: bilbo/mainwindow.cpp:91
 msgid "Remove current post"
-msgstr ""
+msgstr "Rimuovi il Post corrente"
 
 #: bilbo/mainwindow.cpp:145
 msgid "New Post"
-msgstr ""
+msgstr "Nuovo Post"
 
 #: bilbo/mainwindow.cpp:150
 msgid "Add Blog..."
-msgstr ""
+msgstr "Aggiungi Blog"
 
 #: bilbo/mainwindow.cpp:154
 msgid "Submit..."
-msgstr ""
+msgstr "Invia..."
 
 #: bilbo/mainwindow.cpp:158
 msgid "Upload Media..."
-msgstr ""
+msgstr "Carica File Multimediale..."
 
 #: bilbo/mainwindow.cpp:162
 msgid "Save Locally"
-msgstr ""
+msgstr "Salva localmente"
+
+#: bilbo/mainwindow.cpp:167
+msgid "Show Toolbox"
+msgstr "Mostra Strumenti"
 
 #: bilbo/mainwindow.cpp:172
 msgid "Clear cached images"
@@ -655,11 +673,11 @@ msgstr ""
 
 #: bilbo/mainwindow.cpp:290
 msgid "General"
-msgstr ""
+msgstr "Generale"
 
 #: bilbo/mainwindow.cpp:291
 msgid "Blogs"
-msgstr ""
+msgstr "Blog"
 
 #: bilbo/mainwindow.cpp:292
 msgid "Editor"
@@ -669,11 +687,11 @@ msgstr ""
 #. i18n: ectx: attribute (title), widget (QWidget, tabAdvanced)
 #: bilbo/mainwindow.cpp:293 l10n/rc.cpp:49 rc.cpp:49
 msgid "Advanced"
-msgstr ""
+msgstr "Avanzato"
 
 #: bilbo/mainwindow.cpp:438
 msgid "You have to select a blog to publish this post to it."
-msgstr ""
+msgstr "Devi selezionare un blog dove pubblicare questo post"
 
 #: bilbo/mainwindow.cpp:443
 msgid "There isn't any open post to submit!"
@@ -681,11 +699,11 @@ msgstr ""
 
 #: bilbo/mainwindow.cpp:492 bilbo/toolbox.cpp:238
 msgid "An error ocurred on latest transaction"
-msgstr ""
+msgstr "Si è verificato un errore nell'ultima operazione"
 
 #: bilbo/mainwindow.cpp:539
 msgid "Submiting post failed"
-msgstr ""
+msgstr "Invio del post fallito"
 
 #: bilbo/mainwindow.cpp:541
 msgid ""
@@ -696,25 +714,31 @@ msgstr ""
 #: bilbo/postentry.cpp:90
 msgctxt "noun, the post title"
 msgid "Title:"
-msgstr ""
+msgstr "Titolo:"
 
 #: bilbo/postentry.cpp:225
 msgid ""
 "Uploading media file %1 failed.\n"
 "%3"
 msgstr ""
+"Upload del file multimediale fallito.\n"
+"%3"
 
 #: bilbo/postentry.cpp:248
 msgid ""
 "An Error occurred on latest transaction.\n"
 "%1"
 msgstr ""
+"Si è verificato un errore nell'ultima operazione.\n"
+"%1"
 
 #: bilbo/postentry.cpp:260
 msgid ""
 "Your post title or body is empty!\n"
 "Are you sure of submiting this post?"
 msgstr ""
+"Il titolo o il testo del post è vuoto!\n"
+"Siete sicuri di inviare questo post?"
 
 #: bilbo/postentry.cpp:276
 msgctxt "Post status, e.g Draft or Published Post"
@@ -752,7 +776,7 @@ msgstr ""
 
 #: bilbo/postentry.cpp:352
 msgid "Post saved locally."
-msgstr ""
+msgstr "Post salvato localmente"
 
 #: bilbo/sendtoblogdialog.cpp:33
 msgid "Submitting as ..."
@@ -1602,6 +1626,12 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, lblOptionsTrackBack)
 #: l10n/rc.cpp:340 rc.cpp:340
 msgid "&Trackback URLs :"
+msgstr ""
+
+#. i18n: file: bilbo/toolboxbase.ui:504
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: l10n/rc.cpp:343 rc.cpp:343
+msgid "Summary :"
 msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:543
