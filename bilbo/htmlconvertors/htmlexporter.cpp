@@ -42,17 +42,17 @@
 #include <kdebug.h>
 #include "bilbotextformat.h"
 
-htmlExporter::htmlExporter()
+HtmlExporter::HtmlExporter()
 {
     //kDebug();
 }
 
-htmlExporter::~htmlExporter()
+HtmlExporter::~HtmlExporter()
 {
     //kDebug();
 }
 
-QString htmlExporter::toHtml( const QTextDocument* document )
+QString HtmlExporter::toHtml( const QTextDocument* document )
 {
     //kDebug();
     if ( document->isEmpty() ) {
@@ -76,7 +76,7 @@ QString htmlExporter::toHtml( const QTextDocument* document )
 }
 
 
-void htmlExporter::emitFrame( QTextFrame::Iterator frameIt )
+void HtmlExporter::emitFrame( QTextFrame::Iterator frameIt )
 {
 //     kDebug() << "html" << html;
     if ( !frameIt.atEnd() ) {
@@ -137,7 +137,7 @@ void htmlExporter::emitFrame( QTextFrame::Iterator frameIt )
 }
 
 
-void htmlExporter::emitTable( const QTextTable *table )
+void HtmlExporter::emitTable( const QTextTable *table )
 {
     //qDebug() << "emitTable" << html;
     QTextTableFormat format = table->format();
@@ -239,7 +239,7 @@ void htmlExporter::emitTable( const QTextTable *table )
 }
 
 
-void htmlExporter::emitAttribute( const char *attribute, const QString &value )
+void HtmlExporter::emitAttribute( const char *attribute, const QString &value )
 {
 //     kDebug() << "html" << html;
     html += QLatin1Char( ' ' );
@@ -249,12 +249,12 @@ void htmlExporter::emitAttribute( const char *attribute, const QString &value )
     html += QLatin1Char( '"' );
 }
 
-QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharFormat 
+QList<HtmlExporter::tag> HtmlExporter::emitCharFormatStyle( const QTextCharFormat 
                          &charFormat, const QTextBlockFormat &blockFormat  )
 {
 //     kDebug() << "html" << html;
 
-    QList<htmlExporter::tag> tags;
+    QList<HtmlExporter::tag> tags;
     bool attributesEmitted = false;
     QLatin1String styleTag( "<span style=\"" );
 
@@ -499,7 +499,7 @@ QList<htmlExporter::tag> htmlExporter::emitCharFormatStyle( const QTextCharForma
     return tags;
 }
 
-void htmlExporter::emitTextLength( const char *attribute, const QTextLength &length )
+void HtmlExporter::emitTextLength( const char *attribute, const QTextLength &length )
 {
 //     kDebug() << "html" << html;
     if ( length.type() == QTextLength::VariableLength ) { // default
@@ -518,7 +518,7 @@ void htmlExporter::emitTextLength( const char *attribute, const QTextLength &len
     }
 }
 
-void htmlExporter::emitAlignment( Qt::Alignment align )
+void HtmlExporter::emitAlignment( Qt::Alignment align )
 {
     //qDebug() << "emitAlignment" << html;
 //    if (align & Qt::AlignLeft) {
@@ -537,7 +537,7 @@ void htmlExporter::emitAlignment( Qt::Alignment align )
     //qDebug() << "emitAlignment" << html;
 }
 
-void htmlExporter::emitFloatStyle( QTextFrameFormat::Position pos, StyleMode mode )
+void HtmlExporter::emitFloatStyle( QTextFrameFormat::Position pos, StyleMode mode )
 {
 //     kDebug() << "html" << html;
     if ( pos == QTextFrameFormat::InFlow ) {
@@ -555,7 +555,7 @@ void htmlExporter::emitFloatStyle( QTextFrameFormat::Position pos, StyleMode mod
     } else if ( pos == QTextFrameFormat::FloatRight ) {
         html += QLatin1String( " right;" );
     } else {
-//        Q_ASSERT_X(0, "htmlExporter::emitFloatStyle()", "pos should be a valid enum type");
+//        Q_ASSERT_X(0, "HtmlExporter::emitFloatStyle()", "pos should be a valid enum type");
     }
 
     if ( mode == EmitStyleTag ) {
@@ -563,7 +563,7 @@ void htmlExporter::emitFloatStyle( QTextFrameFormat::Position pos, StyleMode mod
     }
 }
 
-void htmlExporter::emitMargins( const QString &top, const QString &bottom, const QString &left, const QString &right )
+void HtmlExporter::emitMargins( const QString &top, const QString &bottom, const QString &left, const QString &right )
 {
 //     kDebug() << "html" << html;
     html += QLatin1String( " margin-top:" );
@@ -583,7 +583,7 @@ void htmlExporter::emitMargins( const QString &top, const QString &bottom, const
     html += QLatin1String( "px;" );
 }
 
-void htmlExporter::emitFragment( const QTextFragment &fragment, const QTextBlockFormat &blockFormat )
+void HtmlExporter::emitFragment( const QTextFragment &fragment, const QTextBlockFormat &blockFormat )
 {
 //     kDebug() << "html" << html;
     const QTextCharFormat format = fragment.charFormat();
@@ -808,7 +808,7 @@ void htmlExporter::emitFragment( const QTextFragment &fragment, const QTextBlock
 //     kDebug() << "html=>" << html;
 }
 
-void htmlExporter::emitBlockAttributes( const QTextBlock &block )
+void HtmlExporter::emitBlockAttributes( const QTextBlock &block )
 {
 //     kDebug() << "html" << html;
     QTextBlockFormat format = block.blockFormat();
@@ -898,7 +898,7 @@ void htmlExporter::emitBlockAttributes( const QTextBlock &block )
 //         emitAttribute("bgcolor", bg.color().name());
 }
 
-void htmlExporter::emitBlock( const QTextBlock &block )
+void HtmlExporter::emitBlock( const QTextBlock &block )
 {
     // save and later restore, in case we 'change' the default format by
     // emitting block char format information
@@ -1079,7 +1079,7 @@ void htmlExporter::emitBlock( const QTextBlock &block )
     //defaultCharFormat = oldDefaultCharFormat;
 }
 
-QTextFormat htmlExporter::formatDifference( const QTextFormat &from, const QTextFormat &to )
+QTextFormat HtmlExporter::formatDifference( const QTextFormat &from, const QTextFormat &to )
 {
     //kDebug();
 
@@ -1094,14 +1094,14 @@ QTextFormat htmlExporter::formatDifference( const QTextFormat &from, const QText
     return diff;
 }
 
-bool htmlExporter::isOrderedList( int style )
+bool HtmlExporter::isOrderedList( int style )
 {
 //     kDebug() << "html" << html;
     return style == QTextListFormat::ListDecimal || style == QTextListFormat::ListLowerAlpha
            || style == QTextListFormat::ListUpperAlpha;
 }
 
-void htmlExporter::sanitizeHtml()
+void HtmlExporter::sanitizeHtml()
 {
 //     kDebug() << "BEFORE" << html;
 
@@ -1114,12 +1114,12 @@ void htmlExporter::sanitizeHtml()
 
 }
 
-void htmlExporter::setDefaultCharFormat( QTextCharFormat charFormat )
+void HtmlExporter::setDefaultCharFormat( QTextCharFormat charFormat )
 {
     mDefaultCharFormat = charFormat;
 }
 
-void htmlExporter::setDefaultBlockFormat( QTextBlockFormat blockFormat )
+void HtmlExporter::setDefaultBlockFormat( QTextBlockFormat blockFormat )
 {
     mDefaultBlockFormat = blockFormat;
 }

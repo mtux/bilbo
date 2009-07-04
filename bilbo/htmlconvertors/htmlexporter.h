@@ -44,11 +44,11 @@ class QTextCharFormat;
 class QTextLength;
 
 
-class htmlExporter
+class HtmlExporter
 {
 public:
-    htmlExporter();
-    ~htmlExporter();
+    HtmlExporter();
+    ~HtmlExporter();
 
     QString toHtml( const QTextDocument* document );
 

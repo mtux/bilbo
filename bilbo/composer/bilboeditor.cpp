@@ -943,7 +943,7 @@ void BilboEditor::sltSyncEditors( int index )
     kDebug();
     QTextDocument *doc = editor->document();
 
-    htmlExporter* htmlExp = new htmlExporter();
+    HtmlExporter* htmlExp = new HtmlExporter();
     htmlExp->setDefaultCharFormat( this->defaultCharFormat );
     htmlExp->setDefaultBlockFormat( this->defaultBlockFormat );
 
@@ -999,7 +999,7 @@ QString BilboEditor::htmlContent()
 
     if ( this->currentIndex() == 0 ) {
 
-        htmlExporter* htmlExp = new htmlExporter();
+        HtmlExporter* htmlExp = new HtmlExporter();
         htmlExp->setDefaultCharFormat( this->defaultCharFormat );
         htmlExp->setDefaultBlockFormat( this->defaultBlockFormat );
 
@@ -1070,7 +1070,7 @@ bool BilboEditor::updateMediaPaths()
     bool changed = false;
 
     if ( this->currentIndex() == 0 ) {
-        htmlExporter* htmlExp = new htmlExporter();
+        HtmlExporter* htmlExp = new HtmlExporter();
         htmlContent = htmlExp->toHtml( this->editor->document() );
     } else {
 //         htmlContent = this->htmlEditor->toPlainText();
