@@ -472,7 +472,13 @@ bool Blogger1Private::readPostFromMap(
 
   QString title( postInfo["title"].toString() );
   QString description( postInfo["description"].toString() );
-  QString contents( postInfo["content"].toString() );
+  QString contents;
+  if( postInfo["content"].type() == QVariant::ByteArray ) {
+    QByteArray tmpContent = postInfo["content"].toByteArray();
+    contents = QString::fromUtf8(tmpContent.data(), tmpContent.size());
+  } else {
+    contents = postInfo["content"].toString();
+  }
   QStringList category;
 
   // Check for hacked title/category support (e.g. in Wordpress)
