@@ -372,10 +372,8 @@ void MainWindow::setupSystemTray()
             systemTray->setToolTip( i18n("Bilbo Blogger") );
             systemTray->contextMenu()->addAction( actionCollection()->action("new_post") );
             systemTray->show();
-            this->setAttribute(Qt::WA_DeleteOnClose, false);
         }
     } else if( systemTray ) {
-        this->setAttribute(Qt::WA_DeleteOnClose, true);
         systemTray->deleteLater();
         systemTray = 0;
     }
