@@ -104,7 +104,7 @@ void UploadMediaDialog::slotButtonClicked(int button)
         UploadType type = (UploadType)ui.kcfg_uploadType->itemData(ui.kcfg_uploadType->currentIndex()).toInt();
         if( type == BlogAPI ) {///Using API!
             BilboMedia *media = new BilboMedia(this);
-            KUrl mediaUrl( ui.kcfg_FileBrowser->text() );
+            KUrl mediaUrl( ui.kcfg_FileBrowser->url() );
             media->setLocalUrl(mediaUrl);
             media->setName( ui.kcfg_Name->text().isEmpty() ? mediaUrl.fileName() : ui.kcfg_Name->text() );
             media->setBlogId( mCurrentBlog->id() );

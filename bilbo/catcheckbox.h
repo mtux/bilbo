@@ -29,7 +29,7 @@ Extend QCheckBox to add property needed for Category checkboxes.
 
  @author
 */
-class Q_GUI_EXPORT CatCheckBox : public QCheckBox
+class CatCheckBox : public QCheckBox
 {
     Q_OBJECT
 public:
