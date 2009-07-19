@@ -118,7 +118,7 @@ void BilboBrowser::setHtml( const QString& title, const QString& content )
         browserPart->write( StyleGetter::styledHtml( __currentBlogId, title, content ) );
     } else {
         browserPart->write( 
-              "<html><body><b>" + title + "</b><br>" + content + "</html>" );
+              "<html><body><h2 align='center'>" + title + "</h2>" + content + "</html>" );
     }
     browserPart->end();
 }
