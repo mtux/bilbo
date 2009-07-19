@@ -319,8 +319,9 @@ void AddEditBlog::fetchedBlogId( const QList< QMap < QString , QString > > & lis
         QList< QMap<QString,QString> >::const_iterator endIt = list.constEnd();
         int i=0;
         blogsList->setColumnCount(4);
-//         blogsList->horizontalHeaderItem(0)->setText( i18nc("Blog title", "Title") );
-//         blogsList->horizontalHeaderItem(1)->setText( i18nc("Blog url", "Url") );
+        QStringList headers;
+        headers<<"Title"<<"Url";
+        blogsList->setHorizontalHeaderLabels(headers);
         blogsList->setColumnHidden(2, true);
         blogsList->setColumnHidden(3, true);
         for(;it != endIt; ++it){
