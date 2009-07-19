@@ -328,6 +328,7 @@ void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
     }
 //     KMessageBox::information( this, msg, "Successful" );
     deleteProgressBar();
+    this->unsetCursor();
     emit postPublishingDone( false, msg );
     sender()->deleteLater(); //FIXME Check if this command needed or NOT -Mehrdad
 }

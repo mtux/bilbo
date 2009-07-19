@@ -55,6 +55,7 @@ kde4_add_ui_files(
 )
 
 kde4_add_kcfg_files( bilbo_SRCS settings.kcfgc)
+kde4_add_app_icon(choqok_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/../icons/hi*-app-bilbo.png")
 kde4_add_executable( bilbo ${bilbo_SRCS})
 
 #target_link_libraries( bilbo ${KDE4_KDEUI_LIBS} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} bilbokblog)
