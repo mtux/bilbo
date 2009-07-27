@@ -502,7 +502,7 @@ void Toolbox::sltRemoveLocalEntry()
     if(localEntriesTable->selectedItems().count() > 0) {
         int local_id = localEntriesTable->item(0, localEntriesTable->currentRow())->data(32).toInt();
         if( KMessageBox::warningYesNo(this, i18n("Are you sure of removing selected local entry?")) 
-            == KMessageBox::NoExec )
+            == KMessageBox::No )
             return;
 
         if( DBMan::self()->removeLocalEntry(local_id) ) {
