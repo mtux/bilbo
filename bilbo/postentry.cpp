@@ -83,7 +83,7 @@ void PostEntry::createUi()
     this->resize( 626, 307 );
     gridLayout = new QGridLayout( this );
 
-    horizontalLayout = new QHBoxLayout( this );
+    horizontalLayout = new QHBoxLayout();
     horizontalLayout->setSizeConstraint( QLayout::SetDefaultConstraint );
 
     labelTitle = new QLabel( this );
@@ -318,7 +318,7 @@ void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
     kDebug() << "BlogId: " << blog_id << "Post Id on server: " << post->postId();
     DBMan::self()->removeTempEntry(mCurrentPost);
     QString msg;
-    mCurrentPost = (*post);
+    setCurrentPost(*post);
     if ( mCurrentPost.isPrivate() ) {
         msg = i18n( "Draft with title \"%1\" saved successfully.", post->title() );
     } else if(mCurrentPost.status() == BilboPost::Modified){

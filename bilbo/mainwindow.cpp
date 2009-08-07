@@ -455,6 +455,7 @@ void MainWindow::sltRemovePostEntry( PostEntry *widget )
         widget = activePost;
     }
     DBMan::self()->removeTempEntry( *widget->currentPost() );
+    tabPosts->removePage(widget);
     widget->close();
 
 //     if( tabPosts->count() == 0 ){
@@ -463,6 +464,7 @@ void MainWindow::sltRemovePostEntry( PostEntry *widget )
 //     }
     if( tabPosts->count() < 1 ) {
         activePost = 0;
+        toolbox->resetFields();
 //         actionCollection()->action("publish_post")->setEnabled( false );
     }
 }
@@ -536,9 +538,12 @@ void MainWindow::postManipulationDone( bool isError, const QString &customMessag
     if(isError){
         KMessageBox::detailedError(this, i18n("Submiting post failed"), customMessage);
     } else {
-        if(KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?", customMessage),
-            QString(), KStandardGuiItem::yes(), KStandardGuiItem::no(), "KeepPostOpen") == KMessageBox::No) {
-            sltRemovePostEntry(qobject_cast<PostEntry*>(sender()));
+        PostEntry *entry = qobject_cast<PostEntry*>(sender());
+        if(entry && KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?", customMessage),
+                    QString(), KStandardGuiItem::yes(), KStandardGuiItem::no(), "KeepPostOpen") == KMessageBox::No ) {
+            sltRemovePostEntry(entry);
+        } else {
+            toolbox->setFieldsValue(entry->currentPost());
         }
         toolbox->sltLoadEntriesFromDB( mCurrentBlogId );
     }
