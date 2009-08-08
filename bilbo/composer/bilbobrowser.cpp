@@ -83,8 +83,8 @@ void BilboBrowser::createUi( QWidget *parent )
                     QSizePolicy::Expanding, QSizePolicy::Minimum );
     KSeparator *separator = new KSeparator( this );
 
-    QVBoxLayout *vlayout = new QVBoxLayout( parent );
-    QHBoxLayout *hlayout = new QHBoxLayout( parent );
+    QVBoxLayout *vlayout = new QVBoxLayout( this );
+    QHBoxLayout *hlayout = new QHBoxLayout();
 
     hlayout->addWidget( viewInBlogStyle );
     hlayout->addItem( horizontalSpacer );
@@ -100,6 +100,8 @@ void BilboBrowser::createUi( QWidget *parent )
     browserStatus->setFixedHeight( 20 );
     browserStatus->addPermanentWidget( browserProgress );
     vlayout->addWidget( browserStatus );
+
+    delete hlayout;
 }
 
 void BilboBrowser::setHtml( const QString& title, const QString& content )
