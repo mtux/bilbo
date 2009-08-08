@@ -83,7 +83,7 @@ void PostEntry::createUi()
     this->resize( 626, 307 );
     gridLayout = new QGridLayout( this );
 
-    horizontalLayout = new QHBoxLayout( this );
+    horizontalLayout = new QHBoxLayout();
     horizontalLayout->setSizeConstraint( QLayout::SetDefaultConstraint );
 
     labelTitle = new QLabel( this );
@@ -130,6 +130,9 @@ void PostEntry::setPostBody( const QString & content, const QString &additionalC
         body = content + "</p><!--split--><p>" + additionalContent;
         mCurrentPost.setAdditionalContent(QString());
     }
+    if(body.isEmpty()){
+        body = "<p></p>";//This is because of Bug #387578
+    }
     mCurrentPost.setContent( body );
     this->editPostWidget->setHtmlContent( body );
     isPostContentModified = false;
@@ -164,7 +167,6 @@ void PostEntry::setCurrentPostFromEditor()
 
 BilboPost* PostEntry::currentPost()
 {
-    kDebug();
     setCurrentPostFromEditor();
     return &mCurrentPost;
 }
@@ -316,7 +318,7 @@ void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
     kDebug() << "BlogId: " << blog_id << "Post Id on server: " << post->postId();
     DBMan::self()->removeTempEntry(mCurrentPost);
     QString msg;
-    mCurrentPost = (*post);
+    setCurrentPost(*post);
     if ( mCurrentPost.isPrivate() ) {
         msg = i18n( "Draft with title \"%1\" saved successfully.", post->title() );
     } else if(mCurrentPost.status() == BilboPost::Modified){
@@ -326,6 +328,7 @@ void PostEntry::sltPostPublished( int blog_id, BilboPost *post )
     }
 //     KMessageBox::information( this, msg, "Successful" );
     deleteProgressBar();
+    this->unsetCursor();
     emit postPublishingDone( false, msg );
     sender()->deleteLater(); //FIXME Check if this command needed or NOT -Mehrdad
 }
@@ -356,7 +359,6 @@ are you sure of saving an empty post?")) == KMessageBox::No )
 
 void PostEntry::saveTemporary( bool force )
 {
-    kDebug();
     if( isPostContentModified || ( !currentPost()->content().isEmpty() && force ) ) {
         mCurrentPost.setId( DBMan::self()->saveTempEntry( *currentPost(), mCurrentPostBlogId) );
         emit postSavedTemporary();

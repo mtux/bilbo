@@ -237,7 +237,7 @@ namespace QCss
         NumKnownPositionModes
     };
 
-    struct Q_GUI_EXPORT Value {
+    struct Value {
         enum Type {
             Unknown,
             Number,
@@ -263,7 +263,7 @@ namespace QCss
 // 4. QVector<Declaration> - { prop1: value1; prop2: value2; }
 // 5. Declaration - prop1: value1;
 
-    struct Q_GUI_EXPORT Declaration {
+    struct Declaration {
         inline Declaration() : propertyId( UnknownProperty ), important( false ) {}
         QString property;
         Property propertyId;
@@ -311,13 +311,13 @@ namespace QCss
         NumPseudos = 11
     };
 
-    struct Q_GUI_EXPORT Pseudo {
+    struct Pseudo {
         PseudoState type;
         QString name;
         QString function;
     };
 
-    struct Q_GUI_EXPORT AttributeSelector {
+    struct AttributeSelector {
         enum ValueMatchType {
             NoMatch,
             MatchEqual,
@@ -331,7 +331,7 @@ namespace QCss
         ValueMatchType valueMatchCriterium;
     };
 
-    struct Q_GUI_EXPORT BasicSelector {
+    struct BasicSelector {
         inline BasicSelector() : relationToNext( NoRelation ) {}
 
         enum Relation {
@@ -350,7 +350,7 @@ namespace QCss
         Relation relationToNext;
     };
 
-    struct Q_GUI_EXPORT Selector {
+    struct Selector {
         QVector<BasicSelector> basicSelectors;
         int specificity() const;
         int pseudoState() const;
@@ -362,7 +362,7 @@ namespace QCss
     struct PageRule;
     struct ImportRule;
 
-    struct Q_GUI_EXPORT ValueExtractor {
+    struct ValueExtractor {
         ValueExtractor( const QVector<Declaration> &declarations );
 
         void extractFont( QFont *font, int *fontSizeAdjustment );
@@ -389,22 +389,22 @@ namespace QCss
         bool fontExtracted;
     };
 
-    struct Q_GUI_EXPORT StyleRule {
+    struct StyleRule {
         QVector<Selector> selectors;
         QVector<Declaration> declarations;
     };
 
-    struct Q_GUI_EXPORT MediaRule {
+    struct MediaRule {
         QStringList media;
         QVector<StyleRule> styleRules;
     };
 
-    struct Q_GUI_EXPORT PageRule {
+    struct PageRule {
         QString selector;
         QVector<Declaration> declarations;
     };
 
-    struct Q_GUI_EXPORT ImportRule {
+    struct ImportRule {
         QString href;
         QStringList media;
     };
@@ -417,7 +417,7 @@ namespace QCss
         StyleSheetOrigin_Inline
     };
 
-    struct Q_GUI_EXPORT StyleSheet {
+    struct StyleSheet {
         StyleSheet() : origin( StyleSheetOrigin_Unspecified ), depth( 0 ) { }
         QVector<StyleRule> styleRules;
         QVector<MediaRule> mediaRules;
@@ -427,7 +427,7 @@ namespace QCss
         int depth; // applicable only for inline style sheets
     };
 
-    class Q_GUI_EXPORT StyleSelector
+    class StyleSelector
     {
     public:
         virtual ~StyleSelector();
@@ -524,7 +524,7 @@ namespace QCss
         static const char *tokenName( TokenType t );
     };
 
-    class Q_GUI_EXPORT Parser
+    class Parser
     {
     public:
         explicit Parser( const QString &css );

@@ -81,7 +81,7 @@ void MovableType::listTrackBackPings( KBlog::BlogPost *post )
   unsigned int i = d->mCallCounter++;
   d->mCallMap[ i ] = post;
   d->mXmlRpcClient->call(
-    "mt.getTracebackPings", args,
+    "mt.getTrackbackPings", args,
     this, SLOT(slotListTrackbackPings(const QList<QVariant>&,const QVariant&)),
     this, SLOT(slotError(int,const QString&,const QVariant&)),
     QVariant( i ) );
@@ -132,7 +132,8 @@ bool MovableTypePrivate::readPostFromMap( BlogPost *post, const QMap<QString, QV
     post->setModificationDateTime( dt.toLocalZone() );
   }
 
-  post->setPostId( postInfo["postid"].toString() );
+  post->setPostId( postInfo["postid"].toString().isEmpty() ? postInfo["postId"].toString() :
+                   postInfo["postid"].toString() );
 
   QString title( postInfo["title"].toString() );
   QString description( postInfo["description"].toString() );

@@ -25,13 +25,13 @@
 #include <kdemacros.h>
 
 #ifndef KBLOG_EXPORT
-# if defined(MAKE_KBLOG_LIB)
+// # if defined(MAKE_KBLOG_LIB)
    /* We are building this library */
-#  define KBLOG_EXPORT KDE_EXPORT
-# else
+#define KBLOG_EXPORT KDE_EXPORT
+// # else
    /* We are using this library */
-#  define KBLOG_EXPORT KDE_IMPORT
-# endif
+// #  define KBLOG_EXPORT KDE_IMPORT
+// # endif
 #endif
 
 #endif

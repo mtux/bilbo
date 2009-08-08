@@ -41,6 +41,7 @@
 #include <KMenu>
 #include <KAction>
 #include <KToolInvocation>
+#include <settings.h>
 
 Toolbox::Toolbox( QWidget *parent )
         : QWidget( parent )
@@ -127,7 +128,7 @@ you have to select a blog from Blogs page before asking for Category list" ) );
     emit sigBusy( true );
 }
 
-void Toolbox::sltUpdateEntries()
+void Toolbox::sltUpdateEntries(int count)
 {
     kDebug();
     if ( mCurrentBlogId == -1 ) {
@@ -136,15 +137,17 @@ you have to select a blog from Blogs page before asking for Entries list" ) );
         kDebug() << "There isn't any selected blog.";
         return;
     }
-    EntriesCountDialog *dia = new EntriesCountDialog( this );
-    dia->setAttribute( Qt::WA_DeleteOnClose );
-    connect( dia, SIGNAL( sigAccepted( int ) ), this, SLOT( sltGetEntriesCount( int ) ) );
-    dia->show();
-}
-
-void Toolbox::sltGetEntriesCount( int count )
-{
-    kDebug();
+    if(count == 0) {
+        count = Settings::updateEntriesCount();
+        if( Settings::showUpdateEntriesDialog() ) {
+            EntriesCountDialog *dia = new EntriesCountDialog( this );
+            dia->setAttribute( Qt::WA_DeleteOnClose, false );
+            if( dia->exec() == 0 )
+                return;
+            count = dia->count();
+            dia->deleteLater();
+        }
+    }
     Backend *entryB = new Backend( mCurrentBlogId, this);
     entryB->getEntriesListFromServer( count );
     connect( entryB, SIGNAL( sigEntriesListFetched( int ) ), this, SLOT( sltLoadEntriesFromDB( int ) ) );
@@ -214,6 +217,7 @@ void Toolbox::sltRemoveSelectedEntryFromServer()
         BilboPost post = DBMan::self()->getPostInfo( lstEntriesList->currentItem()->data(32).toInt() );
         Backend *b = new Backend( mCurrentBlogId, this);
         connect(b, SIGNAL(sigPostRemoved(int,const BilboPost&)), this, SLOT(slotPostRemoved(int,const BilboPost&)) );
+        connect(b, SIGNAL(sigError(const QString&)), this, SLOT(slotError(const QString&)));
         b->removePost(post);
         statusbar->showMessage( i18n( "Removing post..." ) );
     }
@@ -225,6 +229,14 @@ void Toolbox::slotPostRemoved( int blog_id, const BilboPost &post )
                                           post.title(), DBMan::self()->blogList().value(blog_id)->title() ) );
     sltLoadEntriesFromDB( blog_id );
     statusbar->showMessage( i18n( "Post removed" ), STATUSTIMEOUT );
+    sender()->deleteLater();
+}
+
+
+void Toolbox::slotError(const QString& errorMessage)
+{
+    KMessageBox::detailedError( this, i18n( "An error ocurred on latest transaction" ), errorMessage );
+    statusbar->showMessage( i18n( "Failed" ), STATUSTIMEOUT );
     sender()->deleteLater();
 }
 
@@ -490,7 +502,7 @@ void Toolbox::sltRemoveLocalEntry()
     if(localEntriesTable->selectedItems().count() > 0) {
         int local_id = localEntriesTable->item(0, localEntriesTable->currentRow())->data(32).toInt();
         if( KMessageBox::warningYesNo(this, i18n("Are you sure of removing selected local entry?")) 
-            == KMessageBox::NoExec )
+            == KMessageBox::No )
             return;
 
         if( DBMan::self()->removeLocalEntry(local_id) ) {

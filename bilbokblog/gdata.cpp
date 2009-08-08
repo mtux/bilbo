@@ -520,9 +520,7 @@ void GDataPrivate::slotFetchProfileIdData( KIO::Job *job, const QByteArray &data
     kError() << "job is a null pointer.";
     return;
   }
-  unsigned int oldSize = mFetchProfileIdBuffer[ job ].size();
-  mFetchProfileIdBuffer[ job ].resize( oldSize + data.size() );
-  memcpy( mFetchProfileIdBuffer[ job ].data() + oldSize, data.data(), data.size() );
+  mFetchProfileIdBuffer[ job ].append(data);
 }
 
 void GDataPrivate::slotFetchProfileId( KJob *job )
@@ -814,9 +812,7 @@ void GDataPrivate::slotCreatePostData( KIO::Job *job, const QByteArray &data )
     kError() << "job is a null pointer.";
     return;
   }
-  unsigned int oldSize = mCreatePostBuffer[ job ].size();
-  mCreatePostBuffer[ job ].resize( oldSize + data.size() );
-  memcpy( mCreatePostBuffer[ job ].data() + oldSize, data.data(), data.size() );
+  mCreatePostBuffer[ job ].append(data);
 }
 
 void GDataPrivate::slotCreatePost( KJob *job )
@@ -883,9 +879,7 @@ void GDataPrivate::slotModifyPostData( KIO::Job *job, const QByteArray &data )
     kError() << "job is a null pointer.";
     return;
   }
-  unsigned int oldSize = mModifyPostBuffer[ job ].size();
-  mModifyPostBuffer[ job ].resize( oldSize + data.size() );
-  memcpy( mModifyPostBuffer[ job ].data() + oldSize, data.data(), data.size() );
+  mModifyPostBuffer[ job ].append(data);
 }
 
 void GDataPrivate::slotModifyPost( KJob *job )
@@ -948,9 +942,7 @@ void GDataPrivate::slotRemovePostData( KIO::Job *job, const QByteArray &data )
     kError() << "job is a null pointer.";
     return;
   }
-  unsigned int oldSize = mRemovePostBuffer[ job ].size();
-  mRemovePostBuffer[ job ].resize( oldSize + data.size() );
-  memcpy( mRemovePostBuffer[ job ].data() + oldSize, data.data(), data.size() );
+  mRemovePostBuffer[ job ].append(data);
 }
 
 void GDataPrivate::slotRemovePost( KJob *job )
@@ -985,9 +977,7 @@ void GDataPrivate::slotCreateCommentData( KIO::Job *job, const QByteArray &data 
     kError() << "job is a null pointer.";
     return;
   }
-  unsigned int oldSize = mCreateCommentBuffer[ job ].size();
-  mCreateCommentBuffer[ job ].resize( oldSize + data.size() );
-  memcpy( mCreateCommentBuffer[ job ].data() + oldSize, data.data(), data.size() );
+  mCreateCommentBuffer[ job ].append(data);
 }
 
 void GDataPrivate::slotCreateComment( KJob *job )
@@ -1056,9 +1046,7 @@ void GDataPrivate::slotRemoveCommentData( KIO::Job *job, const QByteArray &data 
     kError() << "job is a null pointer.";
     return;
   }
-  unsigned int oldSize = mRemoveCommentBuffer[ job ].size();
-  mRemoveCommentBuffer[ job ].resize( oldSize + data.size() );
-  memcpy( mRemoveCommentBuffer[ job ].data() + oldSize, data.data(), data.size() );
+  mRemoveCommentBuffer[ job ].append(data);
 }
 
 void GDataPrivate::slotRemoveComment( KJob *job )

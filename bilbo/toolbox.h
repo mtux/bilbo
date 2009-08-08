@@ -60,8 +60,7 @@ public:
 public slots:
     void sltReloadCategoryList();
     void sltLoadCategoryListFromDB( int blog_id );
-    void sltUpdateEntries();
-    void sltGetEntriesCount( int );
+    void sltUpdateEntries(int count = 0);
     void sltLoadEntriesFromDB( int blog_id );
     void sltRemoveSelectedEntryFromServer();
     void resetFields();
@@ -84,6 +83,7 @@ protected slots:
     void openPostInBrowser();
     void copyPostTitle();
     void requestEntriesListContextMenu( const QPoint & pos );
+    void slotError(const QString& errorMessage);
 
 private:
     QStringList selectedCategoriesTitle();

@@ -29,8 +29,8 @@
 #include <kmessagebox.h>
 #include <kseparator.h>
 #include <kpushbutton.h>
-#include <kjob.h>
-#include <kio/jobclasses.h>
+// #include <kjob.h>
+// #include <kio/jobclasses.h>
 
 #include "composer/stylegetter.h"
 #include "global.h"
@@ -120,7 +120,7 @@ void BilboBrowser::setHtml( const QString& title, const QString& content )
         browserPart->write( StyleGetter::styledHtml( __currentBlogId, title, content ) );
     } else {
         browserPart->write( 
-              "<html><body><b>" + title + "</b><br>" + content + "</html>" );
+              "<html><body><h2 align='center'>" + title + "</h2>" + content + "</html>" );
     }
     browserPart->end();
 }

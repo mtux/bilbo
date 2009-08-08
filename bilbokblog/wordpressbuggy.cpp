@@ -224,7 +224,7 @@ void WordpressBuggy::modifyPost( KBlog::BlogPost *post )
   xmlMarkup += "</member><member>";
   xmlMarkup += "<name>mt_keywords</name>";
   xmlMarkup += "<value><string><![CDATA[" + post->tags().join( "," ) + "]]></string></value>";
-  xmlMarkup += "</member></struct><value></param>";
+  xmlMarkup += "</member></struct></value></param>";
   xmlMarkup += "<param><value><boolean>" +
                QString( "%1" ).arg( (int)( !post->isPrivate() ) ) +
                "</boolean></value></param>";
@@ -303,10 +303,8 @@ QList<QVariant> WordpressBuggyPrivate::defaultArgs( const QString &id )
 
 void WordpressBuggyPrivate::slotCreatePostData( KIO::Job *job, const QByteArray &data )
 {
-  kDebug() << "slotCreatePostData()";
-  unsigned int oldSize = mCreatePostBuffer[ job ].size();
-  mCreatePostBuffer[ job ].resize( oldSize + data.size() );
-  memcpy( mCreatePostBuffer[ job ].data() + oldSize, data.data(), data.size() );
+  kDebug();
+  mCreatePostBuffer[ job ].append(data);
 }
 
 void WordpressBuggyPrivate::slotCreatePost( KJob *job )
@@ -355,10 +353,8 @@ void WordpressBuggyPrivate::slotCreatePost( KJob *job )
 
 void WordpressBuggyPrivate::slotModifyPostData( KIO::Job *job, const QByteArray &data )
 {
-  kDebug() << "slotModifyPostData()";
-  unsigned int oldSize = mModifyPostBuffer[ job ].size();
-  mModifyPostBuffer[ job ].resize( oldSize + data.size() );
-  memcpy( mModifyPostBuffer[ job ].data() + oldSize, data.data(), data.size() );
+  kDebug();
+  mModifyPostBuffer[ job ].append(data);
 }
 
 void WordpressBuggyPrivate::slotModifyPost( KJob *job )

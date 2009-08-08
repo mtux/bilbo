@@ -249,7 +249,7 @@ void BilboEditor::createActions()
     connect( actRemoveFormatting, SIGNAL( triggered( bool ) ), this, SLOT( sltRemoveFormatting() ) );
     barVisual->addAction( actRemoveFormatting );
 
-    actBlockQuote = new KAction( KIcon( "insert-more-mark" ), i18n( "Blockquote" ), this );
+    actBlockQuote = new KAction( KIcon( "format-text-blockquote" ), i18n( "Blockquote" ), this );
     actBlockQuote->setCheckable( true );
     connect( actBlockQuote, SIGNAL( triggered( bool ) ), this, SLOT( sltToggleBlockQuote() ) );
     barVisual->addAction( actBlockQuote );
@@ -948,21 +948,21 @@ void BilboEditor::sltSyncEditors( int index )
     htmlExp->setDefaultBlockFormat( this->defaultBlockFormat );
 
     if ( index == 0 ) {
+        if ( prev_index == 2 ) {
+            preview->stop();
+            goto SyncEnd;
+        }
         doc->clear();
 //         BilboTextHtmlImporter( doc, htmlEditor->toPlainText() ).import();
         BilboTextHtmlImporter( doc, htmlEditor->document()->text() ).import();
         editor->setTextCursor( QTextCursor( doc ) );
+    } else if ( index == 1 ) {
         if ( prev_index == 2 ) {
             preview->stop();
+            goto SyncEnd;
         }
-
-    } else if ( index == 1 ) {
 //         htmlEditor->setPlainText( htmlExp->toHtml( doc ) );
         htmlEditor->document()->setText( htmlExp->toHtml( doc ) );
-        if ( prev_index == 2 ) {
-            preview->stop();
-        }
-
     } else {
         if ( prev_index == 1 ) {
             doc->clear();
@@ -975,9 +975,10 @@ void BilboEditor::sltSyncEditors( int index )
 
         preview->setHtml( currentPostTitle, htmlEditor->document()->text() );
     }
-
+SyncEnd:
     prev_index = index;
     delete htmlExp;
+//     doc->deleteLater();
 }
 
 // QString BilboEditor::htmlToRichtext( const QString& html )
