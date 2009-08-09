@@ -128,13 +128,13 @@ void BilboEditor::createUi()
 
     ///htmlEditor:
     htmlEditor = HtmlEditor::self()->createView( tabHtml );
-    QGridLayout *hLayout = new QGridLayout( tabHtml );
-    hLayout->addWidget( qobject_cast< QWidget* >( htmlEditor ) );
+    QGridLayout *gLayout1 = new QGridLayout( tabHtml );
+    gLayout1->addWidget( qobject_cast< QWidget* >( htmlEditor ) );
 
     ///preview:
     preview = new BilboBrowser( tabPreview );
-    QGridLayout *gLayout = new QGridLayout( tabPreview );
-    gLayout->addWidget( qobject_cast< QWidget* >( preview ) );
+    QGridLayout *gLayout2 = new QGridLayout( tabPreview );
+    gLayout2->addWidget( qobject_cast< QWidget* >( preview ) );
     connect( preview, SIGNAL( sigSetBlogStyle() ), this, SLOT( 
             sltSetPostPreview() ) );
 
