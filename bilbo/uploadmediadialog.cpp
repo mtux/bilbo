@@ -140,7 +140,7 @@ Note that url must start with \"ftp\" or \"sftp\",\
  and end with a / that indicate the directory which file should upload to it."));
         }
     } else {
-        close();
+        KDialog::slotButtonClicked(button);
     }
 }
 
@@ -171,7 +171,7 @@ void UploadMediaDialog::slotMediaObjectUploaded(KJob *job)
                         destUrl );
         }
         KMessageBox::information(this, msg, i18n( "Successfully uploaded" ), QString(), KMessageBox::AllowLink);
-        close();
+        accept();
     }
 }
 
@@ -188,16 +188,17 @@ void UploadMediaDialog::slotMediaObjectUploaded(BilboMedia *media)
                     media->remoteUrl().prettyUrl() );
     }
     KMessageBox::information(this, msg, i18n( "Successfully uploaded" ), QString(), KMessageBox::AllowLink);
-    close();
+    accept();
 }
 
 void UploadMediaDialog::slotError( const QString &msg )
 {
+    emit sigBusy(false);
     if( KMessageBox::questionYesNo( this, i18n( "Media uploading failed with this result:\n%1\nTry again?", msg) )
         == KMessageBox::Yes ) {
         show();
     } else {
-        close();
+        reject();
     }
 }
 
