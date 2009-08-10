@@ -31,10 +31,8 @@
 #include "dbman.h"
 #include "global.h"
 #include "sendtoblogdialog.h"
-#include <QtCore>
 #include <kio/job.h>
 #include "settings.h"
-#include <KApplication>
 #include "bilboblog.h"
 #include "syncuploader.h"
 
@@ -51,7 +49,6 @@ PostEntry::PostEntry( QWidget *parent )
     mTimer = new QTimer(this);
     mTimer->start(Settings::autosaveInterval() * MINUTE);
     connect( mTimer, SIGNAL(timeout()), this, SLOT( saveTemporary() ) );
-    connect( qApp, SIGNAL(aboutToQuit()), this, SLOT( slotQuit() ) );
     progress = 0;
     mCurrentPostBlogId = -1;
     mNumOfFilesToBeUploaded = 0;
@@ -63,8 +60,9 @@ PostEntry::PostEntry( QWidget *parent )
     connect( editPostWidget, SIGNAL( sigBusy( bool ) ), this, SIGNAL( sigBusy( bool ) ) );
 }
 
-void PostEntry::slotQuit()
+void PostEntry::aboutToQuit()
 {
+    kDebug();
     saveTemporary(true);
 }
 

@@ -132,6 +132,9 @@ MainWindow::MainWindow()
 MainWindow::~MainWindow()
 {
     kDebug();
+    int count = tabPosts->count();
+    for(int i =0; i<count; ++i)
+        qobject_cast<PostEntry*>(tabPosts->widget(i))->aboutToQuit();
     writeConfigs();
 }
 
