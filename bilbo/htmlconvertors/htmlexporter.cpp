@@ -1,13 +1,8 @@
-/****************************************************************************
-**
-** Copyright (C) 1992-2006 Trolltech ASA. All rights reserved.
-** Copyright (C) 2007 Antonio Aloisio <gnuton@gnuton.org>
-**
-***************************************************************************/
-/*   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+/***************************************************************************
+ *   This file is a part of Bilbo Blogger.                                 *
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
  *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
- *   This file is a part of Bilbo Blogger.                                 *
  *   It is a modified version of "htmlexporter.cpp" from                   *
  *   KBlogger project. it has been modified for use in Bilbo Blogger, at   *
  *   November 2008.                                                        *

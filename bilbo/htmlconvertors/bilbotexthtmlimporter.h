@@ -3,6 +3,10 @@
  *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
  *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
+ *   It is a modified version of "qtextdocumentfragment_p.h", which is     *
+ *   part of the QtGui module of the Qt Toolkit. it has been modified for  *
+ *   use in Bilbo Blogger, at December 2008.                               *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 3 of the License, or     *
