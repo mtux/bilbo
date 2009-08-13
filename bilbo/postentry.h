@@ -74,6 +74,8 @@ public:
 
     void saveLocally();
 
+    void aboutToQuit();
+
 Q_SIGNALS:
     /**
      * emitted when title of this entry changed.
@@ -127,7 +129,6 @@ private Q_SLOTS:
     void deleteProgressBar();
     void saveTemporary( bool force=false );
     void slotPostModified();
-    void slotQuit();
 
 private:
     void createUi();

@@ -445,7 +445,10 @@ void Blogger1Private::slotError( int number,
   Q_UNUSED( number );
   BlogPost *post = mCallMap[ id.toInt() ];
 
-  emit q->errorPost( Blogger1::XmlRpc, errorString, post );
+  if(post)
+    emit q->errorPost( Blogger1::XmlRpc, errorString, post );
+  else
+    emit q->error( Blogger1::XmlRpc, errorString );
 }
 
 bool Blogger1Private::readPostFromMap(
