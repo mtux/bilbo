@@ -38,24 +38,24 @@ using namespace KBlog;
 WordpressBuggy::WordpressBuggy( const KUrl &server, QObject *parent )
   : MovableType( server, *new WordpressBuggyPrivate, parent )
 {
-  kDebug() << "WordpressBuggy()";
+  kDebug();
 }
 
 WordpressBuggy::WordpressBuggy( const KUrl &server, WordpressBuggyPrivate &dd,
                                 QObject *parent )
   : MovableType( server, dd, parent )
 {
-  kDebug() << "WordpressBuggy()";
+  kDebug();
 }
 
 WordpressBuggy::~WordpressBuggy()
 {
-  kDebug() << "~WordpressBuggy()";
+  kDebug();
 }
 
 void WordpressBuggy::createPost( KBlog::BlogPost *post )
 {
-  kDebug() << "createPost()";
+  kDebug();
   Q_D( WordpressBuggy );
   if ( !post ) {
     kError() << "WordpressBuggy::createPost: post is a null pointer";
@@ -95,12 +95,13 @@ void WordpressBuggy::createPost( KBlog::BlogPost *post )
     xmlMarkup += "</data></array></value>";
     xmlMarkup += "</member><member>";
   }
-
-  xmlMarkup += "<name>dateCreated</name>";
-  xmlMarkup += "<value><dateTime.iso8601>" +
-               post->creationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ssZ" ) +
-               "</dateTime.iso8601></value>";
-  xmlMarkup += "</member><member>";
+  if( post->creationDateTime().secsTo( KDateTime::currentLocalDateTime() ) > 60 ) {
+    xmlMarkup += "<name>dateCreated</name>";
+    xmlMarkup += "<value><dateTime.iso8601>" +
+                post->creationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ssZ" ) +
+                "</dateTime.iso8601></value>";
+    xmlMarkup += "</member><member>";
+  }
   xmlMarkup += "<name>mt_allow_comments</name>";
   xmlMarkup += QString( "<value><int>%1</int></value>" ).arg( (int)post->isCommentAllowed() );
   xmlMarkup += "</member><member>";
@@ -153,7 +154,7 @@ void WordpressBuggy::createPost( KBlog::BlogPost *post )
 
 void WordpressBuggy::modifyPost( KBlog::BlogPost *post )
 {
-  kDebug() << "modifyPost()";
+  kDebug();
   Q_D( WordpressBuggy );
   if ( !post ) {
     kError() << "WordpressBuggy::modifyPost: post is a null pointer";
@@ -200,10 +201,11 @@ void WordpressBuggy::modifyPost( KBlog::BlogPost *post )
                post->modificationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ssZ" ) +
                "</dateTime.iso8601></value>";
   xmlMarkup += "</member><member>";
+
   xmlMarkup += "<name>dateCreated</name>";
   xmlMarkup += "<value><dateTime.iso8601>" +
-               post->creationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ssZ" ) +
-               "</dateTime.iso8601></value>";
+              post->creationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ssZ" ) +
+              "</dateTime.iso8601></value>";
   xmlMarkup += "</member><member>";
   xmlMarkup += "<name>mt_allow_comments</name>";
   xmlMarkup += QString( "<value><int>%1</int></value>" ).arg( (int)post->isCommentAllowed() );
@@ -286,7 +288,7 @@ WordpressBuggyPrivate::WordpressBuggyPrivate()
 
 WordpressBuggyPrivate::~WordpressBuggyPrivate()
 {
-  kDebug() << "~WordpressBuggyPrivate()";
+  kDebug();
 }
 
 QList<QVariant> WordpressBuggyPrivate::defaultArgs( const QString &id )
@@ -309,7 +311,7 @@ void WordpressBuggyPrivate::slotCreatePostData( KIO::Job *job, const QByteArray 
 
 void WordpressBuggyPrivate::slotCreatePost( KJob *job )
 {
-  kDebug() << "slotCreatePost()";
+  kDebug();
   const QString data = QString::fromUtf8( mCreatePostBuffer[ job ].data(),
                                           mCreatePostBuffer[ job ].size() );
   mCreatePostBuffer[ job ].resize( 0 );
@@ -359,7 +361,7 @@ void WordpressBuggyPrivate::slotModifyPostData( KIO::Job *job, const QByteArray 
 
 void WordpressBuggyPrivate::slotModifyPost( KJob *job )
 {
-  kDebug() << "slotModifyPost()";
+  kDebug();
   const QString data = QString::fromUtf8( mModifyPostBuffer[ job ].data(),
                                           mModifyPostBuffer[ job ].size() );
   mModifyPostBuffer[ job ].resize( 0 );
