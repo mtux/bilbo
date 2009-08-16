@@ -387,7 +387,7 @@ QStringList Toolbox::currentTags()
 {
     kDebug();
     QStringList t;
-    t = txtCatTags->text().split( ',', QString::SkipEmptyParts );
+    t = txtCatTags->text().split( QRegExp( QString::fromUtf8(",|،") ), QString::SkipEmptyParts );
     for ( int i = 0; i < t.count() ; ++i ) {
         t[i] = t[i].trimmed();
     }
