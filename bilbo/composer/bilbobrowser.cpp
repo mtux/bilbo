@@ -126,7 +126,7 @@ void BilboBrowser::setHtml( const QString& title, const QString& content )
 void BilboBrowser::stop()
 {
     browserPart->closeUrl();
-    sltCanceled( "" );
+    sltCanceled( QString() );
 }
 /*
 void BilboBrowser::setBrowserDirection( Qt::LayoutDirection direction )
