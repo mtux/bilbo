@@ -39,19 +39,19 @@ using namespace KBlog;
 MovableType::MovableType( const KUrl &server, QObject *parent )
   : MetaWeblog( server, *new MovableTypePrivate, parent )
 {
-  kDebug() << "MovableType()";
+  kDebug();
 }
 
 MovableType::MovableType( const KUrl &server, MovableTypePrivate &dd,
                         QObject *parent )
   : MetaWeblog( server, dd, parent )
 {
-  kDebug() << "MovableType()";
+  kDebug();
 }
 
 MovableType::~MovableType()
 {
-  kDebug() << "~MovableType()";
+  kDebug();
 }
 
 QString MovableType::interfaceName() const
@@ -93,7 +93,7 @@ MovableTypePrivate::MovableTypePrivate()
 
 MovableTypePrivate::~MovableTypePrivate()
 {
-  kDebug() << "~MovableTypePrivate()";
+  kDebug();
 }
 
 QList<QVariant> MovableTypePrivate::defaultArgs( const QString &id )
@@ -112,7 +112,7 @@ bool MovableTypePrivate::readPostFromMap( BlogPost *post, const QMap<QString, QV
 {
 
   // FIXME: integrate error handling
-  kDebug() << "readPostFromMap()";
+  kDebug();
   if ( !post ) {
     return false;
   }
@@ -138,7 +138,7 @@ bool MovableTypePrivate::readPostFromMap( BlogPost *post, const QMap<QString, QV
   QString title( postInfo["title"].toString() );
   QString description( postInfo["description"].toString() );
   QStringList categories( postInfo["categories"].toStringList() );
-  //TODO 2 new keys are:
+  //TODO 1 new key is:
   // String mt_convert_breaks, the value for the convert_breaks field
   post->setSlug( postInfo["wp_slug"].toString() );
   post->setAdditionalContent( postInfo["mt_text_more"].toString() );
@@ -170,7 +170,7 @@ void MovableTypePrivate::slotListTrackBackPings(
     const QList<QVariant> &result, const QVariant &id )
 {
   Q_Q( MovableType );
-  kDebug() << "slotTrackbackPings()";
+  kDebug();
   BlogPost *post = mCallMap[ id.toInt() ];
   mCallMap.remove( id.toInt() );
   QList<QMap<QString,QString> > trackBackList;
@@ -213,7 +213,9 @@ bool MovableTypePrivate::readArgsFromPost( QList<QVariant> *args, const BlogPost
   if( !post.additionalContent().isEmpty() )
     map["mt_text_more"] = post.additionalContent();
   map["title"] = post.title();
-  map["dateCreated"] = post.creationDateTime().toUtc().dateTime();
+  if( post.creationDateTime().secsTo( KDateTime::currentLocalDateTime() ) > 60 ) {
+    map["dateCreated"] = post.creationDateTime().toUtc().dateTime();
+  }
   map["mt_allow_comments"] = (int)post.isCommentAllowed();
   map["mt_allow_pings"] = (int)post.isTrackBackAllowed();
   map["mt_excerpt"] = post.summary();

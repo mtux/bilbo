@@ -19,6 +19,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "multilinetextedit.h"
 #include <QtGui>
 // #include <QNetworkAccessManager>
 // #include <QNetworkRequest>
@@ -32,7 +33,6 @@
 #include <kaction.h>
 #include <klocalizedstring.h>
 
-#include "composer/multilinetextedit.h"
 #include "constants.h"
 #include "bilbomedia.h"
 

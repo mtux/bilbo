@@ -11,7 +11,7 @@ find_package(KdepimLibs REQUIRED)
 
 add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+# include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_subdirectory( bilbokblog )
 add_subdirectory( bilbo )
