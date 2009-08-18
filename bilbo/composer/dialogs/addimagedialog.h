@@ -21,7 +21,7 @@
 #ifndef ADDIMAGEDIALOG_H
 #define ADDIMAGEDIALOG_H
 
-#include "composer/dialogs/addmediadialog.h"
+#include "addmediadialog.h"
 
 #include <ui_editimagebase.h>
 

@@ -23,6 +23,7 @@
 #define MULTILINETEXTEDIT_H
 
 #include "krichtextedit.h"
+#include <KUrl>
 
 class KJob;
 class BilboMedia;

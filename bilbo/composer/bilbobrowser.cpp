@@ -19,7 +19,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "composer/bilbobrowser.h"
+#include "bilbobrowser.h"
 
 #include <QtGui>
 
@@ -32,7 +32,7 @@
 // #include <kjob.h>
 // #include <kio/jobclasses.h>
 
-#include "composer/stylegetter.h"
+#include "stylegetter.h"
 #include "global.h"
 #include "settings.h"
 
@@ -127,7 +127,7 @@ void BilboBrowser::setHtml( const QString& title, const QString& content )
 void BilboBrowser::stop()
 {
     browserPart->closeUrl();
-    sltCanceled( "" );
+    sltCanceled( QString() );
 }
 /*
 void BilboBrowser::setBrowserDirection( Qt::LayoutDirection direction )

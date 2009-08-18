@@ -20,7 +20,7 @@
  ***************************************************************************/
 #include <QMenu>
 
-#include "composer/htmleditor.h"
+#include "htmleditor.h"
 
 #include <kglobal.h>
 #include <ktexteditor/editor.h>

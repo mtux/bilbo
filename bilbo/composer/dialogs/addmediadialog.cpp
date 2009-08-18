@@ -27,7 +27,7 @@
 #include <kio/job.h>
 // #include <kio/jobuidelegate.h>
 
-#include "composer/dialogs/addmediadialog.h"
+#include "addmediadialog.h"
 #include "bilbomedia.h"
 #include "global.h"
 #include "settings.h"

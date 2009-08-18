@@ -43,15 +43,15 @@
 #include "bilboblog.h"
 #include "bilbopost.h"
 
-#include "composer/multilinetextedit.h"
-#include "composer/medialistwidget.h"
-#include "composer/stylegetter.h"
-#include "composer/htmleditor.h"
-#include "composer/bilbobrowser.h"
-#include "composer/bilboeditor.h"
+#include "multilinetextedit.h"
+#include "medialistwidget.h"
+#include "stylegetter.h"
+#include "htmleditor.h"
+#include "bilbobrowser.h"
+#include "bilboeditor.h"
 
-#include "composer/dialogs/addeditlink.h"
-#include "composer/dialogs/addimagedialog.h"
+#include "dialogs/addeditlink.h"
+#include "dialogs/addimagedialog.h"
 
 #include "htmlconvertors/bilbotextformat.h"
 #include "htmlconvertors/bilbotexthtmlimporter.h"

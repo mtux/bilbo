@@ -38,16 +38,19 @@ class AddEditLink: public KDialog
     Q_OBJECT
 public:
     AddEditLink( QWidget *parent = 0 );
-    void show( const QString& address = "", const QString& title = "",
-               const QString& target = "" );
+    ~AddEditLink();
+    void show( const QString& address = QString(), const QString& title = QString(),
+               const QString& target = QString() );
 
 Q_SIGNALS:
     void addLink( const QString& address, const QString& target, const QString& title );
 
 private Q_SLOTS:
-    void sltAccepted();
+    virtual void slotButtonClicked(int button);
+    void slotClearLinkCache();
 
 private:
+    KConfigGroup *confGroup;
     Ui::AddEditLinkBase ui;
 };
 
