@@ -26,9 +26,7 @@
 #include "settings.h"
 
 #include <kaboutdata.h>
-#include <kcomponentdata.h>
 #include <kcmdlineargs.h>
-#include <kstandarddirs.h>
 static const char description[] =
     I18N_NOOP( "A KDE Blogging Client" );
 

@@ -26,7 +26,6 @@
 
 #include <klocalizedstring.h>
 #include <ktoolbar.h>
-#include <kaction.h>
 #include <kselectaction.h>
 // #include <kactioncollection.h>
 #include <kicon.h>
