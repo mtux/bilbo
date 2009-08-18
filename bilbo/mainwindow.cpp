@@ -460,10 +460,10 @@ void MainWindow::sltRemovePostEntry( PostEntry *widget )
     tabPosts->removePage(widget);
     widget->close();
 
-    if(tabPosts->count() == 1)
-        tabPosts->setTabBarHidden(true);
-    else
-        tabPosts->setTabBarHidden(false);
+//     if(tabPosts->count() == 1)
+//         tabPosts->setTabBarHidden(true);
+//     else
+//         tabPosts->setTabBarHidden(false);
 
 //     if( tabPosts->count() == 0 ){
 //         sltCreateNewPost();
@@ -606,10 +606,10 @@ QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
     connect( temp, SIGNAL( sigBusy( bool ) ), this, SLOT( slotBusy( bool ) ) );
 
     tabPosts->addTab( temp, post.title() );
-    if(tabPosts->count() == 1)
-        tabPosts->setTabBarHidden(true);
-    else
-        tabPosts->setTabBarHidden(false);
+//     if(tabPosts->count() == 1)
+//         tabPosts->setTabBarHidden(true);
+//     else
+//         tabPosts->setTabBarHidden(false);
     return temp;
 }
 
