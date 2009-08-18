@@ -66,7 +66,6 @@ void MultiLineTextEdit::keyPressEvent( QKeyEvent *event )
 
 QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
 {
-    kDebug() << "loadResource called for " << name.path();
     if ( type == QTextDocument::ImageResource ) {
 
         QByteArray data;
@@ -114,7 +113,6 @@ QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
             QFile file( imageUrl.toLocalFile() );
             
             if ( !file.exists() ) {
-                kDebug() << "local file doesn't exist" ;
                 return QVariant();
             }
             if ( file.open( QIODevice::ReadOnly ) ) {
@@ -172,7 +170,6 @@ void MultiLineTextEdit::sltRemoteFileCopied( KJob * job )
         
         downloadFinished[ srcPath ] = true;
         Q_EMIT sigRemoteImageArrived( copyJob->srcUrl() );
-        kDebug() << srcPath << " arrived.";
     }
 }
 

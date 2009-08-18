@@ -57,6 +57,7 @@ HtmlEditor::HtmlEditor() : QObject()
 
 HtmlEditor::~HtmlEditor()
 {
+    kDebug();
     if ( !instancePrivate.isDestroyed() ) {
         delete mEditor;
         kDebug() << "editor deleted";

@@ -48,7 +48,6 @@ BilboBrowser::BilboBrowser( QWidget *parent ) : QWidget( parent )
 
     KParts::BrowserExtension *browserExtension = browserPart->browserExtension();
     if ( browserExtension ) {
-        kDebug() << "extention isn't null.";
         connect( browserExtension, SIGNAL( loadingProgress( int ) ), 
                 browserProgress, SLOT( setValue( int ) ) );
         connect( browserExtension, SIGNAL( openUrlRequestDelayed( const KUrl &, 
@@ -66,6 +65,7 @@ BilboBrowser::BilboBrowser( QWidget *parent ) : QWidget( parent )
 
 BilboBrowser::~BilboBrowser()
 {
+    kDebug();
 }
 
 void BilboBrowser::createUi( QWidget *parent )
@@ -171,7 +171,6 @@ void BilboBrowser::sltSetBlogStyle()
 
 void BilboBrowser::sltCompleted()
 {
-    kDebug() << "actionCompleted";
     QTimer::singleShot( 1500, browserProgress, SLOT( hide() ) );
 }
 

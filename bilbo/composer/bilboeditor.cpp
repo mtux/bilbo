@@ -71,6 +71,7 @@ BilboEditor::BilboEditor( QWidget *parent )
 
 BilboEditor::~BilboEditor()
 {
+    kDebug();
 }
 
 void BilboEditor::createUi()
@@ -113,8 +114,6 @@ void BilboEditor::createUi()
             this, SLOT( sltSetImageProperties( const int, const int, const int, 
                         const QString, const QString, const QString ) ) );
     connect( lstMediaFiles, SIGNAL( sigRemoveMedia( const int ) ), this, SLOT( sltRemoveMedia( const int ) ) );
-
-    kDebug() << lstMediaFiles->iconSize() << "icon size";
 
     QVBoxLayout *vLayout = new QVBoxLayout( tabVisual );
     vLayout->addWidget( barVisual );
@@ -630,20 +629,16 @@ void BilboEditor::sltReloadImage( const KUrl imagePath )
         QTextBlock::iterator i;
         do {
             for ( i = block.begin(); !( i.atEnd() ); ++i ) {
-                kDebug() << "start iterating";
                 f = i.fragment().charFormat();
                 if ( f.isImageFormat() ) {
-                    kDebug() << "is image format";
                     QTextImageFormat imgFormat = f.toImageFormat();
                     if ( imgFormat.name() == path ) {
-                        kDebug() << "image exists";
                         imgFormat.setName( path );
 
                         cursor.setPosition( i.fragment().position() );
                         cursor.movePosition( QTextCursor::NextCharacter,
                                             QTextCursor::KeepAnchor, i.fragment().length() );
                         if ( cursor.hasSelection() ) {
-                            kDebug() << " mine hasSelection";
                             cursor.mergeCharFormat( imgFormat );
                         }
                     }
@@ -714,13 +709,10 @@ void BilboEditor::sltSetImageProperties( const int index, const int width,
     QTextBlock::iterator i;
     do {
         for ( i = block.begin(); !( i.atEnd() ); ++i ) {
-            kDebug() << "start iterating";
             f = i.fragment().charFormat();
             if ( f.isImageFormat() ) {
-                kDebug() << "is image format";
                 QTextImageFormat imgFormat = f.toImageFormat();
                 if ( imgFormat.name() == path ) {
-                    kDebug() << "image exists";
                     imgFormat.setName(path);
                     if ( width != 0 ) {
                         imgFormat.setWidth( width );
@@ -743,7 +735,6 @@ void BilboEditor::sltSetImageProperties( const int index, const int width,
                     cursor.movePosition( QTextCursor::NextCharacter,
                                          QTextCursor::KeepAnchor, i.fragment().length() );
                     if ( cursor.hasSelection() ) {
-                        kDebug() << " mine hasSelection";
                         cursor.mergeCharFormat( imgFormat );
                     }
                 }
@@ -760,8 +751,6 @@ void BilboEditor::sltRemoveMedia( const int index )
     QString path = lstMediaFiles->item( index )->toolTip();
     delete lstMediaFiles->item( index );
 
-    kDebug() << path;
-
     int count = mMediaList->remove( path );
     kDebug() << count;
 
@@ -772,12 +761,10 @@ void BilboEditor::sltRemoveMedia( const int index )
     do {
         i = block.begin();
         while ( !i.atEnd() ) {
-            kDebug() << "start iterating";
             f = i.fragment().charFormat();
 //             if ( ( f.isImageFormat() && f.toImageFormat().name() == path ) ||
 //                   ( f.isAnchor() && f.anchorHref() == path ) )
             if ( ( f.isImageFormat() ) && ( f.toImageFormat().name() == path ) ) {
-                kDebug() << "found";
 
                 cursor = this->editor->textCursor();
                 cursor.setPosition( i.fragment().position() );
@@ -786,11 +773,9 @@ void BilboEditor::sltRemoveMedia( const int index )
                 ++i;
                 if (i.atEnd()) {
                     cursor.removeSelectedText();
-                    kDebug() << "removed";
                     break;
                 } else {
                     cursor.removeSelectedText();
-                    kDebug() << "removed";
                     i = block.begin();
                 }
             }
@@ -798,10 +783,7 @@ void BilboEditor::sltRemoveMedia( const int index )
                 ++i;
             }
         }
-        kDebug() << "to go next";
         block = block.next();
-        kDebug() << "at next";
-        
     } while ( block.isValid() );
 
     editor->document()->setUndoRedoEnabled( false );
@@ -996,8 +978,6 @@ SyncEnd:
 
 QString BilboEditor::htmlContent()
 {
-    kDebug();
-
     if ( this->currentIndex() == 0 ) {
 
         HtmlExporter* htmlExp = new HtmlExporter();
@@ -1006,8 +986,6 @@ QString BilboEditor::htmlContent()
 
 //         htmlEditor->setPlainText( htmlExp->toHtml( editor->document() ) );
         htmlEditor->document()->setText( htmlExp->toHtml( editor->document() ) );
-        kDebug() << "setting Plain text done";
-
         delete htmlExp;
     }
 
@@ -1083,7 +1061,6 @@ bool BilboEditor::updateMediaPaths()
         startIndex = htmlContent.indexOf( "file://", startIndex );
         endIndex = htmlContent.indexOf( '\"', startIndex );
         path = htmlContent.mid( startIndex, ( endIndex - startIndex ) );
-        kDebug() << path << "is found";
 
         if ( mMediaList->contains( path ) ) {
             BilboMedia *media = mMediaList->value( path );
@@ -1111,9 +1088,7 @@ bool BilboEditor::updateMediaPaths()
         }
         startIndex = htmlContent.indexOf( QRegExp( "<([^<>]*)\"file://" ), endIndex );
     }
-    kDebug() << htmlContent << "update result";
     if ( changed ) {
-        kDebug() << "change is true";
         if ( this->currentIndex() == 0 ) {
             QTextDocument *doc = editor->document();
             doc->clear();

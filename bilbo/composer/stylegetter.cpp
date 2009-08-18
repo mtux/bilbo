@@ -1,9 +1,4 @@
-/***************************************************************************
-
-   Copyright (C) 2007-2008-2008 by Christian Weilbach <christian_weilbach@web.de>
-   Copyright (C) 2007-2008 Antonio Aloisio <gnuton@gnuton.org>
-
- ***************************************************************************/
+/***************************************************************************/
 /*   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
  *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
@@ -180,7 +175,6 @@ void StyleGetter::sltHtmlCopied( KJob *job )
     int filenameOffset = href.lastIndexOf( "/" );
     href = href.remove( filenameOffset + 1, 255 );
     QString base( "<base href=\""+href+"\"/>" );
-    kDebug() << "base: " << base;
 
     QRegExp rxBase( "(<base\\shref=[^>]+>)" );
     if ( rxBase.indexIn( httpData ) != -1 ) {
