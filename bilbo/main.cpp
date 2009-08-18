@@ -34,6 +34,7 @@ static const char description[] =
 
 int main( int argc, char *argv[] )
 {
+    qDebug()<<APPNAME<<' '<<VERSION;
     KAboutData about( "bilbo", 0, ki18n( APPNAME ), VERSION, ki18n( description ),
                       KAboutData::License_GPL_V3, ki18n( "(C) 2008-2009 Bilbo Developers" ),
                       KLocalizedString(), "http://bilbo.gnufolks.org",
@@ -49,7 +50,6 @@ int main( int argc, char *argv[] )
 //     KCmdLineOptions options;
 
     KUniqueApplication app;
-    app.setQuitOnLastWindowClosed(false);
     global_init();
 
     MainWindow *bilbo = new MainWindow;

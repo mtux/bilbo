@@ -129,12 +129,12 @@ void BilboEditor::createUi()
     ///htmlEditor:
     htmlEditor = HtmlEditor::self()->createView( tabHtml );
     QGridLayout *hLayout = new QGridLayout( tabHtml );
-    hLayout->addWidget( qobject_cast< QWidget* >( htmlEditor ) );
+    hLayout->addWidget(  htmlEditor );
 
     ///preview:
     preview = new BilboBrowser( tabPreview );
     QGridLayout *gLayout = new QGridLayout( tabPreview );
-    gLayout->addWidget( qobject_cast< QWidget* >( preview ) );
+    gLayout->addWidget( preview );
     connect( preview, SIGNAL( sigSetBlogStyle() ), this, SLOT( 
             sltSetPostPreview() ) );
 

@@ -136,11 +136,12 @@ MainWindow::~MainWindow()
     for(int i =0; i<count; ++i)
         qobject_cast<PostEntry*>(tabPosts->widget(i))->aboutToQuit();
     writeConfigs();
+    qApp->quit();
 }
 
 void MainWindow::setupActions()
 {
-    KStandardAction::quit( qApp, SLOT( quit() ), actionCollection() );
+    KStandardAction::quit( this, SLOT( close() ), actionCollection() );
 
     KStandardAction::preferences( this, SLOT( optionsPreferences() ), actionCollection() );
 
