@@ -40,10 +40,8 @@
 #include <ktabwidget.h>
 #include <ksystemtrayicon.h>
 #include <kstatusbar.h>
-#include <kaction.h>
 #include <KToggleAction>
 #include <kactioncollection.h>
-#include <kstandardaction.h>
 #include <kconfigdialog.h>
 #include <kdebug.h>
 #include <kmessagebox.h>
@@ -136,11 +134,12 @@ MainWindow::~MainWindow()
     for(int i =0; i<count; ++i)
         qobject_cast<PostEntry*>(tabPosts->widget(i))->aboutToQuit();
     writeConfigs();
+    qApp->quit();
 }
 
 void MainWindow::setupActions()
 {
-    KStandardAction::quit( qApp, SLOT( quit() ), actionCollection() );
+    KStandardAction::quit( this, SLOT( close() ), actionCollection() );
 
     KStandardAction::preferences( this, SLOT( optionsPreferences() ), actionCollection() );
 
@@ -461,6 +460,11 @@ void MainWindow::sltRemovePostEntry( PostEntry *widget )
     tabPosts->removePage(widget);
     widget->close();
 
+//     if(tabPosts->count() == 1)
+//         tabPosts->setTabBarHidden(true);
+//     else
+//         tabPosts->setTabBarHidden(false);
+
 //     if( tabPosts->count() == 0 ){
 //         sltCreateNewPost();
 //         previousActivePostIndex = 0;
@@ -600,10 +604,12 @@ QWidget* MainWindow::createPostEntry(int blog_id, const BilboPost& post)
              this, SLOT(slotShowStatusMessage(QString,bool)));
 
     connect( temp, SIGNAL( sigBusy( bool ) ), this, SLOT( slotBusy( bool ) ) );
-//     connect( temp, SIGNAL( postModified() ), this, SLOT(slotPostModified()) );
-//     connect( temp, SIGNAL( postSavedLocally() ), this, SLOT( slotPostSaved() ) );
 
     tabPosts->addTab( temp, post.title() );
+//     if(tabPosts->count() == 1)
+//         tabPosts->setTabBarHidden(true);
+//     else
+//         tabPosts->setTabBarHidden(false);
     return temp;
 }
 

@@ -200,9 +200,8 @@ void MovableTypePrivate::slotListTrackBackPings(
 
 bool MovableTypePrivate::readArgsFromPost( QList<QVariant> *args, const BlogPost &post )
 {
-  //TODO 3 new keys are:
+  //TODO 2 new keys are:
   // String mt_convert_breaks, the value for the convert_breaks field
-  // String mt_text_more, the value for the additional entry text
   // array mt_tb_ping_urls, the list of TrackBack ping URLs for this entry
   if ( !args ) {
     return false;

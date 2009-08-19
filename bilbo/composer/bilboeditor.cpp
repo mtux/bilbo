@@ -26,7 +26,6 @@
 
 #include <klocalizedstring.h>
 #include <ktoolbar.h>
-#include <kaction.h>
 #include <kselectaction.h>
 // #include <kactioncollection.h>
 #include <kicon.h>
@@ -127,13 +126,14 @@ void BilboEditor::createUi()
 
     ///htmlEditor:
     htmlEditor = HtmlEditor::self()->createView( tabHtml );
-    QGridLayout *gLayout1 = new QGridLayout( tabHtml );
-    gLayout1->addWidget( qobject_cast< QWidget* >( htmlEditor ) );
+    QGridLayout *hLayout = new QGridLayout( tabHtml );
+    hLayout->addWidget( htmlEditor );
 
     ///preview:
     preview = new BilboBrowser( tabPreview );
-    QGridLayout *gLayout2 = new QGridLayout( tabPreview );
-    gLayout2->addWidget( qobject_cast< QWidget* >( preview ) );
+    QGridLayout *gLayout = new QGridLayout( tabPreview );
+    gLayout->addWidget( preview );
+
     connect( preview, SIGNAL( sigSetBlogStyle() ), this, SLOT( 
             sltSetPostPreview() ) );
 

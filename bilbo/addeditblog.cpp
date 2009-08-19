@@ -310,7 +310,6 @@ void AddEditBlog::fetchedBlogId( const QList< QMap < QString , QString > > & lis
     hideWaitWidget();
     QString blogId, blogName, blogUrl, apiUrl;
     if ( list.count() > 1 ) {
-        ///TODO handle more than one blog!
         kDebug() << "User has more than ONE blog!";
         KDialog *blogsDialog = new KDialog(this);
         QTableWidget *blogsList = new QTableWidget(blogsDialog);
