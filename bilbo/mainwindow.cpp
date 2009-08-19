@@ -48,8 +48,6 @@
 #include <KDE/KLocale>
 #include <QDir>
 #include <QFile>
-#include <QMap>
-#include <KFileDialog>
 #include <KSelectAction>
 #include <kimagefilepreview.h>
 #include <KDialog>

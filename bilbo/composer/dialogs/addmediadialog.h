@@ -68,11 +68,12 @@ Q_SIGNALS:
 
 protected:
     virtual void addOtherMediaAttributes();
-    
+
     Ui::AddMediaDialogBase ui;
     BilboMedia *media;
 
 protected Q_SLOTS:
+    virtual void slotSelectLocalFile();
     virtual void sltOkClicked();
     virtual void sltRemoteFileTypeFound( KIO::Job *job, const QString &type );
     void sltMediaSourceChanged();

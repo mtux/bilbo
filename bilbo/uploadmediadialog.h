@@ -39,7 +39,8 @@ signals:
 //     void error(const QString &msg);
     void sigBusy(bool isBusy);
 protected slots:
-    void mediaChanged(const QString newPath);
+    bool selectNewFile();
+    void currentMediaChanged(QString);
     void slotUploadTypeChanged(int index);
     void slotButtonClicked(int button);
     void slotMediaObjectUploaded(KJob *);

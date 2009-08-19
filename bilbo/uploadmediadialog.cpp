@@ -21,7 +21,12 @@
 
 #include "uploadmediadialog.h"
 #include <KDebug>
+
+#ifdef WIN32
+#include <QFileDialog>
+#endif
 #include <KFileDialog>
+
 #include <settings.h>
 #include <KMessageBox>
 #include "bilboblog.h"
@@ -39,15 +44,16 @@ UploadMediaDialog::UploadMediaDialog( QWidget *parent ) :
     QWidget *widget = new QWidget;
     ui.setupUi(widget);
     this->setMainWidget(widget);
-    this->setAttribute(Qt::WA_DeleteOnClose);//should delete manually after upload!
+    this->setAttribute(Qt::WA_DeleteOnClose);
     setButtonText(KDialog::Ok, i18n("Upload") );
     setWindowTitle( i18n( "Upload media..." ) );
     ui.kcfg_FtpPath->setText(Settings::ftpServerPath());
     ui.kcfg_httpUrl->setText(Settings::httpUrl());
     setWindowModality(Qt::ApplicationModal);
-
-    connect(ui.kcfg_FileBrowser, SIGNAL(textChanged(const QString)), this, SLOT(mediaChanged(const QString)));
+    ui.kcfg_urlBrowser->setIcon(KIcon("document-open"));
+    connect( ui.kcfg_urlBrowser, SIGNAL(clicked(bool)), this, SLOT(selectNewFile()) );
     connect(ui.kcfg_uploadType, SIGNAL(currentIndexChanged(int)), this, SLOT(slotUploadTypeChanged(int)));
+    connect( ui.kcfg_urlLineEdit, SIGNAL(textChanged(QString)), this, SLOT(currentMediaChanged(QString)) );
 }
 
 UploadMediaDialog::~UploadMediaDialog()
@@ -60,10 +66,7 @@ UploadMediaDialog::~UploadMediaDialog()
 
 void UploadMediaDialog::init( const BilboBlog *currentBlog )
 {
-    QString mediaPath = KFileDialog::getOpenFileName( KUrl("kfiledialog:///image?global"),
-                                                      QString(), this,
-                                                      i18n("Select media to upload"));
-    if(mediaPath.isEmpty()) {
+    if( !selectNewFile() ) {
         deleteLater();
         return;
     }
@@ -74,18 +77,33 @@ void UploadMediaDialog::init( const BilboBlog *currentBlog )
         }
     }
     ui.kcfg_uploadType->addItem( i18n("FTP"), FTP);
-    KUrl mediaUrl(mediaPath);
-    ui.kcfg_FileBrowser->setUrl(mediaUrl);
-    ui.kcfg_Name->setText(mediaUrl.fileName());
     slotUploadTypeChanged(ui.kcfg_uploadType->currentIndex());
     this->show();
 }
 
-void UploadMediaDialog::mediaChanged(const QString newPath)
+void UploadMediaDialog::currentMediaChanged(QString newPath)
 {
-    KUrl newUrl(newPath);
-    ui.kcfg_previewer->showPreview( newUrl);
-    ui.kcfg_Name->setText( newUrl.fileName() );
+    ui.kcfg_previewer->showPreview(KUrl(newPath));
+}
+
+bool UploadMediaDialog::selectNewFile()
+{
+    QString mediaPath;
+#ifdef WIN32
+    mediaPath = QFileDialog::getOpenFileName( this, i18n("Select media to upload") );
+#else
+    mediaPath = KFileDialog::getOpenFileName( KUrl("kfiledialog:///image?global"),
+                                                      QString(), this,
+                                                      i18n("Select media to upload"));
+#endif
+    if( mediaPath.isEmpty() )
+        return false;
+
+    KUrl mediaUrl(mediaPath);
+    ui.kcfg_urlLineEdit->setText(mediaPath);
+    ui.kcfg_Name->setText(mediaUrl.fileName());
+    ui.kcfg_previewer->showPreview( mediaUrl );
+    return true;
 }
 
 void UploadMediaDialog::slotUploadTypeChanged(int index)
@@ -104,7 +122,7 @@ void UploadMediaDialog::slotButtonClicked(int button)
         UploadType type = (UploadType)ui.kcfg_uploadType->itemData(ui.kcfg_uploadType->currentIndex()).toInt();
         if( type == BlogAPI ) {///Using API!
             BilboMedia *media = new BilboMedia(this);
-            KUrl mediaUrl( ui.kcfg_FileBrowser->url() );
+            KUrl mediaUrl( ui.kcfg_urlLineEdit->text() );
             media->setLocalUrl(mediaUrl);
             media->setName( ui.kcfg_Name->text().isEmpty() ? mediaUrl.fileName() : ui.kcfg_Name->text() );
             media->setBlogId( mCurrentBlog->id() );
@@ -126,9 +144,10 @@ void UploadMediaDialog::slotButtonClicked(int button)
             dest.setUrl(ui.kcfg_FtpPath->text() , QUrl::TolerantMode);
             if( dest.isValid() ) {
                 if( dest.scheme() == "ftp" || dest.scheme() == "sftp" ) {
-                    dest.addPath( ui.kcfg_Name->text().isEmpty() ? ui.kcfg_FileBrowser->url().fileName() :
+                    KUrl src(ui.kcfg_urlLineEdit->text());
+                    dest.addPath( ui.kcfg_Name->text().isEmpty() ? src.fileName() :
                                                                   ui.kcfg_Name->text() );
-                    KIO::FileCopyJob *job = KIO::file_copy(ui.kcfg_FileBrowser->url(), dest);
+                    KIO::FileCopyJob *job = KIO::file_copy(src, dest);
                     connect(job, SIGNAL(result(KJob *)), this, SLOT(slotMediaObjectUploaded(KJob *)));
                     job->start();
                     this->hide();

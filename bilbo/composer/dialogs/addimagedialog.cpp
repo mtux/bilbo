@@ -18,7 +18,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <kfiledialog.h>
+#ifdef WIN32
+#include <QFileDialog>
+#else
+#include <KFileDialog>
+#endif
+
 #include <kmessagebox.h>
 #include <kdebug.h>
 
@@ -37,15 +42,27 @@ AddImageDialog::AddImageDialog(QWidget* parent): AddMediaDialog(parent)
     ui.radiobtnRemoteUrl->setEnabled( true );
     this->setWindowTitle( i18n( "Add Image" ) );
 
-    QStringList mimeFilter;
-    mimeFilter << "image/gif" << "image/jpeg" << "image/png" ;
-    ui.kurlreqMediaUrl->fileDialog()->setMimeFilter( mimeFilter );
+//     QStringList mimeFilter;
+//     mimeFilter << "image/gif" << "image/jpeg" << "image/png" ;
+//     ui.kurlreqMediaUrl->fileDialog()->setMimeFilter( mimeFilter );
 }
 
 
 AddImageDialog::~AddImageDialog()
 {
     kDebug();
+}
+
+void AddImageDialog::slotSelectLocalFile()
+{
+    QString path;
+#ifdef WIN32
+    path = QFileDialog::getOpenFileName( this, i18n("Choose a file"),
+                                           QString(), i18n("Images (*.png *.gif *.jpg)" ) );
+#else
+    path = KFileDialog::getImageOpenUrl( KUrl(), this, i18n("Choose a file") ).path();
+#endif
+    ui.urlReqLineEdit->setText(path);
 }
 
 

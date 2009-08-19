@@ -38,14 +38,17 @@ public:
     AddImageDialog(QWidget* parent);
 
     ~AddImageDialog();
-    
+
 Q_SIGNALS:
     void sigAddImage( BilboMedia *media, const int width, const int height, 
                       const QString title, const QString link, const QString Alt_text  );
 
 protected:
     virtual void addOtherMediaAttributes();
-    
+
+protected slots:
+    virtual void slotSelectLocalFile();
+
 private:
     QFrame *editFrame;
     Ui::EditImageBase editImageWidgetUi;

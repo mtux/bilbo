@@ -18,8 +18,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifdef WIN32
+#include <QFileDialog>
+#else
+#include <KFileDialog>
+#endif
 
-#include <kfiledialog.h>
 #include <klineedit.h>
 #include <kmessagebox.h>
 #include <kmimetype.h>
@@ -46,20 +50,33 @@ AddMediaDialog::AddMediaDialog( QWidget *parent ) : KDialog( parent )
              SLOT( sltMediaSourceChanged() ) );
     connect( ui.radiobtnRemoteUrl, SIGNAL( toggled( bool ) ), this, 
              SLOT( sltMediaSourceChanged() ) );
-    
-    ui.kurlreqMediaUrl->lineEdit()->setFocus();
-    ui.kurlreqMediaUrl->fileDialog()->setWindowTitle( i18n( "Choose a file" ) );
-    ui.kurlreqMediaUrl->lineEdit()->setToolTip( i18n( "Type media path here." ) );
-    ui.kurlreqMediaUrl->button()->setToolTip( i18n( "Browse" ) );
+    connect( ui.urlReqBrowse, SIGNAL(clicked(bool)), SLOT(slotSelectLocalFile()) );
+    ui.urlReqLineEdit->setFocus();
+    ui.urlReqLineEdit->setToolTip( i18n( "Type media path here." ) );
+    ui.urlReqBrowse->setToolTip( i18n( "Browse" ) );
+    ui.urlReqBrowse->setIcon(KIcon("document-open"));
 }
 
 AddMediaDialog::~AddMediaDialog()
 {
 }
 
+void AddMediaDialog::slotSelectLocalFile()
+{
+    QString path;
+#ifdef WIN32
+    path = QFileDialog::getOpenFileName( this, i18n("Choose a file") );
+#else
+    path = KFileDialog::getOpenFileName( KUrl(),
+                                         QString(), this,
+                                         i18n("Choose a file") );
+#endif
+    ui.urlReqLineEdit->setText(path);
+}
+
 void AddMediaDialog::sltOkClicked()
 {
-    KUrl mediaUrl = ui.kurlreqMediaUrl->url();
+    KUrl mediaUrl( ui.urlReqLineEdit->text() );
     kDebug() << "parent ok";
     if ( !mediaUrl.isEmpty() ) {
         if ( mediaUrl.isValid() ) {
@@ -121,9 +138,9 @@ void AddMediaDialog::addOtherMediaAttributes()
 void AddMediaDialog::sltMediaSourceChanged()
 {
     if ( ui.radiobtnRemoteUrl->isChecked() ) {
-        ui.kurlreqMediaUrl->button()->setEnabled( false );
+        ui.urlReqBrowse->setEnabled( false );
     } else {
-        ui.kurlreqMediaUrl->button()->setEnabled( true );
+        ui.urlReqBrowse->setEnabled( true );
     }
 }
 #include "composer/dialogs/addmediadialog.moc"
