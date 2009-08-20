@@ -69,17 +69,16 @@ QVariant MultiLineTextEdit::loadResource( int type, const QUrl & name )
     if ( type == QTextDocument::ImageResource ) {
 
         QByteArray data;
-        KUrl imageUrl = KUrl( name );
+        KUrl imageUrl( name );
         QString imageUrlString = imageUrl.url();
 
         if ( name.scheme() != "file" ) {
 
             QString cacheFileName = name.host() + name.path();
-            cacheFileName.replace( QChar( '/' ), QChar( '.' ) );
-            
-            KUrl localUrl = KUrl( "file://" + CACHED_MEDIA_DIR + cacheFileName );
+            cacheFileName.replace( QChar( '/' ), QChar( '.' ) );//I prefer to use _ instead of . here! Just a personal idea ;) -Mehrdad
+            KUrl localUrl( CACHED_MEDIA_DIR );
+            localUrl.addPath( cacheFileName );
             QFile file( CACHED_MEDIA_DIR + cacheFileName );
-
             if ( !file.exists() ) {
                 if ( !downloadFinished.contains( imageUrl.url() ) ) {
                     downloadFinished.insert( imageUrl.url(), false);
