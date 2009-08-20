@@ -1,5 +1,5 @@
-/***************************************************************************/
-/*   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
+/***************************************************************************
+ *   Copyright (C) 2008-2009 Mehrdad Momeny <mehrdad.momeny@gmail.com>     *
  *   Copyright (C) 2008-2009 Golnaz Nilieh <g382nilieh@gmail.com>          *
  *                                                                         *
  *   This file is part of the Bilbo Blogger.                               *
@@ -75,7 +75,7 @@ StyleGetter::StyleGetter( const int blogid, QObject *parent ): QObject( parent )
     }
 
     b = new Backend( blogid );
-    connect( b, SIGNAL( sigPostPublished( int, BilboPost* ) ), this, 
+    connect( b, SIGNAL( sigPostPublished( int, BilboPost* ) ), this,
              SLOT( sltTempPostPublished( int, BilboPost* ) ) );
 //     connect( b, SIGNAL( sigPostFetched( BilboPost * ) ), this, SLOT( sltTempPostFetched( BilboPost * ) ) );
     connect( b, SIGNAL( sigError( const QString& ) ), this, SLOT( sltError( const QString& ) ) );
@@ -100,19 +100,22 @@ QString StyleGetter::styledHtml( const int blogid,
 //         kDebug() << DBMan::self()->lastErrorText();
 //         return "<html><body><b>" + title + "</b><br>" + content + "</html>";
 //     }
-// 
+//
 //     QString blogDir = tempBlog.url().host();
-    QString url = QString( "bilbo/%1/style.html" ).arg( blogid );
-    KUrl dest = KStandardDirs::locate( "data", url );
-    kDebug() <<  url;
+    //QString url = QString( "bilbo/%1/" ).arg( blogid );
+    QString url = QString( "bilbo/%1/" ).arg( blogid );
+    url = KStandardDirs::locateLocal( "data", url , true );
+    KUrl dest( url );
+    dest.addPath("style.html");
+    dest.setScheme("file");
 
     QString buffer;
     if ( !dest.isValid() ) {
-        return "<html><body><b>" + title + "</b><br>" + content + "</html>";
+        return "<html><body><h2 align='center'>" + title + "</h2><br>" + content + "</html>";
     }
-    QFile file( dest.path() );
+    QFile file( dest.pathOrUrl() );
     if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) ) {
-        return "<html><body><b>" + title + "</b><br>" + content + "</html>";
+        return "<html><body><h2 align='center'>" + title + "</h2><br>" + content + "</html>";
     }
     while ( !file.atEnd() ) {
         QByteArray line = file.readLine();
@@ -185,17 +188,15 @@ void StyleGetter::sltHtmlCopied( KJob *job )
         httpData.insert( headOffset + 6, base.toLatin1() );
     }
 
-    KUrl dest(mCachePath + "style.html");
+    QFile file( mCachePath + "style.html" );
 //     Q_ASSERT( dest.isValid() );
-
-    if ( QFile::exists( dest.path() ) ) {
-        QFile::remove( dest.path() );
+    if ( file.exists() ) {
+        file.remove();
     }
-    QFile file( dest.path() );
     file.open( QIODevice::WriteOnly );
     if ( file.write( httpData ) == -1 ) {
         KMessageBox::error( mParent,
-                            i18n( "Cannot write data to file %1", dest.path() ) );
+                            i18n( "Cannot write data to file %1", file.fileName() ) );
 
         file.close();
         return;
@@ -207,7 +208,7 @@ void StyleGetter::sltHtmlCopied( KJob *job )
 
     //Remove temp post from the server.
     b->removePost( *mTempPost );
-    connect( b, SIGNAL( sigPostRemoved( int, const BilboPost &) ), this, 
+    connect( b, SIGNAL( sigPostRemoved( int, const BilboPost &) ), this,
              SLOT( sltTempPostRemoved( int, const BilboPost & ) ) );
 }
 
