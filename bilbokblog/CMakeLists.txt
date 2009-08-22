@@ -6,7 +6,7 @@ find_package(Boost REQUIRED)
 include_directories( ${QT_INCLUDES} ${Boost_INCLUDE_DIR} ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/bilbokblog/ ${KDE4_INCLUDES} ${KDEPIMLIBS_INCLUDE_DIR})
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules )
-add_subdirectory( tests )
+# add_subdirectory( tests )
 
 ########### next target ###############
 
