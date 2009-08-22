@@ -332,7 +332,7 @@ void Toolbox::setFieldsValue( BilboPost* post )
     chkOptionsTime->setChecked( post->isModifyTimeStamp() );
     optionsTime->setTime( post->creationDateTime().time() );
     optionsDate->setDate( post->creationDateTime().date() );
-    txtSlug->setText( post->slug() );
+    txtSlug->setText( KUrl::fromPercentEncoding( post->slug().toLatin1() ) );
     txtSummary->setPlainText( post->summary() );
 }
 
