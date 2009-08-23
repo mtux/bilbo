@@ -300,6 +300,13 @@ void Toolbox::getFieldsValue( BilboPost &currentPost )
         currentPost.setCreationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
         currentPost.setModificationDateTime( KDateTime( optionsDate->date(), optionsTime->time() ) );
     }
+    if( currentPost.creationDateTime().isUtc() || currentPost.modificationDateTime().isUtc() ){
+        kDebug()<<"creationDateTime was UTC!";
+        currentPost.setCreationDateTime( KDateTime( currentPost.creationDateTime().dateTime(),
+                                                    KDateTime::LocalZone ) );
+        currentPost.setModificationDateTime( KDateTime( currentPost.modificationDateTime().dateTime(),
+                                                    KDateTime::LocalZone ) );
+    }
     currentPost.setSlug( txtSlug->text() );
     currentPost.setPrivate(( comboOptionsStatus->currentIndex() == 1 ) ? true : false );
     currentPost.setCommentAllowed( chkOptionsComments->isChecked() );
@@ -330,6 +337,11 @@ void Toolbox::setFieldsValue( BilboPost* post )
     chkOptionsComments->setChecked( post->isCommentAllowed() );
     chkOptionsTrackback->setChecked( post->isTrackBackAllowed() );
     chkOptionsTime->setChecked( post->isModifyTimeStamp() );
+    if( post->creationDateTime().isUtc() || post->modificationDateTime().isUtc() ){
+        kDebug()<<"creationDateTime was UTC!";
+        post->setCreationDateTime(KDateTime(post->creationDateTime().dateTime(), KDateTime::LocalZone));
+        post->setModificationDateTime(KDateTime(post->modificationDateTime().dateTime(), KDateTime::LocalZone));
+    }
     optionsTime->setTime( post->creationDateTime().time() );
     optionsDate->setDate( post->creationDateTime().date() );
     txtSlug->setText( KUrl::fromPercentEncoding( post->slug().toLatin1() ) );

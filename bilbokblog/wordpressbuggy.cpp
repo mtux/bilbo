@@ -95,13 +95,11 @@ void WordpressBuggy::createPost( KBlog::BlogPost *post )
     xmlMarkup += "</data></array></value>";
     xmlMarkup += "</member><member>";
   }
-  if( post->creationDateTime().secsTo( KDateTime::currentLocalDateTime() ) > 60 ) {
-    xmlMarkup += "<name>dateCreated</name>";
-    xmlMarkup += "<value><dateTime.iso8601>" +
-                post->creationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ssZ" ) +
-                "</dateTime.iso8601></value>";
-    xmlMarkup += "</member><member>";
-  }
+  xmlMarkup += "<name>dateCreated</name>";
+  xmlMarkup += "<value><dateTime.iso8601>" +
+              post->creationDateTime().dateTime().toUTC().toString( "yyyyMMddThh:mm:ssZ" ) +
+              "</dateTime.iso8601></value>";
+  xmlMarkup += "</member><member>";
   xmlMarkup += "<name>mt_allow_comments</name>";
   xmlMarkup += QString( "<value><int>%1</int></value>" ).arg( (int)post->isCommentAllowed() );
   xmlMarkup += "</member><member>";
@@ -198,13 +196,13 @@ void WordpressBuggy::modifyPost( KBlog::BlogPost *post )
 
   xmlMarkup += "<name>lastModified</name>";
   xmlMarkup += "<value><dateTime.iso8601>" +
-               post->modificationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ssZ" ) +
+               post->modificationDateTime().dateTime().toUTC().toString( "yyyyMMddThh:mm:ssZ" ) +
                "</dateTime.iso8601></value>";
   xmlMarkup += "</member><member>";
 
   xmlMarkup += "<name>dateCreated</name>";
   xmlMarkup += "<value><dateTime.iso8601>" +
-              post->creationDateTime().toUtc().dateTime().toString( "yyyyMMddThh:mm:ssZ" ) +
+              post->creationDateTime().dateTime().toUTC().toString( "yyyyMMddThh:mm:ssZ" ) +
               "</dateTime.iso8601></value>";
   xmlMarkup += "</member><member>";
   xmlMarkup += "<name>mt_allow_comments</name>";

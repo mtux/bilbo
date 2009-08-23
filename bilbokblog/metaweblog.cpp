@@ -256,8 +256,8 @@ bool MetaWeblogPrivate::readArgsFromPost( QList<QVariant> *args, const BlogPost 
   map["categories"] = post.categories();
   map["description"] = post.content();
   map["title"] = post.title();
-  map["lastModified"] = post.modificationDateTime().toUtc().dateTime();
-  map["dateCreated"] = post.creationDateTime().toUtc().dateTime();
+  map["lastModified"] = post.modificationDateTime().dateTime().toUTC();
+  map["dateCreated"] = post.creationDateTime().dateTime().toUTC();
   *args << map;
   *args << QVariant( !post.isPrivate() );
   return true;

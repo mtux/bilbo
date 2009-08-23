@@ -212,9 +212,7 @@ bool MovableTypePrivate::readArgsFromPost( QList<QVariant> *args, const BlogPost
   if( !post.additionalContent().isEmpty() )
     map["mt_text_more"] = post.additionalContent();
   map["title"] = post.title();
-  if( post.creationDateTime().secsTo( KDateTime::currentLocalDateTime() ) > 60 ) {
-    map["dateCreated"] = post.creationDateTime().toUtc().dateTime();
-  }
+  map["dateCreated"] = post.creationDateTime().dateTime().toUTC();
   map["mt_allow_comments"] = (int)post.isCommentAllowed();
   map["mt_allow_pings"] = (int)post.isTrackBackAllowed();
   map["mt_excerpt"] = post.summary();
