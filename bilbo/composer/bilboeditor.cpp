@@ -46,7 +46,11 @@
 #include "medialistwidget.h"
 #include "stylegetter.h"
 #include "htmleditor.h"
+#ifdef WIN32
+#include "bilbobrowser_win.h"
+#else
 #include "bilbobrowser.h"
+#endif
 #include "bilboeditor.h"
 
 #include "dialogs/addeditlink.h"
