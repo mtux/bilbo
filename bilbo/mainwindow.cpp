@@ -168,6 +168,7 @@ void MainWindow::setupActions()
     actionCollection()->addAction( QLatin1String( "toggle_toolbox" ), actToggleToolboxVisible );
     actToggleToolboxVisible->setShortcut( Qt::CTRL + Qt::Key_T );
     connect( actToggleToolboxVisible, SIGNAL( toggled( bool ) ), this, SLOT( sltToggleToolboxVisible( bool ) ) );
+    connect( toolboxDock, SIGNAL(visibilityChanged(bool)), actToggleToolboxVisible, SLOT(setChecked(bool)) );
 
     KAction *actClearImageCache = new KAction( KIcon( "edit-clear" ), i18n( "Clear cached images" ), this );
     actionCollection()->addAction( QLatin1String( "clear_image_cache" ), actClearImageCache );
