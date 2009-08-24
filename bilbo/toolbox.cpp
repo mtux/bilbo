@@ -32,7 +32,6 @@
 #include "dbman.h"
 #include "entriescountdialog.h"
 #include "addeditblog.h"
-#include "global.h"
 #include "backend.h"
 #include "bilbopost.h"
 #include "bilboblog.h"
@@ -512,7 +511,7 @@ void Toolbox::sltRemoveLocalEntry()
 {
     kDebug();
     if(localEntriesTable->selectedItems().count() > 0) {
-        int local_id = localEntriesTable->item(0, localEntriesTable->currentRow())->data(32).toInt();
+        int local_id = localEntriesTable->item(localEntriesTable->currentRow(), 0)->data(32).toInt();
         if( KMessageBox::warningYesNo(this, i18n("Are you sure of removing selected local entry?")) 
             == KMessageBox::No )
             return;
@@ -520,7 +519,8 @@ void Toolbox::sltRemoveLocalEntry()
         if( DBMan::self()->removeLocalEntry(local_id) ) {
             localEntriesTable->removeRow(localEntriesTable->currentRow());
         } else {
-            KMessageBox::detailedError(this, i18n("Cannot remove selected local entry!"), DBMan::self()->lastErrorText());
+            KMessageBox::detailedError(this, i18n("Cannot remove selected local entry!"),
+                                       DBMan::self()->lastErrorText());
         }
     } else {
         KMessageBox::sorry(this, i18n("You have to select at least one entry from list."));
@@ -530,10 +530,12 @@ void Toolbox::sltRemoveLocalEntry()
 void Toolbox::clearEntries()
 {
     kDebug();
-    int id = mCurrentBlogId;
-    if( id == -1 )
+    if( mCurrentBlogId == -1 )
         return;
-    if ( DBMan::self()->clearPosts( id ) )
+    if ( KMessageBox::warningContinueCancel(this, i18n("Are you sure of clearing entries list?")) ==
+         KMessageBox::Cancel )
+        return;
+    if ( DBMan::self()->clearPosts( mCurrentBlogId ) )
         lstEntriesList->clear();
     else
         KMessageBox::detailedSorry(this, i18n( "Can not clear entries list." ) , DBMan::self()->lastErrorText());

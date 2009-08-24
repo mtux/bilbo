@@ -33,7 +33,6 @@
 
 #include "addmediadialog.h"
 #include "bilbomedia.h"
-#include "global.h"
 #include "settings.h"
 
 AddMediaDialog::AddMediaDialog( QWidget *parent ) : KDialog( parent )

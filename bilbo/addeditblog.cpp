@@ -35,7 +35,6 @@
 #include "bilboblog.h"
 #include "addeditblog.h"
 #include "dbman.h"
-#include "global.h"
 #include <QTableWidget>
 
 static const int TIMEOUT = 45000;

@@ -21,7 +21,6 @@
 
 #include "backend.h"
 #include "bilboblog.h"
-#include "global.h"
 #include "bilbopost.h"
 #include "bilbomedia.h"
 #include "dbman.h"
