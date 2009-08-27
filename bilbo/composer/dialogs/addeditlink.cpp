@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 #include "addeditlink.h"
-
+#include "settings.h"
 // KConfigGroup AddEditLink::links( KGlobal::config(), QString::fromLatin1("LinksCache") );
 
 AddEditLink::AddEditLink( QWidget *parent )
@@ -66,10 +66,12 @@ void AddEditLink::slotButtonClicked( int button )
             linkTarget = "_blank";
         }
         const QString target = linkTarget;
-        QStringList linksList = confGroup->readEntry("LinksCache", QStringList());
-        linksList.append(link);
-        confGroup->writeEntry("LinksCache", linksList );
-        confGroup->sync();
+        if( Settings::urlCachingEnabled() ) {
+            QStringList linksList = confGroup->readEntry("LinksCache", QStringList());
+            linksList.append(link);
+            confGroup->writeEntry("LinksCache", linksList );
+            confGroup->sync();
+        }
         emit addLink( link, target, ui.txtTitle->text() );
         accept();
     } else

@@ -1,57 +1,58 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>EditorSettingsBase</class>
- <widget class="QWidget" name="EditorSettingsBase" >
-  <property name="geometry" >
+ <widget class="QWidget" name="EditorSettingsBase">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>324</width>
-    <height>109</height>
+    <width>373</width>
+    <height>119</height>
    </rect>
   </property>
-  <layout class="QGridLayout" name="gridLayout" >
-   <item row="1" column="0" >
-    <widget class="QLabel" name="label" >
-     <property name="text" >
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="3" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
       <string>Editor auto save interval :</string>
      </property>
-     <property name="alignment" >
+     <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
-     <property name="buddy" >
+     <property name="buddy">
       <cstring>kcfg_autosaveInterval</cstring>
      </property>
     </widget>
    </item>
-   <item row="1" column="1" >
-    <widget class="KIntSpinBox" name="kcfg_autosaveInterval" >
-     <property name="specialValueText" >
+   <item row="3" column="1">
+    <widget class="KIntSpinBox" name="kcfg_autosaveInterval">
+     <property name="specialValueText">
       <string>Disbaled</string>
      </property>
-     <property name="suffix" >
+     <property name="suffix">
       <string> minute</string>
      </property>
-     <property name="maximum" >
+     <property name="maximum">
       <number>60</number>
      </property>
-     <property name="value" >
+     <property name="value">
       <number>5</number>
      </property>
     </widget>
    </item>
-   <item row="0" column="0" colspan="2" >
-    <widget class="QCheckBox" name="kcfg_addPoweredBy" >
-     <property name="text" >
-      <string>Automatically insert "Powered by Bilbo Blogger"</string>
+   <item row="0" column="0" colspan="2">
+    <widget class="QCheckBox" name="kcfg_addPoweredBy">
+     <property name="text">
+      <string>Automatically insert &quot;Powered by Bilbo Blogger&quot;</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="0" colspan="2" >
-    <spacer name="verticalSpacer" >
-     <property name="orientation" >
+   <item row="5" column="0" colspan="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>40</height>
@@ -59,10 +60,17 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="0" colspan="2" >
-    <widget class="QCheckBox" name="kcfg_previewInBlogStyle" >
-     <property name="text" >
+   <item row="1" column="0" colspan="2">
+    <widget class="QCheckBox" name="kcfg_previewInBlogStyle">
+     <property name="text">
       <string>Enable preview posts in blog style, when available.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QCheckBox" name="kcfg_urlCachingEnabled">
+     <property name="text">
+      <string>Enable URL caching on add link dialog</string>
      </property>
     </widget>
    </item>

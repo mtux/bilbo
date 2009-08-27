@@ -34,6 +34,9 @@
     <entry name="previewInBlogStyle" type="Bool">
         <default>true</default>
     </entry>
+    <entry name="urlCachingEnabled" type="Bool">
+        <default>true</default>
+    </entry>
   </group>
   <group name="Advanced">
     <entry name="changeNToBreak" type="Bool">
