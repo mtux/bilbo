@@ -168,7 +168,7 @@ void MainWindow::setupActions()
     actionCollection()->addAction( QLatin1String( "toggle_toolbox" ), actToggleToolboxVisible );
     actToggleToolboxVisible->setShortcut( Qt::CTRL + Qt::Key_T );
     connect( actToggleToolboxVisible, SIGNAL( toggled( bool ) ), this, SLOT( sltToggleToolboxVisible( bool ) ) );
-    connect( toolboxDock, SIGNAL(visibilityChanged(bool)), actToggleToolboxVisible, SLOT(setChecked(bool)) );
+    connect( toolboxDock, SIGNAL(visibilityChanged(bool)), this, SLOT( sltToggleToolboxVisible(bool) ) );
 
     KAction *actClearImageCache = new KAction( KIcon( "edit-clear" ), i18n( "Clear cached images" ), this );
     actionCollection()->addAction( QLatin1String( "clear_image_cache" ), actClearImageCache );
@@ -393,14 +393,10 @@ void MainWindow::sltPostTitleChanged( const QString& title )
 
 void MainWindow::sltToggleToolboxVisible( bool isVisible )
 {
-    toolboxDock->setVisible( isVisible );
-//     if ( toolbox->isVisible() ) {
-//         toolboxDock->hide();
-//         actToggleToolboxVisible->setText( i18n( "Show Toolbox" ) );
-//     } else {
-//         toolboxDock->show();
-//         actToggleToolboxVisible->setText( i18n( "Hide Toolbox" ) );
-//     }
+    if( this->isVisible() ) {
+        actionCollection()->action(QLatin1String("toggle_toolbox"))->setChecked(isVisible);
+        toolboxDock->setVisible( isVisible );
+    }
 }
 
 void MainWindow::sltActivePostChanged( int index )
