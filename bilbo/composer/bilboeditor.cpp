@@ -59,18 +59,20 @@
 #include "htmlconvertors/bilbotextformat.h"
 #include "htmlconvertors/bilbotexthtmlimporter.h"
 #include "htmlconvertors/htmlexporter.h"
+#include <settings.h>
 
 BilboEditor::BilboEditor( QWidget *parent )
         : KTabWidget( parent )
 {
     createUi();
     connect( editor, SIGNAL( textChanged() ), this, SIGNAL( textChanged() ) );
-    connect( htmlEditor->document(), SIGNAL( textChanged( KTextEditor::Document * ) ), this, SIGNAL( textChanged() ) );
-//     connect( qobject_cast< QObject* >( htmlEditor->document() ), 
-//              SIGNAL( textChanged() ), this, SIGNAL( textChanged() ) );
+    connect( htmlEditor->document(), SIGNAL( textChanged( KTextEditor::Document * ) ),
+             this, SIGNAL( textChanged() ) );
+    connect( Settings::self(), SIGNAL(configChanged()),
+             this, SLOT(slotSettingsChanged()) );
+    editor->setCheckSpellingEnabled( Settings::enableCheckSpelling() );
     editor->setFocus();
 }
-
 
 BilboEditor::~BilboEditor()
 {
@@ -168,8 +170,8 @@ void BilboEditor::createUi()
 
 void BilboEditor::createActions()
 {
-    actCheckSpelling = new KAction( KIcon( "tools-check-spelling" ), i18n( "Enable Spell Checking"),
-                           this );
+    actCheckSpelling = new KAction( KIcon( "tools-check-spelling" ),
+                                    i18n( "Enable Spell Checking"), this );
     actCheckSpelling->setCheckable( true );
     connect( actCheckSpelling, SIGNAL( triggered( bool ) ), this, 
              SLOT( sltToggleSpellChecking() ) );
@@ -326,11 +328,7 @@ void BilboEditor::createActions()
 
 void BilboEditor::sltToggleSpellChecking()
 {
-    if ( actCheckSpelling->isChecked() ) {
-        editor->setCheckSpellingEnabled( true );
-    } else {
-        editor->setCheckSpellingEnabled( false );
-    }
+    editor->setCheckSpellingEnabled( actCheckSpelling->isChecked() );
 }
 
 void BilboEditor::sltSyncSpellCheckingButton( bool check )
@@ -1102,8 +1100,6 @@ bool BilboEditor::updateMediaPaths()
             htmlEditor->document()->setText( htmlContent );
         }
     }
-
-    editor->document()->setUndoRedoEnabled( false );
     editor->document()->setUndoRedoEnabled( true );
 
     return true;
@@ -1114,6 +1110,11 @@ void BilboEditor::sltSetPostPreview()
     if ( this->currentIndex() == 2 ) {
         preview->setHtml( currentPostTitle, htmlEditor->document()->text() );
     }
+}
+
+void BilboEditor::slotSettingsChanged()
+{
+    editor->setCheckSpellingEnabled( Settings::enableCheckSpelling() );
 }
 
 #include "composer/bilboeditor.moc"

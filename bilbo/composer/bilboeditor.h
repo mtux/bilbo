@@ -139,11 +139,12 @@ Q_SIGNALS:
     void sigBusy( bool isBusy );
 
 protected Q_SLOTS:
-    
+    void slotSettingsChanged();
+
     void sltToggleSpellChecking();
 
     void sltSyncSpellCheckingButton( bool check );
-    
+
     void sltSetTextBold( bool bold );
 
     /*!

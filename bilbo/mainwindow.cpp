@@ -401,9 +401,6 @@ void MainWindow::sltToggleToolboxVisible( bool isVisible )
 void MainWindow::slotToolboxVisibilityChanged(bool)
 {
     actionCollection()->action(QLatin1String("toggle_toolbox"))->setChecked( toolboxDock->isVisibleTo(this) );
-//         actionCollection()->action(QLatin1String("toggle_toolbox"))->setChecked(true);
-//     else
-//         actionCollection()->action(QLatin1String("toggle_toolbox"))->setChecked(false);
 }
 
 void MainWindow::sltActivePostChanged( int index )
