@@ -65,6 +65,7 @@ protected slots:
     void sltUploadAllChanges();
     void sltPostTitleChanged( const QString& title );
     void sltToggleToolboxVisible( bool isVisible );
+    void slotToolboxVisibilityChanged( bool isVisible );
     void sltActivePostChanged( int tabIndex );
 
     void sltNewPostOpened( BilboPost &newPost, int blog_id );
