@@ -1,11 +1,15 @@
-=== Version 1.0 -- 20-Aug-2009 ===
+=== Version 1.0 -- 4-Sep-2009 ===
 * Support for caching links in Add/Edit link dialog.
-* Fix a bug in setting timestamps, for Wordpress and Movabletype APIs. (bug #407192)
-* Fix a problem on fetching posts in some non-Latin languages. (Blogger1 API)
+* Fixed a bug in setting timestamps, for Wordpress and Movabletype APIs. (bug #407192)
+* Fixed a problem on fetching posts in some non-Latin languages. (Blogger1 API)
 * Better error messages on Add new Blog dialog.
 * Paragraph spacing in visual editor missing by default, FIXED. (bug #387578)
 * Made compatible with Windows XP
 * Remove local post deletes unconditionally, FIXED (bug #405142)
+* An option added to the configure dialog, to enable/disable check spelling by default.
+* Fixed a bug on Toolbox show/hide functionality.
+* Save Temp posts on Quit was not work when quit with close button, FIXED.
+
 
 === Version 0.9.95 -- 28-Jun-2009 ===
 * Using system tray icon made optional, and disabled by default.
