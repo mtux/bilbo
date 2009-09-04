@@ -14,12 +14,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-06-27 19:04+0000\n"
+"X-Launchpad-Export-Date: 2009-08-27 08:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: bilbo/addeditblog.cpp:50
 msgid "Add a new blog"
 msgstr "Add a new blog"
+
+#: bilbo/addeditblog.cpp:67
+msgid "Edit blog settings"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:108
 msgid ""
@@ -34,6 +38,11 @@ msgstr "Incomplete fields"
 #: bilbo/addeditblog.cpp:112
 msgid "Trying to guess blog and API type..."
 msgstr "Trying to guess blog and API type..."
+
+#: bilbo/addeditblog.cpp:155 bilbo/addeditblog.cpp:208
+msgid ""
+"Auto configuration failed. You have to set Blog API on Advanced tab manually."
+msgstr ""
 
 #. i18n: file: bilbo/waitwidgetbase.ui:19
 #. i18n: ectx: property (text), widget (QLabel, operationNameLabel)
@@ -70,15 +79,6 @@ msgstr ""
 #: bilbo/addeditblog.cpp:292
 msgid "AutoConfiguration Failed"
 msgstr "AutoConfiguration Failed"
-
-#: bilbo/addeditblog.cpp:67
-msgid "Edit blog settings"
-msgstr ""
-
-#: bilbo/addeditblog.cpp:155 bilbo/addeditblog.cpp:208
-msgid ""
-"Auto configuration failed. You have to set Blog API on Advanced tab manually."
-msgstr ""
 
 #: bilbo/addeditblog.cpp:300
 msgid ""

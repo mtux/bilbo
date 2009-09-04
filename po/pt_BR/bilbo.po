@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: bilbo\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-06-27 19:07+0430\n"
-"PO-Revision-Date: 2009-06-07 19:53+0000\n"
+"PO-Revision-Date: 2009-08-03 15:20+0000\n"
 "Last-Translator: Alex B. Oliveira <alexme7@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-06-27 19:04+0000\n"
+"X-Launchpad-Export-Date: 2009-08-27 08:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: bilbo/addeditblog.cpp:50
@@ -43,6 +43,8 @@ msgstr "Tentando advinhar o tipo de blog e de API"
 msgid ""
 "Auto configuration failed. You have to set Blog API on Advanced tab manually."
 msgstr ""
+"Auto configuração falhou. Você tem que definir a API do blog manualmente na "
+"guia Avançado."
 
 #. i18n: file: bilbo/waitwidgetbase.ui:19
 #. i18n: ectx: property (text), widget (QLabel, operationNameLabel)
@@ -171,15 +173,15 @@ msgstr ""
 
 #: bilbo/backend.cpp:412
 msgid "Server(XMLRPC) Error: "
-msgstr ""
+msgstr "Erro no servidor (XMLRPC): "
 
 #: bilbo/backend.cpp:415
 msgid "Server(Atom) Error: "
-msgstr ""
+msgstr "Erro no servidor (Atom): "
 
 #: bilbo/backend.cpp:418
 msgid "Parsing Error: "
-msgstr ""
+msgstr "Erro de análise: "
 
 #: bilbo/backend.cpp:421
 msgid "Authentication Error: "
@@ -329,7 +331,7 @@ msgstr "Limpar formatação"
 
 #: bilbo/composer/bilboeditor.cpp:252
 msgid "Blockquote"
-msgstr ""
+msgstr "Citação bloqueada"
 
 #: bilbo/composer/bilboeditor.cpp:261
 msgctxt "verb, to add a new link or edit an existing one"
@@ -851,7 +853,7 @@ msgstr "Post removido"
 
 #: bilbo/toolbox.cpp:239
 msgid "Failed"
-msgstr ""
+msgstr "Falhou"
 
 #: bilbo/toolbox.cpp:422
 msgid ""
@@ -1457,7 +1459,7 @@ msgstr "Inserir automaticamente \"Criado por Bilbo Blogger\""
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_previewInBlogStyle)
 #: l10n/rc.cpp:238 rc.cpp:238
 msgid "Enable preview posts in blog style, when available."
-msgstr ""
+msgstr "Ativar visualização dos posts em estilo blog, quando disponível."
 
 #. i18n: file: bilbo/entriescountdialogbase.ui:17
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -1469,7 +1471,7 @@ msgstr "Quantas entradas você gostaria de buscar? :"
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_remember)
 #: l10n/rc.cpp:244 rc.cpp:244
 msgid "Do not ask again"
-msgstr ""
+msgstr "Não perguntar novamente"
 
 #. i18n: file: bilbo/sendtoblogbase.ui:16
 #. i18n: ectx: property (text), widget (QRadioButton, pubAsModify)
@@ -1722,7 +1724,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: l10n/rc.cpp:382 rc.cpp:382
 msgid "Url to path:"
-msgstr ""
+msgstr "Url para o caminho:"
 
 #. i18n: file: bilbo/uploadmediabase.ui:127
 #. i18n: ectx: property (toolTip), widget (KLineEdit, kcfg_FtpPath)
@@ -1740,16 +1742,16 @@ msgstr "ftp://"
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: l10n/rc.cpp:391 rc.cpp:391
 msgid "(s)Ftp path:"
-msgstr ""
+msgstr "(s)Caminho do ftp:"
 
 #. i18n: file: bilbo/uploadmediabase.ui:152
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: l10n/rc.cpp:394 rc.cpp:394
 msgid "e.g. sftp://domain.com/user/images/"
-msgstr ""
+msgstr "ex: sftp://dominio.com/usuario/imagens/"
 
 #. i18n: file: bilbo/uploadmediabase.ui:164
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: l10n/rc.cpp:397 rc.cpp:397
 msgid "e.g. http://domain.com/images/"
-msgstr ""
+msgstr "ex: http://dominio.com/usuario/imagens/"

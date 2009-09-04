@@ -14,12 +14,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-06-27 19:04+0000\n"
+"X-Launchpad-Export-Date: 2009-08-27 08:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: bilbo/addeditblog.cpp:50
 msgid "Add a new blog"
 msgstr "Dodaj nowy blog"
+
+#: bilbo/addeditblog.cpp:67
+msgid "Edit blog settings"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:108
 msgid ""
@@ -35,6 +39,11 @@ msgstr "Niewypełnione pola"
 msgid "Trying to guess blog and API type..."
 msgstr "Próba odgadnięcia rodzaju blogu i API..."
 
+#: bilbo/addeditblog.cpp:155 bilbo/addeditblog.cpp:208
+msgid ""
+"Auto configuration failed. You have to set Blog API on Advanced tab manually."
+msgstr ""
+
 #. i18n: file: bilbo/waitwidgetbase.ui:19
 #. i18n: ectx: property (text), widget (QLabel, operationNameLabel)
 #: bilbo/addeditblog.cpp:259 l10n/rc.cpp:400 rc.cpp:400
@@ -44,6 +53,15 @@ msgstr "Czekaj..."
 #: bilbo/addeditblog.cpp:261
 msgid "Fetching Blog Id..."
 msgstr "Pobieranie ID blogu..."
+
+#: bilbo/addeditblog.cpp:278
+msgid ""
+"Fetching the blog id timed out. Check your internet connection,and your "
+"homepage Url, username or password!\n"
+"note that the url has to contain \"http://\"\n"
+"If you are using a self hosted Wordpress blog, you have to enable Remote "
+"Publishing on its configurations"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:290
 msgid ""
@@ -57,6 +75,16 @@ msgstr ""
 msgid "AutoConfiguration Failed"
 msgstr "Autokonfiguracja nieudana"
 
+#: bilbo/addeditblog.cpp:300
+msgid ""
+"Fetching BlogID Faild!\n"
+"please check your internet connection."
+msgstr ""
+
+#: bilbo/addeditblog.cpp:336
+msgid "Which blog?"
+msgstr ""
+
 #: bilbo/addeditblog.cpp:428
 msgid "Yes"
 msgstr "Tak"
@@ -69,9 +97,22 @@ msgstr "Nie, API nie obsługuje"
 msgid "No, Bilbo doesn't support yet"
 msgstr "Nie, Bilbo jeszcze nie obsługuje"
 
+#: bilbo/addeditblog.cpp:512
+msgid ""
+"Sorry, BlogId not retrieved yet,\n"
+"You can fetch blog ID by clicking on \"Auto Configure\" Or \"Fetch ID\" "
+"button. otherwise you have to insert your Blog Id manually."
+msgstr ""
+
 #: bilbo/backend.cpp:175
 msgid "Publishing/Modifying post failed : %1"
 msgstr "Publikacja/Modyfikazja wpisu nie udała się: %1"
+
+#: bilbo/backend.cpp:205
+msgid ""
+"Uploading media failed : Your blog api doesn't support uploading media "
+"objects."
+msgstr ""
 
 #: bilbo/backend.cpp:222 bilbo/backend.cpp:230
 msgid ""
@@ -113,6 +154,18 @@ msgstr "Wysyłanie mediów nie powiodło się: Błąd sumy kontrolnej: %1"
 msgid "The registred blog API doesn't support setting categories for a post."
 msgstr "API zarejestrowanego blogu nie obsługuje kategorii przy wpisach."
 
+#: bilbo/backend.cpp:412
+msgid "Server(XMLRPC) Error: "
+msgstr ""
+
+#: bilbo/backend.cpp:415
+msgid "Server(Atom) Error: "
+msgstr ""
+
+#: bilbo/backend.cpp:418
+msgid "Parsing Error: "
+msgstr ""
+
 #: bilbo/backend.cpp:421
 msgid "Authentication Error: "
 msgstr "Błąd autoryzacji: "
@@ -133,6 +186,14 @@ msgstr "Naprawdę chcesz usunąć wybrany blog?"
 msgid "Get blog style"
 msgstr "Pobierz styl blogu"
 
+#: bilbo/composer/bilbobrowser.cpp:114
+msgid "loading page items..."
+msgstr ""
+
+#: bilbo/composer/bilbobrowser.cpp:142
+msgid "Please select a blog, then try again."
+msgstr ""
+
 #: bilbo/composer/bilbobrowser.cpp:143
 msgid "Select a blog"
 msgstr "Wybierz blog"
@@ -140,6 +201,18 @@ msgstr "Wybierz blog"
 #: bilbo/composer/bilbobrowser.cpp:148
 msgid "Fetching blog style from the web..."
 msgstr "Pobieranie stylu blogu z Internetu..."
+
+#: bilbo/composer/bilbobrowser.cpp:162
+msgid "Blog style fetched."
+msgstr ""
+
+#: bilbo/composer/bilbobrowser.cpp:181
+msgid "An error occurred in the latest transaction."
+msgstr ""
+
+#: bilbo/composer/bilbobrowser.cpp:183
+msgid "Operation canceled."
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:83
 msgctxt "Software"
@@ -183,10 +256,44 @@ msgctxt "Makes text underlined, and its shortcut is (Ctrl+u)"
 msgid "Underline (Ctrl+u)"
 msgstr "Podkreślenie (Ctrl+u)"
 
+#: bilbo/composer/bilboeditor.cpp:203
+msgctxt "Strikes the text out, and its shortcut is (Ctrl+l)"
+msgid "Strike out (Ctrl+l)"
+msgstr ""
+
 #: bilbo/composer/bilboeditor.cpp:210
 msgctxt "Sets text font to code style"
 msgid "Code"
 msgstr "Kod"
+
+#: bilbo/composer/bilboeditor.cpp:220 bilbo/composer/bilboeditor.cpp:229
+#: bilbo/composer/bilboeditor.cpp:378
+msgid "Paragraph"
+msgstr ""
+
+#: bilbo/composer/bilboeditor.cpp:221 bilbo/composer/bilboeditor.cpp:383
+msgid "Heading 1"
+msgstr ""
+
+#: bilbo/composer/bilboeditor.cpp:222 bilbo/composer/bilboeditor.cpp:388
+msgid "Heading 2"
+msgstr ""
+
+#: bilbo/composer/bilboeditor.cpp:223 bilbo/composer/bilboeditor.cpp:393
+msgid "Heading 3"
+msgstr ""
+
+#: bilbo/composer/bilboeditor.cpp:224 bilbo/composer/bilboeditor.cpp:398
+msgid "Heading 4"
+msgstr ""
+
+#: bilbo/composer/bilboeditor.cpp:225 bilbo/composer/bilboeditor.cpp:403
+msgid "Heading 5"
+msgstr ""
+
+#: bilbo/composer/bilboeditor.cpp:226
+msgid "Heading 6"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:234
 msgid "Increase font size"
@@ -200,6 +307,14 @@ msgstr "Zmniejsz czcionkę"
 msgctxt "verb, to select text color"
 msgid "Select Color"
 msgstr "Wybierz kolor"
+
+#: bilbo/composer/bilboeditor.cpp:247
+msgid "Remove formatting"
+msgstr ""
+
+#: bilbo/composer/bilboeditor.cpp:252
+msgid "Blockquote"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:261
 msgctxt "verb, to add a new link or edit an existing one"
@@ -235,6 +350,11 @@ msgstr "Wyrównanie do prawej"
 msgctxt "verb, to justify text"
 msgid "Justify"
 msgstr "Wyjustuj"
+
+#: bilbo/composer/bilboeditor.cpp:297
+msgctxt "Sets text direction as right to left"
+msgid "Right to Left"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:311
 msgid "Ordered List"
@@ -278,6 +398,18 @@ msgstr "Przeglądaj"
 msgid "The selected media address is an invalid url."
 msgstr "Wybrany adres mediów nie istnieje."
 
+#: bilbo/composer/htmleditor.cpp:79
+msgid "Dynamic Word Wrap"
+msgstr ""
+
+#: bilbo/composer/htmleditor.cpp:83
+msgid "Show line numbers"
+msgstr ""
+
+#: bilbo/composer/htmleditor.cpp:87
+msgid "Options"
+msgstr ""
+
 #: bilbo/composer/medialistwidget.cpp:35
 msgid "Edit properties"
 msgstr "Edytuj właściwości"
@@ -290,9 +422,29 @@ msgstr "Kopiuj URL"
 msgid "Remove media"
 msgstr "Usuń media"
 
+#: bilbo/composer/stylegetter.cpp:55
+msgid "Can not fetch the selected blog style."
+msgstr ""
+
+#: bilbo/composer/stylegetter.cpp:169
+msgid "Cannot get html file."
+msgstr ""
+
+#: bilbo/composer/stylegetter.cpp:204
+msgid "Cannot write data to file %1"
+msgstr ""
+
 #: bilbo/composer/stylegetter.cpp:245
 msgid "An error ocurred on latest transaction "
 msgstr "Podczas ostatniej operacji wystąpił błąd "
+
+#: bilbo/dbman.cpp:52
+msgid "Cannot create database"
+msgstr ""
+
+#: bilbo/dbman.cpp:101
+msgid "Cannot connect to database"
+msgstr ""
 
 #: bilbo/dbman.cpp:997
 msgid "There isn't any post with requested ID"
@@ -301,6 +453,128 @@ msgstr "Nie ma wpisu o takim ID"
 #: bilbo/dbman.cpp:1263
 msgid "there isn't any local post with requested ID "
 msgstr "Nie ma wpisu lokalnego o takim ID "
+
+#: bilbokblog/blogger1.cpp:243
+msgid ""
+"Could not fetch user's info out of the result from the server, not a map."
+msgstr ""
+
+#: bilbokblog/blogger1.cpp:270
+msgid "Could not fetch blogs out of the result from the server, not a list."
+msgstr ""
+
+#: bilbokblog/blogger1.cpp:307
+msgid ""
+"Could not fetch list of posts out of the result from the server, not a list."
+msgstr ""
+
+#: bilbokblog/blogger1.cpp:326
+msgid "Could not read post."
+msgstr ""
+
+#: bilbokblog/blogger1.cpp:353 bilbokblog/blogger1.cpp:356
+msgid "Could not fetch post out of the result from the server."
+msgstr ""
+
+#: bilbokblog/blogger1.cpp:374
+msgid "Could not read the postId, not a string or an integer."
+msgstr ""
+
+#: bilbokblog/blogger1.cpp:407 bilbokblog/blogger1.cpp:431
+msgid "Could not read the result, not a boolean."
+msgstr ""
+
+#: bilbokblog/gdata.cpp:216 bilbokblog/gdata.cpp:283 bilbokblog/gdata.cpp:345
+#: bilbokblog/gdata.cpp:391 bilbokblog/gdata.cpp:448
+msgid "Authentication failed."
+msgstr ""
+
+#: bilbokblog/gdata.cpp:543
+msgid "Could not regexp the Profile ID."
+msgstr ""
+
+#: bilbokblog/gdata.cpp:565
+msgid "Could not get blogs."
+msgstr ""
+
+#: bilbokblog/gdata.cpp:587 bilbokblog/gdata.cpp:803
+msgid "Could not regexp the blog id path."
+msgstr ""
+
+#: bilbokblog/gdata.cpp:608 bilbokblog/gdata.cpp:654
+msgid "Could not get comments."
+msgstr ""
+
+#: bilbokblog/gdata.cpp:622 bilbokblog/gdata.cpp:668
+msgid "Could not regexp the comment id path."
+msgstr ""
+
+#: bilbokblog/gdata.cpp:700 bilbokblog/gdata.cpp:773
+msgid "Could not get posts."
+msgstr ""
+
+#: bilbokblog/gdata.cpp:720
+msgid "Could not regexp the post id path."
+msgstr ""
+
+#: bilbokblog/gdata.cpp:844 bilbokblog/gdata.cpp:909 bilbokblog/gdata.cpp:1012
+#: bilbokblog/wordpressbuggy.cpp:343 bilbokblog/wordpressbuggy.cpp:391
+msgid "Could not regexp the id out of the result."
+msgstr ""
+
+#: bilbokblog/gdata.cpp:853 bilbokblog/gdata.cpp:918 bilbokblog/gdata.cpp:1021
+msgid "Could not regexp the published time out of the result."
+msgstr ""
+
+#: bilbokblog/gdata.cpp:862 bilbokblog/gdata.cpp:927 bilbokblog/gdata.cpp:1030
+msgid "Could not regexp the update time out of the result."
+msgstr ""
+
+#: bilbokblog/livejournal.cpp:344 bilbokblog/livejournal.cpp:453
+#: bilbokblog/livejournal.cpp:478
+msgid "Could not read the post ID, result not a map."
+msgstr ""
+
+#: bilbokblog/livejournal.cpp:491
+msgid "The returned post ID did not match the sent one: "
+msgstr ""
+
+#: bilbokblog/metaweblog.cpp:74
+msgid "Media is a null pointer."
+msgstr ""
+
+#: bilbokblog/metaweblog.cpp:133
+msgid "Could not list categories out of the result from the server."
+msgstr ""
+
+#: bilbokblog/metaweblog.cpp:194
+msgid "Could not read the result, not a map."
+msgstr ""
+
+#: bilbokblog/movabletype.cpp:181
+msgid ""
+"Could not fetch list of trackback pings out of the result from the server."
+msgstr ""
+
+#: bilbokblog/movabletype.cpp:234
+msgid "The category list is empty"
+msgstr ""
+
+#: bilbokblog/movabletype.cpp:308
+msgid "Could not regexp the result out of the result."
+msgstr ""
+
+#: bilbokblog/movabletype.cpp:317
+msgid "Error on server, Post categories couldn't sets"
+msgstr ""
+
+#: bilbokblog/wordpressbuggy.cpp:62 bilbokblog/wordpressbuggy.cpp:160
+msgid "Post is a null pointer."
+msgstr ""
+
+#: bilbokblog/wordpressbuggy.cpp:263
+msgid "Category name isn't set."
+msgstr ""
 
 #: bilbo/main.cpp:33
 msgid "A KDE Blogging Client"
@@ -330,6 +604,16 @@ msgstr "Roozbeh Shafiee"
 msgid "Icon designer"
 msgstr "Twórca ikon"
 
+#: bilbo/main.cpp:45 l10n/rc.cpp:401 rc.cpp:401
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr " ,Launchpad Contributions:,Łukasz Kaleta"
+
+#: bilbo/main.cpp:46 l10n/rc.cpp:402 rc.cpp:402
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr ",,"
+
 #: bilbo/mainwindow.cpp:72 bilbo/mainwindow.cpp:372
 msgid "Bilbo Blogger"
 msgstr "Bilbo Blogger"
@@ -349,6 +633,10 @@ msgstr "Nowy wpis"
 #: bilbo/mainwindow.cpp:150
 msgid "Add Blog..."
 msgstr "Dodaj blog..."
+
+#: bilbo/mainwindow.cpp:154
+msgid "Submit..."
+msgstr ""
 
 #: bilbo/mainwindow.cpp:158
 msgid "Upload Media..."
@@ -370,6 +658,10 @@ msgstr "Wyczyść przechowywane obrazki"
 msgid "General"
 msgstr "Ogólne"
 
+#: bilbo/mainwindow.cpp:291
+msgid "Blogs"
+msgstr ""
+
 #: bilbo/mainwindow.cpp:292
 msgid "Editor"
 msgstr "Edytor"
@@ -387,6 +679,14 @@ msgstr "Należy wybrać blog, aby w nim opublikować ten wpis."
 #: bilbo/mainwindow.cpp:443
 msgid "There isn't any open post to submit!"
 msgstr "Brak otwartych wpisów do wysłania!"
+
+#: bilbo/mainwindow.cpp:492 bilbo/toolbox.cpp:238
+msgid "An error ocurred on latest transaction"
+msgstr ""
+
+#: bilbo/mainwindow.cpp:539
+msgid "Submiting post failed"
+msgstr ""
 
 #: bilbo/mainwindow.cpp:541
 msgid ""
@@ -520,6 +820,10 @@ msgstr "Wpis o tytule „%1” usunięty z „%2”."
 msgid "Post removed"
 msgstr "Usunięto wpis"
 
+#: bilbo/toolbox.cpp:239
+msgid "Failed"
+msgstr ""
+
 #: bilbo/toolbox.cpp:422
 msgid ""
 "Sorry, There isn't any link field available for this entry on Database."
@@ -541,6 +845,18 @@ msgstr "Należy wybrać przynajmniej jeden wpis z listy."
 msgid "Can not clear entries list."
 msgstr "Nie można wyczyścić listy wpisów."
 
+#: bilbo/toolbox.cpp:541
+msgid "Open in browser"
+msgstr ""
+
+#: bilbo/toolbox.cpp:544
+msgid "Copy URL"
+msgstr ""
+
+#: bilbo/toolbox.cpp:547
+msgid "Copy title"
+msgstr ""
+
 #: bilbo/uploadmediadialog.cpp:43
 msgid "Upload"
 msgstr "Załaduj"
@@ -555,6 +871,32 @@ msgstr "Załaduj media..."
 msgid "Select media to upload"
 msgstr "Wybierz media do wysłania"
 
+#: bilbo/uploadmediadialog.cpp:73
+msgid "Blog API"
+msgstr ""
+
+#: bilbo/uploadmediadialog.cpp:76
+msgid "FTP"
+msgstr ""
+
+#: bilbo/uploadmediadialog.cpp:122
+msgid "Please insert FTP Url."
+msgstr ""
+
+#: bilbo/uploadmediadialog.cpp:138
+msgid ""
+"Inserted ftp url is not a valid url.\n"
+"Note that url must start with \"ftp\" or \"sftp\", and end with a / that "
+"indicate the directory which file should upload to it."
+msgstr ""
+
+#: bilbo/uploadmediadialog.cpp:167 bilbo/uploadmediadialog.cpp:184
+msgid ""
+"Media uploaded, and URL copied to clipboard.\n"
+"You can find it here:\n"
+"%1"
+msgstr ""
+
 #: bilbo/uploadmediadialog.cpp:170 bilbo/uploadmediadialog.cpp:187
 msgid ""
 "Media uploaded.\n"
@@ -565,11 +907,79 @@ msgstr ""
 "Znajdują się tutaj:\n"
 "%1"
 
+#: bilbo/uploadmediadialog.cpp:173 bilbo/uploadmediadialog.cpp:190
+msgid "Successfully uploaded"
+msgstr ""
+
+#: bilbo/uploadmediadialog.cpp:196
+msgid ""
+"Media uploading failed with this result:\n"
+"%1\n"
+"Try again?"
+msgstr ""
+
+#. i18n: file: bilbo/addcategorybase.ui:16
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: l10n/rc.cpp:3 rc.cpp:3
+msgid "Category Name: "
+msgstr ""
+
+#. i18n: file: bilbo/addcategorybase.ui:29
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: l10n/rc.cpp:6 rc.cpp:6
+msgid "Category Slug: "
+msgstr ""
+
+#. i18n: file: bilbo/addcategorybase.ui:42
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: l10n/rc.cpp:9 rc.cpp:9
+msgid "Parent Category:"
+msgstr ""
+
+#. i18n: file: bilbo/addcategorybase.ui:55
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: l10n/rc.cpp:12 rc.cpp:12
+msgid "Description:"
+msgstr ""
+
 #. i18n: file: bilbo/addeditblogbase.ui:17
 #. i18n: ectx: attribute (title), widget (QWidget, tabBasic)
 #: l10n/rc.cpp:15 rc.cpp:15
 msgid "Basic"
 msgstr "Główne"
+
+#. i18n: file: bilbo/addeditblogbase.ui:29
+#. i18n: ectx: property (text), widget (QLabel, label_18)
+#. i18n: file: bilbo/addeditblogbase.ui:218
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#. i18n: file: bilbo/addeditblogbase.ui:29
+#. i18n: ectx: property (text), widget (QLabel, label_18)
+#. i18n: file: bilbo/addeditblogbase.ui:218
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: l10n/rc.cpp:18 l10n/rc.cpp:52 rc.cpp:18 rc.cpp:52
+msgid "Configuring your blog account..."
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:46
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: l10n/rc.cpp:21 rc.cpp:21
+msgid ""
+"Please fill in these fields, and click the \"AutoConfigure\" button to "
+"program guess your blog settings.\n"
+"You can set more options on Advanced tab."
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:65
+#. i18n: ectx: property (text), widget (QLabel, label_9)
+#: l10n/rc.cpp:25 rc.cpp:25
+msgid "Title:"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:75
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: l10n/rc.cpp:28 rc.cpp:28
+msgid "Blog/Homepage URL:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:88
 #. i18n: ectx: property (text), widget (KLineEdit, txtUrl)
@@ -599,6 +1009,31 @@ msgstr "http://TwojaStronaDomowa.pl"
 #: l10n/rc.cpp:37 rc.cpp:37
 msgid "e.g. : http://domain.com/blog/"
 msgstr "np. : http://domena.com/blog/"
+
+#. i18n: file: bilbo/addeditblogbase.ui:115
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: l10n/rc.cpp:40 rc.cpp:40
+msgid "Username:"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:131
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: l10n/rc.cpp:43 rc.cpp:43
+msgid "Password:"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:176
+#. i18n: ectx: property (text), widget (KPushButton, btnAutoConf)
+#: l10n/rc.cpp:46 rc.cpp:46
+msgid "Auto Configure"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:228
+#. i18n: ectx: property (text), widget (QLabel, label_6)
+#: l10n/rc.cpp:55 rc.cpp:55
+msgctxt "Name of the API which is used to communicate with Blog"
+msgid "API:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:242
 #. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
@@ -630,6 +1065,26 @@ msgstr "Wordpress"
 msgid "Blogspot.com"
 msgstr "Blogspot.com"
 
+#. i18n: file: bilbo/addeditblogbase.ui:286
+#. i18n: ectx: property (text), widget (QLabel, label_7)
+#: l10n/rc.cpp:73 rc.cpp:73
+msgid "Blog ID:"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:314
+#. i18n: ectx: property (text), widget (KPushButton, btnFetch)
+#: l10n/rc.cpp:76 rc.cpp:76
+msgctxt "verb, fetch the blog id from the web"
+msgid "Fetch ID"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:337
+#. i18n: ectx: property (text), widget (QLabel, label_8)
+#: l10n/rc.cpp:79 rc.cpp:79
+msgctxt "Default direction of text in the blog"
+msgid "Default text direction:"
+msgstr ""
+
 #. i18n: file: bilbo/addeditblogbase.ui:351
 #. i18n: ectx: property (text), item, widget (KComboBox, comboDir)
 #: l10n/rc.cpp:82 rc.cpp:82
@@ -647,6 +1102,12 @@ msgstr "Od prawej do lewej"
 #: l10n/rc.cpp:88 rc.cpp:88
 msgid "Supported Features"
 msgstr "Obsługiwane funkcje"
+
+#. i18n: file: bilbo/addeditblogbase.ui:374
+#. i18n: ectx: property (text), widget (QLabel, label_11)
+#: l10n/rc.cpp:91 rc.cpp:91
+msgid "Create/Modify post:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:384
 #. i18n: ectx: property (text), widget (QLabel, featureCreatePost)
@@ -686,6 +1147,56 @@ msgstr "Obsługiwane funkcje"
 #: rc.cpp:139
 msgid "Unknown"
 msgstr "nieznane"
+
+#. i18n: file: bilbo/addeditblogbase.ui:407
+#. i18n: ectx: property (text), widget (QLabel, label_14)
+#: l10n/rc.cpp:97 rc.cpp:97
+msgid "Support categories:"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:417
+#. i18n: ectx: property (text), widget (QLabel, label_16)
+#: l10n/rc.cpp:100 rc.cpp:100
+msgid "Support tags:"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:441
+#. i18n: ectx: property (text), widget (QLabel, label_22)
+#: l10n/rc.cpp:109 rc.cpp:109
+msgid "Remove post:"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:458
+#. i18n: ectx: property (text), widget (QLabel, label_12)
+#: l10n/rc.cpp:115 rc.cpp:115
+msgid "Fetch recent posts:"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:475
+#. i18n: ectx: property (text), widget (QLabel, label_20)
+#: l10n/rc.cpp:121 rc.cpp:121
+msgid "Multipaged post:"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:492
+#. i18n: ectx: property (text), widget (QLabel, label_10)
+#: l10n/rc.cpp:127 rc.cpp:127
+msgid ""
+"Note: You can see list of supported features for your blog after "
+"configuration!"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:502
+#. i18n: ectx: property (text), widget (QLabel, label_13)
+#: l10n/rc.cpp:130 rc.cpp:130
+msgid "Upload media:"
+msgstr ""
+
+#. i18n: file: bilbo/addeditblogbase.ui:519
+#. i18n: ectx: property (text), widget (QLabel, label_15)
+#: l10n/rc.cpp:136 rc.cpp:136
+msgid "Create new category:"
+msgstr ""
 
 #. i18n: file: bilbo/advancedsettingsbase.ui:16
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_changeNToBreak)
@@ -727,6 +1238,12 @@ msgstr "Wpis"
 msgid "Settings"
 msgstr "Ustawienia"
 
+#. i18n: file: bilbo/bilboui.rc:19
+#. i18n: ectx: Menu (settings)
+#: l10n/rc.cpp:157 rc.cpp:157
+msgid "Toolbar"
+msgstr ""
+
 #. i18n: file: bilbo/blogsettingsbase.ui:44
 #. i18n: ectx: property (text), widget (QTableWidget, blogsTable)
 #. i18n: file: bilbo/toolboxbase.ui:565
@@ -738,6 +1255,30 @@ msgstr "Ustawienia"
 #: l10n/rc.cpp:160 l10n/rc.cpp:349 rc.cpp:160 rc.cpp:349
 msgid "Title"
 msgstr "Tytuł"
+
+#. i18n: file: bilbo/blogsettingsbase.ui:49
+#. i18n: ectx: property (text), widget (QTableWidget, blogsTable)
+#: l10n/rc.cpp:163 rc.cpp:163
+msgid "Url"
+msgstr ""
+
+#. i18n: file: bilbo/blogsettingsbase.ui:75
+#. i18n: ectx: property (text), widget (KPushButton, btnAdd)
+#: l10n/rc.cpp:166 rc.cpp:166
+msgid "&Add..."
+msgstr ""
+
+#. i18n: file: bilbo/blogsettingsbase.ui:85
+#. i18n: ectx: property (text), widget (KPushButton, btnEdit)
+#: l10n/rc.cpp:169 rc.cpp:169
+msgid "&Modify..."
+msgstr ""
+
+#. i18n: file: bilbo/blogsettingsbase.ui:95
+#. i18n: ectx: property (text), widget (KPushButton, btnRemove)
+#: l10n/rc.cpp:172 rc.cpp:172
+msgid "&Remove"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:22
 #. i18n: ectx: property (text), widget (QLabel, label)
@@ -867,11 +1408,23 @@ msgstr " minut/a"
 msgid "Automatically insert \"Powered by Bilbo Blogger\""
 msgstr "Automatycznie wstaw \"Powered by Bilbo Blogger\""
 
+#. i18n: file: bilbo/editorsettingsbase.ui:65
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_previewInBlogStyle)
+#: l10n/rc.cpp:238 rc.cpp:238
+msgid "Enable preview posts in blog style, when available."
+msgstr ""
+
 #. i18n: file: bilbo/entriescountdialogbase.ui:17
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:241 rc.cpp:241
 msgid "How many entries would you like to fetch? :"
 msgstr "Ile wpisów chcesz pobrać?"
+
+#. i18n: file: bilbo/entriescountdialogbase.ui:40
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_remember)
+#: l10n/rc.cpp:244 rc.cpp:244
+msgid "Do not ask again"
+msgstr ""
 
 #. i18n: file: bilbo/sendtoblogbase.ui:16
 #. i18n: ectx: property (text), widget (QRadioButton, pubAsModify)
@@ -890,6 +1443,18 @@ msgstr "Opublikuj jako nowy wpis"
 #: l10n/rc.cpp:253 rc.cpp:253
 msgid "Save entry in drafts"
 msgstr "Zapisz wpis w szkicach"
+
+#. i18n: file: bilbo/settingsbase.ui:16
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_enableSysTrayIcon)
+#: l10n/rc.cpp:256 rc.cpp:256
+msgid "Enable system tray icon"
+msgstr ""
+
+#. i18n: file: bilbo/settingsbase.ui:23
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_CopyMediaUrl)
+#: l10n/rc.cpp:259 rc.cpp:259
+msgid "Copy media URL to clipboard after upload"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:33
 #. i18n: ectx: attribute (label), widget (QWidget, pgEntries)
@@ -920,6 +1485,12 @@ msgstr "Przeładuj"
 #: l10n/rc.cpp:271 rc.cpp:271
 msgid "Update entries list"
 msgstr "Aktualizuj listę wpisów"
+
+#. i18n: file: bilbo/toolboxbase.ui:92
+#. i18n: ectx: property (text), widget (KPushButton, btnEntriesUpdate)
+#: l10n/rc.cpp:274 rc.cpp:274
+msgid "Update..."
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:99
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnEntriesClear)
@@ -968,6 +1539,12 @@ msgstr "Przeładuj listę kategorii"
 #: l10n/rc.cpp:298 rc.cpp:298
 msgid "Add a new category to selected blog"
 msgstr "Dodaj nową kategorię do wybranego bloga"
+
+#. i18n: file: bilbo/toolboxbase.ui:219
+#. i18n: ectx: property (text), widget (KPushButton, btnCatAdd)
+#: l10n/rc.cpp:301 rc.cpp:301
+msgid "Add Category..."
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:243
 #. i18n: ectx: property (text), widget (QLabel, lblCatTags)
@@ -1036,6 +1613,12 @@ msgstr "Modyfikuj format cza&su"
 msgid "Now"
 msgstr "Teraz"
 
+#. i18n: file: bilbo/toolboxbase.ui:481
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: l10n/rc.cpp:337 rc.cpp:337
+msgid "Permalink (wordpress) :"
+msgstr ""
+
 #. i18n: file: bilbo/toolboxbase.ui:491
 #. i18n: ectx: property (text), widget (QLabel, lblOptionsTrackBack)
 #: l10n/rc.cpp:340 rc.cpp:340
@@ -1059,589 +1642,6 @@ msgstr "Wpisy &lokalne"
 #: l10n/rc.cpp:355 rc.cpp:355
 msgid "Remove selected entry"
 msgstr "Usuń zaznaczone wpisy"
-
-#: bilbo/addeditblog.cpp:67
-msgid "Edit blog settings"
-msgstr ""
-
-#: bilbo/addeditblog.cpp:155 bilbo/addeditblog.cpp:208
-msgid ""
-"Auto configuration failed. You have to set Blog API on Advanced tab manually."
-msgstr ""
-
-#: bilbo/addeditblog.cpp:278
-msgid ""
-"Fetching the blog id timed out. Check your internet connection,and your "
-"homepage Url, username or password!\n"
-"note that the url has to contain \"http://\"\n"
-"If you are using a self hosted Wordpress blog, you have to enable Remote "
-"Publishing on its configurations"
-msgstr ""
-
-#: bilbo/addeditblog.cpp:300
-msgid ""
-"Fetching BlogID Faild!\n"
-"please check your internet connection."
-msgstr ""
-
-#: bilbo/addeditblog.cpp:336
-msgid "Which blog?"
-msgstr ""
-
-#: bilbo/addeditblog.cpp:512
-msgid ""
-"Sorry, BlogId not retrieved yet,\n"
-"You can fetch blog ID by clicking on \"Auto Configure\" Or \"Fetch ID\" "
-"button. otherwise you have to insert your Blog Id manually."
-msgstr ""
-
-#: bilbo/backend.cpp:205
-msgid ""
-"Uploading media failed : Your blog api doesn't support uploading media "
-"objects."
-msgstr ""
-
-#: bilbo/backend.cpp:412
-msgid "Server(XMLRPC) Error: "
-msgstr ""
-
-#: bilbo/backend.cpp:415
-msgid "Server(Atom) Error: "
-msgstr ""
-
-#: bilbo/backend.cpp:418
-msgid "Parsing Error: "
-msgstr ""
-
-#: bilbo/composer/bilbobrowser.cpp:114
-msgid "loading page items..."
-msgstr ""
-
-#: bilbo/composer/bilbobrowser.cpp:142
-msgid "Please select a blog, then try again."
-msgstr ""
-
-#: bilbo/composer/bilbobrowser.cpp:162
-msgid "Blog style fetched."
-msgstr ""
-
-#: bilbo/composer/bilbobrowser.cpp:181
-msgid "An error occurred in the latest transaction."
-msgstr ""
-
-#: bilbo/composer/bilbobrowser.cpp:183
-msgid "Operation canceled."
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:203
-msgctxt "Strikes the text out, and its shortcut is (Ctrl+l)"
-msgid "Strike out (Ctrl+l)"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:220 bilbo/composer/bilboeditor.cpp:229
-#: bilbo/composer/bilboeditor.cpp:378
-msgid "Paragraph"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:221 bilbo/composer/bilboeditor.cpp:383
-msgid "Heading 1"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:222 bilbo/composer/bilboeditor.cpp:388
-msgid "Heading 2"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:223 bilbo/composer/bilboeditor.cpp:393
-msgid "Heading 3"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:224 bilbo/composer/bilboeditor.cpp:398
-msgid "Heading 4"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:225 bilbo/composer/bilboeditor.cpp:403
-msgid "Heading 5"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:226
-msgid "Heading 6"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:247
-msgid "Remove formatting"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:252
-msgid "Blockquote"
-msgstr ""
-
-#: bilbo/composer/bilboeditor.cpp:297
-msgctxt "Sets text direction as right to left"
-msgid "Right to Left"
-msgstr ""
-
-#: bilbo/composer/htmleditor.cpp:79
-msgid "Dynamic Word Wrap"
-msgstr ""
-
-#: bilbo/composer/htmleditor.cpp:83
-msgid "Show line numbers"
-msgstr ""
-
-#: bilbo/composer/htmleditor.cpp:87
-msgid "Options"
-msgstr ""
-
-#: bilbo/composer/stylegetter.cpp:55
-msgid "Can not fetch the selected blog style."
-msgstr ""
-
-#: bilbo/composer/stylegetter.cpp:169
-msgid "Cannot get html file."
-msgstr ""
-
-#: bilbo/composer/stylegetter.cpp:204
-msgid "Cannot write data to file %1"
-msgstr ""
-
-#: bilbo/dbman.cpp:52
-msgid "Cannot create database"
-msgstr ""
-
-#: bilbo/dbman.cpp:101
-msgid "Cannot connect to database"
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:243
-msgid ""
-"Could not fetch user's info out of the result from the server, not a map."
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:270
-msgid "Could not fetch blogs out of the result from the server, not a list."
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:307
-msgid ""
-"Could not fetch list of posts out of the result from the server, not a list."
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:326
-msgid "Could not read post."
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:353 bilbokblog/blogger1.cpp:356
-msgid "Could not fetch post out of the result from the server."
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:374
-msgid "Could not read the postId, not a string or an integer."
-msgstr ""
-
-#: bilbokblog/blogger1.cpp:407 bilbokblog/blogger1.cpp:431
-msgid "Could not read the result, not a boolean."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:216 bilbokblog/gdata.cpp:283 bilbokblog/gdata.cpp:345
-#: bilbokblog/gdata.cpp:391 bilbokblog/gdata.cpp:448
-msgid "Authentication failed."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:543
-msgid "Could not regexp the Profile ID."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:565
-msgid "Could not get blogs."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:587 bilbokblog/gdata.cpp:803
-msgid "Could not regexp the blog id path."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:608 bilbokblog/gdata.cpp:654
-msgid "Could not get comments."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:622 bilbokblog/gdata.cpp:668
-msgid "Could not regexp the comment id path."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:700 bilbokblog/gdata.cpp:773
-msgid "Could not get posts."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:720
-msgid "Could not regexp the post id path."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:844 bilbokblog/gdata.cpp:909 bilbokblog/gdata.cpp:1012
-#: bilbokblog/wordpressbuggy.cpp:343 bilbokblog/wordpressbuggy.cpp:391
-msgid "Could not regexp the id out of the result."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:853 bilbokblog/gdata.cpp:918 bilbokblog/gdata.cpp:1021
-msgid "Could not regexp the published time out of the result."
-msgstr ""
-
-#: bilbokblog/gdata.cpp:862 bilbokblog/gdata.cpp:927 bilbokblog/gdata.cpp:1030
-msgid "Could not regexp the update time out of the result."
-msgstr ""
-
-#: bilbokblog/livejournal.cpp:344 bilbokblog/livejournal.cpp:453
-#: bilbokblog/livejournal.cpp:478
-msgid "Could not read the post ID, result not a map."
-msgstr ""
-
-#: bilbokblog/livejournal.cpp:491
-msgid "The returned post ID did not match the sent one: "
-msgstr ""
-
-#: bilbokblog/metaweblog.cpp:74
-msgid "Media is a null pointer."
-msgstr ""
-
-#: bilbokblog/metaweblog.cpp:133
-msgid "Could not list categories out of the result from the server."
-msgstr ""
-
-#: bilbokblog/metaweblog.cpp:194
-msgid "Could not read the result, not a map."
-msgstr ""
-
-#: bilbokblog/movabletype.cpp:181
-msgid ""
-"Could not fetch list of trackback pings out of the result from the server."
-msgstr ""
-
-#: bilbokblog/movabletype.cpp:234
-msgid "The category list is empty"
-msgstr ""
-
-#: bilbokblog/movabletype.cpp:308
-msgid "Could not regexp the result out of the result."
-msgstr ""
-
-#: bilbokblog/movabletype.cpp:317
-msgid "Error on server, Post categories couldn't sets"
-msgstr ""
-
-#: bilbokblog/wordpressbuggy.cpp:62 bilbokblog/wordpressbuggy.cpp:160
-msgid "Post is a null pointer."
-msgstr ""
-
-#: bilbokblog/wordpressbuggy.cpp:263
-msgid "Category name isn't set."
-msgstr ""
-
-#: bilbo/main.cpp:45 l10n/rc.cpp:401 rc.cpp:401
-msgctxt "NAME OF TRANSLATORS"
-msgid "Your names"
-msgstr " ,Launchpad Contributions:,Łukasz Kaleta"
-
-#: bilbo/main.cpp:46 l10n/rc.cpp:402 rc.cpp:402
-msgctxt "EMAIL OF TRANSLATORS"
-msgid "Your emails"
-msgstr ",,"
-
-#: bilbo/mainwindow.cpp:154
-msgid "Submit..."
-msgstr ""
-
-#: bilbo/mainwindow.cpp:291
-msgid "Blogs"
-msgstr ""
-
-#: bilbo/mainwindow.cpp:492 bilbo/toolbox.cpp:238
-msgid "An error ocurred on latest transaction"
-msgstr ""
-
-#: bilbo/mainwindow.cpp:539
-msgid "Submiting post failed"
-msgstr ""
-
-#: bilbo/toolbox.cpp:239
-msgid "Failed"
-msgstr ""
-
-#: bilbo/toolbox.cpp:541
-msgid "Open in browser"
-msgstr ""
-
-#: bilbo/toolbox.cpp:544
-msgid "Copy URL"
-msgstr ""
-
-#: bilbo/toolbox.cpp:547
-msgid "Copy title"
-msgstr ""
-
-#: bilbo/uploadmediadialog.cpp:73
-msgid "Blog API"
-msgstr ""
-
-#: bilbo/uploadmediadialog.cpp:76
-msgid "FTP"
-msgstr ""
-
-#: bilbo/uploadmediadialog.cpp:122
-msgid "Please insert FTP Url."
-msgstr ""
-
-#: bilbo/uploadmediadialog.cpp:138
-msgid ""
-"Inserted ftp url is not a valid url.\n"
-"Note that url must start with \"ftp\" or \"sftp\", and end with a / that "
-"indicate the directory which file should upload to it."
-msgstr ""
-
-#: bilbo/uploadmediadialog.cpp:167 bilbo/uploadmediadialog.cpp:184
-msgid ""
-"Media uploaded, and URL copied to clipboard.\n"
-"You can find it here:\n"
-"%1"
-msgstr ""
-
-#: bilbo/uploadmediadialog.cpp:173 bilbo/uploadmediadialog.cpp:190
-msgid "Successfully uploaded"
-msgstr ""
-
-#: bilbo/uploadmediadialog.cpp:196
-msgid ""
-"Media uploading failed with this result:\n"
-"%1\n"
-"Try again?"
-msgstr ""
-
-#. i18n: file: bilbo/addcategorybase.ui:16
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: l10n/rc.cpp:3 rc.cpp:3
-msgid "Category Name: "
-msgstr ""
-
-#. i18n: file: bilbo/addcategorybase.ui:29
-#. i18n: ectx: property (text), widget (QLabel, label_2)
-#: l10n/rc.cpp:6 rc.cpp:6
-msgid "Category Slug: "
-msgstr ""
-
-#. i18n: file: bilbo/addcategorybase.ui:42
-#. i18n: ectx: property (text), widget (QLabel, label_4)
-#: l10n/rc.cpp:9 rc.cpp:9
-msgid "Parent Category:"
-msgstr ""
-
-#. i18n: file: bilbo/addcategorybase.ui:55
-#. i18n: ectx: property (text), widget (QLabel, label_3)
-#: l10n/rc.cpp:12 rc.cpp:12
-msgid "Description:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:29
-#. i18n: ectx: property (text), widget (QLabel, label_18)
-#. i18n: file: bilbo/addeditblogbase.ui:218
-#. i18n: ectx: property (text), widget (QLabel, label_5)
-#. i18n: file: bilbo/addeditblogbase.ui:29
-#. i18n: ectx: property (text), widget (QLabel, label_18)
-#. i18n: file: bilbo/addeditblogbase.ui:218
-#. i18n: ectx: property (text), widget (QLabel, label_5)
-#: l10n/rc.cpp:18 l10n/rc.cpp:52 rc.cpp:18 rc.cpp:52
-msgid "Configuring your blog account..."
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:46
-#. i18n: ectx: property (text), widget (QLabel, label_4)
-#: l10n/rc.cpp:21 rc.cpp:21
-msgid ""
-"Please fill in these fields, and click the \"AutoConfigure\" button to "
-"program guess your blog settings.\n"
-"You can set more options on Advanced tab."
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:65
-#. i18n: ectx: property (text), widget (QLabel, label_9)
-#: l10n/rc.cpp:25 rc.cpp:25
-msgid "Title:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:75
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: l10n/rc.cpp:28 rc.cpp:28
-msgid "Blog/Homepage URL:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:115
-#. i18n: ectx: property (text), widget (QLabel, label_2)
-#: l10n/rc.cpp:40 rc.cpp:40
-msgid "Username:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:131
-#. i18n: ectx: property (text), widget (QLabel, label_3)
-#: l10n/rc.cpp:43 rc.cpp:43
-msgid "Password:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:176
-#. i18n: ectx: property (text), widget (KPushButton, btnAutoConf)
-#: l10n/rc.cpp:46 rc.cpp:46
-msgid "Auto Configure"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:228
-#. i18n: ectx: property (text), widget (QLabel, label_6)
-#: l10n/rc.cpp:55 rc.cpp:55
-msgctxt "Name of the API which is used to communicate with Blog"
-msgid "API:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:286
-#. i18n: ectx: property (text), widget (QLabel, label_7)
-#: l10n/rc.cpp:73 rc.cpp:73
-msgid "Blog ID:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:314
-#. i18n: ectx: property (text), widget (KPushButton, btnFetch)
-#: l10n/rc.cpp:76 rc.cpp:76
-msgctxt "verb, fetch the blog id from the web"
-msgid "Fetch ID"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:337
-#. i18n: ectx: property (text), widget (QLabel, label_8)
-#: l10n/rc.cpp:79 rc.cpp:79
-msgctxt "Default direction of text in the blog"
-msgid "Default text direction:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:374
-#. i18n: ectx: property (text), widget (QLabel, label_11)
-#: l10n/rc.cpp:91 rc.cpp:91
-msgid "Create/Modify post:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:407
-#. i18n: ectx: property (text), widget (QLabel, label_14)
-#: l10n/rc.cpp:97 rc.cpp:97
-msgid "Support categories:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:417
-#. i18n: ectx: property (text), widget (QLabel, label_16)
-#: l10n/rc.cpp:100 rc.cpp:100
-msgid "Support tags:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:441
-#. i18n: ectx: property (text), widget (QLabel, label_22)
-#: l10n/rc.cpp:109 rc.cpp:109
-msgid "Remove post:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:458
-#. i18n: ectx: property (text), widget (QLabel, label_12)
-#: l10n/rc.cpp:115 rc.cpp:115
-msgid "Fetch recent posts:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:475
-#. i18n: ectx: property (text), widget (QLabel, label_20)
-#: l10n/rc.cpp:121 rc.cpp:121
-msgid "Multipaged post:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:492
-#. i18n: ectx: property (text), widget (QLabel, label_10)
-#: l10n/rc.cpp:127 rc.cpp:127
-msgid ""
-"Note: You can see list of supported features for your blog after "
-"configuration!"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:502
-#. i18n: ectx: property (text), widget (QLabel, label_13)
-#: l10n/rc.cpp:130 rc.cpp:130
-msgid "Upload media:"
-msgstr ""
-
-#. i18n: file: bilbo/addeditblogbase.ui:519
-#. i18n: ectx: property (text), widget (QLabel, label_15)
-#: l10n/rc.cpp:136 rc.cpp:136
-msgid "Create new category:"
-msgstr ""
-
-#. i18n: file: bilbo/bilboui.rc:19
-#. i18n: ectx: Menu (settings)
-#: l10n/rc.cpp:157 rc.cpp:157
-msgid "Toolbar"
-msgstr ""
-
-#. i18n: file: bilbo/blogsettingsbase.ui:49
-#. i18n: ectx: property (text), widget (QTableWidget, blogsTable)
-#: l10n/rc.cpp:163 rc.cpp:163
-msgid "Url"
-msgstr ""
-
-#. i18n: file: bilbo/blogsettingsbase.ui:75
-#. i18n: ectx: property (text), widget (KPushButton, btnAdd)
-#: l10n/rc.cpp:166 rc.cpp:166
-msgid "&Add..."
-msgstr ""
-
-#. i18n: file: bilbo/blogsettingsbase.ui:85
-#. i18n: ectx: property (text), widget (KPushButton, btnEdit)
-#: l10n/rc.cpp:169 rc.cpp:169
-msgid "&Modify..."
-msgstr ""
-
-#. i18n: file: bilbo/blogsettingsbase.ui:95
-#. i18n: ectx: property (text), widget (KPushButton, btnRemove)
-#: l10n/rc.cpp:172 rc.cpp:172
-msgid "&Remove"
-msgstr ""
-
-#. i18n: file: bilbo/editorsettingsbase.ui:65
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_previewInBlogStyle)
-#: l10n/rc.cpp:238 rc.cpp:238
-msgid "Enable preview posts in blog style, when available."
-msgstr ""
-
-#. i18n: file: bilbo/entriescountdialogbase.ui:40
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_remember)
-#: l10n/rc.cpp:244 rc.cpp:244
-msgid "Do not ask again"
-msgstr ""
-
-#. i18n: file: bilbo/settingsbase.ui:16
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_enableSysTrayIcon)
-#: l10n/rc.cpp:256 rc.cpp:256
-msgid "Enable system tray icon"
-msgstr ""
-
-#. i18n: file: bilbo/settingsbase.ui:23
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_CopyMediaUrl)
-#: l10n/rc.cpp:259 rc.cpp:259
-msgid "Copy media URL to clipboard after upload"
-msgstr ""
-
-#. i18n: file: bilbo/toolboxbase.ui:92
-#. i18n: ectx: property (text), widget (KPushButton, btnEntriesUpdate)
-#: l10n/rc.cpp:274 rc.cpp:274
-msgid "Update..."
-msgstr ""
-
-#. i18n: file: bilbo/toolboxbase.ui:219
-#. i18n: ectx: property (text), widget (KPushButton, btnCatAdd)
-#: l10n/rc.cpp:301 rc.cpp:301
-msgid "Add Category..."
-msgstr ""
-
-#. i18n: file: bilbo/toolboxbase.ui:481
-#. i18n: ectx: property (text), widget (QLabel, label_4)
-#: l10n/rc.cpp:337 rc.cpp:337
-msgid "Permalink (wordpress) :"
-msgstr ""
 
 #. i18n: file: bilbo/uploadmediabase.ui:26
 #. i18n: ectx: property (text), widget (QLabel, label_6)

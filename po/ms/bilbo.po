@@ -14,12 +14,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-06-27 19:04+0000\n"
+"X-Launchpad-Export-Date: 2009-08-27 08:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: bilbo/addeditblog.cpp:50
 msgid "Add a new blog"
 msgstr "Tambah blog baru"
+
+#: bilbo/addeditblog.cpp:67
+msgid "Edit blog settings"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:108
 msgid ""
@@ -32,6 +36,15 @@ msgstr ""
 msgid "Incomplete fields"
 msgstr "Ruang tak lengkap"
 
+#: bilbo/addeditblog.cpp:112
+msgid "Trying to guess blog and API type..."
+msgstr ""
+
+#: bilbo/addeditblog.cpp:155 bilbo/addeditblog.cpp:208
+msgid ""
+"Auto configuration failed. You have to set Blog API on Advanced tab manually."
+msgstr ""
+
 #. i18n: file: bilbo/waitwidgetbase.ui:19
 #. i18n: ectx: property (text), widget (QLabel, operationNameLabel)
 #: bilbo/addeditblog.cpp:259 l10n/rc.cpp:400 rc.cpp:400
@@ -41,53 +54,6 @@ msgstr "Sila tunggu..."
 #: bilbo/addeditblog.cpp:261
 msgid "Fetching Blog Id..."
 msgstr "Mendapatkan Id Blog..."
-
-#: bilbo/addeditblog.cpp:428
-msgid "Yes"
-msgstr "Ya"
-
-#: bilbo/addeditblog.cpp:430
-msgid "No, API doesn't support"
-msgstr "Tidak, API tidak disokong"
-
-#: bilbo/addeditblog.cpp:431
-msgid "No, Bilbo doesn't support yet"
-msgstr "Tidak, Bilbo belum menyokongnya lagi"
-
-#: bilbo/composer/dialogs/addeditlink.cpp:56
-msgctxt "verb, to modify an existing link"
-msgid "Edit Link"
-msgstr "Edit Pautan"
-
-#: bilbo/composer/dialogs/addeditlink.cpp:58
-msgctxt "verb, to insert a link into the text"
-msgid "Add Link"
-msgstr "Tambah pautan"
-
-#: bilbo/composer/dialogs/addimagedialog.cpp:38
-msgid "Add Image"
-msgstr "Tambah Imej"
-
-#: bilbo/composer/dialogs/addmediadialog.cpp:51
-msgid "Choose a file"
-msgstr "Pilih satu fail"
-
-#: bilbo/composer/dialogs/addmediadialog.cpp:53
-msgid "Browse"
-msgstr "Layar"
-
-#: bilbo/addeditblog.cpp:67
-msgid "Edit blog settings"
-msgstr ""
-
-#: bilbo/addeditblog.cpp:112
-msgid "Trying to guess blog and API type..."
-msgstr ""
-
-#: bilbo/addeditblog.cpp:155 bilbo/addeditblog.cpp:208
-msgid ""
-"Auto configuration failed. You have to set Blog API on Advanced tab manually."
-msgstr ""
 
 #: bilbo/addeditblog.cpp:278
 msgid ""
@@ -117,6 +83,18 @@ msgstr ""
 #: bilbo/addeditblog.cpp:336
 msgid "Which blog?"
 msgstr ""
+
+#: bilbo/addeditblog.cpp:428
+msgid "Yes"
+msgstr "Ya"
+
+#: bilbo/addeditblog.cpp:430
+msgid "No, API doesn't support"
+msgstr "Tidak, API tidak disokong"
+
+#: bilbo/addeditblog.cpp:431
+msgid "No, Bilbo doesn't support yet"
+msgstr "Tidak, Bilbo belum menyokongnya lagi"
 
 #: bilbo/addeditblog.cpp:512
 msgid ""
@@ -383,9 +361,31 @@ msgstr ""
 msgid "Split text"
 msgstr ""
 
+#: bilbo/composer/dialogs/addeditlink.cpp:56
+msgctxt "verb, to modify an existing link"
+msgid "Edit Link"
+msgstr "Edit Pautan"
+
+#: bilbo/composer/dialogs/addeditlink.cpp:58
+msgctxt "verb, to insert a link into the text"
+msgid "Add Link"
+msgstr "Tambah pautan"
+
+#: bilbo/composer/dialogs/addimagedialog.cpp:38
+msgid "Add Image"
+msgstr "Tambah Imej"
+
+#: bilbo/composer/dialogs/addmediadialog.cpp:51
+msgid "Choose a file"
+msgstr "Pilih satu fail"
+
 #: bilbo/composer/dialogs/addmediadialog.cpp:52
 msgid "Type media path here."
 msgstr ""
+
+#: bilbo/composer/dialogs/addmediadialog.cpp:53
+msgid "Browse"
+msgstr "Layar"
 
 #: bilbo/composer/dialogs/addmediadialog.cpp:97
 msgid "The selected media address is an invalid url."

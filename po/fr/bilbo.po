@@ -14,12 +14,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-06-27 19:04+0000\n"
+"X-Launchpad-Export-Date: 2009-08-27 08:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: bilbo/addeditblog.cpp:50
 msgid "Add a new blog"
 msgstr "Ajouter un nouveau blog"
+
+#: bilbo/addeditblog.cpp:67
+msgid "Edit blog settings"
+msgstr "Éditer les paramètres du blog"
 
 #: bilbo/addeditblog.cpp:108
 msgid ""
@@ -32,30 +36,6 @@ msgstr ""
 msgid "Incomplete fields"
 msgstr "Certains champs sont incomplets"
 
-#. i18n: file: bilbo/waitwidgetbase.ui:19
-#. i18n: ectx: property (text), widget (QLabel, operationNameLabel)
-#: bilbo/addeditblog.cpp:259 l10n/rc.cpp:400 rc.cpp:400
-msgid "Please wait..."
-msgstr "Veuillez patienter..."
-
-#: bilbo/addeditblog.cpp:292
-msgid "AutoConfiguration Failed"
-msgstr "L'AutoConfiguration a échoué"
-
-#: bilbo/mainwindow.cpp:167
-msgid "Show Toolbox"
-msgstr "Montrer la Boîte à outils"
-
-#. i18n: file: bilbo/toolboxbase.ui:504
-#. i18n: ectx: property (text), widget (QLabel, label_2)
-#: l10n/rc.cpp:343 rc.cpp:343
-msgid "Summary :"
-msgstr "Sommaire :"
-
-#: bilbo/addeditblog.cpp:67
-msgid "Edit blog settings"
-msgstr "Éditer les paramètres du blog"
-
 #: bilbo/addeditblog.cpp:112
 msgid "Trying to guess blog and API type..."
 msgstr ""
@@ -64,6 +44,12 @@ msgstr ""
 msgid ""
 "Auto configuration failed. You have to set Blog API on Advanced tab manually."
 msgstr ""
+
+#. i18n: file: bilbo/waitwidgetbase.ui:19
+#. i18n: ectx: property (text), widget (QLabel, operationNameLabel)
+#: bilbo/addeditblog.cpp:259 l10n/rc.cpp:400 rc.cpp:400
+msgid "Please wait..."
+msgstr "Veuillez patienter..."
 
 #: bilbo/addeditblog.cpp:261
 msgid "Fetching Blog Id..."
@@ -83,6 +69,10 @@ msgid ""
 "Sorry, Bilbo cannot get API type automatically,please check your internet "
 "connection, otherwise you have to set API type on advanced tab manually."
 msgstr ""
+
+#: bilbo/addeditblog.cpp:292
+msgid "AutoConfiguration Failed"
+msgstr "L'AutoConfiguration a échoué"
 
 #: bilbo/addeditblog.cpp:300
 msgid ""
@@ -648,6 +638,10 @@ msgstr ""
 #: bilbo/mainwindow.cpp:162
 msgid "Save Locally"
 msgstr ""
+
+#: bilbo/mainwindow.cpp:167
+msgid "Show Toolbox"
+msgstr "Montrer la Boîte à outils"
 
 #: bilbo/mainwindow.cpp:172
 msgid "Clear cached images"
@@ -1603,6 +1597,12 @@ msgstr ""
 #: l10n/rc.cpp:340 rc.cpp:340
 msgid "&Trackback URLs :"
 msgstr ""
+
+#. i18n: file: bilbo/toolboxbase.ui:504
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: l10n/rc.cpp:343 rc.cpp:343
+msgid "Summary :"
+msgstr "Sommaire :"
 
 #. i18n: file: bilbo/toolboxbase.ui:543
 #. i18n: ectx: attribute (label), widget (QWidget, pgNotes)

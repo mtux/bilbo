@@ -8,18 +8,22 @@ msgstr ""
 "Project-Id-Version: bilbo\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-06-27 19:07+0430\n"
-"PO-Revision-Date: 2009-06-10 15:10+0000\n"
+"PO-Revision-Date: 2009-07-28 10:50+0000\n"
 "Last-Translator: MaXeR <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-06-27 19:04+0000\n"
+"X-Launchpad-Export-Date: 2009-08-27 08:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: bilbo/addeditblog.cpp:50
 msgid "Add a new blog"
 msgstr "أضف مدونة جديدة"
+
+#: bilbo/addeditblog.cpp:67
+msgid "Edit blog settings"
+msgstr "تحرير إعدادات المدونة"
 
 #: bilbo/addeditblog.cpp:108
 msgid ""
@@ -30,322 +34,24 @@ msgstr "عليك تحديد اسم المستخدم وكلمة المرور وع
 msgid "Incomplete fields"
 msgstr "حقول غير كاملة"
 
-#. i18n: file: bilbo/waitwidgetbase.ui:19
-#. i18n: ectx: property (text), widget (QLabel, operationNameLabel)
-#: bilbo/addeditblog.cpp:259 l10n/rc.cpp:400 rc.cpp:400
-msgid "Please wait..."
-msgstr "انتظر من فضلك..."
-
-#: bilbo/addeditblog.cpp:292
-msgid "AutoConfiguration Failed"
-msgstr "فشل الإعداد التقائي"
-
-#: bilbo/addeditblog.cpp:428
-msgid "Yes"
-msgstr "نعم"
-
-#: bilbo/backend.cpp:427
-msgid "Unknown Error: "
-msgstr "خطأ غير معروف: "
-
-#: bilbo/composer/bilbobrowser.cpp:143
-msgid "Select a blog"
-msgstr "اختيار مدوَّنة"
-
-#: bilbo/composer/bilboeditor.cpp:84
-msgctxt "Software"
-msgid "Html Editor"
-msgstr "محرر Html"
-
-#: bilbo/composer/bilboeditor.cpp:85
-msgctxt "preview of the edited post"
-msgid "Post Preview"
-msgstr "عرض التدوينة"
-
-#: bilbo/composer/bilboeditor.cpp:101
-msgid "Media list:"
-msgstr "قائمة الوسائط:"
-
-#: bilbo/composer/bilboeditor.cpp:144 bilbo/composer/bilboeditor.cpp:1059
-msgid "Post Title"
-msgstr "عنوان التدوينة"
-
-#: bilbo/composer/bilboeditor.cpp:168
-msgid "Enable Spell Checking"
-msgstr "تفعيل المدقق الإملائي"
-
-#: bilbo/composer/bilboeditor.cpp:179
-msgctxt "Makes text bold, and its shortcut is (Ctrl+b)"
-msgid "Bold (Ctrl+b)"
-msgstr "عريض (Ctrl+b)"
-
-#: bilbo/composer/bilboeditor.cpp:187
-msgctxt "Makes text italic, and its shortcut is (Ctrl+i)"
-msgid "Italic (Ctrl+i)"
-msgstr "مائل (Ctrl+i)"
-
-#: bilbo/composer/bilboeditor.cpp:195
-msgctxt "Makes text underlined, and its shortcut is (Ctrl+u)"
-msgid "Underline (Ctrl+u)"
-msgstr "تحته خط (Ctrl+u)"
-
-#: bilbo/composer/bilboeditor.cpp:234
-msgid "Increase font size"
-msgstr "تكبير الخط"
-
-#: bilbo/composer/bilboeditor.cpp:238
-msgid "Decrease font size"
-msgstr "تصغير الخط"
-
-#: bilbo/composer/bilboeditor.cpp:242
-msgctxt "verb, to select text color"
-msgid "Select Color"
-msgstr "اختيار لون"
-
-#: bilbo/composer/bilboeditor.cpp:261
-msgctxt "verb, to add a new link or edit an existing one"
-msgid "Add/Edit Link"
-msgstr "إضافة/تحرير رابط"
-
-#: bilbo/composer/bilboeditor.cpp:267
-msgctxt "verb, to remove an existing link"
-msgid "Remove Link"
-msgstr "حذف رابط"
-
-#: bilbo/composer/bilboeditor.cpp:272
-msgctxt "verb, to insert an image"
-msgid "Add Image"
-msgstr "أضف صورة"
-
-#: bilbo/composer/bilboeditor.cpp:278
-msgctxt "verb, to align text from left"
-msgid "Align left"
-msgstr "تجانب لليسار"
-
-#: bilbo/composer/bilboeditor.cpp:282
-msgctxt "verb, to align text from center"
-msgid "Align center"
-msgstr "توسيط"
-
-#: bilbo/composer/bilboeditor.cpp:286
-msgctxt "verb, to align text from right"
-msgid "Align right"
-msgstr "تجانب لليمين"
-
-#: bilbo/composer/bilboeditor.cpp:291
-msgctxt "verb, to justify text"
-msgid "Justify"
-msgstr "تسوية"
-
-#: bilbo/composer/bilboeditor.cpp:297
-msgctxt "Sets text direction as right to left"
-msgid "Right to Left"
-msgstr "من اليمين لليسار"
-
-#: bilbo/composer/bilboeditor.cpp:311
-msgid "Ordered List"
-msgstr "قائمة مرتّبة"
-
-#: bilbo/composer/bilboeditor.cpp:315
-msgid "Unordered List"
-msgstr "قائمة غير مرتّبة"
-
-#: bilbo/composer/dialogs/addeditlink.cpp:56
-msgctxt "verb, to modify an existing link"
-msgid "Edit Link"
-msgstr "تحرير الوصلة"
-
-#: bilbo/composer/dialogs/addeditlink.cpp:58
-msgctxt "verb, to insert a link into the text"
-msgid "Add Link"
-msgstr "أضف وصلة"
-
-#: bilbo/composer/dialogs/addimagedialog.cpp:38
-msgid "Add Image"
-msgstr "أضف صورة"
-
-#: bilbo/composer/dialogs/addmediadialog.cpp:51
-msgid "Choose a file"
-msgstr "اختر ملفاً"
-
-#: bilbo/composer/dialogs/addmediadialog.cpp:53
-msgid "Browse"
-msgstr "تصفح"
-
-#: bilbo/composer/medialistwidget.cpp:39
-msgid "Remove media"
-msgstr "حذف وسائط"
-
-#: bilbo/main.cpp:41
-msgid "Mehrdad Momeny"
-msgstr "مهرداد مؤمني"
-
-#: bilbo/main.cpp:42
-msgid "Golnaz Nilieh"
-msgstr "جولناز نيليه"
-
-#: bilbo/main.cpp:43
-msgid "Roozbeh Shafiee"
-msgstr "روزبيه شافعي"
-
-#: bilbo/main.cpp:43
-msgid "Icon designer"
-msgstr "مصمم الأيقونة"
-
-#: bilbo/mainwindow.cpp:145
-msgid "New Post"
-msgstr "تدوينة جديدة"
-
-#: bilbo/mainwindow.cpp:150
-msgid "Add Blog..."
-msgstr "إضافة مدوَّنة..."
-
-#: bilbo/mainwindow.cpp:158
-msgid "Upload Media..."
-msgstr "رفع وسائط..."
-
-#: bilbo/mainwindow.cpp:290
-msgid "General"
-msgstr "عام"
-
-#: bilbo/mainwindow.cpp:292
-msgid "Editor"
-msgstr "المحرر"
-
-#: bilbo/uploadmediadialog.cpp:43
-msgid "Upload"
-msgstr "رفع"
-
-#: bilbo/uploadmediadialog.cpp:44
-msgid "Upload media..."
-msgstr "رفع وسائط..."
-
-#. i18n: file: bilbo/addeditblogbase.ui:88
-#. i18n: ectx: property (text), widget (KLineEdit, txtUrl)
-#. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:35
-#. i18n: ectx: property (text), widget (KLineEdit, txtAddress)
-#. i18n: file: bilbo/uploadmediabase.ui:110
-#. i18n: ectx: property (text), widget (KLineEdit, kcfg_httpUrl)
-#. i18n: file: bilbo/addeditblogbase.ui:88
-#. i18n: ectx: property (text), widget (KLineEdit, txtUrl)
-#. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:35
-#. i18n: ectx: property (text), widget (KLineEdit, txtAddress)
-#. i18n: file: bilbo/uploadmediabase.ui:110
-#. i18n: ectx: property (text), widget (KLineEdit, kcfg_httpUrl)
-#: l10n/rc.cpp:31 l10n/rc.cpp:178 l10n/rc.cpp:379 rc.cpp:31 rc.cpp:178
-#: rc.cpp:379
-msgid "http://"
-msgstr "http://"
-
-#. i18n: file: bilbo/addeditblogbase.ui:91
-#. i18n: ectx: property (clickMessage), widget (KLineEdit, txtUrl)
-#: l10n/rc.cpp:34 rc.cpp:34
-msgid "http://YourHomePage.com"
-msgstr "http://YourHomePage.com"
-
-#. i18n: file: bilbo/addeditblogbase.ui:108
-#. i18n: ectx: property (text), widget (QLabel, label_17)
-#: l10n/rc.cpp:37 rc.cpp:37
-msgid "e.g. : http://domain.com/blog/"
-msgstr "مثال : http://domain.com/blog/"
-
-#. i18n: file: bilbo/addeditblogbase.ui:242
-#. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
-#: l10n/rc.cpp:58 rc.cpp:58
-msgid "Blogger 1.0 API"
-msgstr "Blogger 1.0 API"
-
-#. i18n: file: bilbo/addeditblogbase.ui:247
-#. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
-#: l10n/rc.cpp:61 rc.cpp:61
-msgid "MetaWeblog API"
-msgstr "MetaWeblog API"
-
-#. i18n: file: bilbo/addeditblogbase.ui:252
-#. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
-#: l10n/rc.cpp:64 rc.cpp:64
-msgid "MovableType API"
-msgstr "MovableType API"
-
-#. i18n: file: bilbo/addeditblogbase.ui:257
-#. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
-#: l10n/rc.cpp:67 rc.cpp:67
-msgid "Wordpress"
-msgstr "ووردبريس"
-
-#. i18n: file: bilbo/addeditblogbase.ui:262
-#. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
-#: l10n/rc.cpp:70 rc.cpp:70
-msgid "Blogspot.com"
-msgstr "Blogspot.com"
-
-#. i18n: file: bilbo/addeditblogbase.ui:351
-#. i18n: ectx: property (text), item, widget (KComboBox, comboDir)
-#: l10n/rc.cpp:82 rc.cpp:82
-msgid "Left to right"
-msgstr "من اليسار لليمين"
-
-#. i18n: file: bilbo/addeditblogbase.ui:356
-#. i18n: ectx: property (text), item, widget (KComboBox, comboDir)
-#: l10n/rc.cpp:85 rc.cpp:85
-msgid "Right to left"
-msgstr "من اليمين لليسار"
-
-#. i18n: file: bilbo/addeditblogbase.ui:384
-#. i18n: ectx: property (text), widget (QLabel, featureCreatePost)
-#. i18n: file: bilbo/addeditblogbase.ui:427
-#. i18n: ectx: property (text), widget (QLabel, featureCategories)
-#. i18n: file: bilbo/addeditblogbase.ui:434
-#. i18n: ectx: property (text), widget (QLabel, featureTags)
-#. i18n: file: bilbo/addeditblogbase.ui:451
-#. i18n: ectx: property (text), widget (QLabel, featureRemovePost)
-#. i18n: file: bilbo/addeditblogbase.ui:468
-#. i18n: ectx: property (text), widget (QLabel, featurRecentPosts)
-#. i18n: file: bilbo/addeditblogbase.ui:485
-#. i18n: ectx: property (text), widget (QLabel, featureMultipagedPosts)
-#. i18n: file: bilbo/addeditblogbase.ui:512
-#. i18n: ectx: property (text), widget (QLabel, featureUploadMedia)
-#. i18n: file: bilbo/addeditblogbase.ui:529
-#. i18n: ectx: property (text), widget (QLabel, featureCreateCategory)
-#. i18n: file: bilbo/addeditblogbase.ui:384
-#. i18n: ectx: property (text), widget (QLabel, featureCreatePost)
-#. i18n: file: bilbo/addeditblogbase.ui:427
-#. i18n: ectx: property (text), widget (QLabel, featureCategories)
-#. i18n: file: bilbo/addeditblogbase.ui:434
-#. i18n: ectx: property (text), widget (QLabel, featureTags)
-#. i18n: file: bilbo/addeditblogbase.ui:451
-#. i18n: ectx: property (text), widget (QLabel, featureRemovePost)
-#. i18n: file: bilbo/addeditblogbase.ui:468
-#. i18n: ectx: property (text), widget (QLabel, featurRecentPosts)
-#. i18n: file: bilbo/addeditblogbase.ui:485
-#. i18n: ectx: property (text), widget (QLabel, featureMultipagedPosts)
-#. i18n: file: bilbo/addeditblogbase.ui:512
-#. i18n: ectx: property (text), widget (QLabel, featureUploadMedia)
-#. i18n: file: bilbo/addeditblogbase.ui:529
-#. i18n: ectx: property (text), widget (QLabel, featureCreateCategory)
-#: l10n/rc.cpp:94 l10n/rc.cpp:103 l10n/rc.cpp:106 l10n/rc.cpp:112
-#: l10n/rc.cpp:118 l10n/rc.cpp:124 l10n/rc.cpp:133 l10n/rc.cpp:139 rc.cpp:94
-#: rc.cpp:103 rc.cpp:106 rc.cpp:112 rc.cpp:118 rc.cpp:124 rc.cpp:133
-#: rc.cpp:139
-msgid "Unknown"
-msgstr "مجهول"
-
-#: bilbo/addeditblog.cpp:67
-msgid "Edit blog settings"
-msgstr "تحرير إعدادات المدونة"
-
 #: bilbo/addeditblog.cpp:112
 msgid "Trying to guess blog and API type..."
-msgstr ""
+msgstr "محاولة تخمين نوع المدونة و API الخاص بها..."
 
 #: bilbo/addeditblog.cpp:155 bilbo/addeditblog.cpp:208
 msgid ""
 "Auto configuration failed. You have to set Blog API on Advanced tab manually."
 msgstr ""
 
+#. i18n: file: bilbo/waitwidgetbase.ui:19
+#. i18n: ectx: property (text), widget (QLabel, operationNameLabel)
+#: bilbo/addeditblog.cpp:259 l10n/rc.cpp:400 rc.cpp:400
+msgid "Please wait..."
+msgstr "انتظر من فضلك..."
+
 #: bilbo/addeditblog.cpp:261
 msgid "Fetching Blog Id..."
-msgstr ""
+msgstr "جلب هويّة المدونة..."
 
 #: bilbo/addeditblog.cpp:278
 msgid ""
@@ -362,15 +68,25 @@ msgid ""
 "connection, otherwise you have to set API type on advanced tab manually."
 msgstr ""
 
+#: bilbo/addeditblog.cpp:292
+msgid "AutoConfiguration Failed"
+msgstr "فشل الإعداد التقائي"
+
 #: bilbo/addeditblog.cpp:300
 msgid ""
 "Fetching BlogID Faild!\n"
 "please check your internet connection."
 msgstr ""
+"فشل جلب هويّة المدونة!\n"
+"الرجاء فحص الإتصال بالإنترنت."
 
 #: bilbo/addeditblog.cpp:336
 msgid "Which blog?"
 msgstr "أي مدونة؟"
+
+#: bilbo/addeditblog.cpp:428
+msgid "Yes"
+msgstr "نعم"
 
 #: bilbo/addeditblog.cpp:430
 msgid "No, API doesn't support"
@@ -451,6 +167,10 @@ msgstr ""
 msgid "Not Supported Error: "
 msgstr ""
 
+#: bilbo/backend.cpp:427
+msgid "Unknown Error: "
+msgstr "خطأ غير معروف: "
+
 #: bilbo/blogsettings.cpp:98
 msgid "Are you sure of removing selected blog?"
 msgstr ""
@@ -466,6 +186,10 @@ msgstr ""
 #: bilbo/composer/bilbobrowser.cpp:142
 msgid "Please select a blog, then try again."
 msgstr ""
+
+#: bilbo/composer/bilbobrowser.cpp:143
+msgid "Select a blog"
+msgstr "اختيار مدوَّنة"
 
 #: bilbo/composer/bilbobrowser.cpp:148
 msgid "Fetching blog style from the web..."
@@ -487,6 +211,43 @@ msgstr ""
 msgctxt "Software"
 msgid "Visual Editor"
 msgstr "المحرر المرئي"
+
+#: bilbo/composer/bilboeditor.cpp:84
+msgctxt "Software"
+msgid "Html Editor"
+msgstr "محرر Html"
+
+#: bilbo/composer/bilboeditor.cpp:85
+msgctxt "preview of the edited post"
+msgid "Post Preview"
+msgstr "عرض التدوينة"
+
+#: bilbo/composer/bilboeditor.cpp:101
+msgid "Media list:"
+msgstr "قائمة الوسائط:"
+
+#: bilbo/composer/bilboeditor.cpp:144 bilbo/composer/bilboeditor.cpp:1059
+msgid "Post Title"
+msgstr "عنوان التدوينة"
+
+#: bilbo/composer/bilboeditor.cpp:168
+msgid "Enable Spell Checking"
+msgstr "تفعيل المدقق الإملائي"
+
+#: bilbo/composer/bilboeditor.cpp:179
+msgctxt "Makes text bold, and its shortcut is (Ctrl+b)"
+msgid "Bold (Ctrl+b)"
+msgstr "عريض (Ctrl+b)"
+
+#: bilbo/composer/bilboeditor.cpp:187
+msgctxt "Makes text italic, and its shortcut is (Ctrl+i)"
+msgid "Italic (Ctrl+i)"
+msgstr "مائل (Ctrl+i)"
+
+#: bilbo/composer/bilboeditor.cpp:195
+msgctxt "Makes text underlined, and its shortcut is (Ctrl+u)"
+msgid "Underline (Ctrl+u)"
+msgstr "تحته خط (Ctrl+u)"
 
 #: bilbo/composer/bilboeditor.cpp:203
 msgctxt "Strikes the text out, and its shortcut is (Ctrl+l)"
@@ -527,6 +288,19 @@ msgstr "عنوان ٥"
 msgid "Heading 6"
 msgstr "عنوان ٦"
 
+#: bilbo/composer/bilboeditor.cpp:234
+msgid "Increase font size"
+msgstr "تكبير الخط"
+
+#: bilbo/composer/bilboeditor.cpp:238
+msgid "Decrease font size"
+msgstr "تصغير الخط"
+
+#: bilbo/composer/bilboeditor.cpp:242
+msgctxt "verb, to select text color"
+msgid "Select Color"
+msgstr "اختيار لون"
+
 #: bilbo/composer/bilboeditor.cpp:247
 msgid "Remove formatting"
 msgstr "حذف التنسيق"
@@ -535,13 +309,83 @@ msgstr "حذف التنسيق"
 msgid "Blockquote"
 msgstr ""
 
+#: bilbo/composer/bilboeditor.cpp:261
+msgctxt "verb, to add a new link or edit an existing one"
+msgid "Add/Edit Link"
+msgstr "إضافة/تحرير رابط"
+
+#: bilbo/composer/bilboeditor.cpp:267
+msgctxt "verb, to remove an existing link"
+msgid "Remove Link"
+msgstr "حذف رابط"
+
+#: bilbo/composer/bilboeditor.cpp:272
+msgctxt "verb, to insert an image"
+msgid "Add Image"
+msgstr "أضف صورة"
+
+#: bilbo/composer/bilboeditor.cpp:278
+msgctxt "verb, to align text from left"
+msgid "Align left"
+msgstr "تجانب لليسار"
+
+#: bilbo/composer/bilboeditor.cpp:282
+msgctxt "verb, to align text from center"
+msgid "Align center"
+msgstr "توسيط"
+
+#: bilbo/composer/bilboeditor.cpp:286
+msgctxt "verb, to align text from right"
+msgid "Align right"
+msgstr "تجانب لليمين"
+
+#: bilbo/composer/bilboeditor.cpp:291
+msgctxt "verb, to justify text"
+msgid "Justify"
+msgstr "تسوية"
+
+#: bilbo/composer/bilboeditor.cpp:297
+msgctxt "Sets text direction as right to left"
+msgid "Right to Left"
+msgstr "من اليمين لليسار"
+
+#: bilbo/composer/bilboeditor.cpp:311
+msgid "Ordered List"
+msgstr "قائمة مرتّبة"
+
+#: bilbo/composer/bilboeditor.cpp:315
+msgid "Unordered List"
+msgstr "قائمة غير مرتّبة"
+
 #: bilbo/composer/bilboeditor.cpp:319
 msgid "Split text"
 msgstr ""
 
+#: bilbo/composer/dialogs/addeditlink.cpp:56
+msgctxt "verb, to modify an existing link"
+msgid "Edit Link"
+msgstr "تحرير الوصلة"
+
+#: bilbo/composer/dialogs/addeditlink.cpp:58
+msgctxt "verb, to insert a link into the text"
+msgid "Add Link"
+msgstr "أضف وصلة"
+
+#: bilbo/composer/dialogs/addimagedialog.cpp:38
+msgid "Add Image"
+msgstr "أضف صورة"
+
+#: bilbo/composer/dialogs/addmediadialog.cpp:51
+msgid "Choose a file"
+msgstr "اختر ملفاً"
+
 #: bilbo/composer/dialogs/addmediadialog.cpp:52
 msgid "Type media path here."
 msgstr ""
+
+#: bilbo/composer/dialogs/addmediadialog.cpp:53
+msgid "Browse"
+msgstr "تصفح"
 
 #: bilbo/composer/dialogs/addmediadialog.cpp:97
 msgid "The selected media address is an invalid url."
@@ -566,6 +410,10 @@ msgstr "تحرير الخصائص"
 #: bilbo/composer/medialistwidget.cpp:37
 msgid "Copy Url"
 msgstr "نسخ الرابط"
+
+#: bilbo/composer/medialistwidget.cpp:39
+msgid "Remove media"
+msgstr "حذف وسائط"
 
 #: bilbo/composer/stylegetter.cpp:55
 msgid "Can not fetch the selected blog style."
@@ -729,9 +577,25 @@ msgstr "عميل تدوين لواجهة KDE"
 msgid "(C) 2008-2009 Bilbo Developers"
 msgstr "(C) 2008-2009 مطوري بيلبو"
 
+#: bilbo/main.cpp:41
+msgid "Mehrdad Momeny"
+msgstr "مهرداد مؤمني"
+
 #: bilbo/main.cpp:41 bilbo/main.cpp:42
 msgid "Core Developer"
 msgstr "المطور الرئيسي"
+
+#: bilbo/main.cpp:42
+msgid "Golnaz Nilieh"
+msgstr "جولناز نيليه"
+
+#: bilbo/main.cpp:43
+msgid "Roozbeh Shafiee"
+msgstr "روزبيه شافعي"
+
+#: bilbo/main.cpp:43
+msgid "Icon designer"
+msgstr "مصمم الأيقونة"
 
 #: bilbo/main.cpp:45 l10n/rc.cpp:401 rc.cpp:401
 msgctxt "NAME OF TRANSLATORS"
@@ -755,9 +619,21 @@ msgstr "صندوق الأدوات"
 msgid "Remove current post"
 msgstr "حذف التدوينة الحالية"
 
+#: bilbo/mainwindow.cpp:145
+msgid "New Post"
+msgstr "تدوينة جديدة"
+
+#: bilbo/mainwindow.cpp:150
+msgid "Add Blog..."
+msgstr "إضافة مدوَّنة..."
+
 #: bilbo/mainwindow.cpp:154
 msgid "Submit..."
 msgstr "إرسال..."
+
+#: bilbo/mainwindow.cpp:158
+msgid "Upload Media..."
+msgstr "رفع وسائط..."
 
 #: bilbo/mainwindow.cpp:162
 msgid "Save Locally"
@@ -771,9 +647,17 @@ msgstr "إظهار صندوق الأدوات"
 msgid "Clear cached images"
 msgstr ""
 
+#: bilbo/mainwindow.cpp:290
+msgid "General"
+msgstr "عام"
+
 #: bilbo/mainwindow.cpp:291
 msgid "Blogs"
 msgstr "المدونات"
+
+#: bilbo/mainwindow.cpp:292
+msgid "Editor"
+msgstr "المحرر"
 
 #. i18n: file: bilbo/addeditblogbase.ui:206
 #. i18n: ectx: attribute (title), widget (QWidget, tabAdvanced)
@@ -953,6 +837,14 @@ msgstr "نسخ الرابط"
 msgid "Copy title"
 msgstr "نسخ العنوان"
 
+#: bilbo/uploadmediadialog.cpp:43
+msgid "Upload"
+msgstr "رفع"
+
+#: bilbo/uploadmediadialog.cpp:44
+msgid "Upload media..."
+msgstr "رفع وسائط..."
+
 #. i18n: file: bilbo/uploadmediabase.ui:17
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: bilbo/uploadmediadialog.cpp:65 l10n/rc.cpp:361 rc.cpp:361
@@ -1069,6 +961,35 @@ msgstr "العنوان"
 msgid "Blog/Homepage URL:"
 msgstr "رابط الصفحة الرئيسية/المدونة:"
 
+#. i18n: file: bilbo/addeditblogbase.ui:88
+#. i18n: ectx: property (text), widget (KLineEdit, txtUrl)
+#. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:35
+#. i18n: ectx: property (text), widget (KLineEdit, txtAddress)
+#. i18n: file: bilbo/uploadmediabase.ui:110
+#. i18n: ectx: property (text), widget (KLineEdit, kcfg_httpUrl)
+#. i18n: file: bilbo/addeditblogbase.ui:88
+#. i18n: ectx: property (text), widget (KLineEdit, txtUrl)
+#. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:35
+#. i18n: ectx: property (text), widget (KLineEdit, txtAddress)
+#. i18n: file: bilbo/uploadmediabase.ui:110
+#. i18n: ectx: property (text), widget (KLineEdit, kcfg_httpUrl)
+#: l10n/rc.cpp:31 l10n/rc.cpp:178 l10n/rc.cpp:379 rc.cpp:31 rc.cpp:178
+#: rc.cpp:379
+msgid "http://"
+msgstr "http://"
+
+#. i18n: file: bilbo/addeditblogbase.ui:91
+#. i18n: ectx: property (clickMessage), widget (KLineEdit, txtUrl)
+#: l10n/rc.cpp:34 rc.cpp:34
+msgid "http://YourHomePage.com"
+msgstr "http://YourHomePage.com"
+
+#. i18n: file: bilbo/addeditblogbase.ui:108
+#. i18n: ectx: property (text), widget (QLabel, label_17)
+#: l10n/rc.cpp:37 rc.cpp:37
+msgid "e.g. : http://domain.com/blog/"
+msgstr "مثال : http://domain.com/blog/"
+
 #. i18n: file: bilbo/addeditblogbase.ui:115
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: l10n/rc.cpp:40 rc.cpp:40
@@ -1094,6 +1015,36 @@ msgctxt "Name of the API which is used to communicate with Blog"
 msgid "API:"
 msgstr "API:"
 
+#. i18n: file: bilbo/addeditblogbase.ui:242
+#. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
+#: l10n/rc.cpp:58 rc.cpp:58
+msgid "Blogger 1.0 API"
+msgstr "Blogger 1.0 API"
+
+#. i18n: file: bilbo/addeditblogbase.ui:247
+#. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
+#: l10n/rc.cpp:61 rc.cpp:61
+msgid "MetaWeblog API"
+msgstr "MetaWeblog API"
+
+#. i18n: file: bilbo/addeditblogbase.ui:252
+#. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
+#: l10n/rc.cpp:64 rc.cpp:64
+msgid "MovableType API"
+msgstr "MovableType API"
+
+#. i18n: file: bilbo/addeditblogbase.ui:257
+#. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
+#: l10n/rc.cpp:67 rc.cpp:67
+msgid "Wordpress"
+msgstr "ووردبريس"
+
+#. i18n: file: bilbo/addeditblogbase.ui:262
+#. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
+#: l10n/rc.cpp:70 rc.cpp:70
+msgid "Blogspot.com"
+msgstr "Blogspot.com"
+
 #. i18n: file: bilbo/addeditblogbase.ui:286
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: l10n/rc.cpp:73 rc.cpp:73
@@ -1114,6 +1065,18 @@ msgctxt "Default direction of text in the blog"
 msgid "Default text direction:"
 msgstr "إتجاه النص الافتراضي"
 
+#. i18n: file: bilbo/addeditblogbase.ui:351
+#. i18n: ectx: property (text), item, widget (KComboBox, comboDir)
+#: l10n/rc.cpp:82 rc.cpp:82
+msgid "Left to right"
+msgstr "من اليسار لليمين"
+
+#. i18n: file: bilbo/addeditblogbase.ui:356
+#. i18n: ectx: property (text), item, widget (KComboBox, comboDir)
+#: l10n/rc.cpp:85 rc.cpp:85
+msgid "Right to left"
+msgstr "من اليمين لليسار"
+
 #. i18n: file: bilbo/addeditblogbase.ui:368
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: l10n/rc.cpp:88 rc.cpp:88
@@ -1125,6 +1088,45 @@ msgstr "الخصائص المدعومة"
 #: l10n/rc.cpp:91 rc.cpp:91
 msgid "Create/Modify post:"
 msgstr "إنشاء/تعديل تدوينة"
+
+#. i18n: file: bilbo/addeditblogbase.ui:384
+#. i18n: ectx: property (text), widget (QLabel, featureCreatePost)
+#. i18n: file: bilbo/addeditblogbase.ui:427
+#. i18n: ectx: property (text), widget (QLabel, featureCategories)
+#. i18n: file: bilbo/addeditblogbase.ui:434
+#. i18n: ectx: property (text), widget (QLabel, featureTags)
+#. i18n: file: bilbo/addeditblogbase.ui:451
+#. i18n: ectx: property (text), widget (QLabel, featureRemovePost)
+#. i18n: file: bilbo/addeditblogbase.ui:468
+#. i18n: ectx: property (text), widget (QLabel, featurRecentPosts)
+#. i18n: file: bilbo/addeditblogbase.ui:485
+#. i18n: ectx: property (text), widget (QLabel, featureMultipagedPosts)
+#. i18n: file: bilbo/addeditblogbase.ui:512
+#. i18n: ectx: property (text), widget (QLabel, featureUploadMedia)
+#. i18n: file: bilbo/addeditblogbase.ui:529
+#. i18n: ectx: property (text), widget (QLabel, featureCreateCategory)
+#. i18n: file: bilbo/addeditblogbase.ui:384
+#. i18n: ectx: property (text), widget (QLabel, featureCreatePost)
+#. i18n: file: bilbo/addeditblogbase.ui:427
+#. i18n: ectx: property (text), widget (QLabel, featureCategories)
+#. i18n: file: bilbo/addeditblogbase.ui:434
+#. i18n: ectx: property (text), widget (QLabel, featureTags)
+#. i18n: file: bilbo/addeditblogbase.ui:451
+#. i18n: ectx: property (text), widget (QLabel, featureRemovePost)
+#. i18n: file: bilbo/addeditblogbase.ui:468
+#. i18n: ectx: property (text), widget (QLabel, featurRecentPosts)
+#. i18n: file: bilbo/addeditblogbase.ui:485
+#. i18n: ectx: property (text), widget (QLabel, featureMultipagedPosts)
+#. i18n: file: bilbo/addeditblogbase.ui:512
+#. i18n: ectx: property (text), widget (QLabel, featureUploadMedia)
+#. i18n: file: bilbo/addeditblogbase.ui:529
+#. i18n: ectx: property (text), widget (QLabel, featureCreateCategory)
+#: l10n/rc.cpp:94 l10n/rc.cpp:103 l10n/rc.cpp:106 l10n/rc.cpp:112
+#: l10n/rc.cpp:118 l10n/rc.cpp:124 l10n/rc.cpp:133 l10n/rc.cpp:139 rc.cpp:94
+#: rc.cpp:103 rc.cpp:106 rc.cpp:112 rc.cpp:118 rc.cpp:124 rc.cpp:133
+#: rc.cpp:139
+msgid "Unknown"
+msgstr "مجهول"
 
 #. i18n: file: bilbo/addeditblogbase.ui:407
 #. i18n: ectx: property (text), widget (QLabel, label_14)

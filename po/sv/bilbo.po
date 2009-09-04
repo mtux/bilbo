@@ -1,18 +1,16 @@
-# Persian translation for bilbo
+# Swedish translation for bilbo
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the bilbo package.
-#
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
-# Ahmad Sufi Mahmudi, 2009.
-# Ahmad Sufi Mahmudi <ahmadmahmudi@gmail.com>, 2009.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: bilbo\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-06-27 19:07+0430\n"
-"PO-Revision-Date: 2009-07-19 08:38+0000\n"
-"Last-Translator: Ahmad Sufi Mahmudi <Unknown>\n"
-"Language-Team: American English <kde-i18n-doc@kde.org>\n"
+"PO-Revision-Date: 2009-07-25 16:11+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,42 +19,39 @@ msgstr ""
 
 #: bilbo/addeditblog.cpp:50
 msgid "Add a new blog"
-msgstr "افزودن یک وبلاگ جدید"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:67
 msgid "Edit blog settings"
-msgstr "ویرایش تنظیمات وبلاگ"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:108
 msgid ""
 "You have to set the username, password and url of your blog or website."
 msgstr ""
-"شما باید نام کاربری، گذر واژه و آدرس وبلاگ یا وبسایت خود را وارد کنید."
 
 #: bilbo/addeditblog.cpp:109
 msgid "Incomplete fields"
-msgstr "اطلاعات داده شده کامل نیست"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:112
 msgid "Trying to guess blog and API type..."
-msgstr "در تلاش برای فهمیدن نوع وبلاگ"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:155 bilbo/addeditblog.cpp:208
 msgid ""
 "Auto configuration failed. You have to set Blog API on Advanced tab manually."
 msgstr ""
-"پیکربندی خودکار شکست خورد. شما باید رابط وبلاگ را به‌صورت دستی در سربرگ "
-"پیشرفته تنظیم کنید."
 
 #. i18n: file: bilbo/waitwidgetbase.ui:19
 #. i18n: ectx: property (text), widget (QLabel, operationNameLabel)
 #: bilbo/addeditblog.cpp:259 l10n/rc.cpp:400 rc.cpp:400
 msgid "Please wait..."
-msgstr "لطفاً منتظر بمانید..."
+msgstr ""
 
 #: bilbo/addeditblog.cpp:261
 msgid "Fetching Blog Id..."
-msgstr "در حال گرفتن شناسه وبلاگ..."
+msgstr ""
 
 #: bilbo/addeditblog.cpp:278
 msgid ""
@@ -66,48 +61,38 @@ msgid ""
 "If you are using a self hosted Wordpress blog, you have to enable Remote "
 "Publishing on its configurations"
 msgstr ""
-"دریافت شناسه وبلاگ متوقف شد. ارتباط اینترنتی و مسیر صفحه خانگی خود و نام "
-"کاربری و گذر واژه را بررسی کنید!\n"
-"توجه کنید که مسیر باید شامل \"http://\" باشد.\n"
-"اگر شما از سرویس وردپرس روی میزبان شخصی استفاده می کنید، شما باید انتشار از "
-"راه دور را در پیکربندی هایش فعال کنید."
 
 #: bilbo/addeditblog.cpp:290
 msgid ""
 "Sorry, Bilbo cannot get API type automatically,please check your internet "
 "connection, otherwise you have to set API type on advanced tab manually."
 msgstr ""
-"متاسفیم، بیلبو نمی تواند نوع رابط را به صورت خودکار دریافت کند. لطفا ارتباط "
-"اینترنتی خود را بررسی کنید. در غیر این صورت باید نوع رابط را در سربرگ "
-"پیشرفته  به صورت دستی تنظیم کنید."
 
 #: bilbo/addeditblog.cpp:292
 msgid "AutoConfiguration Failed"
-msgstr "پیکربندی خودکار شکست خورد"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:300
 msgid ""
 "Fetching BlogID Faild!\n"
 "please check your internet connection."
 msgstr ""
-"گرفتن شناسه وبلاگ شکست خورد!\n"
-"لطفا ارتباط اینترنتی خود را بررسی کنید."
 
 #: bilbo/addeditblog.cpp:336
 msgid "Which blog?"
-msgstr "کدام وبلاگ؟"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:428
 msgid "Yes"
-msgstr "آری"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:430
 msgid "No, API doesn't support"
-msgstr "خیر، واسط پشتیبانی نمی‌کند"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:431
 msgid "No, Bilbo doesn't support yet"
-msgstr "خیر، بیلبو هنوز پشتیبانی نمی‌کند"
+msgstr ""
 
 #: bilbo/addeditblog.cpp:512
 msgid ""
@@ -115,37 +100,28 @@ msgid ""
 "You can fetch blog ID by clicking on \"Auto Configure\" Or \"Fetch ID\" "
 "button. otherwise you have to insert your Blog Id manually."
 msgstr ""
-"متاسفیم, شناسه وبلاگ هنوز دریافت نشده است,\n"
-"شما می توانید با کلیک کردن روی دکمه \"Auto Configure\" یا \"Fetch ID\" شناسه "
-"وبلاگ را دریافت کنید. در غیر این صورت، شما باید شناسه وبلاگتان را به صورت "
-"دستی وارد کنید."
 
 #: bilbo/backend.cpp:175
 msgid "Publishing/Modifying post failed : %1"
-msgstr "انتشار/ویرایش پست شکست خورد : %1"
+msgstr ""
 
 #: bilbo/backend.cpp:205
 msgid ""
 "Uploading media failed : Your blog api doesn't support uploading media "
 "objects."
 msgstr ""
-"ارسال رسانه شکست خورد : رابط وبلاگ شما از ارسال رسانه ها پشتیبانی نمی کند."
 
 #: bilbo/backend.cpp:222 bilbo/backend.cpp:230
 msgid ""
 "Uploading media failed : Cannot read the media file, please check if it "
 "exists. path: %1"
 msgstr ""
-"ارسال رسانه شکست خورد : نمی توان پرونده رسانه را خواند، لطفا آن را اگر وجود "
-"دارد، بررسی کنید. مسیر: %1"
 
 #: bilbo/backend.cpp:244
 msgid ""
 "Uploading media failed : Media file checksum is zero, please check file "
 "path. path: %1"
 msgstr ""
-"ارسال رسانه شکست خورد : مجموع مقابله ای پرونده رسانه صفر است، لطفا مسیر "
-"پرونده را بررسی کنید. مسیر: %1"
 
 #: bilbo/backend.cpp:253
 msgid ""
@@ -155,752 +131,733 @@ msgstr ""
 
 #: bilbo/backend.cpp:267
 msgid "Api type isn't set correctly!"
-msgstr "نوع واسط به درستی تنظیم نشده‌است!"
+msgstr ""
 
 #: bilbo/backend.cpp:287
 msgid "Uploading Media failed : %1"
-msgstr "آپلودکردن فایل با خطا مواجه شد: %1"
+msgstr ""
 
 #: bilbo/backend.cpp:296
 msgid "Uploading Media failed : Check sum Error. returned error: %1"
-msgstr "ارسال رسانه شکست خورد : خطای مجموع مقابله ای. خطای برگشت: %1"
+msgstr ""
 
 #: bilbo/backend.cpp:379
 msgid "The registred blog API doesn't support setting categories for a post."
-msgstr "رابط ثبت شده وبلاگ از نصب دسته ها برای یک پست پشتیبانی نمی کند."
+msgstr ""
 
 #: bilbo/backend.cpp:412
 msgid "Server(XMLRPC) Error: "
-msgstr "خطای کارگزار (XMLRPC): "
+msgstr ""
 
 #: bilbo/backend.cpp:415
 msgid "Server(Atom) Error: "
-msgstr "خطای کارگزار (Atom): "
+msgstr ""
 
 #: bilbo/backend.cpp:418
 msgid "Parsing Error: "
-msgstr "خطای تجزیه: "
+msgstr ""
 
 #: bilbo/backend.cpp:421
 msgid "Authentication Error: "
-msgstr "خطای تصدیق: "
+msgstr ""
 
 #: bilbo/backend.cpp:424
 msgid "Not Supported Error: "
-msgstr "خطا عمل مورد نظر پشتیبانی نمی‌شود: "
+msgstr ""
 
 #: bilbo/backend.cpp:427
 msgid "Unknown Error: "
-msgstr "خطای ناشناخته: "
+msgstr ""
 
 #: bilbo/blogsettings.cpp:98
 msgid "Are you sure of removing selected blog?"
-msgstr "آیا از حذف کردن وبلاگ مورد نظر مطمئن هستید؟"
+msgstr ""
 
 #: bilbo/composer/bilbobrowser.cpp:74
 msgid "Get blog style"
-msgstr "گرفتن قالب وبلاگ"
+msgstr ""
 
 #: bilbo/composer/bilbobrowser.cpp:114
 msgid "loading page items..."
-msgstr "بارگذاری اشیا صفحه..."
+msgstr ""
 
 #: bilbo/composer/bilbobrowser.cpp:142
 msgid "Please select a blog, then try again."
-msgstr "لطفا یک وبلاگ را انتخاب کنید، سپس دوباره تلاش کنید."
+msgstr ""
 
 #: bilbo/composer/bilbobrowser.cpp:143
 msgid "Select a blog"
-msgstr "یک وبلاگ انتخاب کنید"
+msgstr ""
 
 #: bilbo/composer/bilbobrowser.cpp:148
 msgid "Fetching blog style from the web..."
-msgstr "در حال گرفتن قالب وبلاگ از اینترنت..."
+msgstr ""
 
 #: bilbo/composer/bilbobrowser.cpp:162
 msgid "Blog style fetched."
-msgstr "قالب وبلاگ دریافت شد."
+msgstr ""
 
 #: bilbo/composer/bilbobrowser.cpp:181
 msgid "An error occurred in the latest transaction."
-msgstr "در عملیات قبلی خطایی رخ داده است."
+msgstr ""
 
 #: bilbo/composer/bilbobrowser.cpp:183
 msgid "Operation canceled."
-msgstr "عملیات لغو شد."
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:83
 msgctxt "Software"
 msgid "Visual Editor"
-msgstr "ویرایشگر بصری"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:84
 msgctxt "Software"
 msgid "Html Editor"
-msgstr "ویرایشگر HTML"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:85
 msgctxt "preview of the edited post"
 msgid "Post Preview"
-msgstr "پیش‌نمایش پست"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:101
 msgid "Media list:"
-msgstr "فهرست رسانه:"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:144 bilbo/composer/bilboeditor.cpp:1059
 msgid "Post Title"
-msgstr "عنوان پست"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:168
 msgid "Enable Spell Checking"
-msgstr "فعال‌کردن غلط‌یابی املایی"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:179
 msgctxt "Makes text bold, and its shortcut is (Ctrl+b)"
 msgid "Bold (Ctrl+b)"
-msgstr "درشت (Ctrl+b)"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:187
 msgctxt "Makes text italic, and its shortcut is (Ctrl+i)"
 msgid "Italic (Ctrl+i)"
-msgstr "مورب (Ctrl+i)"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:195
 msgctxt "Makes text underlined, and its shortcut is (Ctrl+u)"
 msgid "Underline (Ctrl+u)"
-msgstr "زیرخط‌دار (Ctrl+u)"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:203
 msgctxt "Strikes the text out, and its shortcut is (Ctrl+l)"
 msgid "Strike out (Ctrl+l)"
-msgstr "خط‌خورده (Ctrl+l)"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:210
 msgctxt "Sets text font to code style"
 msgid "Code"
-msgstr "کد"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:220 bilbo/composer/bilboeditor.cpp:229
 #: bilbo/composer/bilboeditor.cpp:378
 msgid "Paragraph"
-msgstr "بند"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:221 bilbo/composer/bilboeditor.cpp:383
 msgid "Heading 1"
-msgstr "عنوان ۱"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:222 bilbo/composer/bilboeditor.cpp:388
 msgid "Heading 2"
-msgstr "عنوان ۲"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:223 bilbo/composer/bilboeditor.cpp:393
 msgid "Heading 3"
-msgstr "عنوان ۳"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:224 bilbo/composer/bilboeditor.cpp:398
 msgid "Heading 4"
-msgstr "عنوان ۴"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:225 bilbo/composer/bilboeditor.cpp:403
 msgid "Heading 5"
-msgstr "عنوان ۵"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:226
 msgid "Heading 6"
-msgstr "عنوان ۶"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:234
 msgid "Increase font size"
-msgstr "بزرگ کردن قلم"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:238
 msgid "Decrease font size"
-msgstr "کوچک کردن قلم"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:242
 msgctxt "verb, to select text color"
 msgid "Select Color"
-msgstr "انتخاب رنگ"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:247
 msgid "Remove formatting"
-msgstr "برداشتن قالب بندی"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:252
 msgid "Blockquote"
-msgstr "بلوک نقل‌قول"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:261
 msgctxt "verb, to add a new link or edit an existing one"
 msgid "Add/Edit Link"
-msgstr "افزودن/ویرایش لینک"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:267
 msgctxt "verb, to remove an existing link"
 msgid "Remove Link"
-msgstr "حذف لینک"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:272
 msgctxt "verb, to insert an image"
 msgid "Add Image"
-msgstr "افزودن تصویر"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:278
 msgctxt "verb, to align text from left"
 msgid "Align left"
-msgstr "چپ‌چین"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:282
 msgctxt "verb, to align text from center"
 msgid "Align center"
-msgstr "وسط‌چین"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:286
 msgctxt "verb, to align text from right"
 msgid "Align right"
-msgstr "راست‌چین"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:291
 msgctxt "verb, to justify text"
 msgid "Justify"
-msgstr "تراز کردن"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:297
 msgctxt "Sets text direction as right to left"
 msgid "Right to Left"
-msgstr "راست به چپ"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:311
 msgid "Ordered List"
-msgstr "فهرست مرتب"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:315
 msgid "Unordered List"
-msgstr "فهرست بدون ترتیب"
+msgstr ""
 
 #: bilbo/composer/bilboeditor.cpp:319
 msgid "Split text"
-msgstr "جداکردن متن"
+msgstr ""
 
 #: bilbo/composer/dialogs/addeditlink.cpp:56
 msgctxt "verb, to modify an existing link"
 msgid "Edit Link"
-msgstr "ویرایش لینک"
+msgstr ""
 
 #: bilbo/composer/dialogs/addeditlink.cpp:58
 msgctxt "verb, to insert a link into the text"
 msgid "Add Link"
-msgstr "اظافه کردن لینک"
+msgstr ""
 
 #: bilbo/composer/dialogs/addimagedialog.cpp:38
 msgid "Add Image"
-msgstr "افزودن عکس"
+msgstr ""
 
 #: bilbo/composer/dialogs/addmediadialog.cpp:51
 msgid "Choose a file"
-msgstr "یک پرونده انتخاب کنید"
+msgstr ""
 
 #: bilbo/composer/dialogs/addmediadialog.cpp:52
 msgid "Type media path here."
-msgstr "آدرس فایل را اینجا وارد نمایید."
+msgstr ""
 
 #: bilbo/composer/dialogs/addmediadialog.cpp:53
 msgid "Browse"
-msgstr "مرور کردن"
+msgstr ""
 
 #: bilbo/composer/dialogs/addmediadialog.cpp:97
 msgid "The selected media address is an invalid url."
-msgstr "آدرس فایل انتخاب شده بی اعتبار است."
+msgstr ""
 
 #: bilbo/composer/htmleditor.cpp:79
 msgid "Dynamic Word Wrap"
-msgstr "حرکت دادن پویای کلمه"
+msgstr ""
 
 #: bilbo/composer/htmleditor.cpp:83
 msgid "Show line numbers"
-msgstr "نمایش شماره خط‌ها"
+msgstr ""
 
 #: bilbo/composer/htmleditor.cpp:87
 msgid "Options"
-msgstr "امکانات"
+msgstr ""
 
 #: bilbo/composer/medialistwidget.cpp:35
 msgid "Edit properties"
-msgstr "ویرایش مشخصات"
+msgstr ""
 
 #: bilbo/composer/medialistwidget.cpp:37
 msgid "Copy Url"
-msgstr "کپی کردن مسیر"
+msgstr ""
 
 #: bilbo/composer/medialistwidget.cpp:39
 msgid "Remove media"
-msgstr "برداشتن رسانه"
+msgstr ""
 
 #: bilbo/composer/stylegetter.cpp:55
 msgid "Can not fetch the selected blog style."
-msgstr "قالب وبلاگ انتخاب شده، دریافت نشد."
+msgstr ""
 
 #: bilbo/composer/stylegetter.cpp:169
 msgid "Cannot get html file."
-msgstr "نمی توان پرونده html را دریافت کرد."
+msgstr ""
 
 #: bilbo/composer/stylegetter.cpp:204
 msgid "Cannot write data to file %1"
-msgstr "فایل 1% قابل نوشتن نیست."
+msgstr ""
 
 #: bilbo/composer/stylegetter.cpp:245
 msgid "An error ocurred on latest transaction "
-msgstr "خطایی در فرآیند قبلی اتفاق افتاده است. "
+msgstr ""
 
 #: bilbo/dbman.cpp:52
 msgid "Cannot create database"
-msgstr "نمی‌توان پایگاه‌داده‌ها را ایجاد کرد"
+msgstr ""
 
 #: bilbo/dbman.cpp:101
 msgid "Cannot connect to database"
-msgstr "اتصال به پایگاه‌داده‌ها میسر نیست"
+msgstr ""
 
 #: bilbo/dbman.cpp:997
 msgid "There isn't any post with requested ID"
-msgstr "هیچ پستی با آی‌دی درخواست‌شده وجود ندارد."
+msgstr ""
 
 #: bilbo/dbman.cpp:1263
 msgid "there isn't any local post with requested ID "
-msgstr "هیچ پست محلی‌ای با آی‌دی درخواست‌شده وجود ندارد. "
+msgstr ""
 
 #: bilbokblog/blogger1.cpp:243
 msgid ""
 "Could not fetch user's info out of the result from the server, not a map."
 msgstr ""
-"نمی توان اطلاعات کاربر را خارج از نتیجه از خدمتگذار دریافت کرد، یک نقشه نیست."
 
 #: bilbokblog/blogger1.cpp:270
 msgid "Could not fetch blogs out of the result from the server, not a list."
 msgstr ""
-"نمی توان فهرست وبلاگ‌ها را، از اطلاعات دریافت شده از سرور استخراج کرد."
 
 #: bilbokblog/blogger1.cpp:307
 msgid ""
 "Could not fetch list of posts out of the result from the server, not a list."
-msgstr "نمی‌توان فهرست پست‌ها را، از اطلاعات دریافت شده از سرور استخراج کرد."
+msgstr ""
 
 #: bilbokblog/blogger1.cpp:326
 msgid "Could not read post."
-msgstr "خواندن پست ناموفق بود."
+msgstr ""
 
 #: bilbokblog/blogger1.cpp:353 bilbokblog/blogger1.cpp:356
 msgid "Could not fetch post out of the result from the server."
-msgstr "نمی‌توان پست‌ را از اطلاعات دریافت شده از سرور استخراج کرد."
+msgstr ""
 
 #: bilbokblog/blogger1.cpp:374
 msgid "Could not read the postId, not a string or an integer."
-msgstr "نمی توان شناسه نوشته را خواند، یک رشته یا یک عدد صحیح نیست."
+msgstr ""
 
 #: bilbokblog/blogger1.cpp:407 bilbokblog/blogger1.cpp:431
 msgid "Could not read the result, not a boolean."
-msgstr "نمی توان نتیجه را خواند، یک بولی نیست."
+msgstr ""
 
 #: bilbokblog/gdata.cpp:216 bilbokblog/gdata.cpp:283 bilbokblog/gdata.cpp:345
 #: bilbokblog/gdata.cpp:391 bilbokblog/gdata.cpp:448
 msgid "Authentication failed."
-msgstr "تصدیق هویت ناموفق بود."
+msgstr ""
 
 #: bilbokblog/gdata.cpp:543
 msgid "Could not regexp the Profile ID."
-msgstr "نمی توان شناسه نمایه را بیان منظم کرد."
+msgstr ""
 
 #: bilbokblog/gdata.cpp:565
 msgid "Could not get blogs."
-msgstr "دریافت وبلاگ‌ها ناموفق بود."
+msgstr ""
 
 #: bilbokblog/gdata.cpp:587 bilbokblog/gdata.cpp:803
 msgid "Could not regexp the blog id path."
-msgstr "نمی توان مسیر شناسه وبلاگ را بیان منظم کرد."
+msgstr ""
 
 #: bilbokblog/gdata.cpp:608 bilbokblog/gdata.cpp:654
 msgid "Could not get comments."
-msgstr "نمی توان نظرها را دریافت کرد."
+msgstr ""
 
 #: bilbokblog/gdata.cpp:622 bilbokblog/gdata.cpp:668
 msgid "Could not regexp the comment id path."
-msgstr "نمی توان مسیر شناسه نظر را بیان منظم کرد."
+msgstr ""
 
 #: bilbokblog/gdata.cpp:700 bilbokblog/gdata.cpp:773
 msgid "Could not get posts."
-msgstr "نمی توان نوشته ها را دریافت کرد."
+msgstr ""
 
 #: bilbokblog/gdata.cpp:720
 msgid "Could not regexp the post id path."
-msgstr "نمی توان مسیر شناسه نوشته را بیان منظم کرد."
+msgstr ""
 
 #: bilbokblog/gdata.cpp:844 bilbokblog/gdata.cpp:909 bilbokblog/gdata.cpp:1012
 #: bilbokblog/wordpressbuggy.cpp:343 bilbokblog/wordpressbuggy.cpp:391
 msgid "Could not regexp the id out of the result."
-msgstr "نمی توان شناسه را بیرون از نتیجه بیان منظم کرد."
+msgstr ""
 
 #: bilbokblog/gdata.cpp:853 bilbokblog/gdata.cpp:918 bilbokblog/gdata.cpp:1021
 msgid "Could not regexp the published time out of the result."
-msgstr "نمی توان وقت منتشر شده را خارج از نتیجه بیان منظم کرد."
+msgstr ""
 
 #: bilbokblog/gdata.cpp:862 bilbokblog/gdata.cpp:927 bilbokblog/gdata.cpp:1030
 msgid "Could not regexp the update time out of the result."
-msgstr "نمی توان زمان به روز آوری را خارج از نتیجه بیان منظم کرد."
+msgstr ""
 
 #: bilbokblog/livejournal.cpp:344 bilbokblog/livejournal.cpp:453
 #: bilbokblog/livejournal.cpp:478
 msgid "Could not read the post ID, result not a map."
-msgstr "نمی توان شناسه نوشته را خواند، نتیجه یک نقشه نیست."
+msgstr ""
 
 #: bilbokblog/livejournal.cpp:491
 msgid "The returned post ID did not match the sent one: "
-msgstr "شناسه نوشته بازگشتی با شناسه ارسال شده تطابق ندارد: "
+msgstr ""
 
 #: bilbokblog/metaweblog.cpp:74
 msgid "Media is a null pointer."
-msgstr "رسانه یک اشاره گر خالی است."
+msgstr ""
 
 #: bilbokblog/metaweblog.cpp:133
 msgid "Could not list categories out of the result from the server."
-msgstr "نمی توان دسته ها را خارج از نتیجه از خدمتگذار فهرست بندی کرد."
+msgstr ""
 
 #: bilbokblog/metaweblog.cpp:194
 msgid "Could not read the result, not a map."
-msgstr "نمی توان نتیجه را خواند، یک نقشه نیست."
+msgstr ""
 
 #: bilbokblog/movabletype.cpp:181
 msgid ""
 "Could not fetch list of trackback pings out of the result from the server."
-msgstr "نمی توان فهرست دنبالک ها را خارج از نتیجه از خدمتگذار دریافت کرد."
+msgstr ""
 
 #: bilbokblog/movabletype.cpp:234
 msgid "The category list is empty"
-msgstr "فهرست دسته خالی است"
+msgstr ""
 
 #: bilbokblog/movabletype.cpp:308
 msgid "Could not regexp the result out of the result."
-msgstr "نمی توان نتیجه را خارج از نتیجه بیان منظم کرد."
+msgstr ""
 
 #: bilbokblog/movabletype.cpp:317
 msgid "Error on server, Post categories couldn't sets"
-msgstr "خطا در خدمتگذار, دسته های نوشته نمی توانند تنظیم شوند."
+msgstr ""
 
 #: bilbokblog/wordpressbuggy.cpp:62 bilbokblog/wordpressbuggy.cpp:160
 msgid "Post is a null pointer."
-msgstr "نوشته یک اشاره گر خالی است."
+msgstr ""
 
 #: bilbokblog/wordpressbuggy.cpp:263
 msgid "Category name isn't set."
-msgstr "نام دسته تنظیم نشده است."
+msgstr ""
 
 #: bilbo/main.cpp:33
 msgid "A KDE Blogging Client"
-msgstr "یک کلاینت وبلاگ نویسی کی دی ای"
+msgstr ""
 
 #: bilbo/main.cpp:38
 msgid "(C) 2008-2009 Bilbo Developers"
-msgstr "(C) 2008-2009 توسعه دهندگان بیلبو"
+msgstr ""
 
 #: bilbo/main.cpp:41
 msgid "Mehrdad Momeny"
-msgstr "مهرداد مومنی"
+msgstr ""
 
 #: bilbo/main.cpp:41 bilbo/main.cpp:42
 msgid "Core Developer"
-msgstr "توسعه دهنده هسته"
+msgstr ""
 
 #: bilbo/main.cpp:42
 msgid "Golnaz Nilieh"
-msgstr "گلناز نیلیه"
+msgstr ""
 
 #: bilbo/main.cpp:43
 msgid "Roozbeh Shafiee"
-msgstr "روزبه شفیعی"
+msgstr ""
 
 #: bilbo/main.cpp:43
 msgid "Icon designer"
-msgstr "طراح نشان"
+msgstr ""
 
 #: bilbo/main.cpp:45 l10n/rc.cpp:401 rc.cpp:401
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr ""
-" ,Launchpad Contributions:,Ahmad Sufi Mahmudi,Golnaz Nilieh,Mehrdad "
-"Momeny,MohamadReza Mirdamadi"
+msgstr " ,Launchpad Contributions:"
 
 #: bilbo/main.cpp:46 l10n/rc.cpp:402 rc.cpp:402
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr ",,,g382nilieh@gmail.com,mehrdad.momeny@gmail.com,"
+msgstr ","
 
 #: bilbo/mainwindow.cpp:72 bilbo/mainwindow.cpp:372
 msgid "Bilbo Blogger"
-msgstr "Bilbo Blogger"
+msgstr ""
 
 #: bilbo/mainwindow.cpp:81
 msgid "Toolbox"
-msgstr "جعبه ابزار"
+msgstr ""
 
 #: bilbo/mainwindow.cpp:91
 msgid "Remove current post"
-msgstr "حذف نوشته جاری"
+msgstr ""
 
 #: bilbo/mainwindow.cpp:145
 msgid "New Post"
-msgstr "ایجاد پست جدید"
+msgstr ""
 
 #: bilbo/mainwindow.cpp:150
 msgid "Add Blog..."
-msgstr "افزودن وبلاگ..."
+msgstr ""
 
 #: bilbo/mainwindow.cpp:154
 msgid "Submit..."
-msgstr "ارسال..."
+msgstr ""
 
 #: bilbo/mainwindow.cpp:158
 msgid "Upload Media..."
-msgstr "ارسال رسانه..."
+msgstr ""
 
 #: bilbo/mainwindow.cpp:162
 msgid "Save Locally"
-msgstr "ذخیره محلی"
+msgstr ""
 
 #: bilbo/mainwindow.cpp:167
 msgid "Show Toolbox"
-msgstr "نشان دادن جعبه ابزار"
+msgstr ""
 
 #: bilbo/mainwindow.cpp:172
 msgid "Clear cached images"
-msgstr "تصاویر ذخیره شده را پاک کن"
+msgstr ""
 
 #: bilbo/mainwindow.cpp:290
 msgid "General"
-msgstr "عمومی‌‌"
+msgstr ""
 
 #: bilbo/mainwindow.cpp:291
 msgid "Blogs"
-msgstr "وبلاگ‌ها"
+msgstr ""
 
 #: bilbo/mainwindow.cpp:292
 msgid "Editor"
-msgstr "ویرایش‌گر"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:206
 #. i18n: ectx: attribute (title), widget (QWidget, tabAdvanced)
 #: bilbo/mainwindow.cpp:293 l10n/rc.cpp:49 rc.cpp:49
 msgid "Advanced"
-msgstr "تنظیمات پیشرفته"
+msgstr ""
 
 #: bilbo/mainwindow.cpp:438
 msgid "You have to select a blog to publish this post to it."
-msgstr "شما باید یک وبلاگ انتخاب کنید تا پست را به آن بفرستید."
+msgstr ""
 
 #: bilbo/mainwindow.cpp:443
 msgid "There isn't any open post to submit!"
-msgstr "هیچ پستی باز نشده تا ارسال شود."
+msgstr ""
 
 #: bilbo/mainwindow.cpp:492 bilbo/toolbox.cpp:238
 msgid "An error ocurred on latest transaction"
-msgstr "خطایی در فرآیند قبلی رخ داده است."
+msgstr ""
 
 #: bilbo/mainwindow.cpp:539
 msgid "Submiting post failed"
-msgstr "ارسال پست ناموفق بود"
+msgstr ""
 
 #: bilbo/mainwindow.cpp:541
 msgid ""
 "%1\n"
 "Do you want to keep post open?"
 msgstr ""
-"%1\n"
-"آیا می‌خواهید پست را باز نگه دارید؟"
 
 #: bilbo/postentry.cpp:90
 msgctxt "noun, the post title"
 msgid "Title:"
-msgstr "عنوان:"
+msgstr ""
 
 #: bilbo/postentry.cpp:225
 msgid ""
 "Uploading media file %1 failed.\n"
 "%3"
 msgstr ""
-"ارسال پرونده رسانه ای %1 شکست خورد.\n"
-"%3"
 
 #: bilbo/postentry.cpp:248
 msgid ""
 "An Error occurred on latest transaction.\n"
 "%1"
 msgstr ""
-"خطایی در فرآیند قبلی رخ داده است.\n"
-"1%"
 
 #: bilbo/postentry.cpp:260
 msgid ""
 "Your post title or body is empty!\n"
 "Are you sure of submiting this post?"
 msgstr ""
-"عنوان یا متن پست شما خالی است.\n"
-"آیا از فرستادن این پست مطمئن هستید؟"
 
 #: bilbo/postentry.cpp:276
 msgctxt "Post status, e.g Draft or Published Post"
 msgid "draft"
-msgstr "پیش نویس"
+msgstr ""
 
 #: bilbo/postentry.cpp:279
 msgctxt "Post status, e.g Draft or Published Post"
 msgid "post"
-msgstr "نوشته"
+msgstr ""
 
 #: bilbo/postentry.cpp:285
 msgid "Submiting new %1..."
-msgstr "ارائه تازه %1 ..."
+msgstr ""
 
 #: bilbo/postentry.cpp:288
 msgid "Modifying %1..."
-msgstr "درحال ویرایش %1..."
+msgstr ""
 
 #: bilbo/postentry.cpp:320
 msgid "Draft with title \"%1\" saved successfully."
-msgstr "پیش نویس با عنوان \"%1\" با موفقیت ذخیره شد."
+msgstr ""
 
 #: bilbo/postentry.cpp:322
 msgid "Post with title \"%1\" modified successfully."
-msgstr "پست با عنوان 1% تغییر یافت."
+msgstr ""
 
 #: bilbo/postentry.cpp:324
 msgid "Post with title \"%1\" published successfully."
-msgstr "پست با عنوان 1% منتشر شد."
+msgstr ""
 
 #: bilbo/postentry.cpp:346
 msgid "Current post content is empty, are you sure of saving an empty post?"
-msgstr "متن پست جاری خالی است، آیا از ذخیره کردن یک پست خالی مطمئن هستید؟"
+msgstr ""
 
 #: bilbo/postentry.cpp:352
 msgid "Post saved locally."
-msgstr "نوشته به صورت محلی ذخیره شد."
+msgstr ""
 
 #: bilbo/sendtoblogdialog.cpp:33
 msgid "Submitting as ..."
-msgstr "ارسال به صورت ..."
+msgstr ""
 
 #: bilbo/toolbox.cpp:117
 msgid ""
 "There isn't any selected blog, you have to select a blog from Blogs page "
 "before asking for Category list"
 msgstr ""
-"هیچ وبلاگی انتخاب نشده است، شما باید پیش از درخواست‌کردن فهرست دسته‌بندی‌ها "
-"یک وبلاگ انتخاب کنید."
 
 #: bilbo/toolbox.cpp:126
 msgid "Requesting category list..."
-msgstr "درخواست برای فهرست دسته‌بندی‌ها"
+msgstr ""
 
 #: bilbo/toolbox.cpp:135
 msgid ""
 "There isn't any selected blog, you have to select a blog from Blogs page "
 "before asking for Entries list"
 msgstr ""
-"هیچ وبلاگی انتخاب نشده است، شما باید پیش از درخواست‌کردن فهرست پست‌ها یک "
-"وبلاگ انتخاب کنید."
 
 #: bilbo/toolbox.cpp:155
 msgid "Requesting Entries list..."
-msgstr "درخواست برای فهرست پست‌ها..."
+msgstr ""
 
 #: bilbo/toolbox.cpp:181
 msgid "Entries list received."
-msgstr "فهرست پست‌ها دریافت شد."
+msgstr ""
 
 #: bilbo/toolbox.cpp:205
 msgid "Category list received."
-msgstr "فهرست دسته‌بندی‌ها دریافت شد."
+msgstr ""
 
 #: bilbo/toolbox.cpp:214
 msgid ""
 "Removing a post from your blog is not undoable!\n"
 "Are you sure of removing post with title \"%1\" from your blog?"
 msgstr ""
-"برداشتن یک نوشته از وبلاگتان قابل انجام نیست!\n"
-"آیا مطمئن هستید که می خواهید نوشته با عنوان \"%1\"  را از وبلاگتان بردارید؟"
 
 #: bilbo/toolbox.cpp:222
 msgid "Removing post..."
-msgstr "پاک کردن پست ..."
+msgstr ""
 
 #: bilbo/toolbox.cpp:228
 msgid "Post with title \"%1\" removed from \"%2\"."
-msgstr "پست با عنوان 1% از 2% پاک شد."
+msgstr ""
 
 #: bilbo/toolbox.cpp:231
 msgid "Post removed"
-msgstr "پست پاک شد."
+msgstr ""
 
 #: bilbo/toolbox.cpp:239
 msgid "Failed"
-msgstr "شکست خورد"
+msgstr ""
 
 #: bilbo/toolbox.cpp:422
 msgid ""
 "Sorry, There isn't any link field available for this entry on Database."
 msgstr ""
-"متاسفیم. هیچ جای پیوند در دسترسی برای این ورودی در بانک اطلاعاتی وجود ندارد."
 
 #: bilbo/toolbox.cpp:504
 msgid "Are you sure of removing selected local entry?"
-msgstr "آیا مطمئن هستید که می خواهید ورودی محلی انتخاب شده را بردارید؟"
+msgstr ""
 
 #: bilbo/toolbox.cpp:511
 msgid "Cannot remove selected local entry!"
-msgstr "نمی توان ورودی محلی انتخاب شده را برداشت!"
+msgstr ""
 
 #: bilbo/toolbox.cpp:514
 msgid "You have to select at least one entry from list."
-msgstr "شما باید حداقل یک ورودی را از فهرست انتخاب کنید."
+msgstr ""
 
 #: bilbo/toolbox.cpp:527
 msgid "Can not clear entries list."
-msgstr "پاک کردن لیست پست‌ها ناموفق بود."
+msgstr ""
 
 #: bilbo/toolbox.cpp:541
 msgid "Open in browser"
-msgstr "باز کردن در مرورگر"
+msgstr ""
 
 #: bilbo/toolbox.cpp:544
 msgid "Copy URL"
-msgstr "رونوشت از مسیر"
+msgstr ""
 
 #: bilbo/toolbox.cpp:547
 msgid "Copy title"
-msgstr "رونوشت از عنوان"
+msgstr ""
 
 #: bilbo/uploadmediadialog.cpp:43
 msgid "Upload"
-msgstr "ارسال کردن"
+msgstr ""
 
 #: bilbo/uploadmediadialog.cpp:44
 msgid "Upload media..."
-msgstr "ارسال رسانه..."
+msgstr ""
 
 #. i18n: file: bilbo/uploadmediabase.ui:17
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: bilbo/uploadmediadialog.cpp:65 l10n/rc.cpp:361 rc.cpp:361
 msgid "Select media to upload"
-msgstr "انتخاب رسانه برای ارسال"
+msgstr ""
 
 #: bilbo/uploadmediadialog.cpp:73
 msgid "Blog API"
-msgstr "رابط وبلاگ"
+msgstr ""
 
 #: bilbo/uploadmediadialog.cpp:76
 msgid "FTP"
-msgstr "اف تی پی"
+msgstr ""
 
 #: bilbo/uploadmediadialog.cpp:122
 msgid "Please insert FTP Url."
-msgstr "لطفا آدرس اف تی پی را وارد کنید."
+msgstr ""
 
 #: bilbo/uploadmediadialog.cpp:138
 msgid ""
@@ -908,9 +865,6 @@ msgid ""
 "Note that url must start with \"ftp\" or \"sftp\", and end with a / that "
 "indicate the directory which file should upload to it."
 msgstr ""
-"آدرس اف تی پی وارد شده یک آدرس معتبر نیست.\n"
-"توجه کنید که آدرس باید با \"ftp\" یا \"sftp\", شروع شود و با یک / تمام شود "
-"که پوشه ای را که فایل به آن باید ارسال شود، نشان می دهد."
 
 #: bilbo/uploadmediadialog.cpp:167 bilbo/uploadmediadialog.cpp:184
 msgid ""
@@ -918,9 +872,6 @@ msgid ""
 "You can find it here:\n"
 "%1"
 msgstr ""
-"رسانه ارسال شد، و مسیر در حافظه کپی شد.\n"
-"شما می توانید آن را اینجا بیابید:\n"
-"%1"
 
 #: bilbo/uploadmediadialog.cpp:170 bilbo/uploadmediadialog.cpp:187
 msgid ""
@@ -928,13 +879,10 @@ msgid ""
 "You can find it here:\n"
 "%1"
 msgstr ""
-"رسانه ارسال شد.\n"
-"شما می توانید آن را اینجا بیابید:\n"
-"%1"
 
 #: bilbo/uploadmediadialog.cpp:173 bilbo/uploadmediadialog.cpp:190
 msgid "Successfully uploaded"
-msgstr "با موفقیت ارسال شد"
+msgstr ""
 
 #: bilbo/uploadmediadialog.cpp:196
 msgid ""
@@ -942,15 +890,12 @@ msgid ""
 "%1\n"
 "Try again?"
 msgstr ""
-"ارسال رسانه با این نتیجه شکست خورد:\n"
-"%1\n"
-"دوباره تلاش شود؟"
 
 #. i18n: file: bilbo/addcategorybase.ui:16
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:3 rc.cpp:3
 msgid "Category Name: "
-msgstr "نام دسته‌بندی: "
+msgstr ""
 
 #. i18n: file: bilbo/addcategorybase.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -962,19 +907,19 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: l10n/rc.cpp:9 rc.cpp:9
 msgid "Parent Category:"
-msgstr "دسته اصلی:"
+msgstr ""
 
 #. i18n: file: bilbo/addcategorybase.ui:55
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: l10n/rc.cpp:12 rc.cpp:12
 msgid "Description:"
-msgstr "توضیح:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:17
 #. i18n: ectx: attribute (title), widget (QWidget, tabBasic)
 #: l10n/rc.cpp:15 rc.cpp:15
 msgid "Basic"
-msgstr "پایه"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:29
 #. i18n: ectx: property (text), widget (QLabel, label_18)
@@ -986,7 +931,7 @@ msgstr "پایه"
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: l10n/rc.cpp:18 l10n/rc.cpp:52 rc.cpp:18 rc.cpp:52
 msgid "Configuring your blog account..."
-msgstr "پیکربندی حساب وبلاگ شما"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:46
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -996,21 +941,18 @@ msgid ""
 "program guess your blog settings.\n"
 "You can set more options on Advanced tab."
 msgstr ""
-"لطفا اطلاعات خواسته شده را وارد کنید، سپس دکمه «پیکربندی خودکار» را بفشارید "
-"تا برنامه تنظیمات وبلاگ شما را پیدا کند.\n"
-"شما می توانید امکانات بیشتر را در برگه پیشرفته فعال کنید."
 
 #. i18n: file: bilbo/addeditblogbase.ui:65
 #. i18n: ectx: property (text), widget (QLabel, label_9)
 #: l10n/rc.cpp:25 rc.cpp:25
 msgid "Title:"
-msgstr "عنوان:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:75
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:28 rc.cpp:28
 msgid "Blog/Homepage URL:"
-msgstr "آدرس وبلاگ/صفحه خانگی:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:88
 #. i18n: ectx: property (text), widget (KLineEdit, txtUrl)
@@ -1027,118 +969,118 @@ msgstr "آدرس وبلاگ/صفحه خانگی:"
 #: l10n/rc.cpp:31 l10n/rc.cpp:178 l10n/rc.cpp:379 rc.cpp:31 rc.cpp:178
 #: rc.cpp:379
 msgid "http://"
-msgstr "http://"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:91
 #. i18n: ectx: property (clickMessage), widget (KLineEdit, txtUrl)
 #: l10n/rc.cpp:34 rc.cpp:34
 msgid "http://YourHomePage.com"
-msgstr "http://YourHomePage.com"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:108
 #. i18n: ectx: property (text), widget (QLabel, label_17)
 #: l10n/rc.cpp:37 rc.cpp:37
 msgid "e.g. : http://domain.com/blog/"
-msgstr "برای مثال: http://domain.com/blog/"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:115
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: l10n/rc.cpp:40 rc.cpp:40
 msgid "Username:"
-msgstr "نام کاربری:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:131
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: l10n/rc.cpp:43 rc.cpp:43
 msgid "Password:"
-msgstr "رمز عبور:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:176
 #. i18n: ectx: property (text), widget (KPushButton, btnAutoConf)
 #: l10n/rc.cpp:46 rc.cpp:46
 msgid "Auto Configure"
-msgstr "پیکر‌بندی خودکار"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:228
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: l10n/rc.cpp:55 rc.cpp:55
 msgctxt "Name of the API which is used to communicate with Blog"
 msgid "API:"
-msgstr "رابط:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:242
 #. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
 #: l10n/rc.cpp:58 rc.cpp:58
 msgid "Blogger 1.0 API"
-msgstr "Blogger 1.0 API"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:247
 #. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
 #: l10n/rc.cpp:61 rc.cpp:61
 msgid "MetaWeblog API"
-msgstr "MetaWeblog API"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:252
 #. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
 #: l10n/rc.cpp:64 rc.cpp:64
 msgid "MovableType API"
-msgstr "MovableType API"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:257
 #. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
 #: l10n/rc.cpp:67 rc.cpp:67
 msgid "Wordpress"
-msgstr "وردپرس"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:262
 #. i18n: ectx: property (text), item, widget (KComboBox, comboApi)
 #: l10n/rc.cpp:70 rc.cpp:70
 msgid "Blogspot.com"
-msgstr "Blogspot.com"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:286
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: l10n/rc.cpp:73 rc.cpp:73
 msgid "Blog ID:"
-msgstr "شناسه وبلاگ:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:314
 #. i18n: ectx: property (text), widget (KPushButton, btnFetch)
 #: l10n/rc.cpp:76 rc.cpp:76
 msgctxt "verb, fetch the blog id from the web"
 msgid "Fetch ID"
-msgstr "گرفتن شناسه"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:337
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: l10n/rc.cpp:79 rc.cpp:79
 msgctxt "Default direction of text in the blog"
 msgid "Default text direction:"
-msgstr "جهت پیش‌فرض متن:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:351
 #. i18n: ectx: property (text), item, widget (KComboBox, comboDir)
 #: l10n/rc.cpp:82 rc.cpp:82
 msgid "Left to right"
-msgstr "چپ به راست"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:356
 #. i18n: ectx: property (text), item, widget (KComboBox, comboDir)
 #: l10n/rc.cpp:85 rc.cpp:85
 msgid "Right to left"
-msgstr "راست به چپ"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:368
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: l10n/rc.cpp:88 rc.cpp:88
 msgid "Supported Features"
-msgstr "امکانات پشتیبانی شده"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:374
 #. i18n: ectx: property (text), widget (QLabel, label_11)
 #: l10n/rc.cpp:91 rc.cpp:91
 msgid "Create/Modify post:"
-msgstr "ایجاد/تغییر پست:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:384
 #. i18n: ectx: property (text), widget (QLabel, featureCreatePost)
@@ -1177,37 +1119,37 @@ msgstr "ایجاد/تغییر پست:"
 #: rc.cpp:103 rc.cpp:106 rc.cpp:112 rc.cpp:118 rc.cpp:124 rc.cpp:133
 #: rc.cpp:139
 msgid "Unknown"
-msgstr "نامشخص"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:407
 #. i18n: ectx: property (text), widget (QLabel, label_14)
 #: l10n/rc.cpp:97 rc.cpp:97
 msgid "Support categories:"
-msgstr "پشتیبانی از دسته‌بندی‌ها:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:417
 #. i18n: ectx: property (text), widget (QLabel, label_16)
 #: l10n/rc.cpp:100 rc.cpp:100
 msgid "Support tags:"
-msgstr "پشتیبانی از برچسب‌ها:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:441
 #. i18n: ectx: property (text), widget (QLabel, label_22)
 #: l10n/rc.cpp:109 rc.cpp:109
 msgid "Remove post:"
-msgstr "پاک کردن پست:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:458
 #. i18n: ectx: property (text), widget (QLabel, label_12)
 #: l10n/rc.cpp:115 rc.cpp:115
 msgid "Fetch recent posts:"
-msgstr "گرفتن پست های اخیر:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:475
 #. i18n: ectx: property (text), widget (QLabel, label_20)
 #: l10n/rc.cpp:121 rc.cpp:121
 msgid "Multipaged post:"
-msgstr "پست‌ چند صفحه ای:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:492
 #. i18n: ectx: property (text), widget (QLabel, label_10)
@@ -1216,20 +1158,18 @@ msgid ""
 "Note: You can see list of supported features for your blog after "
 "configuration!"
 msgstr ""
-"توجه: شما می‌توانید فهرست عملکرد‌های پشتیبانی شده در وبلاگتان را، پس از "
-"انجام پیکربندی ببینید!"
 
 #. i18n: file: bilbo/addeditblogbase.ui:502
 #. i18n: ectx: property (text), widget (QLabel, label_13)
 #: l10n/rc.cpp:130 rc.cpp:130
 msgid "Upload media:"
-msgstr "ارسال رسانه:"
+msgstr ""
 
 #. i18n: file: bilbo/addeditblogbase.ui:519
 #. i18n: ectx: property (text), widget (QLabel, label_15)
 #: l10n/rc.cpp:136 rc.cpp:136
 msgid "Create new category:"
-msgstr "ایجاد دسته بندی جدید:"
+msgstr ""
 
 #. i18n: file: bilbo/advancedsettingsbase.ui:16
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_changeNToBreak)
@@ -1238,14 +1178,12 @@ msgid ""
 "It could be useful on some blogs like Wordpress that do not store posts as "
 "HTML"
 msgstr ""
-"در بعضی سیستم‌های وبلاگ مثل وردپرس که پست‌ها بصورت HTML ذخیره نمی‌شوند، "
-"می‌تواند مفید باشد."
 
 #. i18n: file: bilbo/advancedsettingsbase.ui:19
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_changeNToBreak)
 #: l10n/rc.cpp:145 rc.cpp:145
 msgid "Change \\n to <br/> On posts retrieved from server"
-msgstr "تغییر \\n به <br/> در پست‌هایی که از خدمتگذار دریافت می‌شوند"
+msgstr ""
 
 #. i18n: file: bilbo/bilboui.rc:4
 #. i18n: ectx: Menu (blog)
@@ -1257,25 +1195,25 @@ msgstr "تغییر \\n به <br/> در پست‌هایی که از خدمتگذ�
 #. i18n: ectx: property (text), widget (QTableWidget, localEntriesTable)
 #: l10n/rc.cpp:148 l10n/rc.cpp:352 rc.cpp:148 rc.cpp:352
 msgid "Blog"
-msgstr "وبلاگ"
+msgstr ""
 
 #. i18n: file: bilbo/bilboui.rc:8
 #. i18n: ectx: Menu (post)
 #: l10n/rc.cpp:151 rc.cpp:151
 msgid "Post"
-msgstr "مطلب"
+msgstr ""
 
 #. i18n: file: bilbo/bilboui.rc:13
 #. i18n: ectx: Menu (settings)
 #: l10n/rc.cpp:154 rc.cpp:154
 msgid "Settings"
-msgstr "تنظیمات"
+msgstr ""
 
 #. i18n: file: bilbo/bilboui.rc:19
 #. i18n: ectx: Menu (settings)
 #: l10n/rc.cpp:157 rc.cpp:157
 msgid "Toolbar"
-msgstr "نوار ابزار"
+msgstr ""
 
 #. i18n: file: bilbo/blogsettingsbase.ui:44
 #. i18n: ectx: property (text), widget (QTableWidget, blogsTable)
@@ -1287,95 +1225,95 @@ msgstr "نوار ابزار"
 #. i18n: ectx: property (text), widget (QTableWidget, localEntriesTable)
 #: l10n/rc.cpp:160 l10n/rc.cpp:349 rc.cpp:160 rc.cpp:349
 msgid "Title"
-msgstr "عنوان"
+msgstr ""
 
 #. i18n: file: bilbo/blogsettingsbase.ui:49
 #. i18n: ectx: property (text), widget (QTableWidget, blogsTable)
 #: l10n/rc.cpp:163 rc.cpp:163
 msgid "Url"
-msgstr "نشانی اینترنتی"
+msgstr ""
 
 #. i18n: file: bilbo/blogsettingsbase.ui:75
 #. i18n: ectx: property (text), widget (KPushButton, btnAdd)
 #: l10n/rc.cpp:166 rc.cpp:166
 msgid "&Add..."
-msgstr "&افزودن‌..."
+msgstr ""
 
 #. i18n: file: bilbo/blogsettingsbase.ui:85
 #. i18n: ectx: property (text), widget (KPushButton, btnEdit)
 #: l10n/rc.cpp:169 rc.cpp:169
 msgid "&Modify..."
-msgstr "&تغییر‌...‌"
+msgstr ""
 
 #. i18n: file: bilbo/blogsettingsbase.ui:95
 #. i18n: ectx: property (text), widget (KPushButton, btnRemove)
 #: l10n/rc.cpp:172 rc.cpp:172
 msgid "&Remove"
-msgstr "&حذف‌"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:22
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:175 rc.cpp:175
 msgctxt "the web address of the link"
 msgid "Link &Address :"
-msgstr "آدرس لینک"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:45
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: l10n/rc.cpp:181 rc.cpp:181
 msgctxt "the word which is showed as a link"
 msgid "Link &Title :"
-msgstr "عنوان لینک"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:61
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: l10n/rc.cpp:184 rc.cpp:184
 msgid "&Target :"
-msgstr "هدف لینک"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:75
 #. i18n: ectx: property (text), item, widget (QComboBox, comboTarget)
 #: l10n/rc.cpp:187 rc.cpp:187
 msgid "not set"
-msgstr "تعیین نشده"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:80
 #. i18n: ectx: property (text), item, widget (QComboBox, comboTarget)
 #: l10n/rc.cpp:190 rc.cpp:190
 msgid "Current window"
-msgstr "پنجره‌ی کنونی"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/addeditlinkbase.ui:85
 #. i18n: ectx: property (text), item, widget (QComboBox, comboTarget)
 #: l10n/rc.cpp:193 rc.cpp:193
 msgid "New window"
-msgstr "پنجره‌ی جدید"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/addmediadialogbase.ui:31
 #. i18n: ectx: property (text), widget (QRadioButton, radiobtnLocalUrl)
 #: l10n/rc.cpp:196 rc.cpp:196
 msgid "From your computer"
-msgstr "از کامپیوتر شما"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/addmediadialogbase.ui:44
 #. i18n: ectx: property (text), widget (QRadioButton, radiobtnRemoteUrl)
 #: l10n/rc.cpp:199 rc.cpp:199
 msgid "From the web"
-msgstr "از اینترنت"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:13
 #. i18n: ectx: property (windowTitle), widget (QWidget, EditImageBase)
 #: l10n/rc.cpp:202 rc.cpp:202
 msgctxt "verb, to modify selected image attributes."
 msgid "Edit image properties"
-msgstr "ویرایش مشخصات تصویر"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:19
 #. i18n: ectx: property (text), widget (QLabel, labelWidth)
 #: l10n/rc.cpp:205 rc.cpp:205
 msgctxt "noun, with of the image in pixels."
 msgid "Image width:"
-msgstr "عرض تصویر:"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:32
 #. i18n: ectx: property (suffix), widget (KIntSpinBox, spinboxWidth)
@@ -1387,20 +1325,20 @@ msgstr "عرض تصویر:"
 #. i18n: ectx: property (suffix), widget (KIntSpinBox, spinboxHeight)
 #: l10n/rc.cpp:208 l10n/rc.cpp:211 rc.cpp:208 rc.cpp:211
 msgid " pixel"
-msgstr " پیکسل"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:58
 #. i18n: ectx: property (text), widget (QLabel, labelTitle)
 #: l10n/rc.cpp:214 rc.cpp:214
 msgid "Image Title:"
-msgstr "عنوان عکس"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:68
 #. i18n: ectx: property (text), widget (QLabel, labelHeight)
 #: l10n/rc.cpp:217 rc.cpp:217
 msgctxt "noun, height of the image in pixels."
 msgid "Image height:"
-msgstr "ارتفاع تصویر:"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:85
 #. i18n: ectx: property (text), widget (QLabel, labelAltText)
@@ -1409,98 +1347,97 @@ msgctxt ""
 "the alternative text which is displayed to the user, if the image can not be "
 "loaded."
 msgid "Alternative text:"
-msgstr "متن جایگزین:"
+msgstr ""
 
 #. i18n: file: bilbo/composer/dialogs/editimagebase.ui:102
 #. i18n: ectx: property (text), widget (QLabel, labelLink)
 #: l10n/rc.cpp:223 rc.cpp:223
 msgid "Image Link To:"
-msgstr "لینک کردن عکس به:"
+msgstr ""
 
 #. i18n: file: bilbo/editorsettingsbase.ui:16
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:226 rc.cpp:226
 msgid "Editor auto save interval :"
-msgstr "دوره‌ی زمانی ذخیره‌کردن خودکار پست."
+msgstr ""
 
 #. i18n: file: bilbo/editorsettingsbase.ui:29
 #. i18n: ectx: property (specialValueText), widget (KIntSpinBox, kcfg_autosaveInterval)
 #: l10n/rc.cpp:229 rc.cpp:229
 msgid "Disbaled"
-msgstr "غیر فعال"
+msgstr ""
 
 #. i18n: file: bilbo/editorsettingsbase.ui:32
 #. i18n: ectx: property (suffix), widget (KIntSpinBox, kcfg_autosaveInterval)
 #: l10n/rc.cpp:232 rc.cpp:232
 msgid " minute"
-msgstr " دقیقه"
+msgstr ""
 
 #. i18n: file: bilbo/editorsettingsbase.ui:45
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_addPoweredBy)
 #: l10n/rc.cpp:235 rc.cpp:235
 msgid "Automatically insert \"Powered by Bilbo Blogger\""
-msgstr "بطور خودکار \"Powered by Bilbo Blogger\" را به پست‌ها اضافه کن"
+msgstr ""
 
 #. i18n: file: bilbo/editorsettingsbase.ui:65
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_previewInBlogStyle)
 #: l10n/rc.cpp:238 rc.cpp:238
 msgid "Enable preview posts in blog style, when available."
 msgstr ""
-"به‌کارانداختن پیش‌نمایش پست‌ها در قالب وبلاگ، زمانی‌که در دسترس باشد."
 
 #. i18n: file: bilbo/entriescountdialogbase.ui:17
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:241 rc.cpp:241
 msgid "How many entries would you like to fetch? :"
-msgstr "چه مقدار ورودی برای دریافت می خواهید؟ :"
+msgstr ""
 
 #. i18n: file: bilbo/entriescountdialogbase.ui:40
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_remember)
 #: l10n/rc.cpp:244 rc.cpp:244
 msgid "Do not ask again"
-msgstr "دوباره سوال نشود"
+msgstr ""
 
 #. i18n: file: bilbo/sendtoblogbase.ui:16
 #. i18n: ectx: property (text), widget (QRadioButton, pubAsModify)
 #: l10n/rc.cpp:247 rc.cpp:247
 msgid "Publish as an edit of the original entry"
-msgstr "منتشر کردن به عنوان ویرایشی از مطلب اصلی"
+msgstr ""
 
 #. i18n: file: bilbo/sendtoblogbase.ui:23
 #. i18n: ectx: property (text), widget (QRadioButton, pubAsNewPost)
 #: l10n/rc.cpp:250 rc.cpp:250
 msgid "Publish as a new post"
-msgstr "منتشر کردن به عنوان یک پست جدید"
+msgstr ""
 
 #. i18n: file: bilbo/sendtoblogbase.ui:36
 #. i18n: ectx: property (text), widget (QCheckBox, saveDraft)
 #: l10n/rc.cpp:253 rc.cpp:253
 msgid "Save entry in drafts"
-msgstr "ذخیره کردن مطلب به عنوان پیش‌نویس"
+msgstr ""
 
 #. i18n: file: bilbo/settingsbase.ui:16
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_enableSysTrayIcon)
 #: l10n/rc.cpp:256 rc.cpp:256
 msgid "Enable system tray icon"
-msgstr "فعال سازی آیکون در سینی سیستم"
+msgstr ""
 
 #. i18n: file: bilbo/settingsbase.ui:23
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_CopyMediaUrl)
 #: l10n/rc.cpp:259 rc.cpp:259
 msgid "Copy media URL to clipboard after upload"
-msgstr "کپی کردن مسیر رسانه به حافظه بعد از ارسال"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:33
 #. i18n: ectx: attribute (label), widget (QWidget, pgEntries)
 #: l10n/rc.cpp:262 rc.cpp:262
 msgid "Blog Posts"
-msgstr "مطالب وبلاگ"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:79
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnEntriesReload)
 #: l10n/rc.cpp:265 rc.cpp:265
 msgid "Reload entries list"
-msgstr "بارگذاری مجدد فهرست ورودی ها"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:82
 #. i18n: ectx: property (text), widget (KPushButton, btnEntriesReload)
@@ -1512,37 +1449,37 @@ msgstr "بارگذاری مجدد فهرست ورودی ها"
 #. i18n: ectx: property (text), widget (KPushButton, btnCatReload)
 #: l10n/rc.cpp:268 l10n/rc.cpp:295 rc.cpp:268 rc.cpp:295
 msgid "Reload"
-msgstr "بارگذاری مجدد"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:89
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnEntriesUpdate)
 #: l10n/rc.cpp:271 rc.cpp:271
 msgid "Update entries list"
-msgstr "به روز آوری فهرست ورودی ها"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:92
 #. i18n: ectx: property (text), widget (KPushButton, btnEntriesUpdate)
 #: l10n/rc.cpp:274 rc.cpp:274
 msgid "Update..."
-msgstr "به‌روزرسانی..."
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:99
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnEntriesClear)
 #: l10n/rc.cpp:277 rc.cpp:277
 msgid "Clear entries list"
-msgstr "پاک کردن لیست مطالب"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:102
 #. i18n: ectx: property (text), widget (KPushButton, btnEntriesClear)
 #: l10n/rc.cpp:280 rc.cpp:280
 msgid "Clear"
-msgstr "پاک کردن"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:116
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnEntriesRemove)
 #: l10n/rc.cpp:283 rc.cpp:283
 msgid "Remove selected entry from server"
-msgstr "حذف کردن مطلب انتخاب شده از خدمتگذار"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:119
 #. i18n: ectx: property (text), widget (KPushButton, btnEntriesRemove)
@@ -1554,158 +1491,158 @@ msgstr "حذف کردن مطلب انتخاب شده از خدمتگذار"
 #. i18n: ectx: property (text), widget (KPushButton, btnLocalRemove)
 #: l10n/rc.cpp:286 l10n/rc.cpp:358 rc.cpp:286 rc.cpp:358
 msgid "Remove"
-msgstr "حذف"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:152
 #. i18n: ectx: attribute (label), widget (QWidget, pgCat)
 #: l10n/rc.cpp:289 rc.cpp:289
 msgid "Post &Categories"
-msgstr "دسته‌بندی‌های پست"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:206
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnCatReload)
 #: l10n/rc.cpp:292 rc.cpp:292
 msgid "Reload categories list"
-msgstr "دریافت دوباره فهرست دسته‌بندی‌ها"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:216
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnCatAdd)
 #: l10n/rc.cpp:298 rc.cpp:298
 msgid "Add a new category to selected blog"
-msgstr "افزودن یک دسته‌ی جدید به وبلاگ"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:219
 #. i18n: ectx: property (text), widget (KPushButton, btnCatAdd)
 #: l10n/rc.cpp:301 rc.cpp:301
 msgid "Add Category..."
-msgstr "اضافه‌کردن دسته‌بندی..."
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:243
 #. i18n: ectx: property (text), widget (QLabel, lblCatTags)
 #: l10n/rc.cpp:304 rc.cpp:304
 msgid "&Tags :"
-msgstr "برچسب‌ها:"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:269
 #. i18n: ectx: attribute (label), widget (QWidget, pgOptions)
 #: l10n/rc.cpp:307 rc.cpp:307
 msgid "Post &Options"
-msgstr "تنظیمات پست"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:286
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: l10n/rc.cpp:310 rc.cpp:310
 msgctxt "Status of the current post"
 msgid "Status :"
-msgstr "وضعیت:"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:303
 #. i18n: ectx: property (text), item, widget (KComboBox, comboOptionsStatus)
 #: l10n/rc.cpp:313 rc.cpp:313
 msgid "Published"
-msgstr "منتشر شده"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:308
 #. i18n: ectx: property (text), item, widget (KComboBox, comboOptionsStatus)
 #: l10n/rc.cpp:316 rc.cpp:316
 msgid "Draft"
-msgstr "پیش‌نویس"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:313
 #. i18n: ectx: property (text), item, widget (KComboBox, comboOptionsStatus)
 #: l10n/rc.cpp:319 rc.cpp:319
 msgid "Local Draft"
-msgstr "پیش‌نویس محلی"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:351
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:322 rc.cpp:322
 msgid "Feedback: "
-msgstr "بازخورد "
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:360
 #. i18n: ectx: property (text), widget (QCheckBox, chkOptionsComments)
 #: l10n/rc.cpp:325 rc.cpp:325
 msgid "Comments"
-msgstr "نظرات"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:370
 #. i18n: ectx: property (text), widget (QCheckBox, chkOptionsTrackback)
 #: l10n/rc.cpp:328 rc.cpp:328
 msgid "Trackback"
-msgstr "دنبالک"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:387
 #. i18n: ectx: property (text), widget (QCheckBox, chkOptionsTime)
 #: l10n/rc.cpp:331 rc.cpp:331
 msgid "Modify time&stamp"
-msgstr "ویرایش زمان&نشان"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:469
 #. i18n: ectx: property (text), widget (KPushButton, btnOptionsNow)
 #: l10n/rc.cpp:334 rc.cpp:334
 msgid "Now"
-msgstr "اکنون"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:481
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: l10n/rc.cpp:337 rc.cpp:337
 msgid "Permalink (wordpress) :"
-msgstr "پیوند دائمی (وردپرس) :"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:491
 #. i18n: ectx: property (text), widget (QLabel, lblOptionsTrackBack)
 #: l10n/rc.cpp:340 rc.cpp:340
 msgid "&Trackback URLs :"
-msgstr "&مسیرهای دنبالک :"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:504
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: l10n/rc.cpp:343 rc.cpp:343
 msgid "Summary :"
-msgstr "خلاصه:"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:543
 #. i18n: ectx: attribute (label), widget (QWidget, pgNotes)
 #: l10n/rc.cpp:346 rc.cpp:346
 msgid "&Local entries"
-msgstr "&ورودی های محلی"
+msgstr ""
 
 #. i18n: file: bilbo/toolboxbase.ui:596
 #. i18n: ectx: property (toolTip), widget (KPushButton, btnLocalRemove)
 #: l10n/rc.cpp:355 rc.cpp:355
 msgid "Remove selected entry"
-msgstr "حذف کردن مطلب انتخاب شده"
+msgstr ""
 
 #. i18n: file: bilbo/uploadmediabase.ui:26
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: l10n/rc.cpp:364 rc.cpp:364
 msgid "From your computer:"
-msgstr "از کامپیوتر شما:"
+msgstr ""
 
 #. i18n: file: bilbo/uploadmediabase.ui:39
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: l10n/rc.cpp:367 rc.cpp:367
 msgid "Name on server:"
-msgstr "نام در خدمتگذار:"
+msgstr ""
 
 #. i18n: file: bilbo/uploadmediabase.ui:70
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: l10n/rc.cpp:370 rc.cpp:370
 msgid "Upload via:"
-msgstr "ارسال از راه:"
+msgstr ""
 
 #. i18n: file: bilbo/uploadmediabase.ui:98
 #. i18n: ectx: property (title), widget (QGroupBox, kcfg_ftpBox)
 #: l10n/rc.cpp:373 rc.cpp:373
 msgid "FTP Configurations"
-msgstr "پیکربندی های اف تی پی"
+msgstr ""
 
 #. i18n: file: bilbo/uploadmediabase.ui:107
 #. i18n: ectx: property (toolTip), widget (KLineEdit, kcfg_httpUrl)
 #: l10n/rc.cpp:376 rc.cpp:376
 msgid "Will use for direct link generation"
-msgstr "برای تولید پیوند مستقیم استفاده خواهد شد"
+msgstr ""
 
 #. i18n: file: bilbo/uploadmediabase.ui:117
 #. i18n: ectx: property (text), widget (QLabel, label_4)
@@ -1717,28 +1654,28 @@ msgstr ""
 #. i18n: ectx: property (toolTip), widget (KLineEdit, kcfg_FtpPath)
 #: l10n/rc.cpp:385 rc.cpp:385
 msgid "Will use for upload"
-msgstr "برای بارگذاری استفاده خواهد شد"
+msgstr ""
 
 #. i18n: file: bilbo/uploadmediabase.ui:130
 #. i18n: ectx: property (text), widget (KLineEdit, kcfg_FtpPath)
 #: l10n/rc.cpp:388 rc.cpp:388
 msgid "ftp://"
-msgstr "ftp://"
+msgstr ""
 
 #. i18n: file: bilbo/uploadmediabase.ui:137
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: l10n/rc.cpp:391 rc.cpp:391
 msgid "(s)Ftp path:"
-msgstr "مسیر (اس)اف‌تی‌پی"
+msgstr ""
 
 #. i18n: file: bilbo/uploadmediabase.ui:152
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: l10n/rc.cpp:394 rc.cpp:394
 msgid "e.g. sftp://domain.com/user/images/"
-msgstr "برای مثال sftp://domain.com/user/images/"
+msgstr ""
 
 #. i18n: file: bilbo/uploadmediabase.ui:164
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: l10n/rc.cpp:397 rc.cpp:397
 msgid "e.g. http://domain.com/images/"
-msgstr "برای مثال http://domain.com/images/"
+msgstr ""
