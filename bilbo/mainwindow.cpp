@@ -84,7 +84,7 @@ MainWindow::MainWindow()
 
     btnRemovePost = new QToolButton( tabPosts );
     btnRemovePost->setIcon( KIcon( "tab-close" ) );
-    btnRemovePost->setToolTip( i18n( "Remove current post" ) );
+    btnRemovePost->setToolTip( i18n( "Close tab" ) );
     tabPosts->setCornerWidget( btnRemovePost, Qt::TopRightCorner );
     connect( btnRemovePost, SIGNAL( clicked( bool ) ), this, SLOT( sltRemovePostEntry() ) );
 
