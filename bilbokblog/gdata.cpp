@@ -768,6 +768,10 @@ void GDataPrivate::slotFetchPost( Syndication::Loader *loader,
   bool success = false;
 
   BlogPost *post = mFetchPostMap[ loader ];
+  if(!post){
+    kError()<<"returned loader cannot find in requests map.";
+    return;
+  }
 
   if ( status != Syndication::Success ) {
     emit q->errorPost( GData::Atom, i18n( "Could not get posts." ), post );
