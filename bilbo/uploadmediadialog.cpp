@@ -90,11 +90,11 @@ bool UploadMediaDialog::selectNewFile()
 {
     QString mediaPath;
 #ifdef WIN32
-    mediaPath = QFileDialog::getOpenFileName( this, i18n("Select media to upload") );
+    mediaPath = QFileDialog::getOpenFileName( this, i18n("Select Media to Upload") );
 #else
     mediaPath = KFileDialog::getOpenFileName( KUrl("kfiledialog:///image?global"),
                                                       QString(), this,
-                                                      i18n("Select media to upload"));
+                                                      i18n("Select Media to Upload"));
 #endif
     if( mediaPath.isEmpty() )
         return false;
