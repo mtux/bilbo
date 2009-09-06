@@ -994,7 +994,7 @@ BilboPost DBMan::getPostInfo( int post_id )
             }
             tmp.setCategoryList( catList );
         } else {
-            mLastErrorText = i18n( "There isn't any post with requested ID" );
+            mLastErrorText = i18n( "There is no post with the requested ID" );
             kDebug() << "There isn't any post with id: " << post_id;
             tmp.setStatus(KBlog::BlogPost::Error);
         }
@@ -1260,7 +1260,7 @@ BilboPost DBMan::localPost(int local_id)
                 kDebug()<<"Cannot get categories list of local post. SQL Error: "<< q2.lastError().text();
             }
         } else {
-            mLastErrorText = i18n( "there isn't any local post with requested ID " );
+            mLastErrorText = i18n( "There is no local post with the requested ID " );
             kDebug()<<"there isn't any local post with local_id "<<local_id;
         }
     } else {
