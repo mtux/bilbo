@@ -46,7 +46,7 @@ UploadMediaDialog::UploadMediaDialog( QWidget *parent ) :
     this->setMainWidget(widget);
     this->setAttribute(Qt::WA_DeleteOnClose);
     setButtonText(KDialog::Ok, i18n("Upload") );
-    setWindowTitle( i18n( "Upload media..." ) );
+    setWindowTitle( i18n( "Upload Media..." ) );
     ui.kcfg_FtpPath->setText(Settings::ftpServerPath());
     ui.kcfg_httpUrl->setText(Settings::httpUrl());
     setWindowModality(Qt::ApplicationModal);
@@ -137,7 +137,7 @@ void UploadMediaDialog::slotButtonClicked(int button)
             emit sigBusy(true);
         } else if( type == FTP ) {///Upload via FTP
             if( ui.kcfg_FtpPath->text().isEmpty() ) {
-                KMessageBox::sorry(this, i18n("Please insert FTP Url."));
+                KMessageBox::sorry(this, i18n("Please insert FTP URL."));
                 return;
             }
             KUrl dest;
@@ -154,9 +154,9 @@ void UploadMediaDialog::slotButtonClicked(int button)
                     return;
                 }
             }
-            KMessageBox::error(this, i18n("Inserted ftp url is not a valid url.\n\
-Note that url must start with \"ftp\" or \"sftp\",\
- and end with a / that indicate the directory which file should upload to it."));
+            KMessageBox::error(this, i18n("Inserted FTP URL is not a valid URL.\n\
+Note: The URL must start with \"ftp\" or \"sftp\",\
+ and end with a \"/\" that indicates the directory which file should upload to it.")); //what is meant here?
         }
     } else {
         KDialog::slotButtonClicked(button);
