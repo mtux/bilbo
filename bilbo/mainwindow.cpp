@@ -172,7 +172,7 @@ void MainWindow::setupActions()
     connect( toolboxDock, SIGNAL(visibilityChanged(bool)),
              this, SLOT( slotToolboxVisibilityChanged(bool) ) );
 
-    KAction *actClearImageCache = new KAction( KIcon( "edit-clear" ), i18n( "Clear cached images" ), this );
+    KAction *actClearImageCache = new KAction( KIcon( "edit-clear" ), i18n( "Clear Cached Images" ), this );
     actionCollection()->addAction( QLatin1String( "clear_image_cache" ), actClearImageCache );
     connect( actClearImageCache, SIGNAL( triggered( bool ) ), this, SLOT( sltClearCache() ) );
 
@@ -289,7 +289,7 @@ void MainWindow::optionsPreferences()
     ui_advancedsettings_base.setupUi( advancedSettingsDlg );
 
 //     QWidget *htmlEditorSettings = HtmlEditor::self()->configPage( 0, dialog );
-//     dialog->addPage( htmlEditorSettings, i18n( "Html Editor" ), "configure" );
+//     dialog->addPage( htmlEditorSettings, i18n( "HTML Editor" ), "configure" );
     dialog->addPage( generalSettingsDlg, i18n( "General" ), "configure" );
     dialog->addPage( blogSettingsDlg, i18n( "Blogs" ), "document-properties");
     dialog->addPage( editorSettingsDlg, i18n( "Editor" ), "accessories-text-editor" );
@@ -434,12 +434,12 @@ void MainWindow::sltPublishPost()
 {
     kDebug();
     if ( mCurrentBlogId == -1 ) {
-        KMessageBox::sorry( this, i18n( "You have to select a blog to publish this post to it." ) );
+        KMessageBox::sorry( this, i18n( "You have to select a blog to publish this post to." ) );
         kDebug() << "Blog id not sets correctly.";
         return;
     }
     if( !activePost || tabPosts->currentIndex() == -1) {
-        KMessageBox::sorry( this, i18n( "There isn't any open post to submit!" ) );
+        KMessageBox::sorry( this, i18n( "There is no open post to submit!" ) );
         kDebug() << "There isn't any post";
         return;
     }
@@ -495,7 +495,7 @@ void MainWindow::sltSavePostLocally()
 void MainWindow::sltError( const QString & errorMessage )
 {
     kDebug() << "Error message: " << errorMessage;
-    KMessageBox::detailedError( this, i18n( "An error ocurred on latest transaction" ), errorMessage );
+    KMessageBox::detailedError( this, i18n( "An error ocurred on the last transaction." ), errorMessage );
     statusBar()->clearMessage();
     slotBusy(false);
 }
@@ -545,7 +545,7 @@ void MainWindow::postManipulationDone( bool isError, const QString &customMessag
         KMessageBox::detailedError(this, i18n("Submiting post failed"), customMessage);
     } else {
         PostEntry *entry = qobject_cast<PostEntry*>(sender());
-        if(entry && KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep post open?", customMessage),
+        if(entry && KMessageBox::questionYesNo(this, i18n("%1\nDo you want to keep the post open?", customMessage),
                     QString(), KStandardGuiItem::yes(), KStandardGuiItem::no(), "KeepPostOpen") == KMessageBox::No ) {
             sltRemovePostEntry(entry);
         } else {

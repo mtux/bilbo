@@ -223,7 +223,7 @@ bool PostEntry::uploadMediaFiles( Backend *backend )
                 BilboMedia *media = it.value();
                 SyncUploader *uploader = new SyncUploader(this);
                 if( !uploader->uploadMedia( backend, media ) ){
-                    QString err = i18n( "Uploading media file %1 failed.\n%3", media->name(), uploader->errorMessage());
+                    QString err = i18n( "Uploading the media file %1 failed.\n%3", media->name(), uploader->errorMessage());
                     emit postPublishingDone( true, err );
                     uploader->deleteLater();
                     result = false;
@@ -246,7 +246,7 @@ bool PostEntry::uploadMediaFiles( Backend *backend )
 void PostEntry::sltError( const QString & errMsg )
 {
     kDebug();
-    QString err = i18n( "An Error occurred on latest transaction.\n%1", errMsg );
+    QString err = i18n( "An error occurred on the last transaction.\n%1", errMsg );
     emit postPublishingDone( true, err );
     deleteProgressBar();
     sender()->deleteLater();
@@ -258,7 +258,7 @@ void PostEntry::submitPost( int blogId, const BilboPost &postData )
     setCurrentPostFromEditor();
     if ( mCurrentPost.content().isEmpty() || mCurrentPost.title().isEmpty() ) {
         if ( KMessageBox::warningContinueCancel( this,
-            i18n( "Your post title or body is empty!\nAre you sure of submiting this post?" )
+            i18n( "Your post title or body is empty!\nAre you sure you want to submit this post?" )
             ) == KMessageBox::Cancel )
             return;
     }
@@ -345,8 +345,8 @@ void PostEntry::saveLocally()
 {
     kDebug();
     if( currentPost()->content().isEmpty() ) {
-        if( KMessageBox::warningYesNo(this, i18n("Current post content is empty, \
-are you sure of saving an empty post?")) == KMessageBox::No )
+        if( KMessageBox::warningYesNo(this, i18n("The current post content is empty, \
+are you sure you want to save an empty post?")) == KMessageBox::No )
             return;
     }
     mCurrentPost.setId( DBMan::self()->saveLocalEntry( *currentPost(), mCurrentPostBlogId ) );

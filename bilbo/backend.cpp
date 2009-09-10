@@ -171,7 +171,7 @@ void Backend::postPublished( KBlog::BlogPost *post )
     kDebug() << "Blog Id: " << mBBlog->id();
     if ( post->status() == KBlog::BlogPost::Error ) {
         kDebug() << "Publishing/Modifying Failed";
-        const QString tmp( i18n( "Publishing/Modifying post failed : %1" ).arg( post->error() ) );
+        const QString tmp( i18n( "Publishing/Modifying post failed: %1" ).arg( post->error() ) );
         kDebug() << "Emitting sigError...";
         Q_EMIT sigError( tmp );
         return;
@@ -201,7 +201,7 @@ void Backend::uploadMedia( BilboMedia * media )
         case BilboBlog::BLOGGER1_API:
         case BilboBlog::GDATA_API:
             kDebug() << "The Blogger1 and GData API type doesn't support uploading Media files.";
-            tmp = i18n( "Uploading media failed : Your blog api doesn't support uploading media objects.");
+            tmp = i18n( "Uploading media failed: Your Blog API does not support uploading media objects.");
             kDebug() << "Emitting sigError...";
             Q_EMIT sigMediaError( tmp, media );
             return;
@@ -218,16 +218,16 @@ void Backend::uploadMedia( BilboMedia * media )
             KIO::TransferJob *job = KIO::get( media->localUrl(), KIO::Reload, KIO::HideProgressInfo);
             if( !KIO::NetAccess::synchronousRun(job, 0, &data) ){
                 kError()<<"Job error: " << job->errorString();
-                tmp = i18n( "Uploading media failed : Cannot read the media file,\
- please check if it exists. path: %1", media->localUrl().pathOrUrl() );
+                tmp = i18n( "Uploading media failed: Cannot read the media file,\
+ please check if it exists. Path: %1", media->localUrl().pathOrUrl() );
                 kDebug() << "Emitting sigError...";
                 Q_EMIT sigMediaError( tmp, media );
             }
 
             if ( data.count() == 0 ) {
                 kError() << "Cannot read the media file, please check if it exists.";
-                tmp = i18n( "Uploading media failed : Cannot read the media file,\
- please check if it exists. path: %1", media->localUrl().pathOrUrl() );
+                tmp = i18n( "Uploading media failed: Cannot read the media file,\
+ please check if it exists. Path: %1", media->localUrl().pathOrUrl() );
                 kDebug() << "Emitting sigError...";
                 Q_EMIT sigMediaError( tmp, media );
                 return;
@@ -240,7 +240,7 @@ void Backend::uploadMedia( BilboMedia * media )
 
             if ( media->checksum() == 0 ) {
                 kError() << "Media file checksum is zero";
-                tmp = i18n( "Uploading media failed : Media file checksum is zero, please check file path. path: %1",
+                tmp = i18n( "Uploading media failed: Media file checksum is zero, please check file path. Path: %1",
                                          media->localUrl().pathOrUrl() );
                 kDebug() << "Emitting sigError...";
                 Q_EMIT sigMediaError( tmp, media );
@@ -263,7 +263,7 @@ void Backend::uploadMedia( BilboMedia * media )
             break;
     }
     kError() << "Api type isn't set correctly!";
-    tmp = i18n( "Api type isn't set correctly!" );
+    tmp = i18n( "API type is not set correctly!" );
     Q_EMIT sigError( tmp );
 }
 
@@ -283,7 +283,7 @@ void Backend::mediaUploaded( KBlog::BlogMedia * media )
     mPublishMediaMap.remove( media );
     if ( media->status() == KBlog::BlogMedia::Error ) {
         kError() << "Upload error! with this message: " << media->error();
-        const QString tmp( i18n( "Uploading Media failed : %1", media->error() ) );
+        const QString tmp( i18n( "Uploading media failed: %1", media->error() ) );
         kDebug() << "Emitting sigMediaError ...";
         Q_EMIT sigMediaError( tmp, m );
         return;
@@ -292,7 +292,7 @@ void Backend::mediaUploaded( KBlog::BlogMedia * media )
     if ( newChecksum != m->checksum() ) {
         kError() << "Check sum error: checksum of sent file: " << m->checksum() <<
                 " Checksum of recived file: " << newChecksum << "Error: " << media->error() << endl;
-        const QString tmp( i18n( "Uploading Media failed : Check sum Error. returned error: %1",
+        const QString tmp( i18n( "Uploading media failed: Checksum error. Returned error: %1",
                            media->error() ) );
         kDebug() << "Emitting sigMediaError ...";
         Q_EMIT sigMediaError( tmp, m );
@@ -375,7 +375,7 @@ void Backend::setPostCategories( const QString postId, const QMap< QString, bool
         mt->setPostCategories( postId, categoriesList );
     } else {
         kDebug() << "Blog API doesn't support setting post categories the api type is: " << mBBlog->api();
-        QString err = i18n( "The registred blog API doesn't support setting categories for a post." );
+        QString err = i18n( "The registred blog API does not support setting categories for a post." );
         error(KBlog::Blog::NotSupported, err);
     }
 }
@@ -408,22 +408,22 @@ QString Backend::errorTypeToString( KBlog::Blog::ErrorType type )
     QString errType;
     switch ( type ) {
         case KBlog::Blog::XmlRpc:
-            errType = i18n( "Server(XMLRPC) Error: " );
+            errType = i18n( "Server (XMLRPC) error: " );
             break;
         case KBlog::Blog::Atom:
-            errType = i18n( "Server(Atom) Error: " );
+            errType = i18n( "Server (Atom) error: " );
             break;
         case KBlog::Blog::ParsingError:
-            errType = i18n( "Parsing Error: " );
+            errType = i18n( "Parsing error: " );
             break;
         case KBlog::Blog::AuthenticationError:
-            errType = i18n( "Authentication Error: " );
+            errType = i18n( "Authentication error: " );
             break;
         case KBlog::Blog::NotSupported:
-            errType = i18n( "Not Supported Error: " );
+            errType = i18n( "Not supported error: " );
             break;
         default:
-            errType = i18n( "Unknown Error: " );
+            errType = i18n( "Unknown error: " );
     };
     return errType;
 }
